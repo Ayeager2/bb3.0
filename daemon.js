@@ -80,6 +80,10 @@ import {
   buildSessionStats,
 } from "/lib/daemon/session.js";
 
+import { runProgressionBuyer } from "/lib/daemon/progression-buyer.js";
+
+import { runServerPurchaser } from "/lib/daemon/server-purchases.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
@@ -103,22 +107,14 @@ export async function main(ns) {
   let capabilities = detectCapabilities(ns);
 
   const scripts = [
-    { name: "/tools/worm-update.js", host: "home", threads: 1, args: [], tail: false, keepAlive: false },
     { name: "/controllers/uhm.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
-    { name: "/economy/scaleingServerPurchase.js", host: "home", threads: 1, args: [], tail: false, keepAlive: false },
-    { name: "/economy/justhacknet.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
-    { name: "/economy/stock-trader.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
-    { name: "/helpers/servers.js", host: "home", threads: 1, args: [], tail: false, keepAlive: false },
-    { name: "/planners/flight-status.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
-    { name: "/helpers/darknet-watch.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
+    { name: "/tools/worm-update.js", host: "home", threads: 1, args: [], tail: false, keepAlive: false },
+    { name: "/economy/stock-trader.js", keepAlive: true, minMoney: 10_000_000_000, requiresTixApi: true, disabledPhases: ["bootstrap", "reset-prep"], purpose: "stock-income" },
     { name: "/singularity/s4/autobuyAugmentations.js", host: "home", threads: 1, args: [], tail: false, requiresSingularity: true },
-    { name: "/controllers/progression-buyer.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
     { name: "/planners/augmentation-planner.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true, requiresSingularity: true },
-    { name: "/planners/faction-planner.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true, },
     { name: "/singularity/faction-ai.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true, requiresSingularity: true },
     { name: "/planners/reset-planner.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true, requiresSingularity: true },
     { name: "/singularity/int-travel.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true, requiresSingularity: true },
-    { name: "/controllers/backdoor-ai.js", host: "home", threads: 1, args: [], tail: false, keepAlive: true },
   ];
 
   killOtherDaemonInstances(ns);
@@ -212,6 +208,39 @@ export async function main(ns) {
     }
 
     const state = buildGlobalState(ns, cachedDecision, capabilities);
+
+    const buyResult = runProgressionBuyer(
+      ns,
+      cachedDecision?.spendingPolicy ?? {}
+    );
+
+    const serverResult = await runServerPurchaser(
+      ns,
+      cachedDecision?.spendingPolicy ?? {}
+    );
+
+    if (serverResult.acted) {
+      ns.toast(serverResult.message, "success", 8000);
+      ns.tprint(`[DAEMON SERVER] ${serverResult.message}`);
+
+      state.lastServerPurchase = {
+        time: Date.now(),
+        type: serverResult.type,
+        server: serverResult.server,
+        message: serverResult.message,
+      };
+    }
+
+    if (buyResult.bought) {
+      ns.toast(buyResult.message, "success", 8000);
+      ns.tprint(`[DAEMON BUY] ${buyResult.message}`);
+
+      state.lastPurchase = {
+        time: Date.now(),
+        type: buyResult.type,
+        message: buyResult.message,
+      };
+    }
     if (!sessionInitialized) {
       initializeSession(ns, state);
       sessionInitialized = true;

@@ -122,9 +122,39 @@ export async function main(ns) {
     await copyScriptsToServers(ns, rootedServers, copiedServers, runtimeStats);
 
     const hosts = getHosts(ns, rootedServers);
-    const lanes = buildTargetLanes(ns, rootedServers, hosts, daemonState);
-    const laneSnapshots = snapshotLanes(lanes, getLaneRamStats);
 
+    // Phase-aware RAM reservation.
+    // Share runs BEFORE lanes so faction/reset-prep phases reserve RAM first.
+    if (phase.shareRamRatio > 0) {
+      const shareResult = await runShareMode(
+        ns,
+        hosts,
+        homeReserveRam,
+        phase.shareRamRatio
+      );
+
+      runtimeStats.share = {
+        active: true,
+        launched: shareResult.launched,
+        threads: shareResult.threadsLaunched,
+        bonus: ns.getSharePower(),
+        ratio: phase.shareRamRatio,
+        phase: phase.name,
+      };
+    } else {
+      runtimeStats.share = {
+        active: false,
+        launched: 0,
+        threads: 0,
+        bonus: ns.getSharePower(),
+        ratio: 0,
+        phase: phase.name,
+      };
+    }
+
+    const lanes = buildTargetLanes(ns, rootedServers, hosts, daemonState);
+
+    const laneSnapshots = snapshotLanes(lanes, getLaneRamStats);
     if (lanes.length === 0) {
       if (now - lastDraw > 5000) {
         ns.clearLog();
@@ -146,87 +176,7 @@ export async function main(ns) {
       if (result) results.push(result);
     }
 
-    const shareHosts = hosts.filter((hostInfo) => {
-      const hostname =
-        typeof hostInfo === "string"
-          ? hostInfo
-          : hostInfo.host ?? hostInfo.hostname ?? hostInfo.name;
 
-      if (!hostname) return false;
-
-      const maxRam = ns.getServerMaxRam(hostname);
-      const shareBudget = maxRam * phase.shareRamRatio;
-
-      return shareBudget > 0;
-    });
-
-    if (phase.shareRamRatio > 0) {
-      const shareResult = await runShareMode(
-        ns,
-        shareHosts,
-        homeReserveRam,
-        phase.shareRamRatio
-      );
-
-      runtimeStats.share = {
-        active: true,
-        launched: shareResult.launched,
-        threads: shareResult.threadsLaunched,
-        bonus: ns.getSharePower(),
-        ratio: phase.shareRamRatio,
-        phase: phase.name,
-      };
-    } else {
-      runtimeStats.share = {
-        active: false,
-        launched: 0,
-        threads: 0,
-        bonus: ns.getSharePower(),
-        ratio: 0,
-        phase: phase.name,
-      };
-    }
-
-    const shareHosts = hosts.filter((hostInfo) => {
-      const hostname =
-        typeof hostInfo === "string"
-          ? hostInfo
-          : hostInfo.host ?? hostInfo.hostname ?? hostInfo.name;
-
-      if (!hostname) return false;
-
-      const maxRam = ns.getServerMaxRam(hostname);
-      const shareBudget = maxRam * phase.shareRamRatio;
-
-      return shareBudget > 0;
-    });
-
-    if (phase.shareRamRatio > 0) {
-      const shareResult = await runShareMode(
-        ns,
-        shareHosts,
-        homeReserveRam,
-        phase.shareRamRatio
-      );
-
-      runtimeStats.share = {
-        active: true,
-        launched: shareResult.launched,
-        threads: shareResult.threadsLaunched,
-        bonus: ns.getSharePower(),
-        ratio: phase.shareRamRatio,
-        phase: phase.name,
-      };
-    } else {
-      runtimeStats.share = {
-        active: false,
-        launched: 0,
-        threads: 0,
-        bonus: ns.getSharePower(),
-        ratio: 0,
-        phase: phase.name,
-      };
-    }
 
     if (now - lastDraw > 5000) {
       ns.clearLog();
