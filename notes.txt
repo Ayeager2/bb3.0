@@ -1,0 +1,2 @@
+alias buyOpeners="buy bruteSSH.exe ; buy FTPcrack.exe ; buy relaySMTP.exe ; buy HTTPworm.exe ; buy SQLinject.exe"
+https://github.com/bitburner-official/bitburner-src/tree/dev/markdown
