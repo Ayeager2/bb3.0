@@ -1,11 +1,14 @@
 const STATE_FILE = "/data/daemon-state.txt";
 
-const DEFAULT_WORKER_SCRIPTS = ["/h1.js", "/g1.js", "/w1.js"];
+const DEFAULT_WORKER_SCRIPTS = ["/workers/h1.js", "/workers/g1.js", "/workers/w1.js"];
 
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
   ns.ui.resizeTail(900, 600);
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
   if (flags.tails) {
     ns.ui.openTail();
   }

@@ -74,7 +74,11 @@ import {
   getDecisionReasonSafe
 } from "/lib/daemon/telemetry.js";
 
-// #region 2. main()
+import {
+  initializeSession,
+  updateSessionTracking,
+  buildSessionStats,
+} from "/lib/daemon/session.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -119,7 +123,6 @@ export async function main(ns) {
 
   killOtherDaemonInstances(ns);
   cleanDaemonManagedProcesses(ns, scripts);
-
   let cachedServers = new Set(["home"]);
   let cachedRootedServers = new Set(["home"]);
   let cachedDecision = null;
@@ -128,6 +131,7 @@ export async function main(ns) {
   let lastDecision = 0;
   let lastDashboardDraw = 0;
   let lastTailLayout = 0;
+  let sessionInitialized = false;
 
   while (true) {
     const now = Date.now();
@@ -208,11 +212,16 @@ export async function main(ns) {
     }
 
     const state = buildGlobalState(ns, cachedDecision, capabilities);
+    if (!sessionInitialized) {
+      initializeSession(ns, state);
+      sessionInitialized = true;
+    }
     writeJson(ns, STATE_FILE, state);
 
     startScripts(ns, scripts, startedOnce, completedOnce, openedTails, state);
     manageShareWorkers(ns, state);
     updateCompletedStatus(ns, scripts, startedOnce, completedOnce);
+    updateSessionTracking(state);
     if (now - lastTailLayout > 30000) {
       layoutRunningTails(ns, scripts, openedTails);
       lastTailLayout = now;

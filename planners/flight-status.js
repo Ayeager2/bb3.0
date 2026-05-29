@@ -3,6 +3,9 @@ const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
   if (flags.tails) {
     ns.ui.openTail();
     ns.ui.resizeTail(1000, 850);

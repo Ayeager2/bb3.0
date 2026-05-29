@@ -17,7 +17,14 @@ const CONFIG = {
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
-  ns.ui.resizeTail(1000, 650);
+
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
+
+  if (flags.tails) {
+    ns.ui.openTail();
+  }
 
   while (true) {
     const daemon = readJson(ns, DAEMON_STATE_FILE);

@@ -1,13 +1,16 @@
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
   if (flags.tails) {
     ns.ui.openTail();
     ns.ui.resizeTail(950, 500);
     ns.ui.moveTail(900, 80);
   }
 
-  const refreshMs = 1000;
+  const refreshMs = flags.tails ? 5000 : 30000;
 
   const reset = "\u001b[0m";
   const cyan = "\u001b[36m";

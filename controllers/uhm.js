@@ -10,10 +10,10 @@ const defaultHackPercent = 0.10;
 const expHackPercent = 0.02;
 
 const batchSpacingMs = 250;
-const cycleDelayMs = 250;
 const rescanIntervalMs = 10000;
 const homeReserveRam = 64;
-const maxBatchesPerCycle = 150;
+const maxBatchesPerCycle = 25;
+const cycleDelayMs = 1000;
 
 const runtimeStats = {
   batchesLaunched: 0,
@@ -29,6 +29,9 @@ const runtimeStats = {
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
   if (flags.tails) {
     ns.ui.openTail();
     ns.ui.resizeTail(1400, 850);
@@ -36,6 +39,7 @@ export async function main(ns) {
 
   let rootedServers = new Set(["home"]);
   let lastScan = 0;
+  let lastDraw = 0;
   const copiedServers = new Set();
 
   while (true) {
@@ -77,8 +81,10 @@ export async function main(ns) {
       if (result) results.push(result);
     }
 
-    printMultiTargetStatus(ns, lanes, results, daemonState, laneSnapshots);
-
+    if (now - lastDraw > 5000) {
+      printMultiTargetStatus(ns, lanes, results, daemonState, laneSnapshots);
+      lastDraw = now;
+    }
     await ns.sleep(delayMs);
   }
 }
@@ -131,7 +137,7 @@ function buildTargetLanes(ns, rootedServers, hosts, daemonState) {
   const cleanServers = sanitizeServerSet(ns, rootedServers);
   const moneyTarget = getValidTargetOrFallback(ns, cleanServers, daemonState?.target, "money");
   const secondaryMoneyTarget = getSecondaryMoneyTarget(ns, cleanServers, moneyTarget);
-  const expTarget = getBestExpTarget(ns, cleanServers);
+  const expTarget = getValidTargetOrFallback(ns, cleanServers, daemonState?.target, "exp");
 
   const groups = splitHostsByRamBudget(hosts, daemonState);
 
@@ -263,7 +269,6 @@ function clampPercent(value) {
   if (!Number.isFinite(n)) return 0;
   return Math.max(0, Math.min(1, n));
 }
-
 function runLane(ns, lane) {
   if (!isUsableTarget(ns, lane.target)) return null;
 
@@ -291,16 +296,60 @@ function runLane(ns, lane) {
     runtimeStats.hackThreads += plan.hackThreads * launched;
     runtimeStats.growThreads += plan.growThreads * launched;
     runtimeStats.weakenThreads += (plan.weakenHackThreads + plan.weakenGrowThreads) * launched;
+
+    return {
+      lane: lane.name,
+      target: lane.target,
+      mode: lane.mode,
+      status: "RUNNING",
+      launched,
+      plan,
+    };
+  }
+
+  if (lane.mode === "exp") {
+    const fallbackThreads = runExpFallback(ns, lane.target, lane.hosts);
+
+    return {
+      lane: lane.name,
+      target: lane.target,
+      mode: lane.mode,
+      status: fallbackThreads > 0 ? "EXP-FALLBACK" : "NO-RAM",
+      launched: fallbackThreads,
+      plan,
+    };
   }
 
   return {
     lane: lane.name,
     target: lane.target,
     mode: lane.mode,
-    status: "RUNNING",
-    launched,
+    status: "NO-RAM",
+    launched: 0,
     plan,
   };
+}
+
+function runExpFallback(ns, target, hosts) {
+  let launchedThreads = 0;
+
+  for (const hostInfo of hosts) {
+    if (!safeServerExists(ns, hostInfo.host)) continue;
+
+    const scriptRam = ns.getScriptRam(weakenScript);
+    const threads = Math.floor(hostInfo.freeRam / scriptRam);
+
+    if (threads <= 0) continue;
+
+    const pid = ns.exec(weakenScript, hostInfo.host, threads, target, 0);
+
+    if (pid !== 0) {
+      hostInfo.freeRam -= threads * scriptRam;
+      launchedThreads += threads;
+    }
+  }
+
+  return launchedThreads;
 }
 
 function getValidTargetOrFallback(ns, rootedServers, target, mode) {
@@ -702,18 +751,17 @@ function scoreTarget(ns, server) {
 
 function getBestExpTarget(ns, servers) {
   const cleanServers = sanitizeServerSet(ns, servers);
-  const preferred = ["joesguns", "n00dles", "foodnstuff", "sigma-cosmetics"];
 
-  const availablePreferred = preferred.find(server =>
-    cleanServers.has(server) &&
-    isUsableTarget(ns, server)
-  );
-
-  if (availablePreferred) return availablePreferred;
-
-  return [...cleanServers]
+  const candidates = [...cleanServers]
     .filter(server => isUsableTarget(ns, server))
-    .sort((a, b) => scoreExpTarget(ns, b) - scoreExpTarget(ns, a))[0];
+    .filter(server => safeGetServerMaxMoney(ns, server) > 0)
+    .filter(server => safeGetWeakenTime(ns, server) <= 10 * 60 * 1000);
+
+  const pool = candidates.length > 0
+    ? candidates
+    : [...cleanServers].filter(server => isUsableTarget(ns, server));
+
+  return pool.sort((a, b) => scoreExpTarget(ns, b) - scoreExpTarget(ns, a))[0] ?? "joesguns";
 }
 
 function scoreExpTarget(ns, server) {
@@ -721,9 +769,15 @@ function scoreExpTarget(ns, server) {
 
   const weakenTime = Math.max(1, safeGetWeakenTime(ns, server));
   const minSec = Math.max(1, safeGetServerMinSecurityLevel(ns, server));
+  const sec = Math.max(minSec, safeGetServerSecurityLevel(ns, server));
   const growth = Math.max(1, safeGetServerGrowth(ns, server));
+  const money = Math.max(1, safeGetServerMaxMoney(ns, server));
+  const chance = Math.max(0.01, safeHackAnalyzeChance(ns, server));
 
-  return growth / (weakenTime * minSec);
+  const secPenalty = 1 + Math.max(0, sec - minSec) * 0.15;
+  const timeSeconds = weakenTime / 1000;
+
+  return (Math.log10(money + 1) * Math.sqrt(growth) * chance) / (timeSeconds * secPenalty);
 }
 
 function getBestPrepTarget(ns, servers) {

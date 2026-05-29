@@ -3,8 +3,12 @@ const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
-  ns.ui.resizeTail(1100, 780);
-
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
+  if (flags.tails) {
+    ns.ui.openTail();
+  }
   const CONFIG = {
     refreshMs: 5000,
     maxRows: 12,

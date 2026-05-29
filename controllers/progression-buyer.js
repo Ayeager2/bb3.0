@@ -11,7 +11,16 @@ const PROGRAMS = [
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
-  ns.ui.resizeTail(900, 650);
+
+  const flags = ns.flags([
+    ["tails", false],
+  ]);
+
+  if (flags.tails) {
+    ns.ui.openTail();
+  }
+
+
 
   const CONFIG = {
     refreshMs: 1000,
