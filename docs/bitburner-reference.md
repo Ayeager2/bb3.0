@@ -16,12 +16,20 @@ alias buyOpeners="buy BruteSSH.exe ; buy FTPCrack.exe ; buy relaySMTP.exe ; buy 
 
 ```txt
 run daemon.js
+run daemon.js --force-mode exp
+run daemon.js --force-mode exp --force-target joesguns
 ```
 
-## Run UHM
+## Run UHM directly
 
 ```txt
-run controllers/uhm.js --tails
+run /controllers/uhm.js --tails
+```
+
+## Run target service
+
+```txt
+run /tools/target-service.js
 ```
 
 ## Kill everything
@@ -34,7 +42,28 @@ killall
 
 ```txt
 ps home
-ps pserv-0
+ps HomeServer1
+```
+
+---
+
+# CURRENT RUNTIME MODEL
+
+```txt
+target-service
+→ computes targets/phases
+
+daemon.js
+→ orchestrates policies/services
+
+services
+→ perform specialized actions
+
+UHM
+→ executes batches
+
+HUD
+→ renders dashboard
 ```
 
 ---
@@ -49,8 +78,10 @@ ps pserv-0
 
 Purpose:
 
-* contribute faction reputation bonus
+* contributes faction reputation bonus
 * distributed across purchased servers
+* daemon-managed
+* phase-aware RAM allocation
 
 ---
 
@@ -66,18 +97,76 @@ Notes:
 * share bonus is GLOBAL
 * all rooted servers contribute
 * diminishing returns apply
+* share runs BEFORE money lanes currently
 
 ---
 
-# OFFICIAL DOCS
+# TARGET SERVICE
 
-## Markdown API Source
+## File
 
-https://github.com/bitburner-official/bitburner-src/tree/dev/markdown
+```txt
+/tools/target-service.js
+```
 
-## Main Netscript API
+Purpose:
 
-https://github.com/bitburner-official/bitburner-src/blob/dev/markdown/bitburner.ns.md
+* network scanning
+* rooted server discovery
+* target selection
+* mode selection
+* writes target-state.txt
+
+This was extracted from daemon.js to reduce daemon RAM usage.
+
+---
+
+# CURRENT ACTIVE SERVICES
+
+```txt
+/controllers/uhm.js
+/tools/daemon-hud.js
+/tools/target-service.js
+/tools/daemon-telemetry-service.js
+/tools/daemon-session-service.js
+/economy/server-purchaser-service.js
+/economy/progression-buyer-service.js
+```
+
+---
+
+# CURRENT ARCHITECTURE DIRECTION
+
+Transitioning from:
+
+```txt
+automation scripts
+```
+
+to:
+
+```txt
+runtime orchestration architecture
+```
+
+Daemon responsibilities:
+
+* orchestration
+* service lifecycle
+* spending policy
+* capability management
+* shared state
+
+UHM responsibilities:
+
+* execution
+* batching
+* lane scheduling
+* share allocation
+
+Services responsibilities:
+
+* specialized runtime systems
 
 ---
 
@@ -90,6 +179,14 @@ daemon.js
 /controllers/uhm.js
 ```
 
+## Targeting
+
+```txt
+/tools/target-service.js
+/lib/uhm/targets.js
+/lib/uhm/lanes.js
+```
+
 ## Modes
 
 ```txt
@@ -97,19 +194,20 @@ daemon.js
 /lib/uhm/modes/exp.js
 ```
 
-## Logic
-
-```txt
-/lib/uhm/progression.js
-/lib/uhm/targets.js
-/lib/uhm/lanes.js
-```
-
 ## Runtime
 
 ```txt
 /lib/uhm/runtime.js
 /lib/uhm/dashboard.js
+```
+
+## Workers
+
+```txt
+/workers/h1.js
+/workers/g1.js
+/workers/w1.js
+/workers/share-worker.js
 ```
 
 ---
@@ -129,57 +227,55 @@ bootstrap
 # CURRENT SHARE STRATEGY
 
 ```txt
-share runs BEFORE money lanes
+share reserves RAM first
+money lanes consume leftovers
 ```
 
-Meaning:
+Future goal:
 
-* share reserves RAM first
-* money lanes consume leftovers
-
-Current future goal:
-
-* intentional lane budgeting instead of leftovers
+```txt
+true phase-aware lane budgeting
+```
 
 ---
 
-# CURRENT KNOWN ARCHITECTURE DIRECTION
+# CLOUD SERVER SYSTEM
 
-Transitioning from:
-
-```txt
-batcher
-```
-
-to:
+## APIs
 
 ```txt
-progression-aware controller AI
+ns.cloud.getServerNames()
+ns.cloud.getServerLimit()
+ns.cloud.getRamLimit()
+ns.cloud.getServerCost(ram)
+ns.cloud.upgradeServer(server, ram)
 ```
 
-Future direction:
+---
 
-* singularity orchestration
-* faction automation
-* reset automation
-* telemetry-driven decisions
-* adaptive target selection
+## Current Behavior
+
+* daemon-managed
+* conditional service
+* upgrades weakest purchased server
+* uses upgradeServer()
+* avoids delete/rebuy loops
 
 ---
 
 # OPTIONAL / MANUAL SCRIPTS
 
-These should NOT stay running forever.
+These should NOT remain persistent forever-loops.
 
 ```txt
-planners/flight-status.js
-helpers/servers.js
-darknet-watch.js
-faction-planner.js
-backdoor-ai.js
+/planners/flight-status.js
+/planners/faction-planner.js
+/controllers/backdoor-ai.js
+/helpers/darknet-watch.js
+/economy/justhacknet.js
 ```
 
-Run manually when needed.
+Run manually or archive/refactor later.
 
 ---
 
@@ -187,18 +283,39 @@ Run manually when needed.
 
 ## Heavy RAM usage usually comes from:
 
-* infinite loops
+* repeated getServer scans
 * Singularity calls
 * stock APIs
-* repeated getServer() scans
-* excessive HUD rendering
+* giant monolithic files
+* dashboard rendering
+* infinite-loop planners
 
-## Keep persistent systems lightweight.
+---
+
+# DESIGN GOALS
+
+```txt
+daemon = orchestration
+UHM = execution
+services = specialized runtime systems
+helpers = temporary/manual
+```
 
 Goal:
 
 ```txt
-daemon = orchestration
-uhm = execution
-helpers = temporary/manual
+small daemon core
+large distributed runtime
 ```
+
+---
+
+# OFFICIAL DOCS
+
+## Markdown API Source
+
+https://github.com/bitburner-official/bitburner-src/tree/dev/markdown
+
+## Main Netscript API
+
+https://github.com/bitburner-official/bitburner-src/blob/dev/markdown/bitburner.ns.md

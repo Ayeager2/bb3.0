@@ -1,120 +1,144 @@
 # daemon-todo.md
 
-## P0 — CURRENT CLEANUP
+# P0 — CURRENT CORE EVOLUTION
 
-* [ ] Finish reviewing non-core scripts.
-* [ ] Keep only `daemon.js` and `/controllers/uhm.js` active by default.
-* [ ] Remove redundant persistent HUD/planner scripts from daemon auto-start.
-* [ ] Archive old standalone scripts whose logic will be reused later.
-* [ ] Convert useful forever-loop scripts into daemon-called libraries.
+* [ ] Build bootstrap mode.
+* [ ] Add lightweight fresh-node startup logic.
+* [ ] Delay heavy services until RAM thresholds are met.
+* [ ] Continue daemon RAM reduction.
+* [ ] Split progression-buyer into smaller services.
 
-## P1 — SERVICE REGISTRY / LIFECYCLE
+---
 
-* [ ] Build daemon service registry.
-* [ ] Add service fields:
+# P1 — SERVICE REGISTRY EVOLUTION
 
-  * `keepAlive`
-  * `minHomeRam`
-  * `minMoney`
-  * `requiresSingularity`
-  * `requiresTixApi`
-  * `requires4SApi`
-  * `disabledPhases`
-  * `purpose`
-* [ ] Add daemon logic:
+* [x] Build service registry.
+* [x] Add service lifecycle ownership.
+* [x] Add conditional service gating.
+* [x] Add target-service extraction.
+* [ ] Add one-shot completion tracking.
+* [ ] Add automatic stale service cleanup.
+* [ ] Add service restart telemetry.
+* [ ] Add service crash tracking.
 
-  * can start service?
-  * should keep running?
-  * has completed purpose?
-  * should kill service?
-* [ ] Add one-shot cleanup tracking.
+---
 
-## P2 — EARLY BOOTSTRAP / HOME RAM GROWTH
+# P2 — BOOTSTRAP / EARLY GAME
 
-* [ ] Fresh run starts tiny.
-* [ ] Start lightweight UHM/bootstrap money mode first.
-* [ ] Buy TOR/openers through daemon-owned progression buyer.
-* [ ] Buy home RAM as soon as policy/threshold allows.
-* [ ] Slowly unlock heavier scripts as money/RAM improves.
-* [ ] Avoid launching heavy planners/controllers early.
+* [ ] Fresh-node lightweight bootstrap mode.
+* [ ] Tiny-script startup phase.
+* [ ] Early money-only mode.
+* [ ] Automatic TOR/openers progression.
+* [ ] Automatic home RAM growth.
+* [ ] Delayed heavy service startup.
+* [ ] Phase-aware service unlocking.
 
-## P3 — DAEMON-OWNED PURCHASE MODULES
+---
 
-* [x] Refactor progression buyer into `/lib/daemon/progression-buyer.js`.
-* [ ] Refactor server purchasing into `/lib/daemon/server-purchases.js`.
-* [ ] Later refactor Hacknet into `/lib/daemon/hacknet.js`.
-* [ ] Add throttling so purchase checks do not run every daemon loop.
+# P3 — DAEMON-OWNED PURCHASE SYSTEMS
 
-## P4 — FACTION / BACKDOOR / AUGMENTATION INTELLIGENCE
+* [x] Refactor progression buyer into service.
+* [x] Refactor cloud server purchasing.
+* [x] Move target logic into target-service.
+* [ ] Split progression-buyer into:
 
-* [ ] Future `/lib/daemon/factions.js`.
-* [ ] Future `/lib/daemon/backdoors.js`.
-* [ ] Future `/lib/daemon/augmentations.js`.
-* [ ] Track faction spine:
+  * home-ram-buyer-service.js
+  * darkweb-buyer-service.js
+  * exe-buyer-service.js
+* [ ] Add throttled purchase intervals.
+* [ ] Add purchase telemetry/history.
+
+---
+
+# P4 — FACTION / BACKDOOR / AUGMENTATION INTELLIGENCE
+
+* [ ] Future /lib/daemon/factions.js
+* [ ] Future /lib/daemon/backdoors.js
+* [ ] Future /lib/daemon/augmentations.js
+* [ ] Track faction progression spine:
 
   * CyberSec
   * NiteSec
   * The Black Hand
   * BitRunners
   * Daedalus
-* [ ] Root/backdoor faction servers when eligible.
-* [ ] Auto-join factions when Singularity allows.
-* [ ] Buy augmentations based on BitNode strategy.
-* [ ] Do not auto-install/reset until reset-prep policy exists.
+* [ ] Auto-root/backdoor faction servers.
+* [ ] Auto-join factions.
+* [ ] Strategy-aware augmentation purchasing.
+* [ ] Explicit reset-prep augmentation policies.
 
-## P5 — PHASE-AWARE LANE BUDGETING
+---
 
-* [ ] Move from “share reserves first, money uses leftovers” to true lane budgets.
+# P5 — TRUE PHASE-AWARE BUDGETING
+
+* [ ] Replace leftover-based lane allocation.
+* [ ] Implement intentional RAM budgeting.
 * [ ] Cap money lanes during faction phase.
-* [ ] Reserve share/EXP percentages intentionally.
-* [ ] Implement first in `/lib/uhm/lanes.js`.
-* [ ] Later move strategy to `/lib/uhm/decision.js`.
+* [ ] Reserve EXP/share intentionally.
+* [ ] Move more strategy into daemon decision systems.
 
-## P6 — TARGET STABILITY / TARGET INTELLIGENCE
+---
 
-* [x] Basic target hold timer added.
-* [ ] Improve blocked target swap telemetry.
-* [ ] Add smarter target scoring:
+# P6 — TARGET INTELLIGENCE
 
-  * income/sec
-  * prep cost
-  * security drift
-  * batch saturation
-  * ROI
-  * history
+* [x] Target-service extraction.
+* [x] Basic target hold timers.
+* [ ] Improve target stability telemetry.
+* [ ] Add ROI target scoring.
+* [ ] Add saturation tracking.
+* [ ] Add prep-cost awareness.
+* [ ] Add target history weighting.
+* [ ] Add adaptive target switching.
 
-## P7 — CONDITIONAL STOCK TRADER
+---
 
-* [ ] Keep `/economy/stock-trader.js` as `CONDITIONAL_DAEMON`.
-* [ ] Start only with TIX API and money threshold.
-* [ ] Prefer 4S mode.
-* [ ] Treat trend-only mode as risky/optional.
-* [ ] Phase exposure:
+# P7 — CONDITIONAL STOCK TRADER
 
-  * bootstrap: 0%
-  * expansion: 10–20%
-  * scaling: 40%
-  * faction: ~20%
-  * reset-prep: sell all
-* [ ] Add stop-loss/take-profit.
-* [ ] Add trade cooldown.
-* [ ] Emit stock summary to daemon state/dashboard later.
+* [ ] Conditional daemon-managed stock trader.
+* [ ] Requires TIX API.
+* [ ] Optional 4S gating.
+* [ ] Bootstrap disables trading.
+* [ ] Reset-prep liquidates holdings.
+* [ ] Add stop-loss/take-profit logic.
+* [ ] Add portfolio telemetry.
 
-## P8 — HACKNET / HASHNET LATER
+---
 
-* [ ] Archive current `justhacknet.js`.
-* [ ] Later create `/lib/daemon/hacknet.js`.
-* [ ] Use ROI/payoff logic.
-* [ ] Use daemon phase/spending policy.
-* [ ] Add hash selling/spending strategy for hash-focused BitNodes.
+# P8 — HACKNET / HASHNET
 
-## COMPLETED
+* [ ] Refactor justhacknet.js into daemon-owned service.
+* [ ] Add ROI-aware Hacknet buying.
+* [ ] Add hash spending strategy.
+* [ ] Add BitNode-aware hash behavior.
+
+---
+
+# P9 — LONG-TERM DAEMON EVOLUTION
+
+* [ ] Multi-target strategic execution.
+* [ ] Dynamic lane balancing.
+* [ ] Cross-target execution scaling.
+* [ ] Full Singularity orchestration.
+* [ ] Sleeve automation.
+* [ ] Corporation automation.
+* [ ] Reset/install orchestration.
+* [ ] Telemetry-driven adaptive AI.
+
+---
+
+# COMPLETED
 
 * [x] Modular UHM architecture.
 * [x] Distributed batching restored.
-* [x] Share worker created.
-* [x] Share runs on purchased servers.
-* [x] Dynamic progression phases created.
-* [x] Share runs before money lanes.
-* [x] Compact UHM dashboard.
-* [x] Removed/archived several redundant persistent HUD concepts.
+* [x] Share worker orchestration.
+* [x] Dynamic progression phases.
+* [x] Share-before-money strategy.
+* [x] Compact dashboard.
+* [x] Service registry system.
+* [x] HUD separation.
+* [x] Session separation.
+* [x] Telemetry separation.
+* [x] Target-service extraction.
+* [x] Cloud server scaling via ns.cloud.
+* [x] Lean daemon refactor.
+* [x] Conditional service gating.

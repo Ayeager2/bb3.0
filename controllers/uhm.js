@@ -90,9 +90,15 @@ export async function main(ns) {
   ns.getHackTime("n00dles");
   ns.getGrowTime("n00dles");
   ns.getSharePower();
+
   const flags = ns.flags([
     ["tails", false],
+    ["overdrive", false],
+    ["cycle-delay", 100],
+    ["max-batches", 750],
+    ["exp-ram", 0.75],
   ]);
+
   if (flags.tails) {
     ns.ui.openTail();
     ns.ui.resizeTail(1400, 850);
@@ -106,10 +112,47 @@ export async function main(ns) {
   while (true) {
     const daemonState = readDaemonState(ns);
     const now = Date.now();
-    const phase = getProgressionPhase(ns);
+    let phase = getProgressionPhase(ns);
+
+    const forcedExpMode =
+      (daemonState?.mode === "exp" || flags.overdrive === true) &&
+      ns.getHackingLevel() < 3000;
+
+    const effectiveDaemonState = forcedExpMode
+      ? {
+        ...daemonState,
+        mode: "exp",
+        phase: "forced-exp-until-2500",
+        multiTargetPolicy: {
+          ...(daemonState?.multiTargetPolicy ?? {}),
+          primaryMoneyRamPercent: 0,
+          secondaryMoneyRamPercent: 0,
+          expRamPercent: Number(flags["exp-ram"]) || 1,
+          shareRamPercent: 0,
+          reason: "Forced EXP mode until hacking 2500",
+        },
+        protoBatching: {
+          ...(daemonState?.protoBatching ?? {}),
+          maxBatchesPerCycle: Number(flags["max-batches"]) || 999,
+          cycleDelayMs: Number(flags["cycle-delay"]) || 250,
+        },
+      }
+      : daemonState;
+
+    if (forcedExpMode) {
+      phase = {
+        ...phase,
+        name: "forced-exp-until-2500",
+        moneyRamRatio: 0.00,
+        shareRamRatio: 0.00,
+        expRamRatio: 1.00,
+      };
+    }
+
     runtimeStats.phase = phase;
-    const rescanMs = daemonState?.protoBatching?.rescanIntervalMs ?? rescanIntervalMs;
-    const delayMs = daemonState?.protoBatching?.cycleDelayMs ?? cycleDelayMs;
+
+    const rescanMs = effectiveDaemonState?.protoBatching?.rescanIntervalMs ?? rescanIntervalMs;
+    const delayMs = effectiveDaemonState?.protoBatching?.cycleDelayMs ?? cycleDelayMs;
 
     if (now - lastScan > rescanMs || rootedServers.size <= 1) {
       rootedServers = getAllExecutionServers(ns);
@@ -152,7 +195,7 @@ export async function main(ns) {
       };
     }
 
-    const lanes = buildTargetLanes(ns, rootedServers, hosts, daemonState);
+    const lanes = buildTargetLanes(ns, rootedServers, hosts, effectiveDaemonState);
 
     const laneSnapshots = snapshotLanes(lanes, getLaneRamStats);
     if (lanes.length === 0) {
@@ -176,15 +219,13 @@ export async function main(ns) {
       if (result) results.push(result);
     }
 
-
-
     if (now - lastDraw > 5000) {
       ns.clearLog();
       printMultiTargetStatus(
         ns,
         lanes,
         results,
-        daemonState,
+        effectiveDaemonState,
         laneSnapshots,
         runtimeStats,
       );
