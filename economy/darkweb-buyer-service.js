@@ -21,11 +21,18 @@ export async function main(ns) {
             continue;
         }
 
+        if (hasTor(ns)) {
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
         const reserve = policy.reserveMoney ?? fallbackReserve;
         const spendable = Math.max(0, ns.getPlayer().money - reserve);
 
-        if (!hasTor(ns) && spendable >= 200_000) {
-            if (purchaseTor(ns)) {
+        if (spendable >= 200_000) {
+            const bought = purchaseTor(ns);
+
+            if (bought && hasTor(ns)) {
                 ns.toast("Purchased TOR router", "success", 8000);
                 ns.tprint("[DARKWEB] Purchased TOR router.");
             }
@@ -37,10 +44,22 @@ export async function main(ns) {
 
 function hasTor(ns) {
     try {
-        return ns.scan("home").includes("darkweb");
-    } catch {
-        return false;
-    }
+        if (ns.scan("home").includes("darkweb")) return true;
+    } catch { }
+
+    try {
+        return ns.singularity.getDarkwebPrograms().length >= 0;
+    } catch { }
+
+    try {
+        return ns.fileExists("BruteSSH.exe", "home") ||
+            ns.fileExists("FTPCrack.exe", "home") ||
+            ns.fileExists("relaySMTP.exe", "home") ||
+            ns.fileExists("HTTPWorm.exe", "home") ||
+            ns.fileExists("SQLInject.exe", "home");
+    } catch { }
+
+    return false;
 }
 
 function purchaseTor(ns) {

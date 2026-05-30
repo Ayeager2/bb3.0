@@ -78,7 +78,10 @@ import {
 } from "/lib/uhm/runner.js";
 
 import { runShareMode } from "/lib/uhm/modes/share.js";
+
 import { getProgressionPhase } from "/lib/uhm/progression.js";
+
+import { getBestExpTarget } from "/lib/uhm/modes/exp-targets.js";
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
@@ -122,14 +125,14 @@ export async function main(ns) {
       ? {
         ...daemonState,
         mode: "exp",
-        phase: "forced-exp-until-2500",
+        phase: "forced-exp-until-3000",
         multiTargetPolicy: {
           ...(daemonState?.multiTargetPolicy ?? {}),
           primaryMoneyRamPercent: 0,
           secondaryMoneyRamPercent: 0,
           expRamPercent: Number(flags["exp-ram"]) || 1,
           shareRamPercent: 0,
-          reason: "Forced EXP mode until hacking 2500",
+          reason: "Forced EXP mode until hacking 3000",
         },
         protoBatching: {
           ...(daemonState?.protoBatching ?? {}),
@@ -142,7 +145,7 @@ export async function main(ns) {
     if (forcedExpMode) {
       phase = {
         ...phase,
-        name: "forced-exp-until-2500",
+        name: "forced-exp-until-3000",
         moneyRamRatio: 0.00,
         shareRamRatio: 0.00,
         expRamRatio: 1.00,
@@ -161,7 +164,13 @@ export async function main(ns) {
     }
 
     rootedServers = sanitizeServerSet(ns, rootedServers);
-
+    if (forcedExpMode) {
+      effectiveDaemonState.target = getBestExpTarget(
+        ns,
+        rootedServers,
+        daemonState?.target
+      );
+    }
     await copyScriptsToServers(ns, rootedServers, copiedServers, runtimeStats);
 
     const hosts = getHosts(ns, rootedServers);

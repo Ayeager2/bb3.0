@@ -1,15 +1,5 @@
 # bitburner-reference.md
 
-# USEFUL ALIASES
-
-## Buy all openers
-
-```txt
-alias buyOpeners="buy BruteSSH.exe ; buy FTPCrack.exe ; buy relaySMTP.exe ; buy HTTPWorm.exe ; buy SQLInject.exe"
-```
-
----
-
 # CORE COMMANDS
 
 ## Run daemon
@@ -17,305 +7,97 @@ alias buyOpeners="buy BruteSSH.exe ; buy FTPCrack.exe ; buy relaySMTP.exe ; buy 
 ```txt
 run daemon.js
 run daemon.js --force-mode exp
-run daemon.js --force-mode exp --force-target joesguns
 ```
 
-## Run UHM directly
+## Run UHM
 
 ```txt
 run /controllers/uhm.js --tails
 ```
 
-## Run target service
+## EXP Overdrive
 
 ```txt
-run /tools/target-service.js
+run /controllers/uhm.js --tails --overdrive
 ```
 
-## Kill everything
+## EXP Overdrive Aggressive
 
 ```txt
-killall
+run /controllers/uhm.js --tails --overdrive --cycle-delay 100 --max-batches 750 --exp-ram 1
 ```
 
-## View processes
+## Kill UHM / EXP workers
 
 ```txt
-ps home
-ps HomeServer1
+killall /controllers/uhm.js
+killall /workers/exp-weaken.js
+killall /workers/exp-grow.js
 ```
 
----
-
-# CURRENT RUNTIME MODEL
+# CURRENT EXP ARCHITECTURE
 
 ```txt
-target-service
-→ computes targets/phases
-
-daemon.js
-→ orchestrates policies/services
-
-services
-→ perform specialized actions
-
-UHM
-→ executes batches
-
-HUD
-→ renders dashboard
+persistent weaken/grow workers
+NOT delayed HWGW explosions
 ```
 
----
-
-# SHARE SYSTEM
-
-## Share Worker
+Files:
 
 ```txt
-/workers/share-worker.js
+/workers/exp-weaken.js
+/workers/exp-grow.js
+/lib/uhm/modes/exp-overdrive.js
+/lib/uhm/modes/exp-targets.js
 ```
 
-Purpose:
-
-* contributes faction reputation bonus
-* distributed across purchased servers
-* daemon-managed
-* phase-aware RAM allocation
-
----
-
-## Share APIs
+# CURRENT FORCED EXP MODE
 
 ```txt
-ns.share()
-ns.getSharePower()
+forced-exp-until-3000
 ```
 
-Notes:
-
-* share bonus is GLOBAL
-* all rooted servers contribute
-* diminishing returns apply
-* share runs BEFORE money lanes currently
-
----
-
-# TARGET SERVICE
-
-## File
+Rules:
 
 ```txt
-/tools/target-service.js
+100% RAM -> EXP
+0% share
+0% money
+persistent EXP workers only
 ```
 
-Purpose:
-
-* network scanning
-* rooted server discovery
-* target selection
-* mode selection
-* writes target-state.txt
-
-This was extracted from daemon.js to reduce daemon RAM usage.
-
----
-
-# CURRENT ACTIVE SERVICES
+# CURRENT EXP TARGETS
 
 ```txt
-/controllers/uhm.js
-/tools/daemon-hud.js
-/tools/target-service.js
-/tools/daemon-telemetry-service.js
-/tools/daemon-session-service.js
-/economy/server-purchaser-service.js
-/economy/progression-buyer-service.js
+joesguns
+nectar-net
+hong-fang-tea
+harakiri-sushi
+phantasy
+silver-helix
+omega-net
 ```
 
----
-
-# CURRENT ARCHITECTURE DIRECTION
-
-Transitioning from:
-
-```txt
-automation scripts
-```
-
-to:
-
-```txt
-runtime orchestration architecture
-```
-
-Daemon responsibilities:
-
-* orchestration
-* service lifecycle
-* spending policy
-* capability management
-* shared state
-
-UHM responsibilities:
-
-* execution
-* batching
-* lane scheduling
-* share allocation
-
-Services responsibilities:
-
-* specialized runtime systems
-
----
-
-# IMPORTANT UHM FILES
-
-## Core
-
-```txt
-daemon.js
-/controllers/uhm.js
-```
-
-## Targeting
-
-```txt
-/tools/target-service.js
-/lib/uhm/targets.js
-/lib/uhm/lanes.js
-```
-
-## Modes
-
-```txt
-/lib/uhm/modes/share.js
-/lib/uhm/modes/exp.js
-```
-
-## Runtime
-
-```txt
-/lib/uhm/runtime.js
-/lib/uhm/dashboard.js
-```
-
-## Workers
-
-```txt
-/workers/h1.js
-/workers/g1.js
-/workers/w1.js
-/workers/share-worker.js
-```
-
----
-
-# CURRENT PHASE MODEL
-
-```txt
-bootstrap
-→ expansion
-→ scaling
-→ faction
-→ reset-prep
-```
-
----
-
-# CURRENT SHARE STRATEGY
-
-```txt
-share reserves RAM first
-money lanes consume leftovers
-```
-
-Future goal:
-
-```txt
-true phase-aware lane budgeting
-```
-
----
-
-# CLOUD SERVER SYSTEM
-
-## APIs
-
-```txt
-ns.cloud.getServerNames()
-ns.cloud.getServerLimit()
-ns.cloud.getRamLimit()
-ns.cloud.getServerCost(ram)
-ns.cloud.upgradeServer(server, ram)
-```
-
----
-
-## Current Behavior
-
-* daemon-managed
-* conditional service
-* upgrades weakest purchased server
-* uses upgradeServer()
-* avoids delete/rebuy loops
-
----
-
-# OPTIONAL / MANUAL SCRIPTS
-
-These should NOT remain persistent forever-loops.
-
-```txt
-/planners/flight-status.js
-/planners/faction-planner.js
-/controllers/backdoor-ai.js
-/helpers/darknet-watch.js
-/economy/justhacknet.js
-```
-
-Run manually or archive/refactor later.
-
----
-
-# PERFORMANCE NOTES
-
-## Heavy RAM usage usually comes from:
-
-* repeated getServer scans
-* Singularity calls
-* stock APIs
-* giant monolithic files
-* dashboard rendering
-* infinite-loop planners
-
----
-
-# DESIGN GOALS
+# CURRENT MAJOR ARCHITECTURE
 
 ```txt
 daemon = orchestration
-UHM = execution
-services = specialized runtime systems
-helpers = temporary/manual
+UHM = execution engine
+workers = execution only
+services = gated startup systems
 ```
 
-Goal:
+# CURRENT BITNODE
 
 ```txt
-small daemon core
-large distributed runtime
+BN4
 ```
 
----
+Current focus:
 
-# OFFICIAL DOCS
-
-## Markdown API Source
-
-https://github.com/bitburner-official/bitburner-src/tree/dev/markdown
-
-## Main Netscript API
-
-https://github.com/bitburner-official/bitburner-src/blob/dev/markdown/bitburner.ns.md
+```txt
+Faction automation
+Backdoor orchestration
+Augmentation intelligence
+Reset-prep architecture
+```
