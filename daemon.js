@@ -45,8 +45,7 @@ export async function main(ns) {
     const money = ns.getPlayer().money;
 
     const bootstrapMode =
-      homeRam < 128 ||
-      money < 100_000_000;
+      homeRam < 64;
 
     if (!cachedState || now - lastDecision > CONFIG.decisionRefreshMs) {
       const targetState = readJson(ns, TARGET_STATE_FILE);

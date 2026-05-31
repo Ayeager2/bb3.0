@@ -1,4 +1,5 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -27,14 +28,29 @@ export async function main(ns) {
         }
 
         const reserve = policy.reserveMoney ?? fallbackReserve;
-        const spendable = Math.max(0, ns.getPlayer().money - reserve);
+        const moneyBefore = ns.getPlayer().money;
+        const spendable = Math.max(0, moneyBefore - reserve);
 
         if (spendable >= 200_000) {
             const bought = purchaseTor(ns);
 
             if (bought && hasTor(ns)) {
+                const moneyAfter = ns.getPlayer().money;
+                const cost = Math.max(0, moneyBefore - moneyAfter);
+                const message = `[DARKWEB] Purchased TOR router for ${ns.format.number(cost)}.`;
+
                 ns.toast("Purchased TOR router", "success", 8000);
-                ns.tprint("[DARKWEB] Purchased TOR router.");
+                ns.tprint(message);
+
+                logPurchase(ns, {
+                    source: "darkweb-buyer",
+                    type: "darkweb",
+                    item: "TOR router",
+                    cost,
+                    moneyBefore,
+                    moneyAfter,
+                    message,
+                });
             }
         }
 

@@ -4,8 +4,11 @@ const TINY_WORKER = "/workers/tiny-worker.js";
 const CONFIG = {
   refreshMs: 2000,
 
-  minHomeRamForFullDaemon: 1024,
-  minMoneyForFullDaemon: 5_000_000_000,
+  // New philosophy:
+  // bootstrap is only a tiny survival phase.
+  // once home can run UHM reasonably, hand off.
+  minHomeRamForFullDaemon: 64,
+  minMoneyForFullDaemon: 1_000_000,
 
   homeReserveRam: 8,
 
@@ -35,10 +38,15 @@ export async function main(ns) {
 
     draw(ns, rootedServers, target);
 
-    if (shouldStartFullDaemon(ns)) {
-      ns.tprint("Bootstrap complete. Starting full daemon.");
-      ns.run(FULL_DAEMON, 1);
-      return;
+    function shouldStartFullDaemon(ns) {
+      const homeRam = ns.getServerMaxRam("home");
+      const money = ns.getPlayer().money;
+
+      return (
+        ns.fileExists(FULL_DAEMON, "home") &&
+        homeRam >= CONFIG.minHomeRamForFullDaemon &&
+        money >= CONFIG.minMoneyForFullDaemon
+      );
     }
 
     await ns.sleep(CONFIG.refreshMs);

@@ -1,3 +1,4 @@
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 const STATE_FILE = "/data/daemon-state.txt";
 
 /** @param {NS} ns **/
@@ -145,28 +146,155 @@ export async function main(ns) {
 
       if (access.hasTix) {
         if (resetPrep && hasPosition) {
-          ns.stock.sellStock(sym, shares);
+          const moneyBefore = ns.getPlayer().money;
+
+          const salePrice =
+            ns.stock.sellStock(sym, shares);
+
+          const moneyAfter = ns.getPlayer().money;
+
           action = "SOLD RESET";
+
+          if (salePrice > 0) {
+            logPurchase(ns, {
+              source: "stock-trader",
+              type: "stock-sell",
+              item: `${sym} x${shares}`,
+              cost: -(moneyAfter - moneyBefore),
+              moneyBefore,
+              moneyAfter,
+              message:
+                `[STOCK] Sold ${shares} ${sym} during reset-prep.`,
+            });
+          }
         } else if (!daemonAllowed) {
           if (hasPosition && shouldSellWhilePaused(access, forecast, trend, CONFIG)) {
-            ns.stock.sellStock(sym, shares);
+            const moneyBefore = ns.getPlayer().money;
+
+            const salePrice =
+              ns.stock.sellStock(sym, shares);
+
+            const moneyAfter = ns.getPlayer().money;
+
             action = "SOLD PAUSED";
+
+            if (salePrice > 0) {
+              logPurchase(ns, {
+                source: "stock-trader",
+                type: "stock-sell",
+                item: `${sym} x${shares}`,
+                cost: -(moneyAfter - moneyBefore),
+                moneyBefore,
+                moneyAfter,
+                message:
+                  `[STOCK] Sold ${shares} ${sym} while trading paused.`,
+              });
+            }
           }
         } else if (access.has4S) {
           if (hasPosition && forecast < CONFIG.sellForecast) {
-            ns.stock.sellStock(sym, shares);
-            action = "SOLD 4S";
+            const moneyBefore = ns.getPlayer().money;
+
+            const salePrice =
+              ns.stock.sellStock(sym, shares);
+
+            const moneyAfter = ns.getPlayer().money;
+
+            action = "SOLD PAUSED";
+
+            if (salePrice > 0) {
+              logPurchase(ns, {
+                source: "stock-trader",
+                type: "stock-sell",
+                item: `${sym} x${shares}`,
+                cost: -(moneyAfter - moneyBefore),
+                moneyBefore,
+                moneyAfter,
+                message:
+                  `[STOCK] Sold ${shares} ${sym} while trading paused.`,
+              });
+            }
           } else if (!hasPosition && forecast >= CONFIG.buyForecast && buyBudget > CONFIG.commission) {
-            const bought = buyStock(ns, sym, ask, maxShares, buyBudget, CONFIG.maxSpendPercent, CONFIG.commission);
-            if (bought > 0) action = "BOUGHT 4S";
+            const moneyBefore = ns.getPlayer().money;
+
+            const bought = buyStock(
+              ns,
+              sym,
+              ask,
+              maxShares,
+              buyBudget,
+              CONFIG.maxSpendPercent,
+              CONFIG.commission
+            );
+
+            const moneyAfter = ns.getPlayer().money;
+
+            if (bought > 0) {
+              action = "BOUGHT 4S";
+
+              logPurchase(ns, {
+                source: "stock-trader",
+                type: "stock-buy",
+                item: `${sym} x${bought}`,
+                cost: moneyBefore - moneyAfter,
+                moneyBefore,
+                moneyAfter,
+                message:
+                  `[STOCK] Bought ${bought} ${sym}.`,
+              });
+            }
           }
         } else {
           if (hasPosition && trend <= CONFIG.sellTrendPercent) {
-            ns.stock.sellStock(sym, shares);
-            action = "SOLD TREND";
+            const moneyBefore = ns.getPlayer().money;
+
+            const salePrice =
+              ns.stock.sellStock(sym, shares);
+
+            const moneyAfter = ns.getPlayer().money;
+
+            action = "SOLD PAUSED";
+
+            if (salePrice > 0) {
+              logPurchase(ns, {
+                source: "stock-trader",
+                type: "stock-sell",
+                item: `${sym} x${shares}`,
+                cost: -(moneyAfter - moneyBefore),
+                moneyBefore,
+                moneyAfter,
+                message:
+                  `[STOCK] Sold ${shares} ${sym} while trading paused.`,
+              });
+            }
           } else if (!hasPosition && trend >= CONFIG.buyTrendPercent && buyBudget > CONFIG.commission) {
-            const bought = buyStock(ns, sym, ask, maxShares, buyBudget, CONFIG.maxSpendPercent, CONFIG.commission);
-            if (bought > 0) action = "BOUGHT TREND";
+            const moneyBefore = ns.getPlayer().money;
+
+            const bought = buyStock(
+              ns,
+              sym,
+              ask,
+              maxShares,
+              buyBudget,
+              CONFIG.maxSpendPercent,
+              CONFIG.commission
+            );
+
+            const moneyAfter = ns.getPlayer().money;
+
+            if (bought > 0) {
+              action = "BOUGHT TREND";
+
+              logPurchase(ns, {
+                source: "stock-trader",
+                type: "stock-buy",
+                item: `${sym} x${bought}`,
+                cost: moneyBefore - moneyAfter,
+                moneyBefore,
+                moneyAfter,
+                message: `[STOCK] Bought ${bought} ${sym} using trend mode.`,
+              });
+            }
           }
         }
       }

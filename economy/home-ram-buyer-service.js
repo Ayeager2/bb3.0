@@ -1,4 +1,5 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -53,13 +54,33 @@ export async function main(ns) {
         }
 
         if (spendable >= cost) {
-            const before = ns.getServerMaxRam("home");
-            const upgraded = upgradeHomeRam(ns);
-            const after = ns.getServerMaxRam("home");
+            const beforeRam = ns.getServerMaxRam("home");
+            const moneyBefore = ns.getPlayer().money;
 
-            if (upgraded || after > before) {
-                ns.toast(`Upgraded home RAM to ${ns.format.ram(after)}`, "success", 8000);
-                ns.tprint(`[HOME RAM] Upgraded home RAM to ${ns.format.ram(after)}`);
+            const upgraded = upgradeHomeRam(ns);
+
+            const afterRam = ns.getServerMaxRam("home");
+            const moneyAfter = ns.getPlayer().money;
+
+            if (upgraded || afterRam > beforeRam) {
+                const actualCost = Math.max(0, moneyBefore - moneyAfter);
+
+                const message =
+                    `[HOME RAM] Upgraded home RAM from ${ns.format.ram(beforeRam)} ` +
+                    `to ${ns.format.ram(afterRam)} for ${ns.format.number(actualCost)}.`;
+
+                ns.toast(`Upgraded home RAM to ${ns.format.ram(afterRam)}`, "success", 8000);
+                ns.tprint(message);
+
+                logPurchase(ns, {
+                    source: "home-ram-buyer",
+                    type: "home-ram",
+                    item: `home RAM ${ns.format.ram(beforeRam)} -> ${ns.format.ram(afterRam)}`,
+                    cost: actualCost,
+                    moneyBefore,
+                    moneyAfter,
+                    message,
+                });
             }
         }
 

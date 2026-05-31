@@ -1,4 +1,5 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const PROGRAMS = [
     "BruteSSH.exe",
@@ -40,18 +41,39 @@ export async function main(ns) {
         }
 
         const reserve = policy.reserveMoney ?? fallbackReserve;
-        const spendable = Math.max(0, ns.getPlayer().money - reserve);
+        const moneyBeforeLoop = ns.getPlayer().money;
+        const spendable = Math.max(0, moneyBeforeLoop - reserve);
 
         for (const program of PROGRAMS) {
             if (ns.fileExists(program, "home")) continue;
 
             const cost = getProgramCost(ns, program);
+
             if (!Number.isFinite(cost) || cost <= 0) continue;
             if (spendable < cost) continue;
 
+            const moneyBefore = ns.getPlayer().money;
+
             if (purchaseProgram(ns, program)) {
+                const moneyAfter = ns.getPlayer().money;
+                const actualCost = Math.max(0, moneyBefore - moneyAfter);
+
+                const message =
+                    `[EXE BUYER] Purchased ${program} for ${ns.format.number(actualCost)}.`;
+
                 ns.toast(`Purchased ${program}`, "success", 8000);
-                ns.tprint(`[EXE BUYER] Purchased ${program}`);
+                ns.tprint(message);
+
+                logPurchase(ns, {
+                    source: "exe-buyer",
+                    type: "program",
+                    item: program,
+                    cost: actualCost,
+                    moneyBefore,
+                    moneyAfter,
+                    message,
+                });
+
                 break;
             }
         }
