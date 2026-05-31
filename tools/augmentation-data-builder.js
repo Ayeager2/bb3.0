@@ -36,9 +36,22 @@ export async function main(ns) {
     // );
 }
 
+function getJoinedFactions(ns, player) {
+    try {
+        return ns.singularity.getOwnedFactions();
+    } catch { }
+
+    try {
+        return player.factions ?? [];
+    } catch { }
+
+    return [];
+}
+
 function buildAugmentationData(ns) {
     const player = ns.getPlayer();
-    const joined = new Set(player.factions ?? []);
+    const joinedFactions = getJoinedFactions(ns, player);
+    const joined = new Set(joinedFactions);
     const ownedQueued = new Set(safeOwnedAugmentations(ns, true));
     const ownedInstalled = new Set(safeOwnedAugmentations(ns, false));
 
@@ -97,7 +110,7 @@ function buildAugmentationData(ns) {
         player: {
             money: player.money,
             city: player.city,
-            factions: player.factions ?? [],
+            factions: joinedFactions,
         },
         factionCount: factions.length,
         augmentationCount: factions.reduce((sum, f) => sum + f.augmentations.length, 0),

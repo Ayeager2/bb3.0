@@ -2,6 +2,7 @@ import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildFactionWorkPlan } from "/lib/daemon/faction-work.js";
 
 const LAST_WORK_FILE = "/data/faction-work-last.txt";
+const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -13,14 +14,26 @@ export async function main(ns) {
     ]);
 
     const refreshMs = Number(flags.refresh) || 15000;
-    const force =
-        String(flags.force).toLowerCase() === "true";
+    const force = String(flags.force).toLowerCase() === "true";
 
     while (true) {
         const daemonState = readJson(ns, STATE_FILE);
         const policy = daemonState?.spendingPolicy ?? {};
 
         const plan = buildFactionWorkPlan(ns);
+        const donationPlan = readJson(ns, FACTION_DONATION_PLAN_FILE);
+
+        if (!plan.active && isWorkingForFaction(ns)) {
+            stopCurrentWork(ns);
+            clearStaleFactionPlans(ns);
+
+            const message = `[FACTION WORK] Stopped work. ${plan.reason}`;
+            ns.tprint(message);
+            ns.toast(message, "success", 8000);
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
         const allowWork =
             policy.allowFactionWork === true ||
@@ -33,40 +46,84 @@ export async function main(ns) {
         ns.print(`Active Plan: ${plan.active ? "YES" : "NO"}`);
         ns.print(`Reason: ${plan.reason}`);
 
+        if (donationPlan?.ready === true) {
+            ns.print("Donation ready; faction work paused.");
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
+        if (!plan.active && isAlreadyWorking(ns, plan.targetFaction)) {
+            stopCurrentWork(ns);
+
+            const message =
+                `[FACTION WORK] Stopped work. ${plan.reason}`;
+
+            ns.tprint(message);
+            ns.toast(message, "success", 8000);
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
         if (!allowWork || !plan.active || !plan.targetFaction || !plan.workType) {
             await ns.sleep(refreshMs);
             continue;
         }
 
-        const alreadyWorking = isAlreadyWorking(ns, plan.targetFaction);
+        if (isAlreadyWorking(ns, plan.targetFaction)) {
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
-        if (!alreadyWorking) {
-            const started = safeWorkForFaction(ns, plan.targetFaction, plan.workType);
+        const started = startFactionWork(ns, plan.targetFaction, plan.workType);
 
-            if (started) {
-                const message =
-                    `[FACTION WORK] Started ${plan.workType} work for ${plan.targetFaction} targeting ${plan.targetAugmentation}.`;
+        if (started) {
+            const message =
+                `[FACTION WORK] Started ${plan.workType} work for ${plan.targetFaction} targeting ${plan.targetAugmentation}.`;
 
-                const last = readText(ns, LAST_WORK_FILE);
+            const last = readText(ns, LAST_WORK_FILE);
 
-                if (last !== message) {
-                    ns.tprint(message);
-                    ns.toast(message, "success", 8000);
-                    ns.write(LAST_WORK_FILE, message, "w");
-                }
+            if (last !== message) {
+                ns.tprint(message);
+                ns.toast(message, "success", 8000);
+                ns.write(LAST_WORK_FILE, message, "w");
             }
+        } else {
+            ns.print(`Failed to start ${plan.workType} work for ${plan.targetFaction}.`);
         }
 
         await ns.sleep(refreshMs);
     }
 }
 
-function safeWorkForFaction(ns, faction, workType) {
-    try {
-        return ns.singularity.workForFaction(faction, workType, false);
-    } catch {
-        return false;
+function startFactionWork(ns, faction, workType) {
+    const candidates = getWorkTypeCandidates(workType);
+
+    for (const type of candidates) {
+        try {
+            if (ns.singularity.workForFaction(faction, type, false)) {
+                return true;
+            }
+        } catch { }
     }
+
+    return false;
+}
+
+function getWorkTypeCandidates(workType) {
+    if (workType === "hacking") {
+        return ["hacking", "Hacking Contracts", "field", "Field Work"];
+    }
+
+    if (workType === "field") {
+        return ["field", "Field Work", "hacking", "Hacking Contracts"];
+    }
+
+    if (workType === "security") {
+        return ["security", "Security Work", "field", "Field Work"];
+    }
+
+    return [workType, "hacking", "Hacking Contracts", "field", "Field Work"];
 }
 
 function isAlreadyWorking(ns, faction) {
@@ -101,4 +158,51 @@ function readText(ns, file) {
     } catch {
         return "";
     }
+}
+
+function stopCurrentWork(ns) {
+    try {
+        return ns.singularity.stopAction();
+    } catch { }
+
+    try {
+        return ns.singularity.stopWork();
+    } catch { }
+
+    return false;
+}
+
+function isWorkingForFaction(ns) {
+    try {
+        const work = ns.singularity.getCurrentWork();
+        return work?.type === "FACTION";
+    } catch {
+        return false;
+    }
+}
+
+function stopCurrentWork(ns) {
+    try {
+        return ns.singularity.stopAction();
+    } catch { }
+
+    try {
+        return ns.singularity.stopWork();
+    } catch { }
+
+    return false;
+}
+
+function clearStaleFactionPlans(ns) {
+    try {
+        ns.rm("/data/faction-work-plan.txt", "home");
+    } catch { }
+
+    try {
+        ns.rm("/data/faction-donation-plan.txt", "home");
+    } catch { }
+
+    try {
+        ns.rm("/data/faction-progress-last.txt", "home");
+    } catch { }
 }

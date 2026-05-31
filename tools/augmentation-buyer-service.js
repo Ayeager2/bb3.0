@@ -15,7 +15,7 @@ export async function main(ns) {
         ["use-policy-reserve", "true"],
 
         // Emergency/manual override only.
-        ["force-buy", false],
+        ["force-buy", "false"],
     ]);
 
     const refreshMs = Number(flags.refresh) || 15000;
@@ -26,7 +26,7 @@ export async function main(ns) {
         String(flags["use-policy-reserve"]).toLowerCase() !== "false";
 
     const forceBuy =
-        flags["force-buy"] === true;
+        String(flags["force-buy"]).toLowerCase() === "true";
 
     while (true) {
         const daemonState = readJson(ns, STATE_FILE);
@@ -115,10 +115,10 @@ export async function main(ns) {
                 `[${new Date().toLocaleTimeString()}] ${message}\n`,
                 "a"
             );
-
+            stopFactionWorkIfRunning(ns);
+            clearStaleFactionPlans(ns);
             ns.run("/tools/augmentation-data-builder.js", 1, "--force");
         }
-
         await ns.sleep(refreshMs);
     }
 }
@@ -167,4 +167,28 @@ function readJson(ns, file) {
     } catch {
         return {};
     }
+}
+function stopFactionWorkIfRunning(ns) {
+    try {
+        const work = ns.singularity.getCurrentWork();
+
+        if (work?.type === "FACTION") {
+            ns.singularity.stopAction();
+            ns.tprint("[AUG] Stopped faction work after augmentation purchase.");
+        }
+    } catch { }
+}
+
+function clearStaleFactionPlans(ns) {
+    try {
+        ns.rm("/data/faction-work-plan.txt", "home");
+    } catch { }
+
+    try {
+        ns.rm("/data/faction-donation-plan.txt", "home");
+    } catch { }
+
+    try {
+        ns.rm("/data/faction-progress-last.txt", "home");
+    } catch { }
 }

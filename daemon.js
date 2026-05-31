@@ -10,6 +10,8 @@ import { writeJson } from "/lib/daemon/safe.js";
 import {
   chooseSpendingPolicy,
   detectCapabilities,
+  getBitNodeRoadmap,
+  chooseModeFromRoadmap,
 } from "/lib/daemon/decision.js";
 
 import { manageServices } from "/lib/daemon/service-manager.js";
@@ -41,18 +43,27 @@ export async function main(ns) {
     const now = Date.now();
 
     capabilities = detectCapabilities(ns);
+
     const homeRam = ns.getServerMaxRam("home");
     const money = ns.getPlayer().money;
 
-    const bootstrapMode =
-      homeRam < 64;
+    const bootstrapMode = homeRam < 64;
 
     if (!cachedState || now - lastDecision > CONFIG.decisionRefreshMs) {
       const targetState = readJson(ns, TARGET_STATE_FILE);
+      const roadmapState = getBitNodeRoadmap(ns);
+
+      const rootedServers = getRootedServersFromTargetState(targetState);
+
+      const decidedMode = chooseModeFromRoadmap(
+        ns,
+        roadmapState.roadmap,
+        rootedServers
+      );
 
       const mode =
         overrides.mode ||
-        (bootstrapMode ? "bootstrap" : targetState?.mode || "money");
+        (bootstrapMode ? "bootstrap" : decidedMode || targetState?.mode || "money");
 
       const spendingPolicy = chooseSpendingPolicy(
         ns,
@@ -66,12 +77,15 @@ export async function main(ns) {
 
         mode,
         phase: targetState?.phase ?? mode,
+
         target: overrides.target || targetState?.target || "n00dles",
         targetOverride: overrides.target || targetState?.targetOverride || null,
 
         capabilities,
         spendingPolicy,
+
         bitNodePlan: targetState?.bitNodePlan ?? {},
+        roadmap: roadmapState,
 
         servers: targetState?.servers ?? {
           totalCount: 1,
@@ -79,17 +93,20 @@ export async function main(ns) {
         },
 
         controller: {
-          reason: "Lean daemon core state using target-service",
+          reason: "Daemon mode now driven by decision.js roadmap logic",
           targetStateAgeMs: targetState?.updatedAt
             ? Date.now() - targetState.updatedAt
             : null,
+          targetServiceMode: targetState?.mode ?? null,
+          decisionMode: decidedMode,
         },
+
         bootstrap: {
           active: bootstrapMode,
           homeRam,
           money,
           reason: bootstrapMode
-            ? "Home RAM or money below bootstrap threshold"
+            ? "Home RAM below bootstrap threshold"
             : "Bootstrap complete",
         },
       };
@@ -111,6 +128,18 @@ export async function main(ns) {
 
     await ns.sleep(CONFIG.refreshMs);
   }
+}
+
+function getRootedServersFromTargetState(targetState) {
+  if (Array.isArray(targetState?.rootedServers)) {
+    return targetState.rootedServers;
+  }
+
+  if (Array.isArray(targetState?.servers?.rooted)) {
+    return targetState.servers.rooted;
+  }
+
+  return ["home"];
 }
 
 function readJson(ns, file) {
