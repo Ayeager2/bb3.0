@@ -1,3 +1,4 @@
+//target-service.js
 import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
 
 import {
@@ -14,6 +15,10 @@ import {
     chooseTargetOverride,
     detectCapabilities,
 } from "/lib/daemon/decision.js";
+
+import {
+    chooseStrategicMoneyTarget,
+} from "/lib/daemon/target-intelligence.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -43,24 +48,36 @@ export async function main(ns) {
 
         const targetOverride = chooseTargetOverride(ns, mode);
 
-        const target = getDaemonTarget(
+        const rawTarget = getDaemonTarget(
             ns,
             rootedServers,
             mode,
             targetOverride
         );
 
+        const target =
+            mode === "money"
+                ? chooseStrategicMoneyTarget(ns, rootedServers, rawTarget)
+                : rawTarget;
+
         const state = {
             updatedAt: Date.now(),
             mode,
             phase: mode,
             target,
+            rawTarget,
             targetOverride,
             capabilities,
             bitNodePlan,
             servers: {
                 totalCount: allServers.size,
                 rootedCount: rootedServers.size,
+            },
+            targetIntelligence: {
+                enabled: true,
+                moneyStrategy: "strategic-money-target-v1",
+                rawTarget,
+                selectedTarget: target,
             },
         };
 

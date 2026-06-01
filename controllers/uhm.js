@@ -1,31 +1,12 @@
 //uhm.js
 import {
-  STATE_FILE,
-  scriptsToCopy,
-  hackScript,
-  growScript,
-  weakenScript,
-  defaultHackPercent,
-  expHackPercent,
-  batchSpacingMs,
   rescanIntervalMs,
   homeReserveRam,
-  maxBatchesPerCycle,
   cycleDelayMs,
 } from "/lib/uhm/config.js";
 
 import {
-  safeServerExists,
   isUsableTarget,
-  safeGetServerMaxRam,
-  safeGetServerUsedRam,
-  safeGetServerMaxMoney,
-  safeGetServerMoneyAvailable,
-  safeGetServerSecurityLevel,
-  safeGetServerMinSecurityLevel,
-  safeGetServerGrowth,
-  safeGetWeakenTime,
-  safeHackAnalyzeChance,
 } from "/lib/uhm/safe.js";
 
 import {
@@ -43,24 +24,7 @@ import {
 import {
   getHosts,
   snapshotLanes,
-  splitHostsByRamBudget,
-  cloneHostsForSingleLane,
 } from "/lib/uhm/hosts.js";
-
-import {
-  launchBatchesAggressive,
-  getBatchPlan,
-} from "/lib/uhm/batch.js";
-
-import {
-  prepTarget,
-  isPrepared,
-} from "/lib/uhm/prep.js";
-
-import {
-  getValidTargetOrFallback,
-  getSecondaryMoneyTarget,
-} from "/lib/uhm/targets.js";
 
 import {
   buildTargetLanes,
@@ -69,10 +33,6 @@ import {
 import {
   runtimeStats,
 } from "/lib/uhm/runtime.js";
-
-import {
-  runExpFallback,
-} from "/lib/uhm/modes/exp.js";
 
 import {
   runLane,
@@ -116,8 +76,7 @@ export async function main(ns) {
   while (true) {
     const daemonState = readDaemonState(ns);
     const now = Date.now();
-    let phase = getProgressionPhase(ns);
-
+let phase = getUhmPhase(ns, daemonState);
     const forcedExpMode =
       (daemonState?.mode === "exp" || flags.overdrive === true) &&
       ns.getHackingLevel() < 3000;
@@ -244,7 +203,29 @@ export async function main(ns) {
     await ns.sleep(delayMs);
   }
 }
+function getUhmPhase(ns, daemonState) {
+  const fallback = getProgressionPhase(ns);
 
+  if (!daemonState) return fallback;
+
+  return {
+    ...fallback,
+    name: daemonState.phase ?? fallback.name,
+    daemonMode: daemonState.mode ?? null,
+    daemonPriority: daemonState.spendingPolicy?.priority ?? null,
+    moneyRamRatio:
+    daemonState?.multiTargetPolicy?.primaryMoneyRamPercent ??
+    fallback.moneyRamRatio,
+
+  shareRamRatio:
+      daemonState?.sharePolicy?.reserveRamPercent ??
+      fallback.shareRamRatio,
+
+  expRamRatio:
+      daemonState?.multiTargetPolicy?.expRamPercent ??
+      fallback.expRamRatio,
+  };
+}
 
 
 
