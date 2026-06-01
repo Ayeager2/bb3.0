@@ -1,4 +1,4 @@
-//target-service.js
+///tools/target-service.js
 import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
 
 import {
