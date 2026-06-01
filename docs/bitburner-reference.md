@@ -1,172 +1,136 @@
-# bitburner-reference.md
+# Tonight's Completed Daemon Cleanup
 
-# CORE COMMANDS
+## Service Registry Cleanup
 
-## Run daemon
+Completed cleanup in `/lib/daemon/services.js`.
+
+Current service model now supports:
+
+* `policyFlag`
+* `stopWhenBlocked`
+* daemon-controlled service gating
+* cleaned duplicate service entries
+* faction service gating through daemon policy
+* augmentation buyer gating through daemon policy
+
+Important policy-gated services:
 
 ```txt
-run daemon.js
-run daemon.js --force-mode exp
-run daemon.js --force-mode faction
-run daemon.js --force-mode reset-prep
-Run UHM
-run /controllers/uhm.js --tails
-EXP Overdrive
-run /controllers/uhm.js --tails --overdrive
-EXP Overdrive Aggressive
-run /controllers/uhm.js --tails --overdrive --cycle-delay 100 --max-batches 750 --exp-ram 1
-Kill UHM / EXP workers
-killall /controllers/uhm.js
-killall /workers/exp-weaken.js
-killall /workers/exp-grow.js
-Rebuild augmentation cache
-run /tools/augmentation-data-builder.js --force
-Run augmentation planner only
-run /tools/augmentation-buyer-service.js --force-buy false
-Force augmentation buying (emergency/manual override only)
-run /tools/augmentation-buyer-service.js --force-buy true
-Show augmentation status
-run /tools/augmentation-status.js
-Show faction status
-run /tools/faction-status.js
-Generate next faction/backdoor path
-run /tools/faction-next-path.js
-CURRENT EXP ARCHITECTURE
-persistent weaken/grow workers
-NOT delayed HWGW explosions
+stock-trader -> allowStockTrading
+faction-work -> allowFactionWork
+faction-donation -> allowFactionDonation
+faction-join -> allowFactionJoin
+augmentation-buyer -> allowAugmentPurchases
+```
 
-Files:
+## Service Manager Improvements
 
-/workers/exp-weaken.js
-/workers/exp-grow.js
+Completed cleanup in `/lib/daemon/service-manager.js`.
 
-/lib/uhm/modes/exp-overdrive.js
-/lib/uhm/modes/exp-targets.js
-CURRENT FORCED EXP MODE
-forced-exp-until-3000
+New behavior:
 
-Rules:
+```txt
+- services are normalized before execution
+- service gates check script existence, Singularity, money, RAM, phase, and policy
+- failed ns.exec calls now report useful RAM/script reasons
+- failed service starts enter a 30-second cooldown
+- duplicate running services are detected and extras are killed
+- blocked services can stop automatically when stopWhenBlocked is true
+```
 
-100% RAM -> EXP
-0% share
-0% money
+This prevents daemon spam loops when RAM is tight or a service cannot start.
 
-persistent EXP workers only
-process governor enabled
-CURRENT EXP TARGETS
-joesguns
-nectar-net
-hong-fang-tea
-harakiri-sushi
-phantasy
-silver-helix
-omega-net
-CURRENT MAJOR ARCHITECTURE
-daemon = orchestration
+## Daemon State Cleanup
+
+`daemon.js` now uses `/lib/daemon/state.js` through `buildGlobalState()` instead of manually building the entire state object.
+
+This restores richer daemon state output:
+
+```txt
+- phase
+- target stability
+- targetSince
+- multiTargetPolicy
+- sharePolicy
+- sessionStats
+- telemetry
+- controller reason
+- bootstrap status
+```
+
+## Target Stability Foundation
+
+Initial target stability was added to `daemon.js`.
+
+Current behavior:
+
+```txt
+- manual --force-target overrides target stability
+- daemon tracks active target age
+- target swaps can be blocked by minimum hold timer
+- targetStability is written into daemon state
+```
+
+Current hold time:
+
+```txt
+5 minutes
+```
+
+Next evolution:
+
+```txt
+daemon-owned proposed target generation
+target swap telemetry
+target lifetime tracking
+blocked swap history
+```
+
+## Decision / Policy Cleanup
+
+`decision.js` now treats progression actions separately:
+
+```txt
+faction work
+faction donation
+augmentation buying
+```
+
+Fixed behavior:
+
+```txt
+allowFactionWork only follows shouldWorkFaction
+allowFactionDonation only follows shouldDonateFaction
+allowAugmentPurchases only follows shouldBuyAugment
+allowReset is blocked while work/donation/buy actions are active
+```
+
+## Phase / Progression Cleanup
+
+`phase.js` now recognizes the modern `"progression"` priority instead of only the old `"faction"` naming.
+
+This lets share and lane policy respond correctly to progression mode.
+
+## Current Architecture Direction
+
+```txt
+daemon = orchestration brain
+service-manager = gated process lifecycle
+services.js = service registry
+state.js = global state builder
+decision.js = policy/mode brain
 UHM = execution engine
-
 workers = execution only
+```
 
-services = gated startup systems
+Do not move orchestration logic back into UHM.
 
-persistent workers preferred over massive delayed HWGW explosions
-CURRENT FACTION ARCHITECTURE
-Faction progression spine implemented
+## Next Priorities
 
-Tracked factions:
-- hacking factions
-- city factions
-- criminal factions
-- megacorp factions
-- endgame factions
-
-Files:
-
-/lib/daemon/factions.js
-/lib/daemon/faction-profiles.js
-
-/tools/faction-status.js
-/tools/faction-next-path.js
-
-Current faction systems:
-
-joined faction tracking
-next progression suggestion
-backdoor-ready detection
-future Singularity auto-backdoor architecture
-toast + terminal notifications
-CURRENT AUGMENTATION ARCHITECTURE
-
-Files:
-
-/lib/daemon/augmentations.js
-
-/tools/augmentation-data-builder.js
-/tools/augmentation-buyer-service.js
-/tools/augmentation-status.js
-
-Current augmentation systems:
-
-augmentation cache generation
-augmentation planning
-weighted augmentation stat scoring
-BitNode-specific purchase strategies
-cheap-ready-first purchasing
-daemon-controlled buy authority
-future reset planning support
-CURRENT BITNODE
-BN4
-
-Current BN4 focus:
-
-hacking progression
-faction automation
-augmentation intelligence
-Daedalus progression
-future Red Pill orchestration
-future reset-prep architecture
-CURRENT SERVICE MODEL
-daemon-owned orchestration
-
-conditional services
-one-shot services
-service gating by:
-- home RAM
-- money
-- Singularity access
-- daemon policy
-CURRENT POLICY RULES
-daemon policy controls:
-- server purchases
-- home RAM upgrades
-- darkweb purchases
-- stock trading
-- augmentation purchases
-
-manual flags are emergency overrides only
-IMPORTANT FILES
-daemon.js
-
-/controllers/uhm.js
-
-/lib/daemon/*
-/lib/uhm/*
-
-/workers/*
-/tools/*
-DO NOT BREAK
-do not reintroduce massive HWGW process explosions
-
-do not merge daemon and UHM responsibilities
-
-do not move share after money lanes
-
-do not allow planner HUDs to become permanent forever-loop dashboards
-
-do not spam Singularity APIs continuously
-
-do not allow augmentation purchasing outside daemon policy
-
-keep EXP mode persistent-worker based
-
-
+1. Daemon-owned strategic target selection
+2. Target stability telemetry
+3. Service failure count/history tracking
+4. Backdoor orchestration foundation
+5. Faction progression intelligence refinement
+6. Reset-prep planner foundation
+7. Multi-target lane intelligence

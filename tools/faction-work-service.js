@@ -1,5 +1,6 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildFactionWorkPlan } from "/lib/daemon/faction-work.js";
+import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const LAST_WORK_FILE = "/data/faction-work-last.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
@@ -26,7 +27,7 @@ export async function main(ns) {
         if (!plan.active && isWorkingForFaction(ns)) {
             stopCurrentWork(ns);
             clearStaleFactionPlans(ns);
-
+            refreshAugmentationCache(ns);
             const message = `[FACTION WORK] Stopped work. ${plan.reason}`;
             ns.tprint(message);
             ns.toast(message, "success", 8000);
@@ -181,28 +182,8 @@ function isWorkingForFaction(ns) {
     }
 }
 
-function stopCurrentWork(ns) {
+function refreshAugmentationCache(ns) {
     try {
-        return ns.singularity.stopAction();
-    } catch { }
-
-    try {
-        return ns.singularity.stopWork();
-    } catch { }
-
-    return false;
-}
-
-function clearStaleFactionPlans(ns) {
-    try {
-        ns.rm("/data/faction-work-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-donation-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-progress-last.txt", "home");
+        ns.run("/tools/augmentation-data-builder.js", 1, "--force");
     } catch { }
 }

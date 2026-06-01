@@ -1,5 +1,6 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";
+import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const AUGMENTATION_EVENTS_FILE = "/data/augmentation-events.txt";
 
@@ -179,16 +180,3 @@ function stopFactionWorkIfRunning(ns) {
     } catch { }
 }
 
-function clearStaleFactionPlans(ns) {
-    try {
-        ns.rm("/data/faction-work-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-donation-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-progress-last.txt", "home");
-    } catch { }
-}

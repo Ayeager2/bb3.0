@@ -16,6 +16,7 @@ import {
 
 import { manageServices } from "/lib/daemon/service-manager.js";
 import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
+import { buildGlobalState } from "/lib/daemon/state.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -46,7 +47,6 @@ export async function main(ns) {
 
     const homeRam = ns.getServerMaxRam("home");
     const money = ns.getPlayer().money;
-
     const bootstrapMode = homeRam < 64;
 
     if (!cachedState || now - lastDecision > CONFIG.decisionRefreshMs) {
@@ -63,7 +63,9 @@ export async function main(ns) {
 
       const mode =
         overrides.mode ||
-        (bootstrapMode ? "bootstrap" : decidedMode || targetState?.mode || "money");
+        (bootstrapMode
+          ? "bootstrap"
+          : decidedMode || targetState?.mode || "money");
 
       const spendingPolicy = chooseSpendingPolicy(
         ns,
@@ -71,20 +73,34 @@ export async function main(ns) {
         capabilities,
         overrides
       );
+      const proposedTarget = targetState?.target || "n00dles";
 
-      cachedState = {
-        updatedAt: Date.now(),
+      const previousTargetState = {
+        target: cachedState?.target ?? targetState?.target ?? null,
+        targetOverride: cachedState?.targetOverride ?? targetState?.targetOverride ?? null,
+        targetSince: cachedState?.targetSince ?? targetState?.targetSince ?? targetState?.updatedAt ?? null,
+        updatedAt: cachedState?.updatedAt ?? targetState?.updatedAt ?? null,
+      };
 
+      const stableTarget = applyTargetStability(
+        ns,
+        previousTargetState,
+        proposedTarget,
+        overrides
+      );
+      const decision = {
         mode,
         phase: targetState?.phase ?? mode,
 
-        target: overrides.target || targetState?.target || "n00dles",
-        targetOverride: overrides.target || targetState?.targetOverride || null,
+        target: stableTarget.target,
+        targetOverride: stableTarget.targetOverride,
+
+        rootedServers: new Set(rootedServers),
 
         capabilities,
         spendingPolicy,
 
-        bitNodePlan: targetState?.bitNodePlan ?? {},
+        bitNodePlan: roadmapState,
         roadmap: roadmapState,
 
         servers: targetState?.servers ?? {
@@ -92,23 +108,29 @@ export async function main(ns) {
           rootedCount: 1,
         },
 
-        controller: {
-          reason: "Daemon mode now driven by decision.js roadmap logic",
-          targetStateAgeMs: targetState?.updatedAt
-            ? Date.now() - targetState.updatedAt
-            : null,
-          targetServiceMode: targetState?.mode ?? null,
-          decisionMode: decidedMode,
-        },
+        targetStability: stableTarget.targetStability,
+        targetSince: stableTarget.targetSince,
+      };
 
-        bootstrap: {
-          active: bootstrapMode,
-          homeRam,
-          money,
-          reason: bootstrapMode
-            ? "Home RAM below bootstrap threshold"
-            : "Bootstrap complete",
-        },
+      cachedState = buildGlobalState(ns, decision, capabilities);
+
+      cachedState.controller = {
+        ...cachedState.controller,
+        reason: "Daemon state now built by /lib/daemon/state.js",
+        targetStateAgeMs: targetState?.updatedAt
+          ? Date.now() - targetState.updatedAt
+          : null,
+        targetServiceMode: targetState?.mode ?? null,
+        decisionMode: decidedMode,
+      };
+
+      cachedState.bootstrap = {
+        active: bootstrapMode,
+        homeRam,
+        money,
+        reason: bootstrapMode
+          ? "Home RAM below bootstrap threshold"
+          : "Bootstrap complete",
       };
 
       lastDecision = now;
@@ -151,4 +173,79 @@ function readJson(ns, file) {
   } catch {
     return {};
   }
+}
+
+function applyTargetStability(ns, targetState, proposedTarget, overrides) {
+  const now = Date.now();
+  const minHoldMs = 5 * 60 * 1000;
+
+  if (overrides?.target) {
+    return {
+      target: overrides.target,
+      targetOverride: overrides.target,
+      targetSince: now,
+      targetStability: {
+        held: false,
+        reason: "manual target override",
+        proposedTarget,
+        activeTarget: overrides.target,
+        minHoldMs,
+      },
+    };
+  }
+
+  const currentTarget = targetState?.target || proposedTarget || "n00dles";
+  const previousTarget = targetState?.target || null;
+  const previousSince = targetState?.targetSince || targetState?.updatedAt || now;
+  const ageMs = now - previousSince;
+
+  if (!previousTarget || previousTarget === proposedTarget) {
+    return {
+      target: proposedTarget || currentTarget,
+      targetOverride: targetState?.targetOverride || null,
+      targetSince: previousSince,
+      targetStability: {
+        held: true,
+        reason: "target unchanged",
+        proposedTarget,
+        activeTarget: proposedTarget || currentTarget,
+        ageMs,
+        minHoldMs,
+      },
+    };
+  }
+
+  if (ageMs < minHoldMs) {
+    return {
+      target: previousTarget,
+      targetOverride: targetState?.targetOverride || null,
+      targetSince: previousSince,
+      targetStability: {
+        held: true,
+        blockedSwap: true,
+        reason: "minimum target hold active",
+        proposedTarget,
+        activeTarget: previousTarget,
+        ageMs,
+        remainingMs: minHoldMs - ageMs,
+        minHoldMs,
+      },
+    };
+  }
+
+  return {
+    target: proposedTarget || currentTarget,
+    targetOverride: null,
+    targetSince: now,
+    targetStability: {
+      held: false,
+      blockedSwap: false,
+      reason: "target swap allowed",
+      proposedTarget,
+      activeTarget: proposedTarget || currentTarget,
+      previousTarget,
+      ageMs,
+      minHoldMs,
+    },
+  };
 }

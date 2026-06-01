@@ -1,6 +1,6 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildFactionDonationPlan } from "/lib/daemon/faction-donations.js";
-import { logPurchase } from "/lib/daemon/purchase-log.js";
+import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const DONATION_EVENTS_FILE = "/data/faction-donation-events.txt";
 
@@ -66,6 +66,7 @@ export async function main(ns) {
                 message,
             });
             clearStaleFactionPlans(ns);
+            refreshAugmentationCache(ns);
         }
 
         await ns.sleep(refreshMs);
@@ -91,16 +92,8 @@ function readJson(ns, file) {
     }
 }
 
-function clearStaleFactionPlans(ns) {
+function refreshAugmentationCache(ns) {
     try {
-        ns.rm("/data/faction-work-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-donation-plan.txt", "home");
-    } catch { }
-
-    try {
-        ns.rm("/data/faction-progress-last.txt", "home");
+        ns.run("/tools/augmentation-data-builder.js", 1, "--force");
     } catch { }
 }
