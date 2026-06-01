@@ -76,7 +76,7 @@ export async function main(ns) {
   while (true) {
     const daemonState = readDaemonState(ns);
     const now = Date.now();
-let phase = getUhmPhase(ns, daemonState);
+    let phase = getUhmPhase(ns, daemonState);
     const forcedExpMode =
       (daemonState?.mode === "exp" || flags.overdrive === true) &&
       ns.getHackingLevel() < 3000;
@@ -203,29 +203,31 @@ let phase = getUhmPhase(ns, daemonState);
     await ns.sleep(delayMs);
   }
 }
+
 function getUhmPhase(ns, daemonState) {
   const fallback = getProgressionPhase(ns);
 
   if (!daemonState) return fallback;
+
+  const shareEnabled = daemonState?.sharePolicy?.enabled === true;
 
   return {
     ...fallback,
     name: daemonState.phase ?? fallback.name,
     daemonMode: daemonState.mode ?? null,
     daemonPriority: daemonState.spendingPolicy?.priority ?? null,
+
     moneyRamRatio:
-    daemonState?.multiTargetPolicy?.primaryMoneyRamPercent ??
-    fallback.moneyRamRatio,
+      daemonState?.multiTargetPolicy?.primaryMoneyRamPercent ??
+      fallback.moneyRamRatio,
 
-  shareRamRatio:
-      daemonState?.sharePolicy?.reserveRamPercent ??
-      fallback.shareRamRatio,
+    shareRamRatio:
+      shareEnabled
+        ? daemonState?.sharePolicy?.reserveRamPercent ?? fallback.shareRamRatio
+        : 0,
 
-  expRamRatio:
+    expRamRatio:
       daemonState?.multiTargetPolicy?.expRamPercent ??
       fallback.expRamRatio,
   };
 }
-
-
-

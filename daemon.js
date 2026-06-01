@@ -1,3 +1,4 @@
+//daemon.js - Main loop for Bitburner automation daemon
 import { CONFIG, STATE_FILE } from "/lib/daemon/config.js";
 
 import {
@@ -17,6 +18,11 @@ import {
 import { manageServices } from "/lib/daemon/service-manager.js";
 import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
 import { buildGlobalState } from "/lib/daemon/state.js";
+import { buildStrategicMoneyTargetPlan } from "/lib/daemon/target-intelligence.js";
+import {
+  logTargetDecision,
+} from "/lib/daemon/telemetry.js";
+import { buildBackdoorState } from "/lib/daemon/backdoor.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -52,13 +58,14 @@ export async function main(ns) {
     if (!cachedState || now - lastDecision > CONFIG.decisionRefreshMs) {
       const targetState = readJson(ns, TARGET_STATE_FILE);
       const roadmapState = getBitNodeRoadmap(ns);
-
       const rootedServers = getRootedServersFromTargetState(targetState);
+      const backdoorState = buildBackdoorState(ns);
 
       const decidedMode = chooseModeFromRoadmap(
         ns,
         roadmapState.roadmap,
-        rootedServers
+        rootedServers, 
+        backdoorState,
       );
 
       const mode =
@@ -73,8 +80,7 @@ export async function main(ns) {
         capabilities,
         overrides
       );
-      const proposedTarget = targetState?.target || "n00dles";
-
+      
       const previousTargetState = {
         target: cachedState?.target ?? targetState?.target ?? null,
         targetOverride: cachedState?.targetOverride ?? targetState?.targetOverride ?? null,
@@ -82,12 +88,60 @@ export async function main(ns) {
         updatedAt: cachedState?.updatedAt ?? targetState?.updatedAt ?? null,
       };
 
+      const targetAgeMs =
+        previousTargetState?.targetSince
+          ? Date.now() - previousTargetState.targetSince
+          : Number.MAX_SAFE_INTEGER;
+
+      const strategicTargetPlan = buildStrategicMoneyTargetPlan(
+        ns,
+        rootedServers,
+        previousTargetState?.target ?? targetState?.target ?? null,
+        {
+          minHoldMs: 5 * 60 * 1000,
+          targetAgeMs,
+          forceTarget: overrides.target,
+        }
+      );
+
+      const proposedTarget = strategicTargetPlan?.target || targetState?.target || "n00dles";
+
       const stableTarget = applyTargetStability(
         ns,
         previousTargetState,
         proposedTarget,
         overrides
       );
+
+      logTargetDecision(ns, {
+        previousTarget: previousTargetState?.target ?? null,
+
+        proposedTarget,
+
+        finalTarget: stableTarget.target,
+
+        blockedSwap: stableTarget?.targetStability?.blockedSwap ?? false,
+
+        changed: previousTargetState?.target !== stableTarget.target,
+
+        reason:
+          strategicTargetPlan?.reason ??
+          stableTarget?.targetStability?.reason ??
+          "target decision updated",
+
+        targetAgeMs: stableTarget?.targetStability?.ageMs ?? null,
+
+        minHoldMs: stableTarget?.targetStability?.minHoldMs ?? null,
+
+        score: strategicTargetPlan?.bestCandidate?.score ?? null,
+
+        data: {
+          bestCandidate: strategicTargetPlan?.bestCandidate?.server ?? null,
+
+          currentCandidate: strategicTargetPlan?.currentCandidate?.server ?? null,
+        },
+      });
+
       const decision = {
         mode,
         phase: targetState?.phase ?? mode,
@@ -95,7 +149,10 @@ export async function main(ns) {
         target: stableTarget.target,
         targetOverride: stableTarget.targetOverride,
 
-        rootedServers: new Set(rootedServers),
+        strategicTargetPlan,
+        backdoorState,
+
+        rootedServers: new Set(rootedServers),       
 
         capabilities,
         spendingPolicy,
@@ -113,15 +170,35 @@ export async function main(ns) {
       };
 
       cachedState = buildGlobalState(ns, decision, capabilities);
-
+      cachedState.strategicTargetPlan = strategicTargetPlan;
+      cachedState.backdoorState = backdoorState;
       cachedState.controller = {
         ...cachedState.controller,
+
         reason: "Daemon state now built by /lib/daemon/state.js",
+
         targetStateAgeMs: targetState?.updatedAt
           ? Date.now() - targetState.updatedAt
           : null,
+
         targetServiceMode: targetState?.mode ?? null,
+
         decisionMode: decidedMode,
+
+        strategicTargetPlan:
+          cachedState?.strategicTargetPlan ?? null,
+
+        strategicTargetReason:
+          cachedState?.strategicTargetPlan?.reason ?? null,
+
+        backdoorNextTarget:
+          cachedState?.backdoorState?.nextTarget?.server ?? null,
+
+        backdoorNextFaction:
+          cachedState?.backdoorState?.nextTarget?.faction ?? null,
+
+        backdoorReadyCount:
+          cachedState?.backdoorState?.readyCount ?? 0,
       };
 
       cachedState.bootstrap = {
@@ -232,7 +309,7 @@ function applyTargetStability(ns, targetState, proposedTarget, overrides) {
       },
     };
   }
-
+  
   return {
     target: proposedTarget || currentTarget,
     targetOverride: null,

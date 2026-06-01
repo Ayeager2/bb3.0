@@ -22,6 +22,19 @@
 * [x] Dynamic reserve handling for purchased servers
 * [x] Early-game reserve freeze fix
 * [x] Stale faction plan cleanup system
+* [x] Service normalization pipeline
+* [x] Service startup cooldown system
+* [x] Duplicate process protection
+* [x] stopWhenBlocked lifecycle behavior
+* [x] PolicyFlag daemon service gating
+* [x] Improved ns.exec failure diagnostics
+* [x] FAILURE_CACHE retry protection
+* [x] Daemon-owned target stability foundation
+* [x] Minimum target hold timer
+* [x] buildGlobalState() integration
+* [x] Progression priority phase cleanup
+* [x] Separate faction work / donation / augmentation policies
+* [x] Reset blocking during progression actions
 
 # P1 — TRUE EXP MODE
 
@@ -106,17 +119,28 @@
 
 # P4 — BACKDOOR ORCHESTRATION
 
-* [ ] Create `/lib/daemon/backdoors.js`
-* [ ] Auto-pathfinding
-* [ ] Faction server progression
-* [ ] Backdoor eligibility detection
-* [ ] Auto-terminal routing generation
-* [ ] Auto-backdoor execution
+* [x] Create `/lib/daemon/backdoors.js`
+* [x] Auto-pathfinding
+* [x] Faction server progression
+* [x] Backdoor eligibility detection
+* [x] Auto-terminal routing generation
+* [x] Auto-backdoor execution
+* [x] Create `/tools/backdoor-route.js`
+* [x] Add Singularity-aware backdoor execution
+* [x] Add progression route generation
+* [x] Add backdoor-state integration into daemon state
+* [x] Add backdoor target visibility to controller state
+* [x] Add future-safe missing-server handling
 * [ ] Daemon-owned backdoor orchestration
+* [ ] Backdoor telemetry/history
 * [ ] Auto-toast + terminal notifications
 * [ ] Future world daemon orchestration
 * [ ] Integrate faction progression spine
 * [ ] Add world_daemon routing preparation
+* [ ] Add daemon-owned backdoor execution policies
+* [ ] Add backdoor retry protection
+* [ ] Add automatic faction-server rooting pipeline
+* [ ] Add progression-aware backdoor prioritization
 
 # P5 — AUGMENTATION INTELLIGENCE
 
@@ -177,7 +201,12 @@
 
 * [ ] Conditional stock trader
 * [ ] Future Hacknet daemon module
-* [ ] Telemetry persistence/history
+* [x] Telemetry persistence/history
+* [x] Target swap telemetry/history
+* [x] Service failure telemetry/history
+* [x] Telemetry deduplication layer
+* [ ] Backdoor telemetry/history
+* [ ] Phase transition telemetry/history
 * [ ] Lane heatmaps
 * [ ] Runtime analytics
 * [ ] Dashboard event feed
@@ -190,16 +219,157 @@
 * [ ] Full progression timeline
 * [ ] Economic phase analytics
 * [ ] RAM growth forecasting
+* [ ] Strategic target scoring history
+* [ ] Target ROI trend tracking
+* [ ] Target lifetime analytics
+* [ ] Service lifecycle analytics
 
+````md
 # CURRENT_PRIORITY_ORDER
 
-1. Faction intelligence refinement
-2. Augmentation progression intelligence
-3. Backdoor orchestration
-4. Reset-prep intelligence
-5. EXP optimization cleanup
-6. Telemetry/history systems
-7. Dashboard/analytics cosmetics
+1. Full daemon-owned strategic target authority
+2. Backdoor telemetry/history
+3. Faction intelligence refinement
+4. Augmentation progression intelligence
+5. Reset-prep intelligence
+6. Telemetry/history expansion
+7. EXP optimization cleanup
+8. Dashboard/analytics cosmetics
+
+# CURRENT_SERVICE_MANAGER_STATE
+
+```txt
+service-manager.js now supports:
+
+- normalized service definitions
+- policyFlag-based daemon policy gating
+- stopWhenBlocked behavior
+- duplicate process protection
+- startup cooldown protection
+- improved ns.exec failure diagnostics
+- one-shot completion tracking
+- telemetry-integrated service failures
+- telemetry-integrated blocked-service history
+- deduplicated telemetry throttling
+- cooldown-aware service retry suppression
+- policy-aware lifecycle stabilization
+````
+
+Current cooldown system:
+
+```txt
+FAILURE_CACHE implemented
+30-second retry cooldown implemented
+prevents infinite failed ns.exec spam loops
+```
+
+Current service policy architecture:
+
+```txt
+daemon policy is now the primary authority for:
+
+- faction work
+- faction donations
+- faction joins
+- augmentation purchases
+- stock trading
+- backdoor orchestration
+```
+
+Service registry now supports:
+
+```txt
+policyFlag
+stopWhenBlocked
+requiresSingularity
+requiresTixApi
+minMoney
+minHomeRam
+maxHomeRam
+phase restrictions
+```
+
+# CURRENT_TARGET_STABILITY_STATE
+
+```txt
+target stability foundation implemented
+
+daemon now tracks:
+- targetSince
+- targetStability
+- blocked swaps
+- target hold timers
+
+manual --force-target overrides stability logic
+```
+
+Current hold timer:
+
+```txt
+5 minutes
+```
+
+Current limitation:
+
+```txt
+target proposals still partially come from target-service
+
+daemon does not yet fully own strategic target generation
+```
+
+# CURRENT_TARGET_INTELLIGENCE_STATE
+
+```txt
+daemon-owned strategic target planning partially implemented
+
+daemon now tracks:
+- bestCandidate
+- currentCandidate
+- target scoring
+- target stability
+- target hold timers
+- swap blocking
+- target age
+- strategic target reasons
+
+implemented systems:
+- target swap telemetry
+- service failure telemetry
+- telemetry deduplication
+- strategic target scoring
+- candidate comparison tracking
+
+current limitations:
+- target-service still partially authoritative
+- multi-target orchestration not yet integrated
+- scoring history persistence still limited
+```
+
+# CURRENT_BACKDOOR_STATE
+
+```txt
+backdoor intelligence foundation implemented
+
+daemon now tracks:
+- progression faction servers
+- rooted state
+- hacking eligibility
+- backdoor status
+- route paths
+- next progression target
+
+implemented systems:
+- auto-pathfinding
+- manual terminal route generation
+- Singularity-aware backdoor execution
+- daemon-integrated backdoor state
+- progression-aware server tracking
+
+verified:
+- Singularity auto-backdoor execution works correctly
+- route traversal works correctly
+- missing future servers no longer crash daemon state
+```
 
 # CURRENT_ARCHITECTURE_DIRECTION
 
@@ -222,4 +392,46 @@ Progression mode handles:
 Daemon should increasingly behave like:
 a progression AI
 not just a batch launcher
+```
+
+# CURRENT_SERVICE_ARCHITECTURE_DIRECTION
+
+```txt
+services are becoming deterministic daemon-managed infrastructure
+
+goal:
+daemon becomes the operating system
+services become gated subsystems
+UHM becomes pure execution engine
+```
+
+# CURRENT_IMPORTANT_ARCHITECTURE_RULES
+
+```txt
+UHM must NOT regain orchestration authority.
+
+workers must remain execution-only.
+
+service-manager owns lifecycle.
+
+decision.js owns policy.
+
+daemon owns strategic planning.
+
+services.js remains declarative infrastructure only.
+```
+
+# CURRENT_MAJOR_TECHNICAL_WIN
+
+```txt
+daemon is no longer vulnerable to uncontrolled failed service spam loops during:
+- RAM starvation
+- missing requirements
+- blocked policies
+- failed exec attempts
+
+service startup behavior is now stabilizing instead of recursively amplifying failures
+```
+
+```
 ```
