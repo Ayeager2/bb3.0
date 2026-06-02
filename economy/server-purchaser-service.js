@@ -1,7 +1,9 @@
-//lib/daemon/server-purchaser-service.js
+// /economy/server-purchaser-service.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { runServerPurchaser } from "/lib/daemon/server-purchases.js";
 import { logPurchase } from "/lib/daemon/purchase-log.js";
+
+const PRE_FORMULAS_MAX_UPGRADE_COST = 1_000_000_000;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -19,9 +21,27 @@ export async function main(ns) {
         const state = readJson(ns, STATE_FILE);
         const policy = state?.spendingPolicy ?? {};
 
+        const hasFormulas =
+            ns.fileExists("Formulas.exe", "home");
+
+        const serverPurchasePolicy = {
+            ...policy,
+            maxServerUpgradeCost:
+                hasFormulas
+                    ? Number.POSITIVE_INFINITY
+                    : PRE_FORMULAS_MAX_UPGRADE_COST,
+            serverUpgradeCapReason:
+                hasFormulas
+                    ? "Formulas.exe owned; cloud upgrade cap removed."
+                    : "Formulas.exe missing; cloud upgrade cost capped at 1b.",
+        };
+
         const moneyBefore = ns.getPlayer().money;
 
-        const result = await runServerPurchaser(ns, policy);
+        const result = await runServerPurchaser(
+            ns,
+            serverPurchasePolicy
+        );
 
         const moneyAfter = ns.getPlayer().money;
 

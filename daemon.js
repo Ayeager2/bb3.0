@@ -137,7 +137,7 @@ export async function main(ns) {
           totalCount: 1,
           rootedCount: rootedServers.length,
         },
-        
+
       };
 
       cachedState = buildGlobalState(ns, decision, capabilities);
