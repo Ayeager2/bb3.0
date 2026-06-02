@@ -1,22 +1,21 @@
+// /economy/darkweb-buyer-service.js
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const STATE_FILE = "/data/darkweb-purchase-state.txt";
+const COMPLETE_FILE = "/data/darkweb-buyer-complete.txt";
 const RESERVE_DEFAULT = 200_000;
 
 const PURCHASE_QUEUE = [
     { name: "TOR router", key: "tor", action: "tor", cost: 200_000 },
-
     { name: "BruteSSH.exe", key: "BruteSSH.exe", action: "program" },
     { name: "FTPCrack.exe", key: "FTPCrack.exe", action: "program" },
     { name: "relaySMTP.exe", key: "relaySMTP.exe", action: "program" },
     { name: "HTTPWorm.exe", key: "HTTPWorm.exe", action: "program" },
-
     { name: "ServerProfiler.exe", key: "ServerProfiler.exe", action: "program" },
     { name: "DeepscanV1.exe", key: "DeepscanV1.exe", action: "program" },
     { name: "AutoLink.exe", key: "AutoLink.exe", action: "program" },
     { name: "DeepscanV2.exe", key: "DeepscanV2.exe", action: "program" },
     { name: "DarkscapeNavigator.exe", key: "DarkscapeNavigator.exe", action: "program" },
-
     { name: "SQLInject.exe", key: "SQLInject.exe", action: "program" },
     { name: "Formulas.exe", key: "Formulas.exe", action: "program" },
 ];
@@ -42,13 +41,15 @@ export async function main(ns) {
         if (!next) {
             state.completed = true;
             state.completedAt ??= Date.now();
+            writeJson(ns, STATE_FILE, state);
+            writeJson(ns, COMPLETE_FILE, { completed: true, at: Date.now() });
 
             if (state.completedLogged !== true) {
                 ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
                 state.completedLogged = true;
+                writeJson(ns, STATE_FILE, state);
             }
 
-            writeJson(ns, STATE_FILE, state);
             return;
         }
 
@@ -61,10 +62,10 @@ export async function main(ns) {
         const bought = buyItem(ns, next);
         const moneyAfter = ns.getPlayer().money;
 
-        if (bought || isActuallyOwned(ns, next) || next.action === "tor") {
-                const actualCost =
+        if (bought || isActuallyOwned(ns, next)) {
+            const actualCost =
                 next.action === "tor"
-                    ? 200_000
+                    ? Math.max(0, moneyBefore - moneyAfter) || 200_000
                     : Math.max(0, moneyBefore - moneyAfter);
 
             state.purchased[next.key] = true;
@@ -91,8 +92,6 @@ export async function main(ns) {
                 moneyAfter,
                 message,
             });
-        } else {
-            ns.tprint(`[DARKWEB BUYER] Failed to purchase ${next.name}.`);
         }
 
         await ns.sleep(refreshMs);
@@ -103,28 +102,18 @@ function syncState(ns, state) {
     state.purchased ??= {};
 
     for (const item of PURCHASE_QUEUE) {
-
-        // NEVER downgrade purchased state.
-        if (state.purchased[item.key] === true) {
-            continue;
-        }
-
-        if (isActuallyOwned(ns, item)) {
-            state.purchased[item.key] = true;
-        }
+        if (state.purchased[item.key] === true) continue;
+        if (isActuallyOwned(ns, item)) state.purchased[item.key] = true;
     }
 
     state.updatedAt = Date.now();
-    state.completed = PURCHASE_QUEUE.every(
-        item => state.purchased[item.key] === true
-    );
+    state.completed = PURCHASE_QUEUE.every(item => state.purchased[item.key] === true);
 
     return state;
 }
 
 function getNextPurchase(ns, state, reserve) {
-    const money = ns.getPlayer().money;
-    const spendable = Math.max(0, money - reserve);
+    const spendable = Math.max(0, ns.getPlayer().money - reserve);
 
     for (const item of PURCHASE_QUEUE) {
         if (state.purchased[item.key] === true) continue;
@@ -142,10 +131,7 @@ function getNextPurchase(ns, state, reserve) {
 }
 
 function isActuallyOwned(ns, item) {
-    if (item.action === "tor") {
-        return hasTor(ns);
-    }
-
+    if (item.action === "tor") return hasTor(ns);
     return ns.fileExists(item.name, "home");
 }
 
@@ -162,49 +148,43 @@ function getCost(ns, item) {
 
     try {
         return ns.singularity.getDarkwebProgramCost(item.name);
-    } catch (error) {
-    console.error(error);
-}
+    } catch {
+        // fallback below
+    }
 
     try {
         return ns.getDarkwebProgramCost(item.name);
-    } catch (error) {
-    console.error(error);
-}
-
-    return Infinity;
+    } catch {
+        return Infinity;
+    }
 }
 
 function buyItem(ns, item) {
     if (item.action === "tor") {
         try {
             return ns.singularity.purchaseTor();
-        } catch (error) {
-    console.error(error);
-}
+        } catch {
+            // fallback below
+        }
 
         try {
             return ns.purchaseTor();
-        } catch (error) {
-    console.error(error);
-}
-
-        return false;
+        } catch {
+            return false;
+        }
     }
 
     try {
         return ns.singularity.purchaseProgram(item.name);
-    } catch (error) {
-    console.error(error);
-}
+    } catch {
+        // fallback below
+    }
 
     try {
         return ns.purchaseProgram(item.name);
-    } catch (error) {
-    console.error(error);
-}
-
-    return false;
+    } catch {
+        return false;
+    }
 }
 
 function readJson(ns, file) {
