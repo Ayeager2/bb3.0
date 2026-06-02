@@ -35,7 +35,9 @@ export async function main(ns) {
 
       try {
         ns.singularity.connect("home");
-      } catch { }
+      } catch (error) {
+    console.error(error);
+}
     }
 
     await ns.sleep(flags.refresh);

@@ -192,6 +192,8 @@ function stopFactionWorkIfRunning(ns) {
             ns.singularity.stopAction();
             ns.tprint("[AUG] Stopped faction work after augmentation purchase.");
         }
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 }
 

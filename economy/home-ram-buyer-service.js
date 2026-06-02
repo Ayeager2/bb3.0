@@ -91,15 +91,21 @@ export async function main(ns) {
 function getHomeRamUpgradeCost(ns) {
     try {
         return ns.singularity.getUpgradeHomeRamCost();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.getUpgradeHomeRamCost();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.singularity.getUpgradeHomeRamCost?.() ?? Infinity;
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return Infinity;
 }
@@ -107,15 +113,21 @@ function getHomeRamUpgradeCost(ns) {
 function upgradeHomeRam(ns) {
     try {
         return ns.singularity.upgradeHomeRam();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.upgradeHomeRam();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.singularity.upgradeHomeRam?.() ?? false;
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return false;
 }

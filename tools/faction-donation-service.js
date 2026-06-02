@@ -95,5 +95,7 @@ function readJson(ns, file) {
 function refreshAugmentationCache(ns) {
     try {
         ns.run("/tools/augmentation-data-builder.js", 1, "--force");
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 }

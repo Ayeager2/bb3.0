@@ -152,7 +152,9 @@ async function tryAutoBackdoor(ns, target) {
     } catch {
         try {
             ns.singularity.connect("home");
-        } catch { }
+        } catch (error) {
+    console.error(error);
+}
 
         return false;
     }

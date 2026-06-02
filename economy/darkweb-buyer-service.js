@@ -157,11 +157,15 @@ function getCost(ns, item) {
 
     try {
         return ns.singularity.getDarkwebProgramCost(item.name);
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.getDarkwebProgramCost(item.name);
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return Infinity;
 }
@@ -170,22 +174,30 @@ function buyItem(ns, item) {
     if (item.action === "tor") {
         try {
             return ns.singularity.purchaseTor();
-        } catch { }
+        } catch (error) {
+    console.error(error);
+}
 
         try {
             return ns.purchaseTor();
-        } catch { }
+        } catch (error) {
+    console.error(error);
+}
 
         return false;
     }
 
     try {
         return ns.singularity.purchaseProgram(item.name);
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.purchaseProgram(item.name);
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return false;
 }

@@ -105,7 +105,9 @@ function startFactionWork(ns, faction, workType) {
             if (ns.singularity.workForFaction(faction, type, false)) {
                 return true;
             }
-        } catch { }
+        } catch (error) {
+    console.error(error);
+}
     }
 
     return false;
@@ -164,11 +166,15 @@ function readText(ns, file) {
 function stopCurrentWork(ns) {
     try {
         return ns.singularity.stopAction();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return ns.singularity.stopWork();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return false;
 }
@@ -185,5 +191,7 @@ function isWorkingForFaction(ns) {
 function refreshAugmentationCache(ns) {
     try {
         ns.run("/tools/augmentation-data-builder.js", 1, "--force");
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 }

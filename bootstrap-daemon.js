@@ -38,17 +38,6 @@ export async function main(ns) {
 
     draw(ns, rootedServers, target);
 
-    function shouldStartFullDaemon(ns) {
-      const homeRam = ns.getServerMaxRam("home");
-      const money = ns.getPlayer().money;
-
-      return (
-        ns.fileExists(FULL_DAEMON, "home") &&
-        homeRam >= CONFIG.minHomeRamForFullDaemon &&
-        money >= CONFIG.minMoneyForFullDaemon
-      );
-    }
-
     await ns.sleep(CONFIG.refreshMs);
   }
 }
@@ -131,7 +120,9 @@ function tryRoot(ns, server) {
     if (opened >= ns.getServerNumPortsRequired(server)) {
       ns.nuke(server);
     }
-  } catch { }
+  } catch (error) {
+    console.error(error);
+}
 }
 
 async function copyWorker(ns, rootedServers) {
@@ -143,7 +134,9 @@ async function copyWorker(ns, rootedServers) {
       if (!ns.fileExists(TINY_WORKER, server)) {
         await ns.scp(TINY_WORKER, server, "home");
       }
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
   }
 }
 
@@ -237,13 +230,19 @@ function buyTorAndPrograms(ns) {
         ns.purchaseProgram(program);
       }
     }
-  } catch { }
+  } catch (error) {
+    console.error(error);
+}
 }
 
 function buyHomeRam(ns) {
   try {
-    while (ns.getPlayer().money > 1_000_000 && ns.upgradeHomeRam()) { }
-  } catch { }
+    while (ns.getPlayer().money > 1_000_000 && ns.upgradeHomeRam()) {
+      // Keep upgrading while affordable.
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function draw(ns, rootedServers, target) {

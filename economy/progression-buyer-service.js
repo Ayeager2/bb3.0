@@ -68,5 +68,7 @@ function readJson(ns, file) {
 function writeJson(ns, file, data) {
     try {
         ns.write(file, JSON.stringify(data, null, 2), "w");
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 }

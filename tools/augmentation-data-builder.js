@@ -40,11 +40,15 @@ export async function main(ns) {
 function getJoinedFactions(ns, player) {
     try {
         return ns.singularity.getOwnedFactions();
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     try {
         return player.factions ?? [];
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 
     return [];
 }

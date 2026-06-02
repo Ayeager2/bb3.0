@@ -99,7 +99,9 @@ function writeStatus(ns, status) {
             JSON.stringify(status, null, 2),
             "w"
         );
-    } catch { }
+    } catch (error) {
+    console.error(error);
+}
 }
 
 function readJson(ns, file) {

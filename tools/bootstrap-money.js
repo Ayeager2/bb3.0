@@ -19,7 +19,9 @@ export async function main(ns) {
         }
 
         if (!ns.hasRootAccess(target)) {
-            try { ns.nuke(target); } catch { }
+            try { ns.nuke(target); } catch (error) {
+    console.error(error);
+}
         }
 
         const maxRam = ns.getServerMaxRam("home");
