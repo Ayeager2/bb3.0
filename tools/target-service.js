@@ -1,4 +1,4 @@
-///tools/target-service.js
+// /tools/target-service.js
 import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
 
 import {
@@ -7,18 +7,10 @@ import {
     sanitizeServerSet,
 } from "/lib/daemon/network.js";
 
-import { getDaemonTarget } from "/lib/daemon/targets.js";
-
 import {
     getBitNodeRoadmap,
-    chooseModeFromRoadmap,
-    chooseTargetOverride,
     detectCapabilities,
 } from "/lib/daemon/decision.js";
-
-import {
-    chooseStrategicMoneyTarget,
-} from "/lib/daemon/target-intelligence.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -40,44 +32,16 @@ export async function main(ns) {
 
         const bitNodePlan = getBitNodeRoadmap(ns);
 
-        const mode = chooseModeFromRoadmap(
-            ns,
-            bitNodePlan.roadmap,
-            rootedServers
-        );
-
-        const targetOverride = chooseTargetOverride(ns, mode);
-
-        const rawTarget = getDaemonTarget(
-            ns,
-            rootedServers,
-            mode,
-            targetOverride
-        );
-
-        const target =
-            mode === "money"
-                ? chooseStrategicMoneyTarget(ns, rootedServers, rawTarget)
-                : rawTarget;
-
         const state = {
             updatedAt: Date.now(),
-            mode,
-            phase: mode,
-            target,
-            rawTarget,
-            targetOverride,
+            role: "passive-target-observer",
+            authority: "daemon-decision-layer",
             capabilities,
             bitNodePlan,
             servers: {
                 totalCount: allServers.size,
                 rootedCount: rootedServers.size,
-            },
-            targetIntelligence: {
-                enabled: true,
-                moneyStrategy: "strategic-money-target-v1",
-                rawTarget,
-                selectedTarget: target,
+                rooted: [...rootedServers],
             },
         };
 

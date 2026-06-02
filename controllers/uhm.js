@@ -1,4 +1,4 @@
-//uhm.js
+//controllers/uhm.js
 import {
   rescanIntervalMs,
   homeReserveRam,
@@ -42,7 +42,6 @@ import { runShareMode } from "/lib/uhm/modes/share.js";
 
 import { getProgressionPhase } from "/lib/uhm/progression.js";
 
-import { getBestExpTarget } from "/lib/uhm/modes/exp-targets.js";
 /** @param {NS} ns **/
 export async function main(ns) {
   ns.disableLog("ALL");
@@ -125,13 +124,7 @@ export async function main(ns) {
     }
 
     rootedServers = sanitizeServerSet(ns, rootedServers);
-    if (forcedExpMode) {
-      effectiveDaemonState.target = getBestExpTarget(
-        ns,
-        rootedServers,
-        daemonState?.target
-      );
-    }
+   
     await copyScriptsToServers(ns, rootedServers, copiedServers, runtimeStats);
 
     const hosts = getHosts(ns, rootedServers);

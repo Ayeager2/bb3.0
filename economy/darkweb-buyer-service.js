@@ -40,9 +40,14 @@ export async function main(ns) {
         const next = getNextPurchase(ns, state, reserve);
 
         if (!next) {
-            ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
             state.completed = true;
-            state.completedAt = Date.now();
+            state.completedAt ??= Date.now();
+
+            if (state.completedLogged !== true) {
+                ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
+                state.completedLogged = true;
+            }
+
             writeJson(ns, STATE_FILE, state);
             return;
         }
