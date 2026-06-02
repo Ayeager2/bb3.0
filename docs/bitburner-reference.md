@@ -219,20 +219,21 @@ Files:
 
 Completed:
 
-* state-driven purchase tracking
-* persistent item ownership tracking
-* purchase ordering
-* affordability tracking
-* automatic TOR purchase
-* automatic program purchasing
-* utility purchasing
-* Formulas.exe tracking
-* persistent purchase state
+* unified TOR + darkweb program buyer
+* removed competing exe-buyer flow
+* daemon only launches the buyer; buyer owns purchase logic
+* local reserve only, currently 200k
+* no daemon spending-policy dependency
+* persistent purchase state prevents TOR/program spam
+* never downgrades purchased state once an item is marked bought
+* self-terminates when all tracked darkweb items are owned
+* purchase order adjusted to buy cheap utility tools before waiting on SQLInject/Formulas
+* ESLint-safe fallback catches added for Bitburner API differences
 
 Current purchase model:
 
-```txt
-state-driven progression purchasing
+```
+daemon-launched, self-contained, state-driven darkweb purchasing
 ```
 
 instead of:

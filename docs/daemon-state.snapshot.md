@@ -351,27 +351,58 @@ real reset execution requires:
 # CURRENT_DARKWEB_STATE
 
 ```txt
-darkweb purchase intelligence implemented
+darkweb purchase intelligence stabilized
 
-system now tracks:
-- TOR ownership
-- darkweb purchase progression
-- utility ownership
-- purchase affordability
-- remaining purchases
+system now supports:
+- unified TOR + darkweb program buyer
+- daemon-launched but self-managed purchase logic
 - persistent purchase state
+- affordability-aware progression purchasing
+- local reserve-based spending
+- utility-first purchase ordering
+- self-terminating completion behavior
+- purchase deduplication
+- persistent ownership tracking
+- TOR spam prevention
+- API-fallback-safe purchasing
 ```
 
 Current darkweb architecture:
 
 ```txt
-state-driven purchase orchestration
+daemon-launched, self-contained, state-driven purchase orchestration
 ```
 
 instead of:
 
 ```txt
 blind purchase retry loops
+```
+
+Current darkweb behavior:
+
+```txt
+daemon launches buyer
+    ->
+buyer tracks owned items in persistent state
+    ->
+buyer purchases next affordable target
+    ->
+buyer updates persistent ownership state
+    ->
+buyer exits automatically when complete
+```
+
+Current stabilization protections:
+
+```txt
+- purchased items never downgrade back to false
+- persistent TOR ownership state
+- affordability gating
+- duplicate purchase suppression
+- API fallback safety
+- no daemon policy dependency
+- local reserve protection
 ```
 
 Current tracked purchases:

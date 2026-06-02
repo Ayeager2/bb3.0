@@ -40,6 +40,13 @@
 * [x] NeuroFlux-safe pending augmentation detection
 * [x] Shared augmentation scoring engine
 * [x] Persistent darkweb purchase orchestration
+* [x] Unified TOR + darkweb buyer
+* [x] Persistent TOR ownership tracking
+* [x] Darkweb purchase deduplication
+* [x] Self-terminating darkweb buyer
+* [x] Utility-first darkweb purchase ordering
+* [x] API-fallback-safe darkweb purchasing
+* [x] Local reserve-only darkweb spending model
 
 # P1 — TRUE EXP MODE
 
@@ -75,6 +82,13 @@
 * [x] Shortened bootstrap handoff
 * [x] Early UHM handoff at 64GB+
 * [x] Money-first BN4 rebuild strategy
+* [x] Bootstrap daemon architecture
+* [x] Tiny-worker rebuild pipeline
+* [x] Automatic TOR/program bootstrap purchasing
+* [x] Bootstrap home RAM auto-scaling
+* [x] Bootstrap rooting pipeline
+* [x] Bootstrap target scoring
+* [x] Automatic bootstrap -> daemon readiness detection
 * [ ] Adaptive bootstrap target selection
 * [ ] Bootstrap telemetry
 * [ ] Bootstrap lane budgeting
@@ -140,9 +154,9 @@
 * [x] Add backdoor-state integration into daemon state
 * [x] Add backdoor target visibility to controller state
 * [x] Add future-safe missing-server handling
+* [x] Auto-toast + terminal notifications
 * [ ] Daemon-owned backdoor orchestration
 * [ ] Backdoor telemetry/history
-* [ ] Auto-toast + terminal notifications
 * [ ] Future world daemon orchestration
 * [ ] Integrate faction progression spine
 * [ ] Add world_daemon routing preparation
@@ -227,6 +241,7 @@
 * [ ] Reset liquidation stage
 * [ ] Reset finalization stage
 * [ ] Autonomous reset timing intelligence
+* [ ] Pre-reset service drain/shutdown sequencing
 
 # P7 — OPTIONAL SYSTEMS
 
@@ -257,6 +272,11 @@
 * [ ] Reset history analytics
 * [ ] Augmentation synergy analytics
 * [ ] Reset ROI historical analysis
+* [ ] Telemetry-driven strategic decisions
+* [ ] Historical target confidence scoring
+* [ ] Failed target suppression
+* [ ] Service reliability scoring
+* [ ] Reset outcome analysis
 
 # CURRENT_PRIORITY_ORDER
 
@@ -269,285 +289,3 @@
 7. Multi-target orchestration expansion
 8. EXP optimization cleanup
 9. Dashboard/analytics cosmetics
-
-# CURRENT_SERVICE_MANAGER_STATE
-
-```txt id="y8h05u"
-service-manager.js now supports:
-
-- normalized service definitions
-- policyFlag-based daemon policy gating
-- stopWhenBlocked behavior
-- duplicate process protection
-- startup cooldown protection
-- improved ns.exec failure diagnostics
-- one-shot completion tracking
-- telemetry-integrated service failures
-- telemetry-integrated blocked-service history
-- deduplicated telemetry throttling
-- cooldown-aware service retry suppression
-- policy-aware lifecycle stabilization
-- reset-prep aware service shutdown
-- daemon-owned reset executor integration
-```
-
-Current cooldown system:
-
-```txt id="7u6k2z"
-FAILURE_CACHE implemented
-30-second retry cooldown implemented
-prevents infinite failed ns.exec spam loops
-```
-
-Current service policy architecture:
-
-```txt id="y6i0kt"
-daemon policy is now the primary authority for:
-
-- faction work
-- faction donations
-- faction joins
-- augmentation purchases
-- stock trading
-- backdoor orchestration
-- reset-prep orchestration
-- reset execution gating
-```
-
-Service registry now supports:
-
-```txt id="v5dwwu"
-policyFlag
-stopWhenBlocked
-requiresSingularity
-requiresTixApi
-minMoney
-minHomeRam
-maxHomeRam
-phase restrictions
-reset-prep shutdown behavior
-```
-
-# CURRENT_TARGET_STABILITY_STATE
-
-```txt id="1ctjlwm"
-target stability foundation implemented
-
-daemon now tracks:
-- targetSince
-- targetStability
-- blocked swaps
-- target hold timers
-- target proposal reasons
-- strategic target scoring
-```
-
-manual --force-target overrides stability logic
-
-Current hold timer:
-
-```txt id="uw1t0l"
-5 minutes
-```
-
-Current limitation:
-
-```txt id="t30jz7"
-target proposals still partially come from target-service
-
-daemon does not yet fully own strategic target generation
-```
-
-# CURRENT_TARGET_INTELLIGENCE_STATE
-
-```txt id="t90dr4"
-daemon-owned strategic target planning partially implemented
-
-daemon now tracks:
-- bestCandidate
-- currentCandidate
-- target scoring
-- target stability
-- target hold timers
-- swap blocking
-- target age
-- strategic target reasons
-- prep penalties
-- weaken-time penalties
-- target efficiency weighting
-```
-
-implemented systems:
-
-```txt id="dofp4z"
-- target swap telemetry
-- service failure telemetry
-- telemetry deduplication
-- strategic target scoring
-- candidate comparison tracking
-- beginner-target escape logic
-- proto multi-target planning
-```
-
-current limitations:
-
-```txt id="mg9zwo"
-- target-service still partially authoritative
-- multi-target orchestration not yet integrated
-- scoring history persistence still limited
-- lane ROI analysis not yet implemented
-```
-
-# CURRENT_BACKDOOR_STATE
-
-```txt id="hf5g6k"
-backdoor intelligence foundation implemented
-
-daemon now tracks:
-- progression faction servers
-- rooted state
-- hacking eligibility
-- backdoor status
-- route paths
-- next progression target
-```
-
-implemented systems:
-
-```txt id="1g8rww"
-- auto-pathfinding
-- manual terminal route generation
-- Singularity-aware backdoor execution
-- daemon-integrated backdoor state
-- progression-aware server tracking
-```
-
-verified:
-
-```txt id="mrj9oz"
-- Singularity auto-backdoor execution works correctly
-- route traversal works correctly
-- missing future servers no longer crash daemon state
-```
-
-# CURRENT_AUGMENTATION_INTELLIGENCE_STATE
-
-```txt id="zq5d02"
-augmentation intelligence foundation implemented
-
-daemon now supports:
-- reusable augmentation scoring
-- BitNode-specific weighting
-- strategic augmentation bonuses
-- stat-category analysis
-- pending augmentation scoring
-- high-impact augmentation detection
-- reset score evaluation
-```
-
-# CURRENT_RESET_PREP_STATE
-
-```txt id="n7i1ui"
-reset-prep intelligence foundation implemented
-
-daemon now supports:
-- reset planner
-- reset executor
-- autonomous startup relaunch
-- score-driven reset readiness
-- NeuroFlux-safe pending detection
-- armed reset protection
-- dry-run reset execution
-```
-
-# CURRENT_ARCHITECTURE_DIRECTION
-
-```txt id="y6d2hu"
-Early BN4:
-money > exp
-
-EXP exists to unlock:
-- factions
-- servers
-- progression gates
-
-Progression mode handles:
-- faction joins
-- faction work
-- donations
-- augment purchases
-- reset prep
-- future autonomous resets
-
-Daemon should increasingly behave like:
-a progression AI
-not just a batch launcher
-```
-
-# CURRENT_SERVICE_ARCHITECTURE_DIRECTION
-
-```txt id="3k6hwh"
-services are becoming deterministic daemon-managed infrastructure
-
-goal:
-daemon becomes the operating system
-services become gated subsystems
-UHM becomes pure execution engine
-workers remain execution-only
-```
-
-# CURRENT_IMPORTANT_ARCHITECTURE_RULES
-
-```txt id="i0d4jw"
-UHM must NOT regain orchestration authority.
-
-workers must remain execution-only.
-
-service-manager owns lifecycle.
-
-decision.js owns policy.
-
-daemon owns strategic planning.
-
-services.js remains declarative infrastructure only.
-```
-
-Additional important rule:
-
-```txt id="f4gh6l"
-augmentation intelligence must remain centralized.
-
-reset readiness must remain score-driven.
-
-future AI systems should consume shared scoring/state layers
-instead of duplicating progression logic.
-```
-
-# CURRENT_MAJOR_TECHNICAL_WIN
-
-```txt id="v27jlwm"
-daemon is no longer vulnerable to uncontrolled failed service spam loops during:
-- RAM starvation
-- missing requirements
-- blocked policies
-- failed exec attempts
-- reset-prep transitions
-- augmentation planning refreshes
-```
-
-service startup behavior is now:
-
-```txt id="m84frc"
-stabilizing instead of recursively amplifying failures
-```
-
-Additional major win:
-
-```txt id="h0vwzo"
-reset orchestration is now autonomous.
-
-after augmentation installation:
-startup.js relaunches daemon automatically.
-
-manual keyboard interaction is no longer required after reset.
-```
