@@ -47,8 +47,34 @@
 * [x] Utility-first darkweb purchase ordering
 * [x] API-fallback-safe darkweb purchasing
 * [x] Local reserve-only darkweb spending model
+* [x] Home core buyer service
+* [x] Daemon-managed home core upgrades
 
-# P1 — TRUE EXP MODE
+# P1 — TARGET INTELLIGENCE
+
+* [x] Daemon-owned strategic target authority
+* [x] Passive target-service observer
+* [x] Daemon-published laneTargets
+* [x] UHM consumes daemon laneTargets
+* [x] Secondary target beginner-trash filtering
+* [ ] Progression-stage target blacklist system
+* [ ] Target tier classification: beginner / early / mid / late / endgame
+* [ ] Mode-aware target filtering: money / progression / EXP / prep
+* [ ] Better EXP target separation from money target
+* [ ] Daemon-owned lane orchestration policy
+* [ ] Progression-aware secondary target selection
+* [ ] Dynamic target suppression system
+* [ ] Late-game tiny-target elimination
+* [ ] Strategic target confidence scoring
+* [ ] Adaptive target hold timers
+* [ ] Multi-target progression balancing
+* [ ] Lane-level target specialization
+* [ ] Target ROI persistence/history
+* [ ] Candidate blacklist persistence
+* [ ] Target decay weighting system
+* [ ] Prep-aware strategic scoring
+
+# P2 — TRUE EXP MODE
 
 * [x] Forced EXP override
 * [x] Overdrive controls
@@ -69,7 +95,7 @@
 * [ ] Add EXP ROI intelligence
 * [ ] Add adaptive EXP lane balancing
 
-# P2 — BOOTSTRAP / REBUILD SPEED
+# P3 — BOOTSTRAP / REBUILD SPEED
 
 * [x] Bootstrap worker
 * [x] Bootstrap-money mode
@@ -86,6 +112,7 @@
 * [x] Tiny-worker rebuild pipeline
 * [x] Automatic TOR/program bootstrap purchasing
 * [x] Bootstrap home RAM auto-scaling
+* [x] Bootstrap home core upgrade support
 * [x] Bootstrap rooting pipeline
 * [x] Bootstrap target scoring
 * [x] Automatic bootstrap -> daemon readiness detection
@@ -97,7 +124,7 @@
 * [ ] Bootstrap smart reserve tuning
 * [ ] Bootstrap augmentation prioritization
 
-# P3 — FACTION AUTOMATION
+# P4 — FACTION AUTOMATION
 
 * [x] Create `/lib/daemon/factions.js`
 * [x] Track invitations
@@ -140,7 +167,7 @@
 * [ ] Add faction work efficiency scoring
 * [ ] Add faction-to-augmentation synergy analysis
 
-# P4 — BACKDOOR ORCHESTRATION
+# P5 — BACKDOOR ORCHESTRATION
 
 * [x] Create `/lib/daemon/backdoors.js`
 * [x] Auto-pathfinding
@@ -166,7 +193,7 @@
 * [ ] Add progression-aware backdoor prioritization
 * [ ] Add augmentation-aware backdoor priorities
 
-# P5 — AUGMENTATION INTELLIGENCE
+# P6 — AUGMENTATION INTELLIGENCE
 
 * [x] Create `/lib/daemon/augmentations.js`
 * [x] Create augmentation cache builder
@@ -215,7 +242,7 @@
 * [ ] Add progression acceleration analysis
 * [ ] Add reset-value forecasting
 
-# P6 — RESET PREP
+# P7 — RESET PREP
 
 * [x] Add allowAugmentPurchases policy
 * [x] Add reset planner
@@ -243,7 +270,7 @@
 * [ ] Autonomous reset timing intelligence
 * [ ] Pre-reset service drain/shutdown sequencing
 
-# P7 — OPTIONAL SYSTEMS
+# P8 — OPTIONAL SYSTEMS / TELEMETRY
 
 * [ ] Conditional stock trader
 * [ ] Future Hacknet daemon module
@@ -280,12 +307,15 @@
 
 # CURRENT_PRIORITY_ORDER
 
-1. Full daemon-owned strategic target authority
-2. Augmentation synergy scoring
-3. Reset-prep staging system
-4. Backdoor telemetry/history
-5. Faction intelligence refinement
-6. Telemetry/history expansion
-7. Multi-target orchestration expansion
-8. EXP optimization cleanup
-9. Dashboard/analytics cosmetics
+1. Progression-stage target blacklist system
+2. Target tier classification system
+3. Better EXP target separation
+4. Daemon-owned lane orchestration policy
+5. Augmentation synergy scoring
+6. Reset-prep staging system
+7. Backdoor telemetry/history
+8. Faction intelligence refinement
+9. Telemetry/history expansion
+10. Multi-target orchestration expansion
+11. EXP optimization cleanup
+12. Dashboard/analytics cosmetics
