@@ -1,6 +1,6 @@
 # Bitburner Daemon Architecture Handoff
 
-## Current State — Daemon Cleanup Milestone
+## Current State — Reset Intelligence & Augmentation Scoring Milestone
 
 Date: June 2026
 
@@ -8,248 +8,60 @@ Date: June 2026
 
 # Major Milestone Completed
 
-Core daemon orchestration cleanup and lifecycle stabilization are now largely complete.
+The daemon has evolved beyond simple automation scripting into a true orchestration system with:
 
-The architecture is transitioning from:
+* lifecycle management
+* strategic planning
+* augmentation intelligence
+* reset readiness analysis
+* policy-driven progression
+* persistent planning state
 
-* script-driven orchestration
-  to:
-* daemon-owned orchestration and policy control.
+The architecture is now transitioning from:
 
-The daemon is now the authoritative controller for:
+```txt
+automation scripts
+```
+
+toward:
+
+```txt
+AI-driven progression orchestration
+```
+
+The daemon is now responsible for:
 
 * progression state
-* policy decisions
-* service gating
-* lifecycle management
-* strategic execution planning
+* service orchestration
+* reset planning
+* augmentation scoring
+* spending policy
+* target stability
+* strategic execution priorities
 
-UHM remains the execution engine only.
+UHM remains execution-only.
 
-Workers remain execution-only scripts.
-
----
-
-# Completed Systems
-
-## 1. Service Registry Cleanup
-
-File:
-
-```txt
-/lib/daemon/services.js
-```
-
-Completed:
-
-* duplicate registry cleanup
-* policyFlag support
-* stopWhenBlocked support
-* daemon-controlled gating
-* faction-related service separation
-* augmentation buyer gating
-
-Important gated services:
-
-```txt
-stock-trader          -> allowStockTrading
-faction-work          -> allowFactionWork
-faction-donation      -> allowFactionDonation
-faction-join          -> allowFactionJoin
-augmentation-buyer    -> allowAugmentPurchases
-```
-
-Architecture intent:
-
-* registry defines WHAT exists
-* daemon policy defines WHAT is allowed
-* service-manager controls WHEN services run
+Workers remain execution-only.
 
 ---
 
-## 2. Service Manager Cleanup
-
-File:
-
-```txt
-/lib/daemon/service-manager.js
-```
-
-Completed:
-
-* service normalization before execution
-* startup validation:
-
-  * script existence
-  * Singularity requirements
-  * RAM requirements
-  * money requirements
-  * phase requirements
-  * policy requirements
-* failed exec diagnostics
-* 30-second cooldown after failed starts
-* duplicate process cleanup
-* blocked-service auto-stop support
-
-Result:
-
-* daemon no longer enters RAM starvation spam loops
-* failed services self-stabilize instead of recursively retrying forever
-
----
-
-## 3. Global State Refactor
-
-Files:
+# Current Architecture
 
 ```txt
 daemon.js
-/lib/daemon/state.js
-```
-
-daemon.js now delegates state creation to:
-
-```txt
-buildGlobalState()
-```
-
-Restored richer daemon state:
-
-```txt
-phase
-target stability
-targetSince
-multiTargetPolicy
-sharePolicy
-sessionStats
-telemetry
-controllerReason
-bootstrapStatus
-```
-
-This is now the foundation for:
-
-* telemetry
-* dashboard evolution
-* strategic planning
-* long-term automation memory
-
----
-
-## 4. Target Stability Foundation
-
-Initial stabilization logic added.
-
-Current behavior:
-
-* --force-target bypasses stability
-* daemon tracks target lifetime
-* minimum target hold timer exists
-* blocked swaps are possible
-* stability info written to daemon state
-
-Current hold time:
-
-```txt
-5 minutes
-```
-
-Purpose:
-
-* prevent target thrashing
-* improve lane efficiency
-* improve batch consistency
-* stabilize prep/income cycles
-
-Future evolution:
-
-* proposed target generation
-* swap telemetry
-* target lifetime history
-* blocked swap history
-* ROI-aware stability weighting
-
----
-
-## 5. Decision / Policy Cleanup
-
-File:
-
-```txt
-/lib/daemon/decision.js
-```
-
-Completed:
-
-* faction work separated from donation logic
-* augmentation buying separated from progression work
-* reset gating stabilized
-
-Current policy relationships:
-
-```txt
-allowFactionWork       <- shouldWorkFaction
-allowFactionDonation   <- shouldDonateFaction
-allowAugmentPurchases  <- shouldBuyAugment
-```
-
-Important:
-
-```txt
-allowReset
-```
-
-is blocked while:
-
-* faction work
-* donation
-* augmentation buying
-  are active.
-
-This prevents premature resets during progression actions.
-
----
-
-## 6. Phase Cleanup
-
-File:
-
-```txt
-/lib/daemon/phase.js
-```
-
-Completed:
-
-* recognizes modern "progression" priority
-* no longer tied only to old "faction" terminology
-
-Impact:
-
-* share policy responds correctly
-* lane budgeting responds correctly
-* progression-aware orchestration now behaves consistently
-
----
-
-# Current Architecture Direction
-
-## Final Direction
-
-```txt
-daemon
     = orchestration brain
 
-service-manager
-    = lifecycle engine
-
-services.js
-    = service registry
-
 decision.js
-    = policy/mode/planning brain
+    = strategic planning + policies
 
 state.js
     = global state builder
+
+service-manager.js
+    = lifecycle engine
+
+services.js
+    = declarative registry
 
 UHM
     = execution engine only
@@ -258,73 +70,456 @@ workers
     = execution-only scripts
 ```
 
-Important rule:
+---
+
+# Major Systems Completed
+
+# 1. Service Registry & Lifecycle Stabilization
+
+Files:
 
 ```txt
-DO NOT move orchestration logic back into UHM.
+/lib/daemon/services.js
+/lib/daemon/service-manager.js
 ```
 
-UHM should never become:
+Completed:
 
-* policy brain
-* progression controller
-* lifecycle manager
-* strategic planner
+* service normalization
+* duplicate process protection
+* startup cooldowns
+* policy gating
+* RAM gating
+* Singularity gating
+* lifecycle cleanup
+* blocked-service auto-stop
+* failed exec diagnostics
 
-It should only:
+Result:
 
-* execute lanes
-* schedule batches
-* coordinate execution timing
+* daemon no longer enters recursive startup spam loops
+* services stabilize automatically
+* orchestration is now centralized
 
 ---
 
-# Current High Priority Roadmap
+# 2. Global State Refactor
 
-## P0 — Strategic Target Intelligence
+Files:
+
+```txt
+daemon.js
+/lib/daemon/state.js
+```
+
+State now includes:
+
+```txt
+phase
+target stability
+session stats
+telemetry
+controller reasoning
+share policy
+multi-target policy
+BN4 readiness
+reset plan
+augmentation state
+```
+
+This is now the foundation for:
+
+* future AI planning
+* telemetry history
+* strategic target intelligence
+* autonomous progression systems
+
+---
+
+# 3. Target Stability & Strategic Selection
+
+Files:
+
+```txt
+/lib/daemon/target-intelligence.js
+/tools/target-service.js
+```
+
+Completed:
+
+* strategic money target scoring
+* beginner target escape logic
+* target hold timers
+* target swap stabilization
+* strategic target overrides
+
+Daemon now avoids:
+
+```txt
+n00dles traps
+foodnstuff traps
+constant target thrashing
+```
+
+Current stability hold timer:
+
+```txt
+5 minutes
+```
+
+---
+
+# 4. UHM Lane Architecture
+
+Files:
+
+```txt
+/lib/uhm/lanes.js
+/lib/uhm/runner.js
+/lib/uhm/prep.js
+```
+
+Completed:
+
+* multi-lane RAM allocation
+* primary money lane
+* secondary money lane
+* EXP fallback lane
+* prep orchestration
+* proto-batching stabilization
+* plan-too-large protection
+* NO-RAM fallback behavior
+
+Current RAM policy:
+
+```txt
+Primary Money: 75%
+Secondary Money: 20%
+EXP: 5%
+```
+
+Current lane architecture:
+
+```txt
+HIGH / MONEY
+MID / SECONDARY
+LOW / EXP
+```
+
+---
+
+# 5. Darkweb Purchase Intelligence
+
+Files:
+
+```txt
+/economy/darkweb-buyer-service.js
+/data/darkweb-purchase-state.txt
+```
+
+Completed:
+
+* state-driven purchase tracking
+* persistent item ownership tracking
+* purchase ordering
+* affordability tracking
+* automatic TOR purchase
+* automatic program purchasing
+* utility purchasing
+* Formulas.exe tracking
+* persistent purchase state
+
+Current purchase model:
+
+```txt
+state-driven progression purchasing
+```
+
+instead of:
+
+```txt
+blind purchase attempts
+```
+
+Current tracked purchases:
+
+```txt
+TOR
+BruteSSH
+FTPCrack
+relaySMTP
+HTTPWorm
+SQLInject
+ServerProfiler
+DeepscanV1
+DeepscanV2
+AutoLink
+DarkscapeNavigator
+Formulas.exe
+```
+
+---
+
+# 6. Reset Planner System
+
+Files:
+
+```txt
+/lib/daemon/reset-planner.js
+/tools/reset-executor-service.js
+```
+
+Major milestone completed.
+
+Current capabilities:
+
+* pending augmentation detection
+* NeuroFlux-safe pending tracking
+* reset readiness scoring
+* reset blockers
+* reset arming
+* startup auto-relaunch
+* augmentation install orchestration
+* dry-run safety mode
+
+Current reset protections:
+
+```txt
+minimum augmentations
+minimum score
+minimum runtime
+manual armed flag
+```
+
+Current reset flow:
+
+```txt
+reset planner
+    ->
+decision.js enters reset-prep
+    ->
+spending locks down
+    ->
+executor installs augmentations
+    ->
+startup.js relaunches daemon
+```
+
+---
+
+# 7. Startup Auto-Relaunch
+
+Files:
+
+```txt
+/startup.js
+/tools/reset-executor-service.js
+```
+
+Completed:
+
+```txt
+installAugmentations("/startup.js")
+```
+
+Now after reset:
+
+```txt
+game restarts
+    ->
+startup.js launches daemon.js automatically
+```
+
+No manual keyboard interaction required after augmentation installs.
+
+---
+
+# 8. Augmentation Intelligence System
+
+Files:
+
+```txt
+/lib/daemon/augmentation-scoring.js
+/lib/daemon/augmentations.js
+/lib/daemon/augmentation-decision.js
+/tools/augmentation-status.js
+/tools/augmentation-debug.js
+```
+
+This is now the beginning of true progression AI.
+
+Completed:
+
+* reusable augmentation scoring engine
+* BitNode-specific weighting
+* hacking-focused BN4 strategy
+* stat category analysis
+* strategic augmentation bonuses
+* priority classification
+* pending augmentation scoring
+* high-impact augmentation detection
+* reset score analysis
+
+Current scoring categories:
+
+```txt
+hacking
+hacking_exp
+faction_rep
+money
+company_rep
+charisma
+combat
+crime
+hacknet
+bladeburner
+misc
+```
+
+Current strategic weighting:
+
+```txt
+BN4 heavily favors:
+- hacking
+- hacking exp
+- faction rep
+```
+
+Special strategic augmentation bonuses:
+
+```txt
+Red Pill
+BitWire
+Cranial
+Synaptic
+DataJack
+Neurotrainer
+```
+
+---
+
+# 9. NeuroFlux Handling Fix
+
+Critical issue resolved.
+
+Problem:
+
+```txt
+NeuroFlux Governor
+```
+
+was not appearing as pending after purchase because installed/purchased arrays matched names.
+
+Solution:
+
+```txt
+count-based pending augmentation detection
+```
+
+Reset planner now correctly detects:
+
+```txt
+multiple NeuroFlux levels
+```
+
+as pending installs.
+
+---
+
+# Current Reset Planner Example
+
+Current reset state now supports:
+
+```json
+{
+  "pendingCount": 1,
+  "pendingScore": 798,
+  "highImpactScore": 798,
+  "scoredPending": [...]
+}
+```
+
+This is now score-driven rather than purely count-driven.
+
+---
+
+# Current Roadmap
+
+# P0 — Augmentation Intelligence Expansion
 
 Next major milestone.
 
-Daemon should evolve from:
+Current system understands:
 
 ```txt
-"choose best target right now"
+What augmentations exist
 ```
 
-to:
+Next evolution:
 
 ```txt
-"maintain strategic target plans over time"
+Which augmentations are strategically valuable
 ```
 
-Goals:
+Future goals:
 
-* daemon-owned target proposal system
-* ROI-aware target scoring
-* target lifetime telemetry
-* target confidence/stability weighting
-* swap reasoning
-* prep/income balance analysis
+* augmentation synergy scoring
+* ROI-aware augmentation value
+* progression acceleration analysis
+* faction path optimization
+* reset timing intelligence
+* NeuroFlux scaling logic
+* Red Pill priority escalation
 
 ---
 
-## P1 — Telemetry Foundation
+# P1 — Reset-Prep Staging
+
+Current reset flow is binary:
+
+```txt
+ready / not ready
+```
+
+Future:
+
+```txt
+reset-ready
+reset-liquidation
+reset-finalization
+reset-execution
+```
+
+Future reset-prep goals:
+
+* stock liquidation
+* hash spending
+* faction donation closure
+* server purchase shutdown
+* home RAM shutdown
+* augmentation finalization
+* strategic spend-down
+
+---
+
+# P2 — Telemetry Foundation
 
 Needed before advanced AI behavior.
 
 Add:
 
 ```txt
-service failure counts
-blocked service history
 target swap history
-phase transition history
-share efficiency history
+service failure history
+batch failure history
 income spikes
-batch failure ratios
+phase transitions
+share efficiency
+augmentation purchase history
+reset history
 ```
 
-Persist useful telemetry to:
+Persist to:
 
 ```txt
 /data/telemetry/
@@ -332,11 +527,11 @@ Persist useful telemetry to:
 
 ---
 
-## P2 — Backdoor Orchestration
+# P3 — Backdoor Orchestration
 
-Daemon-owned progression automation.
+Future daemon-owned progression automation.
 
-Future:
+Planned file:
 
 ```txt
 /lib/daemon/backdoors.js
@@ -344,20 +539,17 @@ Future:
 
 Responsibilities:
 
-* faction server progression tracking
-* root eligibility detection
-* Singularity-aware automation
+* faction progression servers
 * pathfinding
+* Singularity-aware automation
 * auto-backdoor installation
 * progression notifications
 
-Persistent controllers should eventually disappear.
-
 ---
 
-## P3 — Faction Progression Intelligence
+# P4 — Faction Spine Intelligence
 
-Future daemon faction spine:
+Future progression spine:
 
 ```txt
 CyberSec
@@ -369,54 +561,36 @@ CyberSec
 
 Track:
 
-* joined
-* invited
-* rooted
-* backdoored
+* invites
+* joins
+* root access
+* backdoors
 * required hacking level
-* required port openers
 * augmentation value
-* rep progress
+* faction reputation
 * favor
+* reset readiness impact
 
 ---
 
-## P4 — Reset-Prep Planner
+# P5 — Multi-Target Orchestration Expansion
 
-Daemon-controlled reset planning.
-
-Future goals:
-
-* augmentation timing
-* donation timing
-* stock liquidation
-* faction shutdown prep
-* share prioritization
-* reset readiness scoring
-
-Eventually:
-
-```txt
-daemon decides WHEN to reset
-```
-
----
-
-## P5 — Multi-Target Lane Intelligence
-
-Current UHM is still mostly target-centric.
+Current UHM is lane-aware.
 
 Future:
 
-* simultaneous money targets
-* prep lane isolation
-* EXP lanes
+* simultaneous high-value money targets
+* dedicated prep lanes
 * share lanes
-* weighted RAM allocation
-* dynamic lane balancing
+* weighted lane balancing
+* adaptive RAM allocation
+* lane ROI analysis
 
 Goal:
-true distributed orchestration.
+
+```txt
+true distributed orchestration
+```
 
 ---
 
@@ -425,17 +599,28 @@ true distributed orchestration.
 Current daemon state:
 
 ```txt
-stable enough for long-session progression testing
+stable enough for long-session progression
 ```
 
 Major infinite-loop risks have been reduced substantially.
 
-Most dangerous remaining areas:
+Current strongest systems:
 
-* strategic target swapping
-* future telemetry persistence growth
-* future multi-target RAM balancing
-* reset-prep orchestration
+```txt
+service-manager
+augmentation intelligence
+reset planner
+state architecture
+```
+
+Most dangerous future complexity areas:
+
+```txt
+reset staging
+telemetry persistence
+multi-target balancing
+faction AI
+```
 
 ---
 
@@ -443,58 +628,48 @@ Most dangerous remaining areas:
 
 ## Keep daemon authoritative
 
-Do not allow:
+Never move orchestration ownership back into:
 
-* controllers
-* planners
 * workers
-  to regain orchestration ownership.
+* UHM
+* helper scripts
+* planners
 
 ---
 
-## Service registry remains declarative
+## UHM remains execution-only
 
-services.js should define:
-
-```txt
-what exists
-```
-
-not:
-
-```txt
-how strategy works
-```
-
----
-
-## Keep UHM execution-focused
-
-Do not embed:
+Do not move into UHM:
 
 * progression logic
-* faction strategy
-* stock strategy
-* reset planning
-  inside UHM.
+* reset logic
+* augmentation logic
+* faction logic
+* strategic orchestration
+
+UHM should only:
+
+* execute lanes
+* schedule batches
+* coordinate timing
 
 ---
 
-## Prefer telemetry before automation complexity
+## Prefer telemetry before AI complexity
 
 Before adding:
 
 * autonomous resets
-* advanced faction AI
+* faction AI
 * dynamic multi-target balancing
 
 first add:
 
 * visibility
 * telemetry
-* historical tracking
+* historical analysis
 
-Otherwise debugging becomes impossible later.
+Otherwise debugging future AI behavior becomes extremely difficult.
 
 ---
 
@@ -502,12 +677,13 @@ Otherwise debugging becomes impossible later.
 
 Recommended next implementation order:
 
-1. Target swap telemetry
-2. Strategic target proposal system
-3. Service failure telemetry/history
-4. Backdoor orchestration scaffolding
-5. Faction progression intelligence
-6. Reset-prep planning system
-7. Multi-target orchestration expansion
+1. Augmentation synergy scoring
+2. Reset-prep staging system
+3. Target swap telemetry/history
+4. Service failure telemetry
+5. Backdoor orchestration scaffolding
+6. Faction progression intelligence
+7. True multi-target orchestration
+8. Adaptive lane balancing
 
-Current project direction is strong and scalable.
+Current architecture direction is strong, scalable, and now approaching true autonomous progression orchestration.

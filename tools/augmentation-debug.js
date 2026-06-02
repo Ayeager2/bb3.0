@@ -1,3 +1,4 @@
+//tools/augmentation-debug.js
 const AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 
 /** @param {NS} ns **/

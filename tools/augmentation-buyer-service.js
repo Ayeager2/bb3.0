@@ -1,3 +1,4 @@
+//tools/augmentation-buyer-service.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";
 import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";

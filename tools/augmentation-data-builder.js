@@ -1,3 +1,4 @@
+//tools/augmentation-data-builder.js
 import { ALL_FACTION_PROFILES } from "/lib/daemon/faction-profiles.js";
 
 const AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";

@@ -1,3 +1,4 @@
+//tools/augmentation-status.js
 const AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
 const AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 
@@ -49,6 +50,7 @@ export async function main(ns) {
         }
     }
     ns.tprint(`Score: ${Number(g.score ?? 0).toFixed(2)}`);
+    ns.tprint(`Priority Class: ${g.priorityClass ?? "unknown"}`);
     ns.tprint(`Price: ${formatMoney(g.price)}`);
     ns.tprint(`Rep Required: ${formatNumber(g.rep)}`);
     ns.tprint(`Faction Rep: ${formatNumber(g.factionRep)}`);

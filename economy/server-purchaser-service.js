@@ -1,3 +1,4 @@
+//lib/daemon/server-purchaser-service.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { runServerPurchaser } from "/lib/daemon/server-purchases.js";
 import { logPurchase } from "/lib/daemon/purchase-log.js";

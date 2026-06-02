@@ -1,6 +1,8 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { drawDashboard } from "/lib/daemon/dashboard.js";
 
+const RESET_PLAN_FILE = "/data/reset-plan.txt";
+
 /** @param {NS} ns **/
 export async function main(ns) {
     ns.disableLog("ALL");
@@ -14,6 +16,7 @@ export async function main(ns) {
 
     while (true) {
         const state = readJson(ns, STATE_FILE);
+        const resetPlan = readJson(ns, RESET_PLAN_FILE);
 
         if (!state || !state.mode) {
             ns.clearLog();
@@ -23,13 +26,36 @@ export async function main(ns) {
             continue;
         }
 
-        drawDashboard(ns, state, {
+        drawDashboard(ns, {
+            ...state,
+            resetPlan,
+        }, {
             mode: null,
             priority: null,
             target: null,
         });
 
+        printResetPlan(ns, resetPlan);
+
         await ns.sleep(refreshMs);
+    }
+}
+
+function printResetPlan(ns, plan) {
+    if (!plan || !plan.updatedAt) {
+        ns.print("RESET: no reset-plan.txt yet");
+        return;
+    }
+
+    ns.print(
+        `RESET: ${plan.ready ? "READY" : "WAIT"} | ` +
+        `ARMED:${plan.armed ? "YES" : "NO"} | ` +
+        `PENDING:${plan.pendingCount ?? 0} | ` +
+        `INSTALLED:${plan.installedCount ?? 0}`
+    );
+
+    if (plan.reason) {
+        ns.print(`RESET REASON: ${plan.reason}`);
     }
 }
 

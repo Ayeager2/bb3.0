@@ -1,3 +1,4 @@
+//tools/refresh-augmentation-plans.js
 import { buildFactionWorkPlan } from "/lib/daemon/faction-work.js";
 import { buildFactionDonationPlan } from "/lib/daemon/faction-donations.js";
 import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";

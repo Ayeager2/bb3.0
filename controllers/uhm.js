@@ -113,6 +113,7 @@ export async function main(ns) {
     }
 
     runtimeStats.phase = phase;
+    runtimeStats.protoMoneyThreads = 0;
 
     const rescanMs = effectiveDaemonState?.protoBatching?.rescanIntervalMs ?? rescanIntervalMs;
     const delayMs = effectiveDaemonState?.protoBatching?.cycleDelayMs ?? cycleDelayMs;
