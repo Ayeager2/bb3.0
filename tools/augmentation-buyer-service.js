@@ -117,10 +117,24 @@ export async function main(ns) {
                 `[${new Date().toLocaleTimeString()}] ${message}\n`,
                 "a"
             );
+
             stopFactionWorkIfRunning(ns);
+
             clearStaleFactionPlans(ns);
+
+            // Rebuild augmentation cache/data.
             ns.run("/tools/augmentation-data-builder.js", 1, "--force");
+
+            // IMPORTANT:
+            // Immediately rebuild all progression plans.
+            ns.run("/tools/refresh-augmentation-plans.js", 1);
+
+            // Give filesystem time to update.
+            await ns.sleep(2000);
+
+            ns.print("[AUG] Progression plans refreshed after purchase.");
         }
+        
         await ns.sleep(refreshMs);
     }
 }

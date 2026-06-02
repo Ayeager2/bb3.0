@@ -1,23 +1,24 @@
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 
-const DARKWEB_STATE_FILE = "/data/darkweb-purchase-state.txt";
+const STATE_FILE = "/data/darkweb-purchase-state.txt";
+const RESERVE_DEFAULT = 200_000;
 
 const PURCHASE_QUEUE = [
-    { name: "TOR router", price: 200000, type: "darkweb", action: "tor", priority: 1 },
+    { name: "TOR router", key: "tor", action: "tor", cost: 200_000 },
 
-    { name: "BruteSSH.exe", price: 500000, type: "port-opener", action: "program", priority: 10 },
-    { name: "FTPCrack.exe", price: 1500000, type: "port-opener", action: "program", priority: 20 },
-    { name: "relaySMTP.exe", price: 5000000, type: "port-opener", action: "program", priority: 30 },
-    { name: "HTTPWorm.exe", price: 30000000, type: "port-opener", action: "program", priority: 40 },
-    { name: "SQLInject.exe", price: 250000000, type: "port-opener", action: "program", priority: 50 },
+    { name: "BruteSSH.exe", key: "BruteSSH.exe", action: "program" },
+    { name: "FTPCrack.exe", key: "FTPCrack.exe", action: "program" },
+    { name: "relaySMTP.exe", key: "relaySMTP.exe", action: "program" },
+    { name: "HTTPWorm.exe", key: "HTTPWorm.exe", action: "program" },
 
-    { name: "ServerProfiler.exe", price: 500000, type: "utility", action: "program", priority: 60 },
-    { name: "DeepscanV1.exe", price: 500000, type: "utility", action: "program", priority: 70 },
-    { name: "AutoLink.exe", price: 1000000, type: "utility", action: "program", priority: 80 },
-    { name: "DeepscanV2.exe", price: 25000000, type: "utility", action: "program", priority: 90 },
-    { name: "DarkscapeNavigator.exe", price: 50000000, type: "utility", action: "program", priority: 100 },
+    { name: "ServerProfiler.exe", key: "ServerProfiler.exe", action: "program" },
+    { name: "DeepscanV1.exe", key: "DeepscanV1.exe", action: "program" },
+    { name: "AutoLink.exe", key: "AutoLink.exe", action: "program" },
+    { name: "DeepscanV2.exe", key: "DeepscanV2.exe", action: "program" },
+    { name: "DarkscapeNavigator.exe", key: "DarkscapeNavigator.exe", action: "program" },
 
-    { name: "Formulas.exe", price: 5000000000, type: "api", action: "program", priority: 1000 },
+    { name: "SQLInject.exe", key: "SQLInject.exe", action: "program" },
+    { name: "Formulas.exe", key: "Formulas.exe", action: "program" },
 ];
 
 /** @param {NS} ns **/
@@ -26,197 +27,180 @@ export async function main(ns) {
 
     const flags = ns.flags([
         ["refresh", 15000],
-        ["reserve", 0],
-        ["include-formulas", true],
+        ["reserve", RESERVE_DEFAULT],
     ]);
 
     const refreshMs = Number(flags.refresh) || 15000;
-    const reserve = Number(flags.reserve ?? 0);
-    const includeFormulas = flags["include-formulas"] === true;
+    const reserve = Number(flags.reserve) || RESERVE_DEFAULT;
 
     while (true) {
-        const state = buildDarkwebState(ns, reserve, includeFormulas);
-        writeState(ns, state);
+        const state = syncState(ns, readJson(ns, STATE_FILE));
+        writeJson(ns, STATE_FILE, state);
 
-        if (state.completed) {
+        const next = getNextPurchase(ns, state, reserve);
+
+        if (!next) {
+            ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
+            state.completed = true;
+            state.completedAt = Date.now();
+            writeJson(ns, STATE_FILE, state);
+            return;
+        }
+
+        if (!next.affordable) {
             await ns.sleep(refreshMs);
             continue;
         }
 
-        if (!state.nextPurchase) {
-            await ns.sleep(refreshMs);
-            continue;
-        }
+        const moneyBefore = ns.getPlayer().money;
+        const bought = buyItem(ns, next);
+        const moneyAfter = ns.getPlayer().money;
 
-        const result = tryPurchase(ns, state.nextPurchase);
-        const updated = buildDarkwebState(ns, reserve, includeFormulas, result);
+        if (bought || isActuallyOwned(ns, next) || next.action === "tor") {
+                const actualCost =
+                next.action === "tor"
+                    ? 200_000
+                    : Math.max(0, moneyBefore - moneyAfter);
 
-        writeState(ns, updated);
+            state.purchased[next.key] = true;
+            state.lastPurchase = {
+                item: next.name,
+                cost: actualCost,
+                at: Date.now(),
+            };
 
-        if (result.bought) {
+            writeJson(ns, STATE_FILE, state);
+
+            const message =
+                `[DARKWEB BUYER] Purchased ${next.name} for ${ns.format.number(actualCost)}.`;
+
+            ns.toast(`Purchased ${next.name}`, "success", 8000);
+            ns.tprint(message);
+
             logPurchase(ns, {
                 source: "darkweb-buyer",
-                type: state.nextPurchase.type,
-                item: state.nextPurchase.name,
-                cost: result.cost,
-                moneyBefore: result.moneyBefore,
-                moneyAfter: result.moneyAfter,
-                message: result.message,
+                type: next.action,
+                item: next.name,
+                cost: actualCost,
+                moneyBefore,
+                moneyAfter,
+                message,
             });
-
-            ns.toast(`Purchased ${state.nextPurchase.name}`, "success", 8000);
-            ns.tprint(result.message);
+        } else {
+            ns.tprint(`[DARKWEB BUYER] Failed to purchase ${next.name}.`);
         }
 
         await ns.sleep(refreshMs);
     }
 }
 
-function buildDarkwebState(ns, reserve, includeFormulas, lastResult = null) {
+function syncState(ns, state) {
+    state.purchased ??= {};
+
+    for (const item of PURCHASE_QUEUE) {
+
+        // NEVER downgrade purchased state.
+        if (state.purchased[item.key] === true) {
+            continue;
+        }
+
+        if (isActuallyOwned(ns, item)) {
+            state.purchased[item.key] = true;
+        }
+    }
+
+    state.updatedAt = Date.now();
+    state.completed = PURCHASE_QUEUE.every(
+        item => state.purchased[item.key] === true
+    );
+
+    return state;
+}
+
+function getNextPurchase(ns, state, reserve) {
     const money = ns.getPlayer().money;
     const spendable = Math.max(0, money - reserve);
 
-    const items = PURCHASE_QUEUE
-        .filter(item => includeFormulas || item.name !== "Formulas.exe")
-        .sort((a, b) => a.priority - b.priority)
-        .map(item => {
-            const owned = isOwned(ns, item);
-            const affordable = spendable >= item.price;
+    for (const item of PURCHASE_QUEUE) {
+        if (state.purchased[item.key] === true) continue;
 
-            return {
-                ...item,
-                owned,
-                affordable,
-                bought: owned,
-                remaining: !owned,
-                lastResult:
-                    lastResult?.item === item.name
-                        ? lastResult
-                        : null,
-            };
-        });
+        const cost = getCost(ns, item);
 
-    const nextPurchase =
-        items.find(item => !item.owned && item.affordable) ?? null;
-
-    const nextBlocked =
-        items.find(item => !item.owned && !item.affordable) ?? null;
-
-    return {
-        updatedAt: Date.now(),
-        updatedAtText: new Date().toLocaleTimeString(),
-        money,
-        reserve,
-        spendable,
-        includeFormulas,
-        completed: items.every(item => item.owned),
-        nextPurchase,
-        nextBlocked,
-        lastResult,
-        items,
-    };
-}
-
-function tryPurchase(ns, item) {
-    const moneyBefore = ns.getPlayer().money;
-
-    let bought = false;
-
-    if (item.action === "tor") {
-        bought = purchaseTor(ns);
-    } else {
-        bought = purchaseProgram(ns, item.name);
+        return {
+            ...item,
+            cost,
+            affordable: spendable >= cost,
+        };
     }
 
-    const moneyAfter = ns.getPlayer().money;
-    const cost = Math.max(0, moneyBefore - moneyAfter);
-
-    const ownedAfter = isOwned(ns, item);
-
-    const success = bought || ownedAfter;
-
-    return {
-        item: item.name,
-        action: item.action,
-        bought: success,
-        apiReturned: bought,
-        ownedAfter,
-        cost,
-        moneyBefore,
-        moneyAfter,
-        message: success
-            ? `[DARKWEB] Purchased ${item.name} for ${ns.format.number(cost)}.`
-            : `[DARKWEB] Failed to purchase ${item.name}.`,
-    };
+    return null;
 }
 
-function isOwned(ns, item) {
+function isActuallyOwned(ns, item) {
     if (item.action === "tor") {
         return hasTor(ns);
     }
 
+    return ns.fileExists(item.name, "home");
+}
+
+function hasTor(ns) {
     try {
-        return ns.fileExists(item.name, "home");
+        return ns.scan("home").includes("darkweb");
     } catch {
         return false;
     }
 }
 
-function hasTor(ns) {
+function getCost(ns, item) {
+    if (item.action === "tor") return item.cost;
+
     try {
-        if (ns.scan("home").includes("darkweb")) return true;
+        return ns.singularity.getDarkwebProgramCost(item.name);
     } catch { }
 
     try {
-        const programs = ns.singularity.getDarkwebPrograms();
-        if (Array.isArray(programs)) return true;
+        return ns.getDarkwebProgramCost(item.name);
+    } catch { }
+
+    return Infinity;
+}
+
+function buyItem(ns, item) {
+    if (item.action === "tor") {
+        try {
+            return ns.singularity.purchaseTor();
+        } catch { }
+
+        try {
+            return ns.purchaseTor();
+        } catch { }
+
+        return false;
+    }
+
+    try {
+        return ns.singularity.purchaseProgram(item.name);
     } catch { }
 
     try {
-        return (
-            ns.fileExists("BruteSSH.exe", "home") ||
-            ns.fileExists("FTPCrack.exe", "home") ||
-            ns.fileExists("relaySMTP.exe", "home") ||
-            ns.fileExists("HTTPWorm.exe", "home") ||
-            ns.fileExists("SQLInject.exe", "home") ||
-            ns.fileExists("ServerProfiler.exe", "home") ||
-            ns.fileExists("DeepscanV1.exe", "home") ||
-            ns.fileExists("DeepscanV2.exe", "home") ||
-            ns.fileExists("AutoLink.exe", "home") ||
-            ns.fileExists("DarkscapeNavigator.exe", "home") ||
-            ns.fileExists("Formulas.exe", "home")
-        );
+        return ns.purchaseProgram(item.name);
     } catch { }
 
     return false;
 }
 
-function purchaseTor(ns) {
+function readJson(ns, file) {
     try {
-        return ns.singularity.purchaseTor();
-    } catch { }
-
-    try {
-        return ns.purchaseTor();
-    } catch { }
-
-    return false;
+        if (!ns.fileExists(file, "home")) return {};
+        const raw = ns.read(file);
+        if (!raw.trim()) return {};
+        return JSON.parse(raw);
+    } catch {
+        return {};
+    }
 }
 
-function purchaseProgram(ns, program) {
-    try {
-        return ns.singularity.purchaseProgram(program);
-    } catch { }
-
-    try {
-        return ns.purchaseProgram(program);
-    } catch { }
-
-    return false; KW
-}
-
-function writeState(ns, state) {
-    try {
-        ns.write(DARKWEB_STATE_FILE, JSON.stringify(state, null, 2), "w");
-    } catch { }
+function writeJson(ns, file, data) {
+    ns.write(file, JSON.stringify(data, null, 2), "w");
 }

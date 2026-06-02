@@ -2,6 +2,8 @@ import { STATE_FILE } from "/lib/daemon/config.js";
 import { runProgressionBuyer } from "/lib/daemon/progression-buyer.js";
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 
+const STATUS_FILE = "/data/progression-buyer-status.txt";
+
 /** @param {NS} ns **/
 export async function main(ns) {
     ns.disableLog("ALL");
@@ -19,6 +21,14 @@ export async function main(ns) {
         const moneyBefore = ns.getPlayer().money;
         const result = runProgressionBuyer(ns, policy);
         const moneyAfter = ns.getPlayer().money;
+
+        writeJson(ns, STATUS_FILE, {
+            updatedAt: Date.now(),
+            updatedAtText: new Date().toLocaleTimeString(),
+            money: moneyAfter,
+            policy,
+            result,
+        });
 
         if (result?.bought) {
             const actualCost = Math.max(0, moneyBefore - moneyAfter);
@@ -53,4 +63,10 @@ function readJson(ns, file) {
     } catch {
         return {};
     }
+}
+
+function writeJson(ns, file, data) {
+    try {
+        ns.write(file, JSON.stringify(data, null, 2), "w");
+    } catch { }
 }
