@@ -32,25 +32,30 @@ export async function main(ns) {
     const refreshMs = Number(flags.refresh) || 15000;
     const reserve = Number(flags.reserve) || RESERVE_DEFAULT;
 
+    // If a stale completion marker exists, live validation decides whether it survives.
+    refreshCompletionMarker(ns);
+
     while (true) {
-        const state = syncState(ns, readJson(ns, STATE_FILE));
+        const state = buildLiveState(ns);
         writeJson(ns, STATE_FILE, state);
+
+        if (state.completed) {
+            shutdownCompletedService(ns, state);
+            return;
+        }
 
         const next = getNextPurchase(ns, state, reserve);
 
         if (!next) {
-            state.completed = true;
-            state.completedAt ??= Date.now();
-            writeJson(ns, STATE_FILE, state);
-            writeJson(ns, COMPLETE_FILE, { completed: true, at: Date.now() });
-
-            if (state.completedLogged !== true) {
-                ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
-                state.completedLogged = true;
-                writeJson(ns, STATE_FILE, state);
+            // Safety fallback: should usually be covered by state.completed.
+            const finalState = buildLiveState(ns);
+            if (finalState.completed) {
+                shutdownCompletedService(ns, finalState);
+                return;
             }
 
-            return;
+            await ns.sleep(refreshMs);
+            continue;
         }
 
         if (!next.affordable) {
@@ -62,20 +67,14 @@ export async function main(ns) {
         const bought = buyItem(ns, next);
         const moneyAfter = ns.getPlayer().money;
 
-        if (bought || isActuallyOwned(ns, next)) {
+        // Re-check live ownership after purchase attempt.
+        const ownedAfterAttempt = isActuallyOwned(ns, next);
+
+        if (bought || ownedAfterAttempt) {
             const actualCost =
                 next.action === "tor"
                     ? Math.max(0, moneyBefore - moneyAfter) || 200_000
                     : Math.max(0, moneyBefore - moneyAfter);
-
-            state.purchased[next.key] = true;
-            state.lastPurchase = {
-                item: next.name,
-                cost: actualCost,
-                at: Date.now(),
-            };
-
-            writeJson(ns, STATE_FILE, state);
 
             const message =
                 `[DARKWEB BUYER] Purchased ${next.name} for ${ns.format.number(actualCost)}.`;
@@ -92,24 +91,80 @@ export async function main(ns) {
                 moneyAfter,
                 message,
             });
+
+            const updatedState = buildLiveState(ns);
+            updatedState.lastPurchase = {
+                item: next.name,
+                cost: actualCost,
+                at: Date.now(),
+            };
+            writeJson(ns, STATE_FILE, updatedState);
+
+            if (updatedState.completed) {
+                shutdownCompletedService(ns, updatedState);
+                return;
+            }
+        } else {
+            ns.tprint(`[DARKWEB BUYER] Purchase attempt failed: ${next.name}`);
         }
 
         await ns.sleep(refreshMs);
     }
 }
 
-function syncState(ns, state) {
-    state.purchased ??= {};
+function buildLiveState(ns) {
+    const purchased = {};
 
     for (const item of PURCHASE_QUEUE) {
-        if (state.purchased[item.key] === true) continue;
-        if (isActuallyOwned(ns, item)) state.purchased[item.key] = true;
+        purchased[item.key] = isActuallyOwned(ns, item);
     }
 
-    state.updatedAt = Date.now();
-    state.completed = PURCHASE_QUEUE.every(item => state.purchased[item.key] === true);
+    const missing = PURCHASE_QUEUE
+        .filter(item => purchased[item.key] !== true)
+        .map(item => item.name);
 
-    return state;
+    return {
+        updatedAt: Date.now(),
+        purchased,
+        missing,
+        completed: missing.length === 0,
+    };
+}
+
+function refreshCompletionMarker(ns) {
+    const state = buildLiveState(ns);
+
+    if (state.completed) {
+        writeJson(ns, COMPLETE_FILE, {
+            completed: true,
+            completedAt: Date.now(),
+            reason: "verified all darkweb items owned",
+            purchased: state.purchased,
+        });
+        return;
+    }
+
+    if (ns.fileExists(COMPLETE_FILE, "home")) {
+        ns.rm(COMPLETE_FILE, "home");
+        ns.tprint("[DARKWEB BUYER] Removed stale completion marker.");
+    }
+}
+
+function shutdownCompletedService(ns, state) {
+    const completedAt = Date.now();
+
+    writeJson(ns, COMPLETE_FILE, {
+        completed: true,
+        completedAt,
+        reason: "verified all darkweb items owned",
+        purchased: state.purchased,
+    });
+
+    if (ns.fileExists(STATE_FILE, "home")) {
+        ns.rm(STATE_FILE, "home");
+    }
+
+    ns.tprint("[DARKWEB BUYER] All darkweb items purchased. Closing service.");
 }
 
 function getNextPurchase(ns, state, reserve) {
@@ -123,7 +178,7 @@ function getNextPurchase(ns, state, reserve) {
         return {
             ...item,
             cost,
-            affordable: spendable >= cost,
+            affordable: Number.isFinite(cost) && spendable >= cost,
         };
     }
 
@@ -136,6 +191,12 @@ function isActuallyOwned(ns, item) {
 }
 
 function hasTor(ns) {
+    try {
+        return ns.hasTorRouter();
+    } catch {
+        // fallback below
+    }
+
     try {
         return ns.scan("home").includes("darkweb");
     } catch {
@@ -184,17 +245,6 @@ function buyItem(ns, item) {
         return ns.purchaseProgram(item.name);
     } catch {
         return false;
-    }
-}
-
-function readJson(ns, file) {
-    try {
-        if (!ns.fileExists(file, "home")) return {};
-        const raw = ns.read(file);
-        if (!raw.trim()) return {};
-        return JSON.parse(raw);
-    } catch {
-        return {};
     }
 }
 
