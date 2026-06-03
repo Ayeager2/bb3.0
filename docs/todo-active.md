@@ -22,6 +22,14 @@
 - EXP overdrive false NO_RAM status fix
 - EXP_RUNNING status added for active EXP workers
 - Share worker cleanup now kills stale workers across home/cloud/rooted hosts
+- Darkweb buyer stale completion bug fixed:
+  - live state now overrides TXT state
+  - stale completion marker removed when items are missing
+  - runtime state file cleaned on verified completion
+
+- Backdoor progression service now retries rooting continuously:
+  - progression servers are rooted before backdoor readiness check
+  - fixed stall where unrooted faction servers never became recommended
 ```
 
 # CURRENT FORMULAS TRANSITION STATUS

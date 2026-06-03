@@ -104,23 +104,23 @@ function openPorts(ns, server) {
   let opened = 0;
 
   if (ns.fileExists("BruteSSH.exe", "home")) {
-    try { ns.brutessh(server); opened++; } catch {}
+    try { ns.brutessh(server); opened++; } catch { /* empty */ }
   }
 
   if (ns.fileExists("FTPCrack.exe", "home")) {
-    try { ns.ftpcrack(server); opened++; } catch {}
+    try { ns.ftpcrack(server); opened++; } catch { /* empty */ }
   }
 
   if (ns.fileExists("relaySMTP.exe", "home")) {
-    try { ns.relaysmtp(server); opened++; } catch {}
+    try { ns.relaysmtp(server); opened++; } catch { /* empty */ }
   }
 
   if (ns.fileExists("HTTPWorm.exe", "home")) {
-    try { ns.httpworm(server); opened++; } catch {}
+    try { ns.httpworm(server); opened++; } catch { /* empty */ }
   }
 
   if (ns.fileExists("SQLInject.exe", "home")) {
-    try { ns.sqlinject(server); opened++; } catch {}
+    try { ns.sqlinject(server); opened++; } catch { /* empty */ }
   }
 
   return opened;
