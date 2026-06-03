@@ -76,18 +76,13 @@ export async function main(ns) {
     const daemonState = readDaemonState(ns);
     const now = Date.now();
     let phase = getUhmPhase(ns, daemonState);
-    const formulasUnlocked =
-      daemonState?.formulasUnlocked === true &&
-      ns.fileExists("Formulas.exe", "home") &&
-      !!ns.formulas?.hacking;
 
-    const forcedExpMode =
-      flags.overdrive === true ||
-      (
-        formulasUnlocked &&
-        daemonState?.mode === "exp" &&
-        ns.getHackingLevel() < 3000
-      );
+    const forcedExpMode = shouldForceExpMode(
+      ns,
+      daemonState,
+      flags
+    );
+
     const effectiveDaemonState = forcedExpMode
       ? {
         ...daemonState,
@@ -232,4 +227,43 @@ function getUhmPhase(ns, daemonState) {
       daemonState?.multiTargetPolicy?.expRamPercent ??
       fallback.expRamRatio,
   };
+}
+
+function shouldForceExpMode(ns, daemonState, flags) {
+  if (flags.overdrive === true) {
+    return true;
+  }
+
+  const formulasUnlocked =
+    daemonState?.formulasUnlocked === true &&
+    ns.fileExists("Formulas.exe", "home") &&
+    !!ns.formulas?.hacking;
+
+  if (!formulasUnlocked) return false;
+  if (daemonState?.mode !== "exp") return false;
+
+  const hacking = ns.getHackingLevel();
+  const money = ns.getPlayer().money;
+  const reserve = daemonState?.reserveMoney ?? 0;
+  const spendable = Math.max(0, money - reserve);
+
+  const bootstrapActive =
+    daemonState?.bootstrap?.active === true;
+
+  const priority =
+    daemonState?.spendingPolicy?.priority ?? "";
+
+  const darkwebComplete =
+    daemonState?.services?.some(service =>
+      service.id === "darkweb-buyer" &&
+      service.status === "completed"
+    ) === true;
+
+  if (bootstrapActive) return false;
+  if (!darkwebComplete) return false;
+  if (priority === "upgrades") return false;
+  if (hacking >= 3000) return false;
+  if (spendable < 1_000_000_000) return false;
+
+  return true;
 }
