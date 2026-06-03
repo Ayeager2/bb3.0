@@ -262,7 +262,7 @@ function shouldForceExpMode(ns, daemonState, flags) {
   if (bootstrapActive) return false;
   if (!darkwebComplete) return false;
   if (priority === "upgrades") return false;
-  if (hacking >= 3000) return false;
+  if (hacking >= 2500) return false;
   if (spendable < 1_000_000_000) return false;
 
   return true;
