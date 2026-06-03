@@ -76,10 +76,18 @@ export async function main(ns) {
     const daemonState = readDaemonState(ns);
     const now = Date.now();
     let phase = getUhmPhase(ns, daemonState);
-    const forcedExpMode =
-      (daemonState?.mode === "exp" || flags.overdrive === true) &&
-      ns.getHackingLevel() < 3000;
+    const formulasUnlocked =
+      daemonState?.formulasUnlocked === true &&
+      ns.fileExists("Formulas.exe", "home") &&
+      !!ns.formulas?.hacking;
 
+    const forcedExpMode =
+      flags.overdrive === true ||
+      (
+        formulasUnlocked &&
+        daemonState?.mode === "exp" &&
+        ns.getHackingLevel() < 3000
+      );
     const effectiveDaemonState = forcedExpMode
       ? {
         ...daemonState,
@@ -124,7 +132,7 @@ export async function main(ns) {
     }
 
     rootedServers = sanitizeServerSet(ns, rootedServers);
-   
+
     await copyScriptsToServers(ns, rootedServers, copiedServers, runtimeStats);
 
     const hosts = getHosts(ns, rootedServers);
