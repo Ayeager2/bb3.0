@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
   "sourceVersion": 5,
-  "updatedAt": 1780543681434,
-  "daemonUpdatedAt": 1780543677907,
+  "updatedAt": 1780544345751,
+  "daemonUpdatedAt": 1780544338587,
   "bitnode": {
     "number": 4,
     "name": "The Singularity",
@@ -23,19 +23,19 @@
     "reason": "Daemon state now built by /lib/daemon/state.js"
   },
   "player": {
-    "money": 724523075176.1676,
-    "hacking": 7713
+    "money": 549200693285.3319,
+    "hacking": 7763
   },
   "target": {
     "name": "rho-construction",
     "maxMoney": 1876897279.6875,
-    "money": 1210159628.3688385,
-    "moneyPercent": 0.6447660409899086,
+    "money": 1664365873.5961652,
+    "moneyPercent": 0.8867644977743689,
     "minSecurity": 15,
-    "security": 15,
-    "securityDiff": 0,
-    "weakenTime": 11173.473279110432,
-    "prepNeed": 0.35523395901009136
+    "security": 15.059999999999999,
+    "securityDiff": 0.05999999999999872,
+    "weakenTime": 11145.259020046367,
+    "prepNeed": 0.11723550222563098
   },
   "policy": {
     "reserveMoney": 5000000000,
@@ -63,9 +63,9 @@
     "moneyReady": true,
     "homeRamReady": true,
     "augReady": true,
-    "hacking": 7713,
+    "hacking": 7763,
     "hackingTarget": 2500,
-    "money": 724523075176.1676,
+    "money": 549200693285.3319,
     "moneyTarget": 100000000000,
     "augmentCount": 37,
     "augmentTarget": 30

@@ -1,172 +1,370 @@
 <!doctype html>
 <html>
-
 <head>
-    <meta charset="utf-8" />
-    <title>Bitburner Daemon Dashboard</title>
-    <style>
-        body {
-            margin: 0;
-            background: #05070d;
-            color: #d1d5db;
-            font-family: Consolas, monospace;
-        }
+  <meta charset="utf-8" />
+  <title>Bitburner Daemon Dashboard</title>
+  <style>
+    :root {
+      --bg: #05070d;
+      --panel: rgba(15, 23, 42, 0.92);
+      --panel2: rgba(8, 12, 20, 0.96);
+      --border: rgba(124, 58, 237, 0.45);
+      --text: #d1d5db;
+      --muted: #6b7280;
+      --green: #10b981;
+      --blue: #60a5fa;
+      --cyan: #06b6d4;
+      --yellow: #f59e0b;
+      --purple: #a78bfa;
+      --red: #ef4444;
+    }
 
-        .wrap {
-            padding: 18px;
-        }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top right, rgba(124,58,237,.16), transparent 32%),
+        radial-gradient(circle at bottom left, rgba(6,182,212,.10), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Consolas, monospace;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(320px, 1fr));
-            gap: 12px;
-        }
+    .wrap {
+      padding: 18px;
+    }
 
-        .card {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(124, 58, 237, 0.45);
-            border-radius: 10px;
-            padding: 14px;
-            box-shadow: 0 0 24px rgba(124, 58, 237, 0.12);
-        }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 28px rgba(124,58,237,.18);
+    }
 
-        .wide {
-            grid-column: 1 / -1;
-        }
+    .title {
+      font-size: 20px;
+      color: white;
+      letter-spacing: .12em;
+      font-weight: bold;
+    }
 
-        .title {
-            color: #a78bfa;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            margin-bottom: 10px;
-            font-size: 13px;
-        }
+    .subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
 
-        .row {
-            display: grid;
-            grid-template-columns: 140px 1fr;
-            gap: 8px;
-            padding: 4px 0;
-        }
+    .status {
+      text-align: right;
+      font-size: 13px;
+    }
 
-        .label {
-            color: #6b7280;
-        }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(340px, 1fr));
+      gap: 12px;
+    }
 
-        .green {
-            color: #10b981;
-        }
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 10px;
+      padding: 13px;
+      box-shadow: 0 0 18px rgba(0,0,0,.22);
+    }
 
-        .blue {
-            color: #60a5fa;
-        }
+    .wide {
+      grid-column: 1 / -1;
+    }
 
-        .cyan {
-            color: #06b6d4;
-        }
+    .card-title {
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-size: 12px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding-bottom: 7px;
+    }
 
-        .yellow {
-            color: #f59e0b;
-        }
+    .row {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 8px;
+      padding: 4px 0;
+    }
 
-        .purple {
-            color: #a78bfa;
-        }
+    .label { color: var(--muted); }
+    .green { color: var(--green); }
+    .blue { color: var(--blue); }
+    .cyan { color: var(--cyan); }
+    .yellow { color: var(--yellow); }
+    .purple { color: var(--purple); }
+    .red { color: var(--red); }
+    .muted { color: var(--muted); }
 
-        .red {
-            color: #ef4444;
-        }
-    </style>
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .chip.on {
+      color: var(--green);
+      border-color: rgba(16,185,129,.45);
+    }
+
+    .chip.hot {
+      color: var(--yellow);
+      border-color: rgba(245,158,11,.45);
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(255,255,255,.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .bar > div {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      width: 0%;
+    }
+
+    .mini {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .status { text-align: left; }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="wrap">
-        <h1>DAEMON DASHBOARD</h1>
-        <div id="status">Waiting for state...</div>
-        <br />
-        <div id="grid" class="grid"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="title">DAEMON DASHBOARD</div>
+        <div class="subtitle">External Bitburner tactical overlay</div>
+      </div>
+      <div id="status" class="status muted">Waiting for state...</div>
     </div>
 
-    <script>
-        const grid = document.getElementById("grid");
-        const status = document.getElementById("status");
+    <div id="grid" class="grid"></div>
+  </div>
 
-        const money = n =>
-            Number.isFinite(Number(n))
-                ? "$" + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                : "unknown";
+  <script>
+    const grid = document.getElementById("grid");
+    const statusEl = document.getElementById("status");
 
-        const num = n =>
-            Number.isFinite(Number(n))
-                ? Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 })
-                : "unknown";
+    const money = n =>
+      Number.isFinite(Number(n))
+        ? "$" + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 })
+        : "unknown";
 
-        const pct = n =>
-            Number.isFinite(Number(n))
-                ? (Number(n) * 100).toFixed(1) + "%"
-                : "unknown";
+    const num = n =>
+      Number.isFinite(Number(n))
+        ? Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 })
+        : "unknown";
 
-        const row = (label, value, cls = "") =>
-            `<div class="row"><div class="label">${label}</div><div class="${cls}">${value}</div></div>`;
+    const pct = n =>
+      Number.isFinite(Number(n))
+        ? (Number(n) * 100).toFixed(1) + "%"
+        : "unknown";
 
-        const card = (title, html, wide = false) =>
-            `<div class="card ${wide ? "wide" : ""}">
-        <div class="title">${title}</div>
+    const row = (label, value, cls = "") =>
+      `<div class="row"><div class="label">${label}</div><div class="${cls}">${value}</div></div>`;
+
+    const card = (title, html, wide = false) =>
+      `<div class="card ${wide ? "wide" : ""}">
+        <div class="card-title">${title}</div>
         ${html}
       </div>`;
 
-        async function loadState() {
-            try {
-                const res = await fetch("/state", { cache: "no-store" });
-                const s = await res.json();
+    const bar = value => {
+      const p = Math.max(0, Math.min(100, Number(value || 0) * 100));
+      return `<div class="bar"><div style="width:${p}%"></div></div>`;
+    };
 
-                status.textContent = `Updated ${new Date(s.updatedAt).toLocaleTimeString()}`;
+    const chip = (label, enabled, hot = false) =>
+      `<span class="chip ${enabled ? "on" : ""} ${hot ? "hot" : ""}">${label}${enabled ? " ✓" : " ·"}</span>`;
 
-                grid.innerHTML = [
-                    card("Core", [
-                        row("BitNode", `BN${s.bitnode?.number ?? "?"} ${s.bitnode?.name ?? ""}`, "purple"),
-                        row("Phase", s.progression?.phase ?? "unknown", "purple"),
-                        row("Mode", s.progression?.mode ?? "unknown", "green"),
-                        row("Priority", s.progression?.priority ?? "unknown", "cyan"),
-                        row("Target", s.daemon?.target ?? "none", "yellow"),
-                    ].join("")),
+    async function loadState() {
+      try {
+        const res = await fetch("/state", { cache: "no-store" });
+        const s = await res.json();
 
-                    card("Player", [
-                        row("Money", money(s.player?.money), "green"),
-                        row("Hacking", num(s.player?.hacking), "blue"),
-                    ].join("")),
+        if (!s || !s.schemaVersion) throw new Error("Bad state");
 
-                    card("Target Intel", [
-                        row("Name", s.target?.name ?? "none", "yellow"),
-                        row("Money", `${money(s.target?.money)} / ${money(s.target?.maxMoney)}`, "green"),
-                        row("Money %", pct(s.target?.moneyPercent), "green"),
-                        row("Security", `${num(s.target?.security)} / min ${num(s.target?.minSecurity)}`, "red"),
-                        row("Weaken", `${num((s.target?.weakenTime ?? 0) / 1000)}s`, "cyan"),
-                    ].join("")),
+        renderState(s);
+      } catch {
+        statusEl.innerHTML = `<span class="red">Waiting for bridge/state...</span>`;
+      }
+    }
 
-                    card("BN4 Readiness", [
-                        row("Goal", s.readiness?.goal ?? "unknown", "purple"),
-                        row("Ready", `${s.readiness?.readyCount ?? 0}/${s.readiness?.totalChecks ?? 0}`, "yellow"),
-                        row("Hacking", `${num(s.readiness?.hacking)} / ${num(s.readiness?.hackingTarget)}`, "blue"),
-                        row("Money", `${money(s.readiness?.money)} / ${money(s.readiness?.moneyTarget)}`, "green"),
-                        row("Augs", `${num(s.readiness?.augmentCount)} / ${num(s.readiness?.augmentTarget)}`, "yellow"),
-                    ].join("")),
+    function renderState(s) {
+      const updated = s.updatedAt ? new Date(s.updatedAt).toLocaleTimeString() : "unknown";
+      const daemonUpdated = s.daemonUpdatedAt ? new Date(s.daemonUpdatedAt).toLocaleTimeString() : "unknown";
 
-                    card("Victory Plan", [
-                        row("Stage", s.victory?.stage ?? "unknown", "purple"),
-                        row("Next", s.victory?.nextAction ?? "none", "yellow"),
-                        row("Red Pill", s.victory?.hasRedPill ? "YES" : "NO", s.victory?.hasRedPill ? "green" : "red"),
-                        row("World Daemon", s.victory?.canUseWorldDaemon ? "READY" : "LOCKED", s.victory?.canUseWorldDaemon ? "green" : "red"),
-                    ].join(""), true),
-                ].join("");
-            } catch (error) {
-                status.textContent = "Waiting for bridge/state...";
-            }
-        }
+      statusEl.innerHTML = `
+        <div><span class="green">LIVE</span> UI ${updated}</div>
+        <div class="mini">Daemon ${daemonUpdated} | Schema ${s.schemaVersion}</div>
+      `;
 
-        loadState();
-        setInterval(loadState, 3000);
-    </script>
+      grid.innerHTML = [
+        coreCard(s),
+        playerCard(s),
+        targetCard(s),
+        readinessCard(s),
+        victoryCard(s),
+        lanesCard(s),
+        policyCard(s),
+        serverCard(s),
+        capabilitiesCard(s),
+        widgetsCard(s),
+      ].join("");
+    }
+
+    function coreCard(s) {
+      return card("Core State", [
+        row("BitNode", `BN${s.bitnode?.number ?? "?"} ${s.bitnode?.name ?? ""}`, "purple"),
+        row("Strategy", s.bitnode?.strategy ?? "unknown", "cyan"),
+        row("Phase", s.progression?.phase ?? "unknown", "purple"),
+        row("Mode", s.progression?.mode ?? "unknown", "green"),
+        row("Priority", s.progression?.priority ?? "unknown", "cyan"),
+        row("Posture", s.progression?.posture ?? "unknown", "yellow"),
+        row("Next", s.progression?.nextAction ?? "none", "muted"),
+      ].join(""), true);
+    }
+
+    function playerCard(s) {
+      return card("Player", [
+        row("Money", money(s.player?.money), "green"),
+        row("Hacking", num(s.player?.hacking), "blue"),
+      ].join(""));
+    }
+
+    function targetCard(s) {
+      const t = s.target ?? {};
+      return card("Target Intel", [
+        row("Name", t.name ?? "none", "yellow"),
+        row("Money", `${money(t.money)} / ${money(t.maxMoney)}`, "green"),
+        row("Money %", pct(t.moneyPercent), "green"),
+        bar(t.moneyPercent),
+        row("Security", `${num(t.security)} / min ${num(t.minSecurity)}`, "red"),
+        row("Sec Diff", num(t.securityDiff), Number(t.securityDiff) <= 0.1 ? "green" : "yellow"),
+        row("Weaken", `${num((t.weakenTime ?? 0) / 1000)}s`, "cyan"),
+        row("Prep Need", pct(t.prepNeed), "yellow"),
+      ].join(""));
+    }
+
+    function readinessCard(s) {
+      const r = s.readiness ?? {};
+      const readyRatio = r.totalChecks ? r.readyCount / r.totalChecks : 0;
+
+      return card("BN4 Readiness", [
+        row("Goal", r.goal ?? "unknown", "purple"),
+        row("Ready", `${r.readyCount ?? 0}/${r.totalChecks ?? 0}`, r.ready ? "green" : "yellow"),
+        bar(readyRatio),
+        row("Overall", r.ready ? "YES" : "NO", r.ready ? "green" : "red"),
+        row("Hacking", `${num(r.hacking)} / ${num(r.hackingTarget)}`, r.hackingReady ? "green" : "yellow"),
+        row("Money", `${money(r.money)} / ${money(r.moneyTarget)}`, r.moneyReady ? "green" : "yellow"),
+        row("Home RAM", r.homeRamReady ? "YES" : "NO", r.homeRamReady ? "green" : "red"),
+        row("Augs", `${num(r.augmentCount)} / ${num(r.augmentTarget)}`, r.augReady ? "green" : "yellow"),
+      ].join(""));
+    }
+
+    function victoryCard(s) {
+      const v = s.victory ?? {};
+      return card("Victory Plan", [
+        row("Stage", v.stage ?? "unknown", "purple"),
+        row("Next", v.nextAction ?? "none", "muted"),
+        row("Hack Goal", num(v.hackingTarget), "blue"),
+        row("Daedalus", v.hasDaedalus ? "YES" : "NO", v.hasDaedalus ? "green" : "red"),
+        row("Red Pill", v.hasRedPill ? "YES" : "NO", v.hasRedPill ? "green" : "red"),
+        row("World", v.worldDaemon ?? "w0r1d_d43m0n", "yellow"),
+        row("Can Use", v.canUseWorldDaemon ? "YES" : "NO", v.canUseWorldDaemon ? "green" : "red"),
+      ].join(""), true);
+    }
+
+    function lanesCard(s) {
+      const l = s.lanes ?? {};
+      return card("Lane Allocation", [
+        row("Multi", l.multiTargetEnabled ? "YES" : "NO", l.multiTargetEnabled ? "green" : "red"),
+        row("Money 1", pct(l.primaryMoneyRamPercent), "green"),
+        bar(l.primaryMoneyRamPercent),
+        row("Money 2", pct(l.secondaryMoneyRamPercent), "green"),
+        bar(l.secondaryMoneyRamPercent),
+        row("EXP", pct(l.expRamPercent), "blue"),
+        bar(l.expRamPercent),
+        row("Adaptive", l.adaptive ? "YES" : "NO", l.adaptive ? "green" : "red"),
+        row("Reason", l.reason ?? "none", "muted"),
+      ].join(""), true);
+    }
+
+    function policyCard(s) {
+      const p = s.policy ?? {};
+      return card("Spending Policy", [
+        row("Reserve", money(p.reserveMoney), "green"),
+        `<div class="chips">
+          ${chip("Servers", p.allowServerPurchases)}
+          ${chip("Stocks", p.allowStockTrading)}
+          ${chip("Hacknet", p.allowHacknet)}
+          ${chip("Home RAM", p.allowHomeRam)}
+          ${chip("EXEs", p.allowExePurchases)}
+          ${chip("Augs", p.allowAugmentPurchases, p.allowAugmentPurchases)}
+          ${chip("Reset", p.allowReset, p.allowReset)}
+          ${chip("Travel", p.allowIntTravel)}
+        </div>`
+      ].join(""), true);
+    }
+
+    function serverCard(s) {
+      const srv = s.servers ?? {};
+      return card("Servers", [
+        row("Rooted", srv.rootedCount ?? 0, "green"),
+        row("Purchased", srv.purchasedCount ?? 0, "cyan"),
+        row("Cloud", srv.cloudCount ?? 0, "purple"),
+      ].join(""));
+    }
+
+    function capabilitiesCard(s) {
+      const c = s.capabilities ?? {};
+      return card("Capabilities", `<div class="chips">${
+        Object.entries(c).map(([k, v]) => chip(k, v)).join("")
+      }</div>`, true);
+    }
+
+    function widgetsCard(s) {
+      const visible = s.widgets?.visible ?? [];
+      const emphasized = new Set(s.widgets?.emphasized ?? []);
+
+      return card("Widget Resolver", `<div class="chips">${
+        visible.map(w => chip(w, true, emphasized.has(w))).join("")
+      }</div>`, true);
+    }
+
+    loadState();
+    setInterval(loadState, 3000);
+  </script>
 </body>
-
 </html>

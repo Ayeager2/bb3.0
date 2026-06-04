@@ -1,5 +1,8 @@
+//bb/bootstrap-daemon.js
+
 const FULL_DAEMON = "daemon.js";
 const TINY_WORKER = "/workers/tiny-worker.js";
+const TARGET_FILE = "/data/bootstrap-target.txt";
 
 const CONFIG = {
   refreshMs: 2000,
@@ -29,15 +32,20 @@ export async function main(ns) {
   while (true) {
     const allServers = scanAll(ns);
     const rootedServers = rootAvailableServers(ns, allServers);
-    await copyWorker(ns, rootedServers);
 
     buyEarlyUpgrades(ns);
 
     const target = chooseBestTarget(ns, rootedServers);
-    runWorkers(ns, rootedServers, target);
+    writeBootstrapTarget(ns, target);
 
+    await copyBootstrapFiles(ns, rootedServers);
+
+    runWorkers(ns, rootedServers);
     draw(ns, rootedServers, target);
-
+    if (shouldStartFullDaemon(ns)) {
+      startFullDaemon(ns, rootedServers);
+      return;
+    }
     await ns.sleep(CONFIG.refreshMs);
   }
 }
@@ -125,7 +133,7 @@ function tryRoot(ns, server) {
 }
 }
 
-async function copyWorker(ns, rootedServers) {
+async function copyBootstrapFiles(ns, rootedServers) {
   for (const server of rootedServers) {
     if (server === "home") continue;
     if (!ns.fileExists(TINY_WORKER, "home")) return;
@@ -134,9 +142,13 @@ async function copyWorker(ns, rootedServers) {
       if (!ns.fileExists(TINY_WORKER, server)) {
         await ns.scp(TINY_WORKER, server, "home");
       }
+
+      if (ns.fileExists(TARGET_FILE, "home")) {
+        await ns.scp(TARGET_FILE, server, "home");
+      }
     } catch (error) {
-    console.error(error);
-}
+      console.error(error);
+    }
   }
 }
 
@@ -174,8 +186,7 @@ function scoreTarget(ns, server) {
   return (money * growth) / weakenTime;
 }
 
-function runWorkers(ns, rootedServers, target) {
-  if (!target) return;
+function runWorkers(ns, rootedServers) {
   if (!ns.fileExists(TINY_WORKER, "home")) return;
 
   for (const server of rootedServers) {
@@ -185,12 +196,14 @@ function runWorkers(ns, rootedServers, target) {
     const scriptHost = server === "home" ? "home" : server;
 
     if (!ns.fileExists(TINY_WORKER, scriptHost)) continue;
-    if (ns.isRunning(TINY_WORKER, scriptHost, target)) continue;
+
+    // No target arg now. All workers read /data/bootstrap-target.txt.
+    if (ns.isRunning(TINY_WORKER, scriptHost)) continue;
 
     const threads = getThreads(ns, scriptHost, TINY_WORKER);
     if (threads <= 0) continue;
 
-    ns.exec(TINY_WORKER, scriptHost, threads, target);
+    ns.exec(TINY_WORKER, scriptHost, threads);
   }
 }
 
@@ -257,4 +270,40 @@ function draw(ns, rootedServers, target) {
   ns.print(`Target      : ${target}`);
   ns.print("");
   ns.print(`Full daemon : ${shouldStartFullDaemon(ns) ? "READY" : "WAITING"}`);
+}
+
+function writeBootstrapTarget(ns, target) {
+  if (!target) return;
+
+  try {
+    ns.write(TARGET_FILE, target, "w");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function startFullDaemon(ns, rootedServers) {
+  stopTinyWorkers(ns, rootedServers);
+
+  if (!ns.isRunning(FULL_DAEMON, "home")) {
+    ns.tprint("[BOOTSTRAP] Starting full daemon.");
+    const pid = ns.exec(FULL_DAEMON, "home", 1);
+
+    if (pid === 0) {
+      ns.tprint("[BOOTSTRAP] Failed to start full daemon. Not enough RAM?");
+    } else {
+      ns.tprint(`[BOOTSTRAP] Full daemon started. PID=${pid}`);
+    }
+  }
+}
+
+function stopTinyWorkers(ns, rootedServers) {
+  for (const server of rootedServers) {
+    try {
+      if (!ns.serverExists(server)) continue;
+      ns.kill(TINY_WORKER, server);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
