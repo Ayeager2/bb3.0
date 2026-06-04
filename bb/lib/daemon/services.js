@@ -391,10 +391,11 @@ export const SERVICES = [
     },
     {
         id: "destroy-node",
-        name: "/tools/destroy-node.js",
+        script: "/tools/destroy-node-service.js",
         host: "home",
+        phases: ["destroy-node", "prep-world-daemon"],
         threads: 1,
-        args: [],
+        args: [4, "daemon.js"],
         tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: false,

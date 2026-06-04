@@ -71,50 +71,20 @@ export function buildTargetLanes(
     );
 
     if (mode === "exp") {
-        const expPrimaryTarget = getValidTargetOrFallback(
+        const expSprintTarget = getValidTargetOrFallback(
             ns,
             cleanServers,
-            laneTargets.primary ?? daemonState?.target,
+            "joesguns",
             "exp",
-            groups.high
-        );
-
-        const expSecondaryTarget = getValidTargetOrFallback(
-            ns,
-            cleanServers,
-            laneTargets.secondary,
-            "exp",
-            groups.mid
-        );
-
-        const expLowTarget = getValidTargetOrFallback(
-            ns,
-            cleanServers,
-            laneTargets.exp,
-            "exp",
-            groups.low
+            hosts
         );
 
         return [
             {
-                name: "HIGH / EXP",
+                name: "ALL / EXP",
                 mode: "exp",
-                target: expPrimaryTarget ?? "",
-                hosts: groups.high,
-                formulasUnlocked,
-            },
-            {
-                name: "MID / EXP",
-                mode: "exp",
-                target: expSecondaryTarget ?? "",
-                hosts: groups.mid,
-                formulasUnlocked,
-            },
-            {
-                name: "LOW / EXP",
-                mode: "exp",
-                target: expLowTarget ?? "",
-                hosts: groups.low,
+                target: expSprintTarget ?? "",
+                hosts,
                 formulasUnlocked,
             },
         ];

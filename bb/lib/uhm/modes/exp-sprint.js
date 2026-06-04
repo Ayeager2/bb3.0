@@ -1,43 +1,27 @@
 import { homeReserveRam } from "/lib/uhm/config.js";
 import { safeServerExists, isUsableTarget } from "/lib/uhm/safe.js";
 
-const EXP_WEAKEN = "/workers/exp-weaken.js";
+const EXP_HACK = "/workers/exp-hack.js";
 const EXP_GROW = "/workers/exp-grow.js";
+const EXP_WEAKEN = "/workers/exp-weaken.js";
 
 const DEFAULT_MAX_THREADS_PER_PROCESS = 50_000;
-const DEFAULT_MAX_PROCESSES_PER_HOST = 32;
+const DEFAULT_MAX_PROCESSES_PER_HOST = 48;
 
-export function runExpOverdrive(ns, target, hosts, options = {}) {
-    const maxProcesses = options.maxProcesses ?? 100;
+export function runExpSprint(ns, target, hosts, options = {}) {
+    const maxProcesses = options.maxProcesses ?? 100000;
     const maxThreadsPerProcess =
         options.maxThreadsPerProcess ?? DEFAULT_MAX_THREADS_PER_PROCESS;
     const maxProcessesPerHost =
         options.maxProcessesPerHost ?? DEFAULT_MAX_PROCESSES_PER_HOST;
 
-    const growRatio = options.growRatio ?? 0.15;
     const reserveHomeRam = options.homeReserveRam ?? homeReserveRam;
 
     if (!isUsableTarget(ns, target)) {
-        return result("INVALID_TARGET", 0, 0, 0, {
-            target,
-            maxProcesses,
-            maxThreadsPerProcess,
-            maxProcessesPerHost,
-            growRatio,
-        });
+        return result("INVALID_TARGET", 0, 0, 0, { target });
     }
 
-    const active = countActiveExpWorkers(ns, hosts);
-
-    if (active >= maxProcesses) {
-        return result("PROCESS_CAP", 0, 0, active, {
-            target,
-            maxProcesses,
-            maxThreadsPerProcess,
-            maxProcessesPerHost,
-            growRatio,
-        });
-    }
+    const active = countActiveSprintWorkers(ns, hosts);
 
     let launched = 0;
     let threads = 0;
@@ -46,8 +30,7 @@ export function runExpOverdrive(ns, target, hosts, options = {}) {
         if (active + launched >= maxProcesses) break;
         if (!safeServerExists(ns, host.host)) continue;
 
-        const hostActive = countActiveExpWorkersOnHost(ns, host.host);
-
+        const hostActive = countActiveSprintWorkersOnHost(ns, host.host);
         if (hostActive >= maxProcessesPerHost) continue;
 
         const maxRam = ns.getServerMaxRam(host.host);
@@ -57,11 +40,13 @@ export function runExpOverdrive(ns, target, hosts, options = {}) {
 
         if (freeRam <= 0) continue;
 
-        const launchResult = launchChunkedExpWorkers(ns, {
+        const script = chooseSprintScript(ns, target);
+
+        const launchResult = launchChunks(ns, {
             host: host.host,
             target,
+            script,
             freeRam,
-            growRatio,
             maxThreadsPerProcess,
             maxProcessesRemaining: maxProcesses - active - launched,
             maxProcessesForHost: maxProcessesPerHost - hostActive,
@@ -71,33 +56,39 @@ export function runExpOverdrive(ns, target, hosts, options = {}) {
         threads += launchResult.threads;
     }
 
-    const status =
-        launched > 0
-            ? "EXP_OVERDRIVE"
-            : active > 0
-                ? "EXP_RUNNING"
-                : "NO_RAM";
-
     return result(
-        status,
+        launched > 0 ? "EXP_SPRINT" : active > 0 ? "EXP_RUNNING" : "NO_RAM",
         launched,
         threads,
         active + launched,
         {
+            engine: "hack-sprint",
+            growRatio: 0,
             target,
             maxProcesses,
             maxThreadsPerProcess,
             maxProcessesPerHost,
-            growRatio,
         }
     );
 }
 
-function launchChunkedExpWorkers(ns, {
+function chooseSprintScript(ns, target) {
+    const money = ns.getServerMoneyAvailable(target);
+    const maxMoney = ns.getServerMaxMoney(target);
+    const sec = ns.getServerSecurityLevel(target);
+    const minSec = ns.getServerMinSecurityLevel(target);
+
+    if (sec > minSec + 8) return EXP_WEAKEN;
+    if (maxMoney > 0 && money < maxMoney * 0.25) return EXP_GROW;
+
+    return EXP_HACK;
+}
+
+function launchChunks(ns, {
     host,
     target,
+    script,
     freeRam,
-    growRatio,
     maxThreadsPerProcess,
     maxProcessesRemaining,
     maxProcessesForHost,
@@ -111,9 +102,7 @@ function launchChunkedExpWorkers(ns, {
         launched < maxProcessesRemaining &&
         launched < maxProcessesForHost
     ) {
-        const script = Math.random() < growRatio ? EXP_GROW : EXP_WEAKEN;
         const scriptRam = ns.getScriptRam(script, host);
-
         if (scriptRam <= 0 || remainingRam < scriptRam) break;
 
         const possibleThreads = Math.floor(remainingRam / scriptRam);
@@ -130,27 +119,25 @@ function launchChunkedExpWorkers(ns, {
         remainingRam -= threadCount * scriptRam;
     }
 
-    return {
-        launched,
-        threads,
-    };
+    return { launched, threads };
 }
 
-function countActiveExpWorkers(ns, hosts) {
+function countActiveSprintWorkers(ns, hosts) {
     let count = 0;
 
     for (const host of hosts) {
-        count += countActiveExpWorkersOnHost(ns, host.host);
+        count += countActiveSprintWorkersOnHost(ns, host.host);
     }
 
     return count;
 }
 
-function countActiveExpWorkersOnHost(ns, host) {
+function countActiveSprintWorkersOnHost(ns, host) {
     try {
         return ns.ps(host).filter(p =>
-            sameScript(p.filename, EXP_WEAKEN) ||
-            sameScript(p.filename, EXP_GROW)
+            sameScript(p.filename, EXP_HACK) ||
+            sameScript(p.filename, EXP_GROW) ||
+            sameScript(p.filename, EXP_WEAKEN)
         ).length;
     } catch {
         return 0;

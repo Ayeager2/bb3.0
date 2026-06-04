@@ -1,5 +1,4 @@
 import { CONFIG } from "/lib/daemon/config.js";
-import { canUseTarget } from "/lib/daemon/targets.js";
 
 export function getBn4VictoryPlan(ns) {
     const hacking = ns.getHackingLevel();
@@ -8,45 +7,81 @@ export function getBn4VictoryPlan(ns) {
 
     const hasDaedalus = factions.includes("Daedalus");
     const ownedAugs = getOwnedAugmentationsSafe(ns);
+    const hasRedPill = ownedAugs.includes("The Red Pill");
 
-    const hasRedPill =
-        ownedAugs.includes("The Red Pill");
+    const world = getWorldDaemonStatus(ns);
 
-    const worldDaemon = "w0r1d_d43m0n";
-    const canUseWorldDaemon = canUseTarget(ns, worldDaemon);
+    const plan = buildBn4StagePlan({
+        hacking,
+        hasDaedalus,
+        hasRedPill,
+        world,
+    });
 
-    let stage = "grow-economy";
-    let nextAction = "Build money, hacking level, RAM, and augment count.";
+    return {
+        stage: plan.stage,
+        nextAction: plan.nextAction,
+        hacking,
+        hackingTarget: world.requiredHack,
+        hasDaedalus,
+        hasRedPill,
+        worldDaemon: world.server,
+        world,
+        canUseWorldDaemon: world.readyToDestroy,
+    };
+}
 
+function buildBn4StagePlan({
+    hacking,
+    hasDaedalus,
+    hasRedPill,
+    world,
+}) {
     if (hacking < 2500) {
-        stage = "level-hacking";
-        nextAction = "Prioritize EXP until hacking is high enough for late-game faction progression.";
-    } else if (!hasDaedalus) {
-        stage = "join-daedalus";
-        nextAction = "Meet Daedalus requirements and accept invitation when available.";
-    } else if (!hasRedPill) {
-        stage = "get-red-pill";
-        nextAction = "Grind Daedalus reputation and buy The Red Pill.";
-    } else if (hacking < 3000) {
-        stage = "final-leveling";
-        nextAction = "Push hacking to 3000 for w0r1d_d43m0n.";
-    } else if (!canUseWorldDaemon) {
-        stage = "prep-world-daemon";
-        nextAction = "Find/root/backdoor path toward w0r1d_d43m0n.";
-    } else {
-        stage = "destroy-bitnode";
-        nextAction = "Hack w0r1d_d43m0n and destroy the BitNode.";
+        return {
+            stage: "level-hacking",
+            nextAction: "Prioritize EXP only until faction progression requirements are met.",
+        };
+    }
+
+    if (!hasDaedalus) {
+        return {
+            stage: "join-daedalus",
+            nextAction: "Meet Daedalus requirements and accept invitation.",
+        };
+    }
+
+    if (!hasRedPill) {
+        return {
+            stage: "get-red-pill",
+            nextAction: "Grind Daedalus reputation and buy The Red Pill.",
+        };
+    }
+
+    if (!world.exists) {
+        return {
+            stage: "find-world-daemon",
+            nextAction: "Discover path to w0r1d_d43m0n.",
+        };
+    }
+
+    if (!world.hackReady) {
+        return {
+            stage: "final-leveling",
+            nextAction: `Push hacking to ${world.requiredHack} for w0r1d_d43m0n.`,
+        };
+    }
+
+    if (!world.rooted) {
+        return {
+            stage: "root-world-daemon",
+            nextAction: "Root w0r1d_d43m0n.",
+        };
     }
 
     return {
-        stage,
-        nextAction,
-        hacking,
-        hackingTarget: 3000,
-        hasDaedalus,
-        hasRedPill,
-        worldDaemon,
-        canUseWorldDaemon,
+        stage: "destroy-bitnode",
+        nextAction: "Hack w0r1d_d43m0n and destroy the BitNode.",
     };
 }
 
@@ -102,4 +137,30 @@ export function getOwnedAugmentationsSafe(ns) {
 }
 
     return [];
+}
+
+export function getWorldDaemonStatus(ns) {
+    const server = "w0r1d_d43m0n";
+
+    const exists = ns.serverExists(server);
+    const hacking = ns.getHackingLevel();
+
+    const requiredHack = exists
+        ? ns.getServerRequiredHackingLevel(server)
+        : Number.MAX_SAFE_INTEGER;
+
+    const rooted = exists && ns.hasRootAccess(server);
+    const backdoored = exists && ns.getServer(server).backdoorInstalled === true;
+    const hackReady = exists && hacking >= requiredHack;
+
+    return {
+        server,
+        exists,
+        hacking,
+        requiredHack,
+        hackReady,
+        rooted,
+        backdoored,
+        readyToDestroy: exists && hackReady && rooted,
+    };
 }

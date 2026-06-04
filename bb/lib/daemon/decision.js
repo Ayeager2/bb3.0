@@ -22,7 +22,7 @@ import {
 } from "/lib/daemon/target-intelligence.js";
 import { getSecondaryMoneyTarget } from "/lib/daemon/targets.js";
 import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
-
+import { getWorldDaemonStatus } from "/lib/daemon/progression.js";
 
 const EARLY_MONEY_UNTIL_HACKING = 1000;
 
@@ -65,67 +65,22 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
         const resetPlan = buildResetPlan(ns);
         const plan = getBn4VictoryPlan(ns);
         const augDecision = getAugmentationDecision(ns);
-        const hacking = ns.getHackingLevel();
+        const factionProgression = buildFactionProgressionState(ns);
 
-        const ownedAugs = new Set(
-            ns.singularity.getOwnedAugmentations(true)
-        );
+        const redPillOwned = hasRedPill(ns);
+        const world = getWorldDaemonStatus(ns);
 
-        const hasRedPill =
-            ownedAugs.has("The Red Pill");
+        if (redPillOwned) {
+            if (!world.exists) return "progression";
+            if (!world.hackReady) return "exp";
+            if (!world.rooted) return "progression";
 
-        const worldDaemon =
-            "w0r1d_d43m0n";
-
-        const worldRequiredHack =
-            ns.getServerRequiredHackingLevel(worldDaemon);
-
-        const rooted =
-            ns.hasRootAccess(worldDaemon);
-
-        const backdoored =
-            ns.getServer(worldDaemon).backdoorInstalled;
-
-        if (
-            hasRedPill &&
-            hacking < worldRequiredHack
-        ) {
-            return hasWorldDaemonInfrastructure(ns)
-                ? "exp"
-                : "money";
-        }
-
-        if (
-            hasRedPill &&
-            hacking >= worldRequiredHack &&
-            !rooted
-        ) {
-            return "progression";
-        }
-
-        if (
-            hasRedPill &&
-            hacking >= worldRequiredHack &&
-            rooted &&
-            !backdoored
-        ) {
-            return "progression";
-        }
-
-        if (
-            hasRedPill &&
-            hacking >= worldRequiredHack &&
-            rooted &&
-            backdoored
-        ) {
             return "destroy-node";
         }
 
         if (resetPlan.ready) {
             return "reset-prep";
         }
-
-        const factionProgression = buildFactionProgressionState(ns);
 
         if (
             factionProgression.currentBlocker !== "none" &&
@@ -139,7 +94,7 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
         }
 
         if (plan.stage === "level-hacking") {
-            return hacking < EARLY_MONEY_UNTIL_HACKING
+            return ns.getHackingLevel() < EARLY_MONEY_UNTIL_HACKING
                 ? "money"
                 : "exp";
         }
@@ -153,8 +108,7 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
         }
 
         if (plan.stage === "final-leveling") return "exp";
-        if (plan.stage === "prep-world-daemon") return "prep";
-
+        if (plan.stage === "prep-world-daemon") return "progression";
     }
 
     if (roadmap === "stock-market") return "money";
@@ -211,16 +165,10 @@ export function choosePriority(ns, mode) {
     const augDecision = getAugmentationDecision(ns);
     const resetPlan = buildResetPlan(ns);
 
-    if (mode === "destroy-node") {
-        return "destroy-node";
-    }
-    if (
-        hasRedPill(ns) &&
-        mode === "money" &&
-        !hasWorldDaemonInfrastructure(ns)
-    ) {
-        return "income";
-    }
+    if (mode === "destroy-node") return "destroy-node";
+    if (mode === "reset-prep") return "reset-prep";
+    if (mode === "progression") return "progression";
+    if (mode === "exp") return "leveling";
 
     if (resetPlan.ready) return "reset-prep";
 
@@ -246,9 +194,6 @@ export function choosePriority(ns, mode) {
 
     if (bn4.ready) return "progression";
     if (bn4.readyCount >= 3) return "progression";
-
-    if (mode === "progression") return "progression";
-    if (mode === "exp") return "leveling";
 
     if (hacking < CONFIG.expUntilHackingLevel) return "leveling";
     if (money < CONFIG.moneyUntilAmount) return "income";

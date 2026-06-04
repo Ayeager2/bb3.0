@@ -115,15 +115,15 @@ export function buildFactionProgressionState(ns) {
   }
 
   return {
-    currentFactionStage: "complete",
-    currentBlocker: "none",
-    nextBestAction: "destroy-node",
-    recommendedMode: "prep",
-    targetFaction: null,
-    targetServer: "w0r1d_d43m0n",
-    reason: "Faction progression complete. Prepare to destroy BitNode.",
-    playerHack,
-    hasRedPill,
+      currentFactionStage: "complete",
+      currentBlocker: "world-daemon",
+      nextBestAction: "destroy-node",
+      recommendedMode: "destroy-node",
+      targetFaction: null,
+      targetServer: "w0r1d_d43m0n",
+      reason: "Faction progression complete. Red Pill owned. Destroy BitNode.",
+      playerHack,
+      hasRedPill,
   };
 }
 

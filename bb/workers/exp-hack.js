@@ -1,4 +1,3 @@
-//bb/workers/exp-weaken.js
 /** @param {NS} ns **/
 export async function main(ns) {
     const target = String(ns.args[0] ?? "joesguns");
@@ -9,6 +8,10 @@ export async function main(ns) {
             continue;
         }
 
-        await ns.weaken(target);
+        try {
+            await ns.hack(target);
+        } catch {
+            await ns.sleep(250);
+        }
     }
 }

@@ -13,13 +13,14 @@ import {
 import {
     getBn4Readiness,
     getBn4VictoryPlan,
+    getWorldDaemonStatus
 } from "/lib/daemon/progression.js";
 import { buildSessionStats } from "/lib/daemon/session.js";
 import { getTelemetryCounts } from "/lib/daemon/telemetry.js";
 import {
     buildResetPlan,
 } from "/lib/daemon/reset-planner.js";
-import { buildFactionProgressionState } from "./faction-progression";
+import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
 
 export function buildGlobalState(ns, decision, capabilities) {
     const player = ns.getPlayer();
@@ -112,14 +113,23 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
     const mode = decision.mode;
     const priority = decision.spendingPolicy?.priority ?? "income";
 
+    const victoryPlan = getBn4VictoryPlan(ns);
+    const world = getWorldDaemonStatus(ns);
+
     let primary = 0.60;
     let secondary = 0.30;
     let exp = 0.10;
+    let reason = getLanePolicyReason(mode, priority, hacking, money);
 
     if (mode === "exp" || priority === "leveling") {
-        primary = 0.25;
-        secondary = 0.15;
-        exp = 0.60;
+        primary = 0.00;
+        secondary = 0.00;
+        exp = 1.00;
+
+        reason =
+            victoryPlan.hasRedPill
+                ? `Post-Red-Pill EXP sprint: hacking ${hacking}/${world.requiredHack}.`
+                : `EXP bottleneck active: hacking ${hacking}; all lanes assigned to EXP.`;
     } else if (mode === "prep") {
         primary = 0.70;
         secondary = 0.20;
@@ -142,15 +152,6 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
         exp = 0.60;
     }
 
-    if (
-        (mode === "exp" || priority === "leveling") &&
-        hacking < CONFIG.expUntilHackingLevel * 0.5
-    ) {
-        exp = Math.max(exp, 0.70);
-        primary = 0.20;
-        secondary = 0.10;
-    }
-
     const normalized = normalizeLanePercents(primary, secondary, exp);
 
     return {
@@ -160,12 +161,10 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
         expRamPercent: normalized.exp,
         minBatchesPerLane: CONFIG.multiTargetPolicy.minBatchesPerLane,
         showSkippedLanes: CONFIG.multiTargetPolicy.showSkippedLanes,
-
         adaptive: true,
-        reason: getLanePolicyReason(mode, priority, hacking, money),
+        reason,
     };
 }
-
 export function normalizeLanePercents(primary, secondary, exp) {
     const total = primary + secondary + exp;
 
@@ -215,8 +214,17 @@ export function getLanePolicyReason(mode, priority, hacking, money) {
 export function getDecisionReason(ns, decision) {
     const hacking = ns.getHackingLevel();
     const money = ns.getPlayer().money;
+    const victoryPlan = getBn4VictoryPlan(ns);
+
+    if (decision.mode === "destroy-node") {
+        return "Red Pill owned and w0r1d_d43m0n is ready. Destroy-node mode active.";
+    }
 
     if (decision.mode === "exp") {
+        if (victoryPlan.hasRedPill) {
+            return `Post-Red-Pill EXP sprint: hacking ${hacking}/${victoryPlan.hackingTarget}.`;
+        }
+
         return `Hacking ${hacking} below ${CONFIG.expUntilHackingLevel}; prioritizing EXP.`;
     }
 
@@ -225,12 +233,16 @@ export function getDecisionReason(ns, decision) {
         return `Prep-aware mode selected ${decision.target}; prepNeed=${stats.prepNeed.toFixed(2)}, sec+${stats.securityDiff.toFixed(2)}, money=${(stats.moneyPercent * 100).toFixed(1)}%.`;
     }
 
+    if (decision.spendingPolicy.priority === "destroy-node") {
+        return "Destroy-node priority active.";
+    }
+
     if (decision.spendingPolicy.priority === "upgrades") {
         return "Port openers or core upgrades incomplete; prioritizing upgrade spending.";
     }
 
     if (decision.spendingPolicy.priority === "progression") {
-        return "Progression active; handling factions, donations, augmentations, or BN4 goals.";
+        return "Progression active; handling factions, backdoors, donations, augmentations, or BN4 goals.";
     }
 
     if (decision.spendingPolicy.priority === "faction") {

@@ -14,37 +14,34 @@ import {
 } from "/lib/uhm/prep.js";
 
 import {
-    runExpFallback,
-} from "/lib/uhm/modes/exp.js";
-
-import {
-    runExpOverdrive,
-} from "/lib/uhm/modes/exp-overdrive.js";
-
-import {
     hackScript,
     growScript,
     weakenScript,
 } from "/lib/uhm/config.js";
-
+import {
+    runExpSprint,
+} from "/lib/uhm/modes/exp-sprint.js";
 export function runLane(ns, lane, runtimeStats) {
     if (!isUsableTarget(ns, lane.target)) return null;
 
     if (lane.mode === "exp") {
-        const result = runExpOverdrive(ns, lane.target, lane.hosts, {
-            mode: "grow",
+        const result = runExpSprint(ns, lane.target, lane.hosts, {
             maxProcesses: 100000,
+            maxThreadsPerProcess: 50_000,
+            maxProcessesPerHost: 48,
         });
 
         runtimeStats.expOverdrive = {
             active: true,
+            engine: result.engine ?? "hack-sprint",
             target: lane.target,
             launched: result.launched,
             threads: result.threads,
             status: result.status,
             activeProcesses: result.activeProcesses ?? 0,
             maxProcesses: result.maxProcesses ?? 0,
-            growRatio: result.growRatio ?? 0,
+            maxThreadsPerProcess: result.maxThreadsPerProcess ?? 0,
+            growRatio: Number.isFinite(result.growRatio) ? result.growRatio : 0,
         };
 
         return {

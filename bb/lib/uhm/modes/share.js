@@ -1,3 +1,4 @@
+//bb/lib/uhm/modes/share.js
 import { SHARE_WORKER, homeReserveRam } from "/lib/uhm/config.js";
 
 /** @param {NS} ns **/

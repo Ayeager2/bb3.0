@@ -1,4 +1,5 @@
-//lib/uhm/modes/exp-targets.js
+// /lib/uhm/exp-targets.js
+
 import {
     isUsableTarget,
     safeGetServerMaxMoney,
@@ -22,13 +23,10 @@ const FALLBACK_TARGETS = [
 ];
 
 export function getBestExpTarget(ns, rootedServers, preferredTarget = null) {
-    if (preferredTarget && isUsableTarget(ns, preferredTarget)) {
-        return preferredTarget;
-    }
-
     const candidates = [...new Set([
         ...FALLBACK_TARGETS,
         ...Array.from(rootedServers ?? []),
+        preferredTarget,
     ])];
 
     return candidates
@@ -47,6 +45,7 @@ function isExpCandidate(ns, server) {
 
     try {
         if (ns.getServerRequiredHackingLevel(server) > ns.getHackingLevel()) return false;
+        if (safeGetServerMaxMoney(ns, server) <= 0) return false;
         if (safeHackAnalyzeChance(ns, server) <= 0) return false;
 
         return true;
@@ -62,16 +61,11 @@ function scoreExpTarget(ns, server) {
     const minSec = Math.max(1, safeGetServerMinSecurityLevel(ns, server));
     const secPenalty = Math.max(1, sec - minSec + 1);
     const chance = Math.max(0.01, safeHackAnalyzeChance(ns, server));
-    const weakenTime = Math.max(1, ns.getWeakenTime(server));
+    const hackTime = Math.max(1, ns.getHackTime(server));
 
-    // EXP target scoring:
-    // - wants hackable/rooted targets
-    // - likes decent money/growth
-    // - dislikes high security drift
-    // - lightly prefers faster weaken cycles
     return (
         Math.log10(maxMoney + 1) *
         growth *
         chance
-    ) / (secPenalty * Math.sqrt(weakenTime / 1000));
+    ) / (secPenalty * Math.sqrt(hackTime / 1000));
 }
