@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 2,
+  "sourceVersion": 5,
+  "updatedAt": 1780543681434,
+  "daemonUpdatedAt": 1780543677907,
+  "bitnode": {
+    "number": 4,
+    "name": "The Singularity",
+    "strategy": "singularity"
+  },
+  "progression": {
+    "phase": "prep-world-daemon",
+    "mode": "money",
+    "priority": "income",
+    "posture": "AGGRESSIVE_INCOME",
+    "nextAction": "Find/root/backdoor path toward w0r1d_d43m0n."
+  },
+  "daemon": {
+    "target": "rho-construction",
+    "targetOverride": null,
+    "status": "running",
+    "controller": "central-ai-controller-v4-stale-host-safe",
+    "reason": "Daemon state now built by /lib/daemon/state.js"
+  },
+  "player": {
+    "money": 724523075176.1676,
+    "hacking": 7713
+  },
+  "target": {
+    "name": "rho-construction",
+    "maxMoney": 1876897279.6875,
+    "money": 1210159628.3688385,
+    "moneyPercent": 0.6447660409899086,
+    "minSecurity": 15,
+    "security": 15,
+    "securityDiff": 0,
+    "weakenTime": 11173.473279110432,
+    "prepNeed": 0.35523395901009136
+  },
+  "policy": {
+    "reserveMoney": 5000000000,
+    "allowServerPurchases": true,
+    "allowStockTrading": true,
+    "allowHacknet": true,
+    "allowHomeRam": true,
+    "allowExePurchases": true,
+    "allowAugmentPurchases": false,
+    "allowReset": false,
+    "allowIntTravel": false
+  },
+  "servers": {
+    "rootedCount": 96,
+    "purchasedCount": 0,
+    "cloudCount": 25
+  },
+  "readiness": {
+    "targetBitNode": 4,
+    "goal": "Unlock Source-File 4",
+    "ready": true,
+    "readyCount": 4,
+    "totalChecks": 4,
+    "hackingReady": true,
+    "moneyReady": true,
+    "homeRamReady": true,
+    "augReady": true,
+    "hacking": 7713,
+    "hackingTarget": 2500,
+    "money": 724523075176.1676,
+    "moneyTarget": 100000000000,
+    "augmentCount": 37,
+    "augmentTarget": 30
+  },
+  "victory": {
+    "stage": "prep-world-daemon",
+    "nextAction": "Find/root/backdoor path toward w0r1d_d43m0n.",
+    "hackingTarget": 3000,
+    "hasDaedalus": true,
+    "hasRedPill": true,
+    "worldDaemon": "w0r1d_d43m0n",
+    "canUseWorldDaemon": false
+  },
+  "capabilities": {
+    "singularity": true,
+    "stocks": false,
+    "gangs": false,
+    "corporation": false,
+    "bladeburner": false,
+    "sleeves": false,
+    "hacknet": true,
+    "stanek": false
+  },
+  "share": {
+    "enabled": false,
+    "aggressive": false,
+    "reserveRamPercent": 0.25
+  },
+  "lanes": {
+    "multiTargetEnabled": true,
+    "primaryMoneyRamPercent": 0.6000000000000001,
+    "secondaryMoneyRamPercent": 0.30000000000000004,
+    "expRamPercent": 0.10000000000000002,
+    "adaptive": true,
+    "reason": "Default balanced money policy."
+  },
+  "widgets": {
+    "visible": [
+      "daemonHeader",
+      "coreState",
+      "targetIntel",
+      "playerStats",
+      "policy",
+      "serverSummary",
+      "laneAllocation",
+      "bn4Readiness",
+      "bn4Victory",
+      "factionProgress",
+      "augmentationPlanner",
+      "resetReadiness",
+      "redPillTracker"
+    ],
+    "emphasized": [
+      "targetIntel",
+      "serverSummary",
+      "laneAllocation"
+    ],
+    "hidden": []
+  },
+  "theme": {
+    "base": "dark_tactical",
+    "accent": "singularity_purple",
+    "dangerLevel": "normal"
+  }
+}

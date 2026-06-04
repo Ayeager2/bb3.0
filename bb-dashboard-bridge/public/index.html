@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Bitburner Daemon Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            background: #05070d;
+            color: #d1d5db;
+            font-family: Consolas, monospace;
+        }
+
+        .wrap {
+            padding: 18px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(320px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(124, 58, 237, 0.45);
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 0 24px rgba(124, 58, 237, 0.12);
+        }
+
+        .wide {
+            grid-column: 1 / -1;
+        }
+
+        .title {
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 8px;
+            padding: 4px 0;
+        }
+
+        .label {
+            color: #6b7280;
+        }
+
+        .green {
+            color: #10b981;
+        }
+
+        .blue {
+            color: #60a5fa;
+        }
+
+        .cyan {
+            color: #06b6d4;
+        }
+
+        .yellow {
+            color: #f59e0b;
+        }
+
+        .purple {
+            color: #a78bfa;
+        }
+
+        .red {
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>DAEMON DASHBOARD</h1>
+        <div id="status">Waiting for state...</div>
+        <br />
+        <div id="grid" class="grid"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById("grid");
+        const status = document.getElementById("status");
+
+        const money = n =>
+            Number.isFinite(Number(n))
+                ? "$" + Number(n).toLocaleString(undefined, { maximumFractionDigits: 0 })
+                : "unknown";
+
+        const num = n =>
+            Number.isFinite(Number(n))
+                ? Number(n).toLocaleString(undefined, { maximumFractionDigits: 2 })
+                : "unknown";
+
+        const pct = n =>
+            Number.isFinite(Number(n))
+                ? (Number(n) * 100).toFixed(1) + "%"
+                : "unknown";
+
+        const row = (label, value, cls = "") =>
+            `<div class="row"><div class="label">${label}</div><div class="${cls}">${value}</div></div>`;
+
+        const card = (title, html, wide = false) =>
+            `<div class="card ${wide ? "wide" : ""}">
+        <div class="title">${title}</div>
+        ${html}
+      </div>`;
+
+        async function loadState() {
+            try {
+                const res = await fetch("/state", { cache: "no-store" });
+                const s = await res.json();
+
+                status.textContent = `Updated ${new Date(s.updatedAt).toLocaleTimeString()}`;
+
+                grid.innerHTML = [
+                    card("Core", [
+                        row("BitNode", `BN${s.bitnode?.number ?? "?"} ${s.bitnode?.name ?? ""}`, "purple"),
+                        row("Phase", s.progression?.phase ?? "unknown", "purple"),
+                        row("Mode", s.progression?.mode ?? "unknown", "green"),
+                        row("Priority", s.progression?.priority ?? "unknown", "cyan"),
+                        row("Target", s.daemon?.target ?? "none", "yellow"),
+                    ].join("")),
+
+                    card("Player", [
+                        row("Money", money(s.player?.money), "green"),
+                        row("Hacking", num(s.player?.hacking), "blue"),
+                    ].join("")),
+
+                    card("Target Intel", [
+                        row("Name", s.target?.name ?? "none", "yellow"),
+                        row("Money", `${money(s.target?.money)} / ${money(s.target?.maxMoney)}`, "green"),
+                        row("Money %", pct(s.target?.moneyPercent), "green"),
+                        row("Security", `${num(s.target?.security)} / min ${num(s.target?.minSecurity)}`, "red"),
+                        row("Weaken", `${num((s.target?.weakenTime ?? 0) / 1000)}s`, "cyan"),
+                    ].join("")),
+
+                    card("BN4 Readiness", [
+                        row("Goal", s.readiness?.goal ?? "unknown", "purple"),
+                        row("Ready", `${s.readiness?.readyCount ?? 0}/${s.readiness?.totalChecks ?? 0}`, "yellow"),
+                        row("Hacking", `${num(s.readiness?.hacking)} / ${num(s.readiness?.hackingTarget)}`, "blue"),
+                        row("Money", `${money(s.readiness?.money)} / ${money(s.readiness?.moneyTarget)}`, "green"),
+                        row("Augs", `${num(s.readiness?.augmentCount)} / ${num(s.readiness?.augmentTarget)}`, "yellow"),
+                    ].join("")),
+
+                    card("Victory Plan", [
+                        row("Stage", s.victory?.stage ?? "unknown", "purple"),
+                        row("Next", s.victory?.nextAction ?? "none", "yellow"),
+                        row("Red Pill", s.victory?.hasRedPill ? "YES" : "NO", s.victory?.hasRedPill ? "green" : "red"),
+                        row("World Daemon", s.victory?.canUseWorldDaemon ? "READY" : "LOCKED", s.victory?.canUseWorldDaemon ? "green" : "red"),
+                    ].join(""), true),
+                ].join("");
+            } catch (error) {
+                status.textContent = "Waiting for bridge/state...";
+            }
+        }
+
+        loadState();
+        setInterval(loadState, 3000);
+    </script>
+</body>
+
+</html>

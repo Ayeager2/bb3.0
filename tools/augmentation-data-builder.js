@@ -39,16 +39,16 @@ export async function main(ns) {
 
 function getJoinedFactions(ns, player) {
     try {
-        return ns.singularity.getOwnedFactions();
+        return ns.getPlayer().factions
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 
     try {
         return player.factions ?? [];
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 
     return [];
 }
