@@ -59,7 +59,9 @@ export async function main(ns) {
     ["overdrive", false],
     ["cycle-delay", 100],
     ["max-batches", 750],
-    ["exp-ram", 0.75],
+    ["exp-cycle-delay", 25],
+    ["exp-max-batches", 50000],
+    ["exp-ram", 1],
   ]);
 
   if (flags.tails) {
@@ -83,26 +85,36 @@ export async function main(ns) {
       flags
     );
 
-    const effectiveDaemonState = forcedExpMode
-      ? {
-        ...daemonState,
-        mode: "exp",
-        phase: "forced-exp-until-3000",
-        multiTargetPolicy: {
-          ...(daemonState?.multiTargetPolicy ?? {}),
-          primaryMoneyRamPercent: 0,
-          secondaryMoneyRamPercent: 0,
-          expRamPercent: Number(flags["exp-ram"]) || 1,
-          shareRamPercent: 0,
-          reason: "Forced EXP mode until hacking 3000",
-        },
-        protoBatching: {
-          ...(daemonState?.protoBatching ?? {}),
-          maxBatchesPerCycle: Number(flags["max-batches"]) || 999,
-          cycleDelayMs: Number(flags["cycle-delay"]) || 250,
-        },
-      }
-      : daemonState;
+    const daemonWantsExp =
+      daemonState?.mode === "exp";
+
+    const effectiveDaemonState =
+      forcedExpMode || daemonWantsExp
+        ? {
+          ...daemonState,
+          mode: "exp",
+          phase: forcedExpMode
+            ? "forced-exp-until-3000"
+            : daemonState?.phase ?? "exp-overdrive",
+
+          multiTargetPolicy: {
+            ...(daemonState?.multiTargetPolicy ?? {}),
+            primaryMoneyRamPercent: 0,
+            secondaryMoneyRamPercent: 0,
+            expRamPercent: Number(flags["exp-ram"]) || 1,
+            shareRamPercent: 0,
+            reason: forcedExpMode
+              ? "Forced EXP mode until hacking 3000"
+              : "Endgame EXP overdrive",
+          },
+
+          protoBatching: {
+            ...(daemonState?.protoBatching ?? {}),
+            maxBatchesPerCycle: Number(flags["exp-max-batches"]) || 50000,
+            cycleDelayMs: Number(flags["exp-cycle-delay"]) || 25,
+          },
+        }
+        : daemonState;
 
     if (forcedExpMode) {
       phase = {
@@ -117,8 +129,25 @@ export async function main(ns) {
     runtimeStats.phase = phase;
     runtimeStats.protoMoneyThreads = 0;
 
-    const rescanMs = effectiveDaemonState?.protoBatching?.rescanIntervalMs ?? rescanIntervalMs;
-    const delayMs = effectiveDaemonState?.protoBatching?.cycleDelayMs ?? cycleDelayMs;
+    const isExpMode =
+      effectiveDaemonState?.mode === "exp";
+
+    const rescanMs =
+      effectiveDaemonState?.protoBatching?.rescanIntervalMs ??
+      rescanIntervalMs;
+
+    const delayMs =
+      isExpMode
+        ? Number(flags["exp-cycle-delay"]) || 25
+        : effectiveDaemonState?.protoBatching?.cycleDelayMs ?? cycleDelayMs;
+
+    runtimeStats.expOverdrive = {
+      active: isExpMode,
+      maxBatches: isExpMode
+        ? Number(flags["exp-max-batches"]) || 50000
+        : Number(flags["max-batches"]) || 750,
+      cycleDelayMs: delayMs,
+    };
 
     if (now - lastScan > rescanMs || rootedServers.size <= 1) {
       rootedServers = getAllExecutionServers(ns);

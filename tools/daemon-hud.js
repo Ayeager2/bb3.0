@@ -1,3 +1,4 @@
+// /tools/daemon-hud.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { drawDashboard } from "/lib/daemon/dashboard.js";
 
@@ -26,10 +27,13 @@ export async function main(ns) {
             continue;
         }
 
-        drawDashboard(ns, {
+        const fixedState = {
             ...state,
             resetPlan,
-        }, {
+            singularity: fixSingularityStage(ns, state.singularity ?? {}),
+        };
+
+        drawDashboard(ns, fixedState, {
             mode: null,
             priority: null,
             target: null,
@@ -38,6 +42,97 @@ export async function main(ns) {
         printResetPlan(ns, resetPlan);
 
         await ns.sleep(refreshMs);
+    }
+}
+
+function fixSingularityStage(ns, singularity = {}) {
+    const redPillOwned = hasRedPill(ns);
+
+    if (!redPillOwned) {
+        return singularity;
+    }
+
+    const worldDaemon = "w0r1d_d43m0n";
+    const hacking = ns.getHackingLevel();
+    const requiredHack = safeRequiredHack(ns, worldDaemon);
+    const worldRooted = safeRoot(ns, worldDaemon);
+    const worldBackdoored = safeBackdoor(ns, worldDaemon);
+
+    if (hacking < requiredHack) {
+        return {
+            ...singularity,
+            stage: "world-daemon-leveling",
+            redPillOwned: true,
+            worldDaemonReady: false,
+            message:
+                `Red Pill owned. Level hacking ${hacking}/${requiredHack} for ${worldDaemon}.`,
+        };
+    }
+
+    if (!worldRooted) {
+        return {
+            ...singularity,
+            stage: "root-world-daemon",
+            redPillOwned: true,
+            worldDaemonReady: false,
+            message:
+                `Red Pill owned. Root ${worldDaemon}.`,
+        };
+    }
+
+    if (!worldBackdoored) {
+        return {
+            ...singularity,
+            stage: "backdoor-world-daemon",
+            redPillOwned: true,
+            worldDaemonReady: false,
+            message:
+                `Red Pill owned. Backdoor ${worldDaemon}.`,
+        };
+    }
+
+    return {
+        ...singularity,
+        stage: "destroy-bitnode",
+        redPillOwned: true,
+        worldDaemonReady: true,
+        message:
+            `Red Pill owned and ${worldDaemon} is backdoored. Destroy BitNode.`,
+    };
+}
+
+function hasRedPill(ns) {
+    try {
+        return ns.singularity
+            .getOwnedAugmentations(true)
+            .includes("The Red Pill");
+    } catch {
+        return false;
+    }
+}
+
+function safeRequiredHack(ns, server) {
+    try {
+        return ns.getServerRequiredHackingLevel(server);
+    } catch {
+        return 9000;
+    }
+}
+
+function safeRoot(ns, server) {
+    try {
+        return ns.serverExists(server) && ns.hasRootAccess(server);
+    } catch {
+        return false;
+    }
+}
+
+function safeBackdoor(ns, server) {
+    try {
+        return ns.serverExists(server) &&
+            ns.getServer(server).backdoorInstalled === true;
+    } catch {
+        return false;
     }
 }
 

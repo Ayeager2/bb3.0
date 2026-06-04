@@ -97,7 +97,7 @@ export async function main(ns) {
     ns.singularity.connect("home");
   } catch (error) {
     console.error(error);
-}
+  }
 }
 
 function hasSingularity(ns) {
