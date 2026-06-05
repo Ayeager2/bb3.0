@@ -33,3 +33,33 @@ export async function fetchNetworkTopology() {
 
     return response.json();
 }
+
+export async function sendDashboardCommand(command) {
+    const response = await fetch("/command", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ command }),
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(result?.error ?? `Command failed: ${response.status}`);
+    }
+
+    return result;
+}
+
+export async function fetchCommandStatus() {
+    const response = await fetch("/command/status", {
+        cache: "no-store",
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch command status: ${response.status}`);
+    }
+
+    return response.json();
+}

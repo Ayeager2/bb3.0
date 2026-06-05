@@ -1,58 +1,26 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { FiSettings } from "react-icons/fi";
 
-import CoreStateCard from "../cards/CoreStateCard.jsx";
-import PlayerCard from "../cards/PlayerCard.jsx";
-import TargetIntelCard from "../cards/TargetIntelCard.jsx";
-import BN4ReadinessCard from "../cards/BN4ReadinessCard.jsx";
-import VictoryPlanCard from "../cards/VictoryPlanCard.jsx";
-import LaneAllocationCard from "../cards/LaneAllocationCard.jsx";
-import PolicyCard from "../cards/PolicyCard.jsx";
-import ServerSummaryCard from "../cards/ServerSummaryCard.jsx";
-import CapabilitiesCard from "../cards/CapabilitiesCard.jsx";
-import WidgetResolverCard from "../cards/WidgetResolverCard.jsx";
-import EventFeedCard from "../cards/EventFeedCard.jsx";
-import ServiceHealthCard from "../cards/ServiceHealthCard.jsx";
-import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
-import TargetStabilityCard from "../cards/TargetStabilityCard.jsx";
-import NetworkMapCard from "../cards/NetworkMapCard.jsx";
 import NetworkTopologyCard from "../cards/NetworkTopologyCard.jsx";
+import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
 
 const DEFAULT_CARD_ORDER = [
-    "core",
-    "player",
-    "servers",
-    "services",
-    "target",
-    "readiness",
-    "victory",
-    "lanes",
-    "policy",
-    "capabilities",
-    "widgets",
-    "targetStability",
     "networkTopology",
 ];
 
 const CARD_STORAGE_KEY = "bbdash-card-layout-v2";
 
 const CARD_REGISTRY = {
-    core: { title: "Core State", component: CoreStateCard },
-    player: { title: "Player", component: PlayerCard },
-    servers: { title: "Servers", component: ServerSummaryCard },
-    services: { title: "Service Health", component: ServiceHealthCard },
-    target: { title: "Target Intel", component: TargetIntelCard },
-    readiness: { title: "BN4 Readiness", component: BN4ReadinessCard },
-    victory: { title: "Victory Plan", component: VictoryPlanCard },
-    lanes: { title: "Lane Allocation", component: LaneAllocationCard },
-    policy: { title: "Spending Policy", component: PolicyCard },
-    capabilities: { title: "Capabilities", component: CapabilitiesCard },
-    widgets: { title: "Widget Resolver", component: WidgetResolverCard },
-    targetStability: { title: "Target Stability", component: TargetStabilityCard },
     networkTopology: { title: "Network Topology", component: NetworkTopologyCard },
 };
 
-export default function DashboardGrid({ state, events = [], topology = { nodes: [], edges: [] } }) {
+export default function DashboardGrid({
+    state,
+    events = [],
+    topology = { nodes: [], edges: [] },
+    toastSettings,
+    onToastSettingsChange,
+}) {
     const [layout, setLayout] = useState(() => loadLayout());
     const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -128,6 +96,8 @@ export default function DashboardGrid({ state, events = [], topology = { nodes: 
                     onClose={() => setSettingsOpen(false)}
                     onToggleVisible={toggleVisible}
                     onReset={resetLayout}
+                    toastSettings={toastSettings}
+                    onToastSettingsChange={onToastSettingsChange}
                 />
             </>
         );
@@ -165,6 +135,8 @@ export default function DashboardGrid({ state, events = [], topology = { nodes: 
                 onClose={() => setSettingsOpen(false)}
                 onToggleVisible={toggleVisible}
                 onReset={resetLayout}
+                toastSettings={toastSettings}
+                onToastSettingsChange={onToastSettingsChange}
             />
         </>
     );

@@ -1,3 +1,5 @@
+import { refreshDaemonState } from "/lib/daemon/dev-reset.js";
+
 /** @param {NS} ns **/
 export async function main(ns) {
     ns.disableLog("ALL");
@@ -29,6 +31,9 @@ export async function main(ns) {
         ns.tprint(`[DESTROY] Need hacking ${required}; current ${hacking}.`);
         return;
     }
+
+    ns.tprint("[DESTROY] Refreshing daemon state before BitNode destruction...");
+    refreshDaemonState(ns);
 
     ns.tprint(`[DESTROY] Destroying BitNode. Next BN=${nextBitNode}, script=${nextScript}`);
 

@@ -60,7 +60,11 @@ function buildTopology(ns) {
         }
     }
 
-    const nodes = [...visited].map(server => getServerNode(ns, server));
+    const paths = buildPathsFromHome(edges);
+    const nodes = [...visited].map(server => ({
+        ...getServerNode(ns, server),
+        pathFromHome: paths[server] ?? [],
+    }));
 
     return {
         schemaVersion: 1,
@@ -80,10 +84,15 @@ function getServerNode(ns, server) {
         requiredHack: 0,
         moneyMax: 0,
         moneyAvailable: 0,
+        moneyPercent: 0,
+        securityDiff: 0,
+        prepWarning: false,
         minSecurity: 0,
         security: 0,
         purchased: false,
         type: "normal",
+        factionServer: isFactionServer(server),
+        needsBackdoor: false,
     };
 
     try {
@@ -97,10 +106,15 @@ function getServerNode(ns, server) {
             requiredHack: Number(s.requiredHackingSkill ?? 0),
             moneyMax: Number(s.moneyMax ?? 0),
             moneyAvailable: Number(s.moneyAvailable ?? 0),
+            moneyPercent: getMoneyPercent(s),
+            securityDiff: getSecurityDiff(s),
+            prepWarning: getPrepWarning(s),
             minSecurity: Number(s.minDifficulty ?? 0),
             security: Number(s.hackDifficulty ?? 0),
             purchased: Boolean(s.purchasedByPlayer),
             type: classifyServer(server, s),
+            factionServer: isFactionServer(server),
+            needsBackdoor: isFactionServer(server) && !Boolean(s.backdoorInstalled),
         };
     } catch {
         // Keep defaults.
@@ -131,4 +145,75 @@ function dedupeEdges(edges) {
     }
 
     return result;
+}
+
+function buildPathsFromHome(edges) {
+    const graph = {};
+
+    for (const edge of edges) {
+        if (!graph[edge.source]) graph[edge.source] = [];
+        if (!graph[edge.target]) graph[edge.target] = [];
+
+        graph[edge.source].push(edge.target);
+        graph[edge.target].push(edge.source);
+    }
+
+    const paths = { home: ["home"] };
+    const queue = ["home"];
+
+    while (queue.length > 0) {
+        const current = queue.shift();
+
+        for (const next of graph[current] ?? []) {
+            if (paths[next]) continue;
+
+            paths[next] = [...paths[current], next];
+            queue.push(next);
+        }
+    }
+
+    return paths;
+}
+
+function isFactionServer(server) {
+    return [
+        "CSEC",
+        "avmnite-02h",
+        "I.I.I.I",
+        "run4theh111z",
+        "The-Cave",
+        "w0r1d_d43m0n",
+    ].includes(server);
+}
+
+function getMoneyPercent(s) {
+    const money = Number(s.moneyAvailable ?? 0);
+    const max = Number(s.moneyMax ?? 0);
+
+    if (!Number.isFinite(money) || !Number.isFinite(max) || max <= 0) {
+        return 0;
+    }
+
+    return money / max;
+}
+
+function getSecurityDiff(s) {
+    const current = Number(s.hackDifficulty ?? 0);
+    const min = Number(s.minDifficulty ?? 0);
+
+    if (!Number.isFinite(current) || !Number.isFinite(min)) {
+        return 0;
+    }
+
+    return Math.max(0, current - min);
+}
+
+function getPrepWarning(s) {
+    const moneyPercent = getMoneyPercent(s);
+    const securityDiff = getSecurityDiff(s);
+    const maxMoney = Number(s.moneyMax ?? 0);
+
+    if (maxMoney <= 0) return false;
+
+    return moneyPercent < 0.8 || securityDiff > 5;
 }

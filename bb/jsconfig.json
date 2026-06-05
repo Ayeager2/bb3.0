@@ -2,14 +2,25 @@
     "compilerOptions": {
         "target": "ES2022",
         "module": "ESNext",
-        "jsx": "react-jsx",
         "moduleResolution": "Bundler",
-        "checkJs": true,
         "allowJs": true,
-        "strict": false,
-        "baseUrl": "./src"
+        "checkJs": false,
+        "baseUrl": ".",
+        "ignoreDeprecations": "6.0",
+        "paths": {
+            "/*": [
+                "./*"
+            ]
+        }
     },
     "include": [
-        "src"
+        "**/*.js",
+        "**/*.jsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "dashboard-ui/node_modules",
+        "dashboard-ui/dist"
     ]
 }

@@ -1,0 +1,26 @@
+.chip-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(2, 6, 23, .55);
+}
+
+.chip-on {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .45);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .08);
+}
+
+.chip-hot {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .55);
+    box-shadow: 0 0 12px rgba(250, 204, 21, .12);
+}

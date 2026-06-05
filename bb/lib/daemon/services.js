@@ -391,7 +391,7 @@ export const SERVICES = [
     },
     {
         id: "destroy-node",
-        script: "/tools/destroy-node-service.js",
+        name: "/tools/destroy-node-service.js",
         host: "home",
         phases: ["destroy-node", "prep-world-daemon"],
         threads: 1,
@@ -407,13 +407,19 @@ export const SERVICES = [
         purpose: "final BitNode destruction executor",
     },
     {
-        id: "dashboard-state-writer",
-        script: "/tools/dashboard-state-writer.js",
-        args: ["--refresh", 3000],
-        enabled: true,
+        id: "dashboard-command-runner",
+        name: "/tools/dashboard-command-runner.js",
+        host: "home",
+        threads: 1,
+        args: [],
+        tail: false,
+        type: SERVICE_TYPES.PERSISTENT,
         keepAlive: true,
-        purpose: "Writes /data/ui/dashboard-state.txt for F12 overlay."
-    }
+        enabled: true,
+        requiresSingularity: false,
+        minHomeRam: 64,
+        purpose: "dashboard-debug-command-runner",
+    },
 ];
 
 export function getEnabledServices() {

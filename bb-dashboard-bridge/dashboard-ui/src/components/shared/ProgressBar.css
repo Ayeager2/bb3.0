@@ -1,0 +1,15 @@
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, .08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0, 229, 255, .12);
+}
+
+.progress-bar>div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--cyan), var(--green));
+    box-shadow: var(--glow-cyan);
+}

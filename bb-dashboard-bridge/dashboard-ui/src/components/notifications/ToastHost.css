@@ -1,0 +1,116 @@
+.toast-host {
+    position: fixed;
+    top: 94px;
+    right: 18px;
+    z-index: 120;
+    width: min(420px, calc(100vw - 36px));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast-item {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: 28px 1fr 28px;
+    gap: 10px;
+    align-items: start;
+    padding: 12px;
+    border-radius: 12px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .10), transparent 45%),
+        rgba(2, 6, 23, .94);
+    border: 1px solid rgba(0, 229, 255, .22);
+    box-shadow:
+        0 0 24px rgba(0, 229, 255, .16),
+        0 10px 30px rgba(0, 0, 0, .45);
+    backdrop-filter: blur(10px);
+    animation: toastSlideIn .18s ease-out;
+}
+
+.toast-icon {
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+    color: var(--cyan);
+}
+
+.toast-title {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.toast-message {
+    margin-top: 4px;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.toast-close {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toast-close:hover {
+    color: white;
+}
+
+.toast-success {
+    border-color: rgba(0, 255, 156, .34);
+}
+
+.toast-success .toast-icon,
+.toast-success .toast-title {
+    color: var(--green);
+}
+
+.toast-warning {
+    border-color: rgba(250, 204, 21, .36);
+}
+
+.toast-warning .toast-icon,
+.toast-warning .toast-title {
+    color: var(--yellow);
+}
+
+.toast-danger,
+.toast-error {
+    border-color: rgba(255, 56, 100, .42);
+}
+
+.toast-danger .toast-icon,
+.toast-danger .toast-title,
+.toast-error .toast-icon,
+.toast-error .toast-title {
+    color: var(--red);
+}
+
+.toast-sticky {
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    color: var(--yellow);
+    font-size: 9px;
+    letter-spacing: .08em;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

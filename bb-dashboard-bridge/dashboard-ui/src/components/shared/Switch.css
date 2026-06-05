@@ -1,0 +1,32 @@
+.switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, .95);
+    border: 1px solid rgba(255, 255, 255, .18);
+    cursor: pointer;
+    padding: 0;
+}
+
+.switch span {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--muted);
+    transition: all .18s ease;
+}
+
+.switch-on {
+    border-color: rgba(0, 255, 156, .55);
+    box-shadow: 0 0 14px rgba(0, 255, 156, .12);
+}
+
+.switch-on span {
+    left: 26px;
+    background: var(--green);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .32);
+}

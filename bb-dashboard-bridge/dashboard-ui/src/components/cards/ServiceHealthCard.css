@@ -1,0 +1,53 @@
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.service-line {
+    display: grid;
+    grid-template-columns: 160px 80px 1fr;
+    gap: 8px;
+    padding: 7px 8px;
+    background: rgba(2, 6, 23, .55);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.service-name {
+    color: var(--cyan);
+}
+
+.service-status {
+    text-transform: uppercase;
+}
+
+.service-reason {
+    color: var(--muted);
+}
+
+.service-running {
+    border-color: rgba(0, 255, 156, .25);
+}
+
+.service-running .service-status {
+    color: var(--green);
+}
+
+.service-blocked {
+    border-color: rgba(250, 204, 21, .35);
+}
+
+.service-blocked .service-status {
+    color: var(--yellow);
+}
+
+.service-failed {
+    border-color: rgba(255, 56, 100, .45);
+}
+
+.service-failed .service-status {
+    color: var(--red);
+}

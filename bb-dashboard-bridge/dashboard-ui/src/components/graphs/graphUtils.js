@@ -1,8 +1,11 @@
-export function graphNode(id, label, x, y, className = "") {
+export function graphNode(id, label, x, y, className = "", raw = null) {
     return {
         id: String(id),
         position: { x, y },
-        data: { label },
+        data: {
+            label,
+            raw,
+        },
         className,
     };
 }

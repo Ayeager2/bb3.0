@@ -1,0 +1,14 @@
+.data-row {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.data-label {
+    color: var(--muted);
+}
+
+.data-value {
+    color: var(--text);
+}

@@ -19,6 +19,14 @@ export default defineConfig({
         target: "http://127.0.0.1:31337",
         changeOrigin: true,
       },
+      "/command": {
+        target: "http://127.0.0.1:31337",
+        changeOrigin: true,
+      },
+      "/command/status": {
+        target: "http://127.0.0.1:31337",
+        changeOrigin: true,
+      },
     }
   },
 });

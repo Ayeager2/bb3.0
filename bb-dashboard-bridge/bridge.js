@@ -14,6 +14,9 @@ const BITBURNER_EVENT_FILE = "/data/ui/event-log.txt";
 const OUT_EVENT_FILE = path.join(OUT_DIR, "event-log.json");
 const BITBURNER_TOPOLOGY_FILE = "/data/ui/network-topology.txt";
 const OUT_TOPOLOGY_FILE = path.join(OUT_DIR, "network-topology.json");
+const BITBURNER_COMMAND_FILE = "/data/ui/dashboard-command.txt";
+const BITBURNER_COMMAND_STATUS_FILE = "/data/ui/dashboard-command-status.txt";
+const OUT_COMMAND_STATUS_FILE = path.join(OUT_DIR, "dashboard-command-status.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -24,6 +27,61 @@ const pending = new Map();
 const app = express();
 
 let testMode = false;
+
+app.use(express.json());
+
+app.post("/command", async (req, res) => {
+    if (!bitburnerSocket) {
+        return res.status(503).json({ ok: false, error: "Bitburner not connected." });
+    }
+
+    const command = String(req.body?.command ?? "");
+    const allowed = new Set([
+        "refreshTopology",
+        "clearEvents",
+        "debugSnapshot",
+        "eventTest",
+    ]);
+
+    if (!allowed.has(command)) {
+        return res.status(400).json({ ok: false, error: `Command not allowed: ${command}` });
+    }
+
+    const payload = {
+        id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        createdAt: Date.now(),
+        command,
+    };
+
+    try {
+        await rpc("pushFile", {
+            filename: BITBURNER_COMMAND_FILE,
+            server: "home",
+            content: JSON.stringify(payload, null, 2),
+        });
+
+        res.json({ ok: true, command, payload });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            error: String(error?.message ?? error),
+        });
+    }
+});
+
+app.get("/command/status", (_req, res) => {
+    try {
+        const raw = fs.readFileSync(OUT_COMMAND_STATUS_FILE, "utf8");
+        res.setHeader("Cache-Control", "no-store");
+        res.type("json").send(raw);
+    } catch {
+        res.json({
+            running: false,
+            status: "unknown",
+            message: "No command status written yet.",
+        });
+    }
+});
 
 app.use(express.static(OUT_DIR));
 
@@ -235,6 +293,32 @@ wss.on("connection", socket => {
     });
 });
 
+async function pollCommandStatus() {
+    if (!bitburnerSocket) return;
+
+    try {
+        const content = await rpc("getFile", {
+            filename: BITBURNER_COMMAND_STATUS_FILE,
+            server: "home"
+        });
+
+        const parsed = JSON.parse(content || "{}");
+        parsed.bridgeUpdatedAt = Date.now();
+
+        fs.writeFileSync(OUT_COMMAND_STATUS_FILE, JSON.stringify(parsed, null, 2));
+    } catch {
+        fs.writeFileSync(
+            OUT_COMMAND_STATUS_FILE,
+            JSON.stringify({
+                running: false,
+                status: "unavailable",
+                message: "Could not read command runner status.",
+                bridgeUpdatedAt: Date.now(),
+            }, null, 2)
+        );
+    }
+}
+
 function rpc(method, params) {
     if (!bitburnerSocket || bitburnerSocket.readyState !== bitburnerSocket.OPEN) {
         return Promise.reject(new Error("Bitburner is not connected."));
@@ -336,5 +420,6 @@ async function pollNetworkTopology() {
 setInterval(pollDashboardState, 3000);
 setInterval(pollEventLog, 3000);
 setInterval(pollNetworkTopology, 10000);
+setInterval(pollCommandStatus, 3000);
 
 console.log(`[REMOTE API] Waiting for Bitburner on ws://localhost:${REMOTE_API_PORT}`);

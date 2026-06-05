@@ -1,3 +1,7 @@
+
+//bb-dashboard-bridge\dashboard-ui\src\components\settings\WidgetsSettings.jsx
+import Switch from "../shared/Switch.jsx";
+
 export default function WidgetsSettings({ layout, registry, onToggleVisible }) {
     return (
         <div className="settings-list">
@@ -14,12 +18,10 @@ export default function WidgetsSettings({ layout, registry, onToggleVisible }) {
                             <div className="settings-item-id">{id}</div>
                         </div>
 
-                        <button
-                            className={`switch ${enabled ? "switch-on" : ""}`}
-                            onClick={() => onToggleVisible(id)}
-                        >
-                            <span />
-                        </button>
+                        <Switch
+                            checked={enabled}
+                            onChange={() => onToggleVisible(id)}
+                        />
                     </div>
                 );
             })}

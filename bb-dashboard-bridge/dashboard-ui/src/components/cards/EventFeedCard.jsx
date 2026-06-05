@@ -1,4 +1,5 @@
 import Card from "../shared/Card.jsx";
+import EventFeedView from "../events/EventFeedView.jsx";
 
 export default function EventFeedCard({
     events = [],
@@ -8,8 +9,6 @@ export default function EventFeedCard({
     onMoveUp,
     onMoveDown,
 }) {
-    const visible = [...events].slice(-30).reverse();
-
     return (
         <Card
             id={id}
@@ -20,29 +19,7 @@ export default function EventFeedCard({
             onMoveUp={onMoveUp}
             onMoveDown={onMoveDown}
         >
-            <div className="event-feed">
-                {visible.length === 0 && (
-                    <div className="muted">No events yet.</div>
-                )}
-
-                {visible.map((event, index) => (
-                    <div key={`${event.ts}-${index}`} className={`event-line event-${event.level ?? "info"}`}>
-                        <span className="event-time">{formatEventTime(event.ts)}</span>
-                        <span className="event-type">{event.type ?? "system"}</span>
-                        <span className="event-message">{event.message ?? ""}</span>
-                    </div>
-                ))}
-            </div>
+            <EventFeedView events={events} limit={30} />
         </Card>
     );
-}
-
-function formatEventTime(ts) {
-    if (!ts) return "--:--:--";
-
-    try {
-        return new Date(ts).toLocaleTimeString();
-    } catch {
-        return "--:--:--";
-    }
 }

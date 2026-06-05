@@ -1,21 +1,30 @@
 import { useEffect, useState } from "react";
 import TopBar from "./components/layout/TopBar.jsx";
 import DashboardGrid from "./components/layout/DashboardGrid.jsx";
-import EventFeedDrawer from "./components/events/EventFeedDrawer.jsx";
+import RightInspectorDrawer from "./components/inspector/RightInspectorDrawer.jsx";
+import ToastHost from "./components/notifications/ToastHost.jsx";
 
 import {
     fetchDashboardState,
     fetchDashboardEvents,
     fetchNetworkTopology,
+    fetchCommandStatus
 } from "./api/dashboardApi.js";
+
+import {
+    loadToastSettings,
+    saveToastSettings,
+} from "./components/notifications/toastSettings.js";
 
 export default function App() {
     const [state, setState] = useState(null);
     const [events, setEvents] = useState([]);
     const [error, setError] = useState(null);
+    const [commandStatus, setCommandStatus] = useState(null);
+    const [toastSettings, setToastSettings] = useState(() => loadToastSettings());
     const [topology, setTopology] = useState({ nodes: [], edges: [] });
-    const [eventFeedOpen, setEventFeedOpen] = useState(() => {
-        return localStorage.getItem("bbdash-event-feed-open") === "true";
+    const [inspectorOpen, setInspectorOpen] = useState(() => {
+        return localStorage.getItem("bbdash-inspector-open") === "true";
     });
 
     async function refreshState() {
@@ -37,6 +46,13 @@ export default function App() {
             } catch {
                 setTopology({ nodes: [], edges: [] });
             }
+
+            try {
+                const nextCommandStatus = await fetchCommandStatus();
+                setCommandStatus(nextCommandStatus);
+            } catch {
+                setCommandStatus(null);
+            }
         } catch (err) {
             setError(err);
         }
@@ -49,23 +65,36 @@ export default function App() {
 
         return () => clearInterval(id);
     }, []);
+
     useEffect(() => {
-        localStorage.setItem("bbdash-event-feed-open", String(eventFeedOpen));
-    }, [eventFeedOpen]);
+        localStorage.setItem("bbdash-inspector-open", String(inspectorOpen));
+    }, [inspectorOpen]);
+
+    function updateToastSettings(next) {
+        setToastSettings(next);
+        saveToastSettings(next);
+    }
     return (
         <div className={`app-shell theme-${state?.theme?.accent ?? "default"}`}>
-            <TopBar state={state} error={error} />
+            <TopBar state={state} error={error} commandStatus={commandStatus} />
+
             <DashboardGrid
                 state={state}
                 events={events}
                 topology={topology}
+                toastSettings={toastSettings}
+                onToastSettingsChange={updateToastSettings}
             />
-            <EventFeedDrawer
-                open={eventFeedOpen}
+
+            <RightInspectorDrawer
+                open={inspectorOpen}
+                state={state}
                 events={events}
-                onClose={() => setEventFeedOpen(false)}
-                onToggle={() => setEventFeedOpen(open => !open)}
+                onClose={() => setInspectorOpen(false)}
+                onToggle={() => setInspectorOpen(open => !open)}
             />
+
+            <ToastHost events={events} settings={toastSettings} />
         </div>
     );
 }

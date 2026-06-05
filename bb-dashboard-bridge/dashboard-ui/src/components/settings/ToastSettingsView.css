@@ -1,0 +1,116 @@
+.toast-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.toast-settings-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, .56);
+}
+
+.toast-settings-title {
+    color: var(--cyan);
+    font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.toast-settings-subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.toast-settings-section {
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(2, 6, 23, .46);
+}
+
+.toast-settings-section-title {
+    padding: 10px 12px;
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.toast-settings-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.toast-toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.toast-toggle-row:hover {
+    background: rgba(0, 229, 255, .05);
+}
+
+.toast-toggle-row:last-child {
+    border-bottom: none;
+}
+
+.toast-switch {
+    width: 42px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    background: rgba(255, 255, 255, .08);
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.toast-switch span {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--muted);
+    transition: transform .16s ease, background .16s ease;
+}
+
+.toast-switch-on {
+    border-color: rgba(0, 255, 156, .35);
+    background: rgba(0, 255, 156, .12);
+}
+
+.toast-switch-on span {
+    transform: translateX(18px);
+    background: var(--green);
+}
+
+.toast-settings-reset {
+    padding: 9px 12px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 56, 100, .28);
+    background: rgba(2, 6, 23, .62);
+    color: var(--red);
+    cursor: pointer;
+}
+
+.toast-settings-reset:hover {
+    border-color: var(--red);
+}

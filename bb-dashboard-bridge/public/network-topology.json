@@ -1,20 +1,28 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1780631105502,
+  "updatedAt": 1780677370800,
   "nodes": [
     {
       "id": "home",
       "label": "home",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 2048,
+      "maxRam": 32768,
       "requiredHack": 1,
       "moneyMax": 0,
-      "moneyAvailable": 1553220817.2239733,
+      "moneyAvailable": 2201325.9326033294,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "home"
+      "type": "home",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home"
+      ]
     },
     {
       "id": "n00dles",
@@ -24,11 +32,20 @@
       "maxRam": 4,
       "requiredHack": 1,
       "moneyMax": 196875,
-      "moneyAvailable": 196875,
+      "moneyAvailable": 2.9051695302127543e-22,
+      "moneyPercent": 1.4756416661398118e-27,
+      "securityDiff": 54.92950000000009,
+      "prepWarning": true,
       "minSecurity": 1,
-      "security": 1,
+      "security": 55.92950000000009,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "n00dles"
+      ]
     },
     {
       "id": "foodnstuff",
@@ -39,10 +56,19 @@
       "requiredHack": 1,
       "moneyMax": 5625000,
       "moneyAvailable": 1500000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 7,
+      "prepWarning": true,
       "minSecurity": 3,
       "security": 10,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff"
+      ]
     },
     {
       "id": "sigma-cosmetics",
@@ -53,10 +79,19 @@
       "requiredHack": 5,
       "moneyMax": 6468750,
       "moneyAvailable": 1725000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 7,
+      "prepWarning": true,
       "minSecurity": 3,
       "security": 10,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics"
+      ]
     },
     {
       "id": "joesguns",
@@ -67,10 +102,19 @@
       "requiredHack": 10,
       "moneyMax": 7031250,
       "moneyAvailable": 1875000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 0,
+      "prepWarning": true,
       "minSecurity": 5,
       "security": 5,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "joesguns"
+      ]
     },
     {
       "id": "hong-fang-tea",
@@ -81,10 +125,19 @@
       "requiredHack": 30,
       "moneyMax": 8437500,
       "moneyAvailable": 2250000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 10,
+      "prepWarning": true,
       "minSecurity": 5,
       "security": 15,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "hong-fang-tea"
+      ]
     },
     {
       "id": "harakiri-sushi",
@@ -95,10 +148,19 @@
       "requiredHack": 40,
       "moneyMax": 11250000,
       "moneyAvailable": 3000000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 9.643749999999995,
+      "prepWarning": true,
       "minSecurity": 5,
-      "security": 15,
+      "security": 14.643749999999995,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi"
+      ]
     },
     {
       "id": "iron-gym",
@@ -109,360 +171,548 @@
       "requiredHack": 100,
       "moneyMax": 56250000,
       "moneyAvailable": 15000000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 20,
+      "prepWarning": true,
       "minSecurity": 10,
       "security": 30,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "iron-gym"
+      ]
     },
     {
       "id": "Server1",
       "label": "Server1",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 16,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server1"
+      ]
     },
     {
       "id": "Server2",
       "label": "Server2",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server2"
+      ]
     },
     {
       "id": "Server3",
       "label": "Server3",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server3"
+      ]
     },
     {
       "id": "Server4",
       "label": "Server4",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 64,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server4"
+      ]
     },
     {
       "id": "Server5",
       "label": "Server5",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 64,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server5"
+      ]
     },
     {
       "id": "Server6",
       "label": "Server6",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 128,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server6"
+      ]
     },
     {
       "id": "Server7",
       "label": "Server7",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server7"
+      ]
     },
     {
       "id": "Server8",
       "label": "Server8",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server8"
+      ]
     },
     {
       "id": "Server9",
       "label": "Server9",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 16,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server9"
+      ]
     },
     {
       "id": "Server10",
       "label": "Server10",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server10"
+      ]
     },
     {
       "id": "Server11",
       "label": "Server11",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 16,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server11"
+      ]
     },
     {
       "id": "Server12",
       "label": "Server12",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server12"
+      ]
     },
     {
       "id": "Server13",
       "label": "Server13",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server13"
+      ]
     },
     {
       "id": "Server14",
       "label": "Server14",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server14"
+      ]
     },
     {
       "id": "Server15",
       "label": "Server15",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server15"
+      ]
     },
     {
       "id": "Server16",
       "label": "Server16",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 8,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server16"
+      ]
     },
     {
       "id": "Server17",
       "label": "Server17",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server17"
+      ]
     },
     {
       "id": "Server18",
       "label": "Server18",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 32,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server18"
+      ]
     },
     {
       "id": "Server19",
       "label": "Server19",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 256,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server19"
+      ]
     },
     {
       "id": "Server20",
       "label": "Server20",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 128,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server20"
+      ]
     },
     {
       "id": "Server21",
       "label": "Server21",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 64,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server21"
+      ]
     },
     {
       "id": "Server22",
       "label": "Server22",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 64,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server22"
+      ]
     },
     {
-      "id": "Server24",
-      "label": "Server24",
+      "id": "Server23",
+      "label": "Server23",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 8192,
+      "maxRam": 16,
       "requiredHack": 1,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": true,
-      "type": "purchased"
-    },
-    {
-      "id": "Server25",
-      "label": "Server25",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 8192,
-      "requiredHack": 1,
-      "moneyMax": 0,
-      "moneyAvailable": 0,
-      "minSecurity": 1,
-      "security": 1,
-      "purchased": true,
-      "type": "purchased"
-    },
-    {
-      "id": "Server0",
-      "label": "Server0",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 8192,
-      "requiredHack": 1,
-      "moneyMax": 0,
-      "moneyAvailable": 0,
-      "minSecurity": 1,
-      "security": 1,
-      "purchased": true,
-      "type": "purchased"
+      "type": "purchased",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "Server23"
+      ]
     },
     {
       "id": "nectar-net",
@@ -473,10 +723,20 @@
       "requiredHack": 20,
       "moneyMax": 7734375,
       "moneyAvailable": 2062500,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 13,
+      "prepWarning": true,
       "minSecurity": 7,
       "security": 20,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net"
+      ]
     },
     {
       "id": "zer0",
@@ -487,10 +747,20 @@
       "requiredHack": 75,
       "moneyMax": 21093750,
       "moneyAvailable": 5625000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 17,
+      "prepWarning": true,
       "minSecurity": 8,
       "security": 25,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics",
+        "zer0"
+      ]
     },
     {
       "id": "max-hardware",
@@ -501,10 +771,20 @@
       "requiredHack": 80,
       "moneyMax": 28125000,
       "moneyAvailable": 7500000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 10,
+      "prepWarning": true,
       "minSecurity": 5,
       "security": 15,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi",
+        "max-hardware"
+      ]
     },
     {
       "id": "CSEC",
@@ -512,27 +792,23 @@
       "rooted": true,
       "backdoored": true,
       "maxRam": 8,
-      "requiredHack": 54,
+      "requiredHack": 55,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "backdoored"
-    },
-    {
-      "id": "phantasy",
-      "label": "phantasy",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 32,
-      "requiredHack": 100,
-      "moneyMax": 67500000,
-      "moneyAvailable": 66467129.3850696,
-      "minSecurity": 7,
-      "security": 7.0699999999999985,
-      "purchased": false,
-      "type": "rooted"
+      "type": "backdoored",
+      "factionServer": true,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi",
+        "CSEC"
+      ]
     },
     {
       "id": "silver-helix",
@@ -543,10 +819,46 @@
       "requiredHack": 150,
       "moneyMax": 126562500,
       "moneyAvailable": 33750000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 20,
+      "prepWarning": true,
       "minSecurity": 10,
-      "security": 28.859375,
+      "security": 30,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "silver-helix"
+      ]
+    },
+    {
+      "id": "omega-net",
+      "label": "omega-net",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 32,
+      "requiredHack": 203,
+      "moneyMax": 180119542.5,
+      "moneyAvailable": 48031878,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 19,
+      "prepWarning": true,
+      "minSecurity": 10,
+      "security": 29,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net"
+      ]
     },
     {
       "id": "neo-net",
@@ -556,81 +868,47 @@
       "maxRam": 32,
       "requiredHack": 50,
       "moneyMax": 14062500,
-      "moneyAvailable": 3750000,
+      "moneyAvailable": 5287184.286326728,
+      "moneyPercent": 0.3759775492499006,
+      "securityDiff": 28.126000000000012,
+      "prepWarning": true,
       "minSecurity": 8,
-      "security": 25,
+      "security": 36.12600000000001,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics",
+        "zer0",
+        "neo-net"
+      ]
     },
     {
-      "id": "omega-net",
-      "label": "omega-net",
+      "id": "phantasy",
+      "label": "phantasy",
       "rooted": true,
       "backdoored": false,
       "maxRam": 32,
-      "requiredHack": 217,
-      "moneyMax": 192587203.125,
-      "moneyAvailable": 191264917.98500487,
-      "minSecurity": 9,
-      "security": 9.038,
+      "requiredHack": 100,
+      "moneyMax": 67500000,
+      "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 4.939999999999991,
+      "prepWarning": true,
+      "minSecurity": 7,
+      "security": 11.93999999999999,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "the-hub",
-      "label": "the-hub",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 32,
-      "requiredHack": 323,
-      "moneyMax": 552644136.5625,
-      "moneyAvailable": 147371769.75,
-      "minSecurity": 14,
-      "security": 42,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "netlink",
-      "label": "netlink",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 16,
-      "requiredHack": 375,
-      "moneyMax": 773437500,
-      "moneyAvailable": 206250000,
-      "minSecurity": 21,
-      "security": 64,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "johnson-ortho",
-      "label": "johnson-ortho",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 266,
-      "moneyMax": 207065328.75,
-      "moneyAvailable": 55217421,
-      "minSecurity": 13,
-      "security": 39,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "computek",
-      "label": "computek",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 340,
-      "moneyMax": 647354427.1875,
-      "moneyAvailable": 172627847.25,
-      "minSecurity": 20,
-      "security": 60,
-      "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi",
+        "CSEC",
+        "phantasy"
+      ]
     },
     {
       "id": "crush-fitness",
@@ -638,55 +916,155 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 269,
-      "moneyMax": 154565820,
-      "moneyAvailable": 41217552,
+      "requiredHack": 241,
+      "moneyMax": 140066350.3125,
+      "moneyAvailable": 37351026.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 27,
+      "prepWarning": true,
       "minSecurity": 14,
       "security": 41,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "silver-helix",
+        "crush-fitness"
+      ]
+    },
+    {
+      "id": "the-hub",
+      "label": "the-hub",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 64,
+      "requiredHack": 315,
+      "moneyMax": 559897138.125,
+      "moneyAvailable": 149305903.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 29,
+      "prepWarning": true,
+      "minSecurity": 15,
+      "security": 44,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "the-hub"
+      ]
+    },
+    {
+      "id": "computek",
+      "label": "computek",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 398,
+      "moneyMax": 645030995.625,
+      "moneyAvailable": 172008265.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 39,
+      "prepWarning": true,
+      "minSecurity": 20,
+      "security": 59,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek"
+      ]
     },
     {
       "id": "avmnite-02h",
       "label": "avmnite-02h",
       "rooted": true,
       "backdoored": true,
-      "maxRam": 16,
-      "requiredHack": 219,
+      "maxRam": 64,
+      "requiredHack": 211,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "backdoored"
+      "type": "backdoored",
+      "factionServer": true,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h"
+      ]
     },
     {
-      "id": "zb-institute",
-      "label": "zb-institute",
+      "id": "johnson-ortho",
+      "label": "johnson-ortho",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 16,
-      "requiredHack": 761,
-      "moneyMax": 2671609187.8125,
-      "moneyAvailable": 712429116.75,
-      "minSecurity": 24,
-      "security": 71,
+      "maxRam": 0,
+      "requiredHack": 287,
+      "moneyMax": 234225894.375,
+      "moneyAvailable": 62460238.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 34,
+      "prepWarning": true,
+      "minSecurity": 17,
+      "security": 51,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics",
+        "zer0",
+        "neo-net",
+        "johnson-ortho"
+      ]
     },
     {
-      "id": "summit-uni",
-      "label": "summit-uni",
+      "id": "netlink",
+      "label": "netlink",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 64,
-      "requiredHack": 473,
-      "moneyMax": 753112738.125,
-      "moneyAvailable": 200830063.5,
-      "minSecurity": 18,
-      "security": 54,
+      "maxRam": 128,
+      "requiredHack": 383,
+      "moneyMax": 773437500,
+      "moneyAvailable": 206250000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 43,
+      "prepWarning": true,
+      "minSecurity": 22,
+      "security": 65,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi",
+        "CSEC",
+        "phantasy",
+        "netlink"
+      ]
     },
     {
       "id": "syscore",
@@ -694,125 +1072,388 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 603,
-      "moneyMax": 1441598565.9375,
-      "moneyAvailable": 384426284.25,
-      "minSecurity": 25,
-      "security": 75,
+      "requiredHack": 574,
+      "moneyMax": 1279008506.25,
+      "moneyAvailable": 341068935,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 48,
+      "prepWarning": true,
+      "minSecurity": 24,
+      "security": 72,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "the-hub",
+        "syscore"
+      ]
     },
     {
       "id": "I.I.I.I",
       "label": "I.I.I.I",
       "rooted": true,
-      "backdoored": true,
-      "maxRam": 256,
-      "requiredHack": 360,
+      "backdoored": false,
+      "maxRam": 32,
+      "requiredHack": 354,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "backdoored"
-    },
-    {
-      "id": "rothman-uni",
-      "label": "rothman-uni",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 32,
-      "requiredHack": 392,
-      "moneyMax": 506693027.8125,
-      "moneyAvailable": 135118140.75,
-      "minSecurity": 17,
-      "security": 51,
-      "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": true,
+      "needsBackdoor": true,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I"
+      ]
     },
     {
       "id": "catalyst",
       "label": "catalyst",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 32,
+      "maxRam": 16,
       "requiredHack": 433,
-      "moneyMax": 1199527849.6875,
-      "moneyAvailable": 319874093.25,
-      "minSecurity": 23,
-      "security": 69,
+      "moneyMax": 1147624399.6875,
+      "moneyAvailable": 306033173.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 41,
+      "prepWarning": true,
+      "minSecurity": 20,
+      "security": 61,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst"
+      ]
     },
     {
-      "id": "millenium-fitness",
-      "label": "millenium-fitness",
+      "id": "rothman-uni",
+      "label": "rothman-uni",
       "rooted": true,
       "backdoored": false,
       "maxRam": 128,
-      "requiredHack": 479,
-      "moneyMax": 703125000,
-      "moneyAvailable": 187500000,
-      "minSecurity": 15,
-      "security": 46,
+      "requiredHack": 371,
+      "moneyMax": 666143566.875,
+      "moneyAvailable": 177638284.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 31,
+      "prepWarning": true,
+      "minSecurity": 16,
+      "security": 47,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics",
+        "zer0",
+        "neo-net",
+        "johnson-ortho",
+        "rothman-uni"
+      ]
     },
     {
-      "id": "lexo-corp",
-      "label": "lexo-corp",
+      "id": "summit-uni",
+      "label": "summit-uni",
       "rooted": true,
+      "backdoored": false,
+      "maxRam": 64,
+      "requiredHack": 456,
+      "moneyMax": 863170664.0625,
+      "moneyAvailable": 230178843.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 38,
+      "prepWarning": true,
+      "minSecurity": 19,
+      "security": 57,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "sigma-cosmetics",
+        "zer0",
+        "neo-net",
+        "johnson-ortho",
+        "summit-uni"
+      ]
+    },
+    {
+      "id": "zb-institute",
+      "label": "zb-institute",
+      "rooted": false,
       "backdoored": false,
       "maxRam": 32,
-      "requiredHack": 739,
-      "moneyMax": 2222308932.1875,
-      "moneyAvailable": 592615715.25,
-      "minSecurity": 25,
-      "security": 75,
+      "requiredHack": 752,
+      "moneyMax": 2698164559.6875,
+      "moneyAvailable": 719510549.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 44,
+      "prepWarning": true,
+      "minSecurity": 22,
+      "security": 66,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "rho-construction",
-      "label": "rho-construction",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 16,
-      "requiredHack": 488,
-      "moneyMax": 1805015396.25,
-      "moneyAvailable": 481337439,
-      "minSecurity": 15,
-      "security": 44,
-      "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "harakiri-sushi",
+        "CSEC",
+        "phantasy",
+        "netlink",
+        "zb-institute"
+      ]
     },
     {
       "id": "alpha-ent",
       "label": "alpha-ent",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 32,
-      "requiredHack": 536,
-      "moneyMax": 2038000370.625,
-      "moneyAvailable": 543466765.5,
-      "minSecurity": 19,
-      "security": 57,
+      "maxRam": 128,
+      "requiredHack": 599,
+      "moneyMax": 2009383208.4375,
+      "moneyAvailable": 535835522.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 35,
+      "prepWarning": true,
+      "minSecurity": 18,
+      "security": 53,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "alpha-ent"
+      ]
     },
     {
       "id": "aevum-police",
       "label": "aevum-police",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 64,
-      "requiredHack": 408,
-      "moneyMax": 1076298620.625,
-      "moneyAvailable": 287012965.5,
+      "maxRam": 32,
+      "requiredHack": 427,
+      "moneyMax": 768057713.4375,
+      "moneyAvailable": 204815390.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 49,
+      "prepWarning": true,
       "minSecurity": 24,
       "security": 73,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police"
+      ]
+    },
+    {
+      "id": "lexo-corp",
+      "label": "lexo-corp",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 16,
+      "requiredHack": 686,
+      "moneyMax": 2149678203.75,
+      "moneyAvailable": 573247521,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 48,
+      "prepWarning": true,
+      "minSecurity": 24,
+      "security": 72,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp"
+      ]
+    },
+    {
+      "id": "rho-construction",
+      "label": "rho-construction",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 32,
+      "requiredHack": 520,
+      "moneyMax": 1806066922.5,
+      "moneyAvailable": 481617846,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 37,
+      "prepWarning": true,
+      "minSecurity": 19,
+      "security": 56,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "rho-construction"
+      ]
+    },
+    {
+      "id": "millenium-fitness",
+      "label": "millenium-fitness",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 32,
+      "requiredHack": 515,
+      "moneyMax": 703125000,
+      "moneyAvailable": 187500000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 34,
+      "prepWarning": true,
+      "minSecurity": 17,
+      "security": 51,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "millenium-fitness"
+      ]
+    },
+    {
+      "id": "galactic-cyber",
+      "label": "galactic-cyber",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 848,
+      "moneyMax": 2207347554.375,
+      "moneyAvailable": 588626014.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 37,
+      "prepWarning": true,
+      "minSecurity": 18,
+      "security": 55,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "alpha-ent",
+        "galactic-cyber"
+      ]
+    },
+    {
+      "id": "aerocorp",
+      "label": "aerocorp",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 902,
+      "moneyMax": 2912984595,
+      "moneyAvailable": 776795892,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 59,
+      "prepWarning": true,
+      "minSecurity": 30,
+      "security": 89,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp"
+      ]
+    },
+    {
+      "id": "global-pharm",
+      "label": "global-pharm",
+      "rooted": true,
+      "backdoored": false,
+      "maxRam": 8,
+      "requiredHack": 825,
+      "moneyMax": 4307227188.75,
+      "moneyAvailable": 1148593917,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 53,
+      "prepWarning": true,
+      "minSecurity": 26,
+      "security": 79,
+      "purchased": false,
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "global-pharm"
+      ]
     },
     {
       "id": "snap-fitness",
@@ -820,83 +1461,58 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 695,
+      "requiredHack": 794,
       "moneyMax": 1265625000,
       "moneyAvailable": 337500000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 38,
+      "prepWarning": true,
       "minSecurity": 19,
       "security": 57,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "galactic-cyber",
-      "label": "galactic-cyber",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 844,
-      "moneyMax": 2208257448.75,
-      "moneyAvailable": 588868653,
-      "minSecurity": 19,
-      "security": 56,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "global-pharm",
-      "label": "global-pharm",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 64,
-      "requiredHack": 785,
-      "moneyMax": 4339851499.6875,
-      "moneyAvailable": 1157293733.25,
-      "minSecurity": 28,
-      "security": 84,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "aerocorp",
-      "label": "aerocorp",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 873,
-      "moneyMax": 3257844297.1875,
-      "moneyAvailable": 868758479.25,
-      "minSecurity": 28,
-      "security": 84,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "deltaone",
-      "label": "deltaone",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 838,
-      "moneyMax": 4552659120.9375,
-      "moneyAvailable": 1214042432.25,
-      "minSecurity": 25,
-      "security": 76,
-      "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "snap-fitness"
+      ]
     },
     {
       "id": "omnia",
       "label": "omnia",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
-      "maxRam": 64,
-      "requiredHack": 931,
-      "moneyMax": 2671269474.375,
-      "moneyAvailable": 712338526.5,
-      "minSecurity": 31,
-      "security": 94,
+      "maxRam": 16,
+      "requiredHack": 926,
+      "moneyMax": 2686962512.8125,
+      "moneyAvailable": 716523336.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 63,
+      "prepWarning": true,
+      "minSecurity": 32,
+      "security": 95,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia"
+      ]
     },
     {
       "id": "unitalife",
@@ -904,111 +1520,310 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 16,
-      "requiredHack": 780,
-      "moneyMax": 2926045822.5,
-      "moneyAvailable": 780278886,
+      "requiredHack": 799,
+      "moneyMax": 2886416325,
+      "moneyAvailable": 769711020,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 50,
+      "prepWarning": true,
       "minSecurity": 25,
-      "security": 76,
+      "security": 75,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "unitalife"
+      ]
     },
     {
-      "id": "defcomm",
-      "label": "defcomm",
-      "rooted": true,
+      "id": "deltaone",
+      "label": "deltaone",
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 911,
-      "moneyMax": 2401891695,
-      "moneyAvailable": 640504452,
-      "minSecurity": 31,
-      "security": 92,
+      "requiredHack": 807,
+      "moneyMax": 3941528332.5,
+      "moneyAvailable": 1051074222,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 51,
+      "prepWarning": true,
+      "minSecurity": 26,
+      "security": 77,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "icarus",
-      "label": "icarus",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 886,
-      "moneyMax": 2543348680.3125,
-      "moneyAvailable": 678226314.75,
-      "minSecurity": 31,
-      "security": 93,
-      "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "global-pharm",
+        "deltaone"
+      ]
     },
     {
       "id": "univ-energy",
       "label": "univ-energy",
       "rooted": true,
       "backdoored": false,
-      "maxRam": 32,
-      "requiredHack": 896,
-      "moneyMax": 3335075839.6875,
-      "moneyAvailable": 889353557.25,
+      "maxRam": 64,
+      "requiredHack": 844,
+      "moneyMax": 3320602233.75,
+      "moneyAvailable": 885493929,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 59,
+      "prepWarning": true,
       "minSecurity": 29,
       "security": 88,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "univ-energy"
+      ]
     },
     {
       "id": "solaris",
       "label": "solaris",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
-      "maxRam": 128,
-      "requiredHack": 799,
-      "moneyMax": 2258438456.25,
-      "moneyAvailable": 602250255,
+      "maxRam": 16,
+      "requiredHack": 764,
+      "moneyMax": 2137891395.9375,
+      "moneyAvailable": 570104372.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 48,
+      "prepWarning": true,
       "minSecurity": 24,
       "security": 72,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris"
+      ]
     },
     {
       "id": "zeus-med",
       "label": "zeus-med",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 838,
-      "moneyMax": 3864565653.75,
-      "moneyAvailable": 1030550841,
-      "minSecurity": 27,
-      "security": 82,
+      "requiredHack": 834,
+      "moneyMax": 3960973515.9375,
+      "moneyAvailable": 1056259604.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 59,
+      "prepWarning": true,
+      "minSecurity": 29,
+      "security": 88,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "unitalife",
+        "zeus-med"
+      ]
+    },
+    {
+      "id": "defcomm",
+      "label": "defcomm",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 950,
+      "moneyMax": 2632566346.875,
+      "moneyAvailable": 702017692.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 59,
+      "prepWarning": true,
+      "minSecurity": 29,
+      "security": 88,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "global-pharm",
+        "deltaone",
+        "defcomm"
+      ]
+    },
+    {
+      "id": "icarus",
+      "label": "icarus",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 862,
+      "moneyMax": 2680065112.5,
+      "moneyAvailable": 714684030,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 57,
+      "prepWarning": true,
+      "minSecurity": 28,
+      "security": 85,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "global-pharm",
+        "deltaone",
+        "icarus"
+      ]
     },
     {
       "id": "taiyang-digital",
       "label": "taiyang-digital",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 876,
+      "moneyMax": 2448995242.5,
+      "moneyAvailable": 653065398,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 49,
+      "prepWarning": true,
+      "minSecurity": 24,
+      "security": 73,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital"
+      ]
+    },
+    {
+      "id": "nova-med",
+      "label": "nova-med",
       "rooted": true,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 936,
-      "moneyMax": 2496648813.75,
-      "moneyAvailable": 665773017,
-      "minSecurity": 25,
-      "security": 76,
+      "requiredHack": 775,
+      "moneyMax": 3400654764.375,
+      "moneyAvailable": 906841270.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 47,
+      "prepWarning": true,
+      "minSecurity": 23,
+      "security": 70,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med"
+      ]
     },
     {
       "id": "infocomm",
       "label": "infocomm",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 931,
-      "moneyMax": 2152427175,
-      "moneyAvailable": 573980580,
-      "minSecurity": 29,
-      "security": 86,
+      "requiredHack": 891,
+      "moneyMax": 1948185081.5625,
+      "moneyAvailable": 519516021.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 50,
+      "prepWarning": true,
+      "minSecurity": 25,
+      "security": 75,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "unitalife",
+        "zeus-med",
+        "infocomm"
+      ]
     },
     {
       "id": "zb-def",
@@ -1017,54 +1832,30 @@
       "backdoored": false,
       "maxRam": 0,
       "requiredHack": 785,
-      "moneyMax": 2812296636.5625,
-      "moneyAvailable": 749945769.75,
-      "minSecurity": 20,
-      "security": 59,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "nova-med",
-      "label": "nova-med",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 811,
-      "moneyMax": 3234692027.8125,
-      "moneyAvailable": 862584540.75,
+      "moneyMax": 2773282952.8125,
+      "moneyAvailable": 739542120.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 42,
+      "prepWarning": true,
       "minSecurity": 21,
       "security": 63,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "applied-energetics",
-      "label": "applied-energetics",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 817,
-      "moneyMax": 2119773639.375,
-      "moneyAvailable": 565272970.5,
-      "minSecurity": 22,
-      "security": 66,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "microdyne",
-      "label": "microdyne",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 16,
-      "requiredHack": 810,
-      "moneyMax": 1936005451.875,
-      "moneyAvailable": 516268120.5,
-      "minSecurity": 25,
-      "security": 74,
-      "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "avmnite-02h",
+        "catalyst",
+        "lexo-corp",
+        "global-pharm",
+        "deltaone",
+        "icarus",
+        "zb-def"
+      ]
     },
     {
       "id": "run4theh111z",
@@ -1072,125 +1863,337 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 32,
-      "requiredHack": 532,
+      "requiredHack": 524,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": true,
+      "needsBackdoor": true,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z"
+      ]
     },
     {
       "id": "titan-labs",
       "label": "titan-labs",
-      "rooted": true,
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 64,
+      "requiredHack": 850,
+      "moneyMax": 2362977683.4375,
+      "moneyAvailable": 630127382.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 50,
+      "prepWarning": true,
+      "minSecurity": 25,
+      "security": 75,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "titan-labs"
+      ]
+    },
+    {
+      "id": "microdyne",
+      "label": "microdyne",
+      "rooted": false,
       "backdoored": false,
       "maxRam": 32,
-      "requiredHack": 802,
-      "moneyMax": 2343774071.25,
-      "moneyAvailable": 625006419,
+      "requiredHack": 822,
+      "moneyMax": 1663859953.125,
+      "moneyAvailable": 443695987.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 48,
+      "prepWarning": true,
       "minSecurity": 24,
       "security": 72,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne"
+      ]
     },
     {
-      "id": "helios",
-      "label": "helios",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 256,
-      "requiredHack": 837,
-      "moneyMax": 1847840695.3125,
-      "moneyAvailable": 492757518.75,
-      "minSecurity": 31,
-      "security": 92,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "stormtech",
-      "label": "stormtech",
+      "id": "applied-energetics",
+      "label": "applied-energetics",
       "rooted": true,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 909,
-      "moneyMax": 3109159687.5,
-      "moneyAvailable": 829109250,
-      "minSecurity": 26,
-      "security": 78,
+      "requiredHack": 814,
+      "moneyMax": 2713480931.25,
+      "moneyAvailable": 723594915,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 45,
+      "prepWarning": true,
+      "minSecurity": 23,
+      "security": 68,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "unitalife",
+        "zeus-med",
+        "infocomm",
+        "applied-energetics"
+      ]
     },
     {
       "id": "vitalife",
       "label": "vitalife",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
-      "maxRam": 64,
-      "requiredHack": 812,
-      "moneyMax": 2073145142.8125,
-      "moneyAvailable": 552838704.75,
-      "minSecurity": 29,
-      "security": 88,
+      "maxRam": 16,
+      "requiredHack": 877,
+      "moneyMax": 2032317694.6875,
+      "moneyAvailable": 541951385.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 53,
+      "prepWarning": true,
+      "minSecurity": 27,
+      "security": 80,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife"
+      ]
+    },
+    {
+      "id": "helios",
+      "label": "helios",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 32,
+      "requiredHack": 811,
+      "moneyMax": 1649096825.625,
+      "moneyAvailable": 439759153.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 63,
+      "prepWarning": true,
+      "minSecurity": 31,
+      "security": 94,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "titan-labs",
+        "helios"
+      ]
     },
     {
       "id": "fulcrumtech",
       "label": "fulcrumtech",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 2048,
-      "requiredHack": 1023,
-      "moneyMax": 4619603953.125,
-      "moneyAvailable": 1231894387.5,
-      "minSecurity": 30,
-      "security": 91,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "omnitek",
-      "label": "omnitek",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 512,
-      "requiredHack": 1038,
-      "moneyMax": 42440755362.1875,
-      "moneyAvailable": 11317534763.25,
-      "minSecurity": 32,
-      "security": 96,
+      "requiredHack": 1009,
+      "moneyMax": 4467023063.4375,
+      "moneyAvailable": 1191206150.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 56,
+      "prepWarning": true,
+      "minSecurity": 28,
+      "security": 84,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne",
+        "fulcrumtech"
+      ]
     },
     {
-      "id": "kuai-gong",
-      "label": "kuai-gong",
-      "rooted": true,
+      "id": "stormtech",
+      "label": "stormtech",
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 1099,
-      "moneyMax": 58747381610.625,
-      "moneyAvailable": 15665968429.5,
-      "minSecurity": 33,
-      "security": 99,
+      "requiredHack": 982,
+      "moneyMax": 2814554716.875,
+      "moneyAvailable": 750547924.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 59,
+      "prepWarning": true,
+      "minSecurity": 30,
+      "security": 89,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "unitalife",
+        "zeus-med",
+        "infocomm",
+        "applied-energetics",
+        "stormtech"
+      ]
     },
     {
       "id": "4sigma",
       "label": "4sigma",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 949,
-      "moneyMax": 55218690703.125,
-      "moneyAvailable": 14724984187.5,
-      "minSecurity": 20,
-      "security": 60,
+      "requiredHack": 1083,
+      "moneyMax": 62709126446.25,
+      "moneyAvailable": 16722433719,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 45,
+      "prepWarning": true,
+      "minSecurity": 23,
+      "security": 68,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "4sigma"
+      ]
+    },
+    {
+      "id": "kuai-gong",
+      "label": "kuai-gong",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 1234,
+      "moneyMax": 83173197979.6875,
+      "moneyAvailable": 22179519461.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 64,
+      "prepWarning": true,
+      "minSecurity": 32,
+      "security": 96,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong"
+      ]
     },
     {
       "id": ".",
@@ -1198,139 +2201,397 @@
       "rooted": true,
       "backdoored": false,
       "maxRam": 16,
-      "requiredHack": 547,
+      "requiredHack": 514,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "rooted"
+      "type": "rooted",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "."
+      ]
     },
     {
-      "id": "clarkinc",
-      "label": "clarkinc",
-      "rooted": true,
+      "id": "omnitek",
+      "label": "omnitek",
+      "rooted": false,
       "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 1029,
-      "moneyMax": 66033986236.875,
-      "moneyAvailable": 17609062996.5,
-      "minSecurity": 18,
-      "security": 55,
+      "maxRam": 512,
+      "requiredHack": 1031,
+      "moneyMax": 39457636194.375,
+      "moneyAvailable": 10522036318.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 63,
+      "prepWarning": true,
+      "minSecurity": 32,
+      "security": 95,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "b-and-a",
-      "label": "b-and-a",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 917,
-      "moneyMax": 54951402799.6875,
-      "moneyAvailable": 14653707413.25,
-      "minSecurity": 29,
-      "security": 88,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "nwo",
-      "label": "nwo",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 1221,
-      "moneyMax": 60799320118.125,
-      "moneyAvailable": 16213152031.5,
-      "minSecurity": 33,
-      "security": 99,
-      "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne",
+        "fulcrumtech",
+        "omnitek"
+      ]
     },
     {
       "id": "powerhouse-fitness",
       "label": "powerhouse-fitness",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
-      "maxRam": 16,
-      "requiredHack": 1042,
+      "maxRam": 32,
+      "requiredHack": 1010,
       "moneyMax": 2531250000,
       "moneyAvailable": 675000000,
-      "minSecurity": 19,
-      "security": 56,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 43,
+      "prepWarning": true,
+      "minSecurity": 21,
+      "security": 64,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "4sigma",
+        "powerhouse-fitness"
+      ]
     },
     {
       "id": "blade",
       "label": "blade",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 512,
-      "requiredHack": 1062,
-      "moneyMax": 76138862560.3125,
-      "moneyAvailable": 20303696682.75,
+      "requiredHack": 1009,
+      "moneyMax": 57135764643.75,
+      "moneyAvailable": 15236203905,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 60,
+      "prepWarning": true,
       "minSecurity": 30,
-      "security": 89,
+      "security": 90,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong",
+        "blade"
+      ]
+    },
+    {
+      "id": "nwo",
+      "label": "nwo",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 1101,
+      "moneyMax": 79525821900.9375,
+      "moneyAvailable": 21206885840.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 66,
+      "prepWarning": true,
+      "minSecurity": 33,
+      "security": 99,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong",
+        "nwo"
+      ]
+    },
+    {
+      "id": "b-and-a",
+      "label": "b-and-a",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 971,
+      "moneyMax": 57291346285.3125,
+      "moneyAvailable": 15277692342.75,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 49,
+      "prepWarning": true,
+      "minSecurity": 24,
+      "security": 73,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne",
+        "fulcrumtech",
+        "omnitek",
+        "b-and-a"
+      ]
+    },
+    {
+      "id": "clarkinc",
+      "label": "clarkinc",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 1038,
+      "moneyMax": 46753689706.875,
+      "moneyAvailable": 12467650588.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 39,
+      "prepWarning": true,
+      "minSecurity": 20,
+      "security": 59,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne",
+        "fulcrumtech",
+        "omnitek",
+        "clarkinc"
+      ]
+    },
+    {
+      "id": "ecorp",
+      "label": "ecorp",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 1310,
+      "moneyMax": 150800551725.9375,
+      "moneyAvailable": 40213480460.25,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 66,
+      "prepWarning": true,
+      "minSecurity": 33,
+      "security": 99,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong",
+        "blade",
+        "ecorp"
+      ]
+    },
+    {
+      "id": "fulcrumassets",
+      "label": "fulcrumassets",
+      "rooted": false,
+      "backdoored": false,
+      "maxRam": 0,
+      "requiredHack": 1433,
+      "moneyMax": 2812500,
+      "moneyAvailable": 750000,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 66,
+      "prepWarning": true,
+      "minSecurity": 33,
+      "security": 99,
+      "purchased": false,
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong",
+        "blade",
+        "fulcrumassets"
+      ]
     },
     {
       "id": "The-Cave",
       "label": "The-Cave",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
       "requiredHack": 925,
       "moneyMax": 0,
       "moneyAvailable": 0,
+      "moneyPercent": 0,
+      "securityDiff": 0,
+      "prepWarning": false,
       "minSecurity": 1,
       "security": 1,
       "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": true,
+      "needsBackdoor": true,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "taiyang-digital",
+        "run4theh111z",
+        "vitalife",
+        "kuai-gong",
+        "nwo",
+        "The-Cave"
+      ]
     },
     {
       "id": "megacorp",
       "label": "megacorp",
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "maxRam": 0,
-      "requiredHack": 1218,
-      "moneyMax": 149378608130.625,
-      "moneyAvailable": 39834295501.5,
+      "requiredHack": 1163,
+      "moneyMax": 129170084608.125,
+      "moneyAvailable": 34445355895.5,
+      "moneyPercent": 0.26666666666666666,
+      "securityDiff": 66,
+      "prepWarning": true,
       "minSecurity": 33,
       "security": 99,
       "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "ecorp",
-      "label": "ecorp",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 1160,
-      "moneyMax": 127535310132.1875,
-      "moneyAvailable": 34009416035.25,
-      "minSecurity": 33,
-      "security": 99,
-      "purchased": false,
-      "type": "rooted"
-    },
-    {
-      "id": "fulcrumassets",
-      "label": "fulcrumassets",
-      "rooted": true,
-      "backdoored": false,
-      "maxRam": 0,
-      "requiredHack": 1304,
-      "moneyMax": 2812500,
-      "moneyAvailable": 750000,
-      "minSecurity": 33,
-      "security": 99,
-      "purchased": false,
-      "type": "rooted"
+      "type": "locked",
+      "factionServer": false,
+      "needsBackdoor": false,
+      "pathFromHome": [
+        "home",
+        "foodnstuff",
+        "nectar-net",
+        "omega-net",
+        "computek",
+        "I.I.I.I",
+        "aevum-police",
+        "aerocorp",
+        "omnia",
+        "solaris",
+        "nova-med",
+        "microdyne",
+        "fulcrumtech",
+        "omnitek",
+        "clarkinc",
+        "megacorp"
+      ]
     }
   ],
   "edges": [
@@ -1452,26 +2713,18 @@
     },
     {
       "source": "home",
-      "target": "Server24"
-    },
-    {
-      "source": "home",
-      "target": "Server25"
-    },
-    {
-      "source": "home",
-      "target": "Server0"
-    },
-    {
-      "source": "n00dles",
-      "target": "nectar-net"
+      "target": "Server23"
     },
     {
       "source": "foodnstuff",
+      "target": "nectar-net"
+    },
+    {
+      "source": "sigma-cosmetics",
       "target": "zer0"
     },
     {
-      "source": "hong-fang-tea",
+      "source": "harakiri-sushi",
       "target": "max-hardware"
     },
     {
@@ -1480,31 +2733,27 @@
     },
     {
       "source": "nectar-net",
-      "target": "phantasy"
-    },
-    {
-      "source": "zer0",
       "target": "silver-helix"
     },
     {
-      "source": "max-hardware",
+      "source": "nectar-net",
+      "target": "omega-net"
+    },
+    {
+      "source": "zer0",
       "target": "neo-net"
     },
     {
       "source": "CSEC",
-      "target": "omega-net"
-    },
-    {
-      "source": "phantasy",
-      "target": "the-hub"
-    },
-    {
-      "source": "phantasy",
-      "target": "netlink"
+      "target": "phantasy"
     },
     {
       "source": "silver-helix",
-      "target": "johnson-ortho"
+      "target": "crush-fitness"
+    },
+    {
+      "source": "omega-net",
+      "target": "the-hub"
     },
     {
       "source": "omega-net",
@@ -1512,83 +2761,99 @@
     },
     {
       "source": "omega-net",
-      "target": "crush-fitness"
-    },
-    {
-      "source": "omega-net",
       "target": "avmnite-02h"
     },
     {
-      "source": "netlink",
-      "target": "zb-institute"
+      "source": "neo-net",
+      "target": "johnson-ortho"
+    },
+    {
+      "source": "phantasy",
+      "target": "netlink"
+    },
+    {
+      "source": "the-hub",
+      "target": "syscore"
+    },
+    {
+      "source": "computek",
+      "target": "I.I.I.I"
+    },
+    {
+      "source": "avmnite-02h",
+      "target": "catalyst"
+    },
+    {
+      "source": "johnson-ortho",
+      "target": "rothman-uni"
     },
     {
       "source": "johnson-ortho",
       "target": "summit-uni"
     },
     {
-      "source": "johnson-ortho",
-      "target": "syscore"
+      "source": "netlink",
+      "target": "zb-institute"
     },
     {
-      "source": "johnson-ortho",
-      "target": "I.I.I.I"
-    },
-    {
-      "source": "computek",
-      "target": "rothman-uni"
-    },
-    {
-      "source": "computek",
-      "target": "catalyst"
-    },
-    {
-      "source": "zb-institute",
-      "target": "millenium-fitness"
-    },
-    {
-      "source": "syscore",
-      "target": "lexo-corp"
-    },
-    {
-      "source": "rothman-uni",
-      "target": "rho-construction"
-    },
-    {
-      "source": "rothman-uni",
+      "source": "I.I.I.I",
       "target": "alpha-ent"
     },
     {
-      "source": "rothman-uni",
+      "source": "I.I.I.I",
       "target": "aevum-police"
+    },
+    {
+      "source": "catalyst",
+      "target": "lexo-corp"
+    },
+    {
+      "source": "catalyst",
+      "target": "rho-construction"
+    },
+    {
+      "source": "catalyst",
+      "target": "millenium-fitness"
+    },
+    {
+      "source": "alpha-ent",
+      "target": "galactic-cyber"
+    },
+    {
+      "source": "aevum-police",
+      "target": "aerocorp"
+    },
+    {
+      "source": "lexo-corp",
+      "target": "global-pharm"
     },
     {
       "source": "lexo-corp",
       "target": "snap-fitness"
     },
     {
-      "source": "rho-construction",
-      "target": "galactic-cyber"
-    },
-    {
-      "source": "rho-construction",
-      "target": "global-pharm"
-    },
-    {
-      "source": "alpha-ent",
-      "target": "aerocorp"
-    },
-    {
-      "source": "snap-fitness",
-      "target": "deltaone"
-    },
-    {
-      "source": "global-pharm",
+      "source": "aerocorp",
       "target": "omnia"
     },
     {
       "source": "aerocorp",
       "target": "unitalife"
+    },
+    {
+      "source": "global-pharm",
+      "target": "deltaone"
+    },
+    {
+      "source": "omnia",
+      "target": "univ-energy"
+    },
+    {
+      "source": "omnia",
+      "target": "solaris"
+    },
+    {
+      "source": "unitalife",
+      "target": "zeus-med"
     },
     {
       "source": "deltaone",
@@ -1599,23 +2864,15 @@
       "target": "icarus"
     },
     {
-      "source": "deltaone",
-      "target": "univ-energy"
-    },
-    {
-      "source": "deltaone",
-      "target": "solaris"
-    },
-    {
-      "source": "unitalife",
-      "target": "zeus-med"
-    },
-    {
-      "source": "defcomm",
+      "source": "solaris",
       "target": "taiyang-digital"
     },
     {
-      "source": "icarus",
+      "source": "solaris",
+      "target": "nova-med"
+    },
+    {
+      "source": "zeus-med",
       "target": "infocomm"
     },
     {
@@ -1623,48 +2880,36 @@
       "target": "zb-def"
     },
     {
-      "source": "solaris",
-      "target": "nova-med"
-    },
-    {
       "source": "taiyang-digital",
-      "target": "applied-energetics"
+      "target": "run4theh111z"
     },
     {
-      "source": "infocomm",
+      "source": "nova-med",
+      "target": "titan-labs"
+    },
+    {
+      "source": "nova-med",
       "target": "microdyne"
     },
     {
       "source": "infocomm",
-      "target": "run4theh111z"
+      "target": "applied-energetics"
     },
     {
-      "source": "zb-def",
-      "target": "titan-labs"
-    },
-    {
-      "source": "applied-energetics",
-      "target": "helios"
-    },
-    {
-      "source": "microdyne",
-      "target": "stormtech"
-    },
-    {
-      "source": "microdyne",
+      "source": "run4theh111z",
       "target": "vitalife"
     },
     {
       "source": "titan-labs",
+      "target": "helios"
+    },
+    {
+      "source": "microdyne",
       "target": "fulcrumtech"
     },
     {
-      "source": "helios",
-      "target": "omnitek"
-    },
-    {
-      "source": "helios",
-      "target": "kuai-gong"
+      "source": "applied-energetics",
+      "target": "stormtech"
     },
     {
       "source": "vitalife",
@@ -1672,35 +2917,35 @@
     },
     {
       "source": "vitalife",
+      "target": "kuai-gong"
+    },
+    {
+      "source": "vitalife",
       "target": "."
     },
     {
-      "source": "omnitek",
-      "target": "clarkinc"
-    },
-    {
-      "source": "kuai-gong",
-      "target": "b-and-a"
-    },
-    {
-      "source": "kuai-gong",
-      "target": "nwo"
+      "source": "fulcrumtech",
+      "target": "omnitek"
     },
     {
       "source": "4sigma",
       "target": "powerhouse-fitness"
     },
     {
-      "source": ".",
+      "source": "kuai-gong",
       "target": "blade"
     },
     {
-      "source": "clarkinc",
-      "target": "The-Cave"
+      "source": "kuai-gong",
+      "target": "nwo"
     },
     {
-      "source": "powerhouse-fitness",
-      "target": "megacorp"
+      "source": "omnitek",
+      "target": "b-and-a"
+    },
+    {
+      "source": "omnitek",
+      "target": "clarkinc"
     },
     {
       "source": "blade",
@@ -1709,7 +2954,15 @@
     {
       "source": "blade",
       "target": "fulcrumassets"
+    },
+    {
+      "source": "nwo",
+      "target": "The-Cave"
+    },
+    {
+      "source": "clarkinc",
+      "target": "megacorp"
     }
   ],
-  "bridgeUpdatedAt": 1780631107102
+  "bridgeUpdatedAt": 1780682639115
 }

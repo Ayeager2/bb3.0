@@ -1,0 +1,43 @@
+.floating-node-tooltip {
+    position: absolute;
+    z-index: 20;
+    min-width: 190px;
+    max-width: 240px;
+    pointer-events: none;
+    padding: 10px;
+    border-radius: 10px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .12), transparent 45%),
+        rgba(2, 6, 23, .94);
+    border: 1px solid rgba(0, 229, 255, .35);
+    box-shadow:
+        0 0 18px rgba(0, 229, 255, .18),
+        0 8px 24px rgba(0, 0, 0, .45);
+    backdrop-filter: blur(8px);
+}
+
+.floating-node-title {
+    color: var(--cyan);
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.floating-node-grid {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 4px 8px;
+    font-size: 11px;
+}
+
+.floating-node-grid span {
+    color: var(--muted);
+}
+
+.floating-node-grid b {
+    color: var(--text);
+    font-weight: 600;
+    text-align: right;
+}

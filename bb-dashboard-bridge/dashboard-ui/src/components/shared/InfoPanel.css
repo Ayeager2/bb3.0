@@ -1,0 +1,30 @@
+.info-panel {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .18);
+    border-radius: 10px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .08), transparent 42%),
+        rgba(2, 6, 23, .62);
+}
+
+.info-panel-muted {
+    color: var(--muted);
+}
+
+.info-panel-title {
+    color: var(--cyan);
+    font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.info-panel-subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.info-panel-body {
+    margin-top: 10px;
+}

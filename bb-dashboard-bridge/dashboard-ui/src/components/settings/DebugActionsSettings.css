@@ -1,0 +1,36 @@
+.command-status {
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .18);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, .62);
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+}
+
+.command-status-pill {
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 999px;
+    padding: 5px 9px;
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.command-status-success .command-status-pill,
+.command-status-ready .command-status-pill {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .35);
+}
+
+.command-status-running .command-status-pill {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .35);
+}
+
+.command-status-error .command-status-pill,
+.command-status-unavailable .command-status-pill {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .35);
+}

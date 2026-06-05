@@ -1,3 +1,5 @@
+import "./Row.css";
+
 export default function Row({ label, value, tone = "" }) {
     return (
         <div className="data-row">

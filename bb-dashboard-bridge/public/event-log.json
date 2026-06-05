@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "ts": 1780681234952,
+    "type": "command",
+    "level": "warning",
+    "message": "Cleared event log.",
+    "data": null
+  }
+]
