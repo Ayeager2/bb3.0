@@ -55,7 +55,7 @@ export const SERVICES = [
         name: "/economy/home-ram-buyer-service.js",
         host: "home",
         threads: 1,
-        args: ["--refresh", 10000, "--min-money", 1_000_000, "--reserve", 1_000_000],
+        args: ["--refresh", 10000, "--min-money", 1_000_000],
         tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: true,

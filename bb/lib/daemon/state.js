@@ -1,4 +1,4 @@
-///lib/daemon/state.js
+//bb/lib/daemon/state.js
 import { CONFIG } from "/lib/daemon/config.js";
 import { getCurrentPhase } from "/lib/daemon/phase.js";
 import {
@@ -86,20 +86,7 @@ export function buildGlobalState(ns, decision, capabilities) {
         formulasUnlocked:
             ns.fileExists("Formulas.exe", "home") &&
             !!ns.formulas?.hacking,
-        sharePolicy: {
-            enabled:
-                decision.spendingPolicy.priority === "progression" ||
-                decision.spendingPolicy.priority === "faction" ||
-                decision.spendingPolicy.priority === "reset-prep",
-
-            aggressive:
-                decision.spendingPolicy.priority === "reset-prep",
-
-            reserveRamPercent:
-                decision.spendingPolicy.priority === "reset-prep"
-                    ? 0.10
-                    : 0.25,
-        },
+        sharePolicy: buildSharePolicy(ns, decision),
 
         sessionStats: buildSessionStats(ns),
         telemetry: getTelemetryCounts(ns),
@@ -259,4 +246,67 @@ export function getDecisionReason(ns, decision) {
 
     const stats = getTargetStats(ns, decision.target);
     return `Money mode using ${decision.target}; score=${scoreMoneyTarget(ns, decision.target).toFixed(2)}, prepNeed=${stats.prepNeed.toFixed(2)}.`;
+}
+
+function buildSharePolicy(ns, decision) {
+    const priority = decision.spendingPolicy?.priority ?? "income";
+    const mode = decision.mode ?? "money";
+
+    const money = ns.getPlayer().money;
+    const hacking = ns.getHackingLevel();
+    const homeRam = ns.getServerMaxRam("home");
+
+    const allowFactionWork =
+        decision.spendingPolicy?.allowFactionWork === true;
+
+    const earlyGame =
+        homeRam < 256 ||
+        money < 25_000_000_000 ||
+        hacking < 500;
+
+    if (mode === "exp" || priority === "leveling") {
+        return {
+            enabled: false,
+            aggressive: false,
+            reserveRamPercent: 0,
+            reason: "Share disabled during EXP leveling.",
+        };
+    }
+
+    if (earlyGame) {
+        return {
+            enabled: false,
+            aggressive: false,
+            reserveRamPercent: 0,
+            reason: "Share disabled during early-game growth.",
+        };
+    }
+
+    if (priority === "reset-prep") {
+        return {
+            enabled: true,
+            aggressive: true,
+            reserveRamPercent: 0.10,
+            reason: "Share enabled during reset-prep.",
+        };
+    }
+
+    if (
+        priority === "faction" ||
+        (priority === "progression" && allowFactionWork)
+    ) {
+        return {
+            enabled: true,
+            aggressive: false,
+            reserveRamPercent: 0.10,
+            reason: "Share enabled for active faction work.",
+        };
+    }
+
+    return {
+        enabled: false,
+        aggressive: false,
+        reserveRamPercent: 0,
+        reason: "Share not useful for current priority.",
+    };
 }

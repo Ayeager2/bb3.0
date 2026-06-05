@@ -25,6 +25,20 @@ import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js
 import { getWorldDaemonStatus } from "/lib/daemon/progression.js";
 
 const EARLY_MONEY_UNTIL_HACKING = 1000;
+const EARLY_HOME_RAM_TARGET = 256;
+const EARLY_MONEY_TARGET = 25_000_000;
+
+function shouldBuildEconomyBeforeProgression(ns) {
+    const money = ns.getPlayer().money;
+    const homeRam = ns.getServerMaxRam("home");
+    const hacking = ns.getHackingLevel();
+
+    if (hacking < EARLY_MONEY_UNTIL_HACKING) return true;
+    if (homeRam < EARLY_HOME_RAM_TARGET) return true;
+    if (money < EARLY_MONEY_TARGET) return true;
+
+    return false;
+}
 
 export function getCurrentBitNode(ns) {
     try {
@@ -82,6 +96,10 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
             return "reset-prep";
         }
 
+        if (shouldBuildEconomyBeforeProgression(ns)) {
+            return "money";
+        }
+
         if (
             factionProgression.currentBlocker !== "none" &&
             factionProgression.recommendedMode
@@ -93,11 +111,7 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
             return getProgressionModeHint(augDecision);
         }
 
-        if (plan.stage === "level-hacking") {
-            return ns.getHackingLevel() < EARLY_MONEY_UNTIL_HACKING
-                ? "money"
-                : "exp";
-        }
+        if (plan.stage === "level-hacking") return "exp";
 
         if (
             plan.stage === "join-daedalus" ||
@@ -167,10 +181,15 @@ export function choosePriority(ns, mode) {
 
     if (mode === "destroy-node") return "destroy-node";
     if (mode === "reset-prep") return "reset-prep";
-    if (mode === "progression") return "progression";
     if (mode === "exp") return "leveling";
 
     if (resetPlan.ready) return "reset-prep";
+
+    if (shouldBuildEconomyBeforeProgression(ns)) {
+        return "income";
+    }
+
+    if (mode === "progression") return "progression";
 
     const factionProgression = buildFactionProgressionState(ns);
 
@@ -208,9 +227,19 @@ export function choosePriority(ns, mode) {
 export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}) {
     const augDecision = getAugmentationDecision(ns);
 
-    const priority =
+    let priority =
         overrides?.priority ||
         choosePriority(ns, mode);
+
+    if (
+        shouldBuildEconomyBeforeProgression(ns) &&
+        mode !== "destroy-node" &&
+        mode !== "reset-prep" &&
+        mode !== "exp"
+    ) {
+        mode = "money";
+        priority = "income";
+    }
 
     const factionProgression = buildFactionProgressionState(ns);
     const joiningDaedalus =
@@ -281,6 +310,32 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         };
     }
 
+    if (priority === "income" || mode === "money") {
+        return {
+            priority: "income",
+            reserveMoney:
+                joiningDaedalus
+                    ? 100_000_000_000
+                    : augDecision.shouldEarnMoney === true
+                        ? CONFIG.midReserveMoney
+                        : CONFIG.minReserveMoney,
+
+            allowServerPurchases: true,
+            allowStockTrading: true,
+            allowHacknet: true,
+            allowHomeRam: true,
+            allowExePurchases: true,
+
+            allowAugmentPurchases: false,
+            allowFactionWork: false,
+            allowFactionDonation: false,
+            allowFactionJoin: capabilities.singularity === true,
+            allowBackdoors: capabilities.singularity === true,
+            allowReset: false,
+            allowIntTravel: false,
+        };
+    }
+
     if (priority === "progression" || mode === "progression") {
         return {
             priority: "progression",
@@ -333,32 +388,6 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
 
             allowIntTravel:
                 capabilities.singularity === true,
-        };
-    }
-
-    if (priority === "income" || mode === "money") {
-        return {
-            priority: "income",
-            reserveMoney:
-                joiningDaedalus
-                    ? 100_000_000_000
-                    : augDecision.shouldEarnMoney === true
-                        ? CONFIG.midReserveMoney
-                        : CONFIG.minReserveMoney,
-
-            allowServerPurchases: true,
-            allowStockTrading: true,
-            allowHacknet: true,
-            allowHomeRam: true,
-            allowExePurchases: true,
-
-            allowAugmentPurchases: false,
-            allowFactionWork: false,
-            allowFactionDonation: false,
-            allowFactionJoin: capabilities.singularity === true,
-            allowBackdoors: capabilities.singularity === true,
-            allowReset: false,
-            allowIntTravel: false,
         };
     }
 
@@ -595,18 +624,6 @@ export function hasGangAccess() {
 
 export function hasBladeburnerAccess() {
     return false;
-}
-
-function hasWorldDaemonInfrastructure(ns) {
-    const minServerRam = 1_048_576; // 1PB in GB
-    const servers = ns.cloud.getServerNames();
-    const limit = 25;
-
-    if (servers.length < limit) return false;
-
-    return servers.every((server) =>
-        ns.getServerMaxRam(server) >= minServerRam
-    );
 }
 
 function hasRedPill(ns) {

@@ -8,22 +8,18 @@ export async function main(ns) {
     const flags = ns.flags([
         ["refresh", 10000],
         ["min-money", 1_000_000],
-        ["reserve", 1_000_000],
         ["debug", true],
     ]);
 
     const refreshMs = Number(flags.refresh) || 10000;
     const minMoney = Number(flags["min-money"]) || 1_000_000;
-    const fallbackReserve = Number(flags.reserve) || 1_000_000;
     const debug = flags.debug === true;
 
     while (true) {
         const state = readJson(ns, STATE_FILE);
         const policy = state?.spendingPolicy ?? {};
 
-        const reserve = policy.reserveMoney ?? fallbackReserve;
         const money = ns.getPlayer().money;
-        const spendable = Math.max(0, money - reserve);
         const cost = getHomeRamUpgradeCost(ns);
 
         if (debug) {
@@ -31,8 +27,6 @@ export async function main(ns) {
                 `Home RAM check | ` +
                 `allow=${policy.allowHomeRam === true} | ` +
                 `money=${ns.format.number(money)} | ` +
-                `reserve=${ns.format.number(reserve)} | ` +
-                `spendable=${ns.format.number(spendable)} | ` +
                 `cost=${Number.isFinite(cost) ? ns.format.number(cost) : "N/A"} | ` +
                 `home=${ns.format.ram(ns.getServerMaxRam("home"))}`
             );
@@ -43,7 +37,7 @@ export async function main(ns) {
             continue;
         }
 
-        if (money < minMoney || spendable <= 0) {
+        if (money < minMoney) {
             await ns.sleep(refreshMs);
             continue;
         }
@@ -53,7 +47,7 @@ export async function main(ns) {
             continue;
         }
 
-        if (spendable >= cost) {
+        if (money >= cost) {
             const beforeRam = ns.getServerMaxRam("home");
             const moneyBefore = ns.getPlayer().money;
 
@@ -91,21 +85,11 @@ export async function main(ns) {
 function getHomeRamUpgradeCost(ns) {
     try {
         return ns.singularity.getUpgradeHomeRamCost();
-    } catch (error) {
-    console.error(error);
-}
+    } catch { }
 
     try {
         return ns.getUpgradeHomeRamCost();
-    } catch (error) {
-    console.error(error);
-}
-
-    try {
-        return ns.singularity.getUpgradeHomeRamCost?.() ?? Infinity;
-    } catch (error) {
-    console.error(error);
-}
+    } catch { }
 
     return Infinity;
 }
@@ -113,21 +97,11 @@ function getHomeRamUpgradeCost(ns) {
 function upgradeHomeRam(ns) {
     try {
         return ns.singularity.upgradeHomeRam();
-    } catch (error) {
-    console.error(error);
-}
+    } catch { }
 
     try {
         return ns.upgradeHomeRam();
-    } catch (error) {
-    console.error(error);
-}
-
-    try {
-        return ns.singularity.upgradeHomeRam?.() ?? false;
-    } catch (error) {
-    console.error(error);
-}
+    } catch { }
 
     return false;
 }

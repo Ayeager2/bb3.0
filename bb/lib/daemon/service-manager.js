@@ -1,4 +1,4 @@
-// /lib/daemon/service-manager.js
+// bb/lib/daemon/service-manager.js
 import { getEnabledServices, SERVICE_TYPES } from "/lib/daemon/services.js";
 import {
     logServiceBlocked,

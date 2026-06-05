@@ -1,0 +1,421 @@
+.card {
+    position: relative;
+    background:
+        linear-gradient(135deg, rgba(192, 132, 252, .06), transparent 35%),
+        var(--panel);
+    border: 1px solid rgba(192, 132, 252, .28);
+    border-radius: 10px;
+    padding: 13px;
+    box-shadow:
+        0 0 18px rgba(0, 0, 0, .35),
+        0 0 24px rgba(192, 132, 252, .08);
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    background:
+        linear-gradient(90deg, transparent, rgba(0, 229, 255, .08), transparent);
+    transform: translateX(-100%);
+    animation: cardSweep 9s linear infinite;
+}
+
+@keyframes cardSweep {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    55% {
+        transform: translateX(120%);
+    }
+
+    100% {
+        transform: translateX(120%);
+    }
+}
+
+.card-half {
+    grid-column: span 1;
+}
+
+.card-full {
+    grid-column: 1 / -1;
+}
+
+.card-third {
+    grid-column: span 1;
+}
+
+.card-two-thirds {
+    grid-column: span 2;
+}
+
+.card-compact {
+    grid-column: span 1;
+}
+
+.card-title {
+    position: relative;
+    z-index: 1;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 12px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 229, 255, .18);
+    padding-bottom: 7px;
+    text-shadow: var(--glow-purple);
+}
+
+.card-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 229, 255, .18);
+    padding-bottom: 7px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.card-header .card-title {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.card-toggle,
+.card-actions button {
+    background: rgba(2, 6, 23, .7);
+    border: 1px solid rgba(255, 255, 255, .14);
+    color: var(--cyan);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 2px 7px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.card-toggle:hover,
+.card-actions button:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 229, 255, .18);
+}
+
+.card-body {
+    position: relative;
+    z-index: 1;
+}
+
+.data-row {
+    display: grid;
+    grid-template-columns: 145px 1fr;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.data-label {
+    color: var(--muted);
+}
+
+.data-value {
+    color: var(--text);
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, .08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(0, 229, 255, .12);
+}
+
+.progress-bar>div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--purple), var(--cyan), var(--green));
+    box-shadow: var(--glow-cyan);
+}
+
+.chip-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(2, 6, 23, .55);
+}
+
+.chip-on {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .45);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .08);
+}
+
+.chip-hot {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .55);
+    box-shadow: 0 0 12px rgba(250, 204, 21, .12);
+}
+
+.event-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 320px;
+    overflow: auto;
+}
+
+.event-line {
+    display: grid;
+    grid-template-columns: 95px 90px 1fr;
+    gap: 8px;
+    padding: 6px 8px;
+    background: rgba(2, 6, 23, .55);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.event-time {
+    color: var(--muted);
+}
+
+.event-type {
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+.event-message {
+    color: var(--text);
+}
+
+.event-success {
+    border-color: rgba(0, 255, 156, .35);
+}
+
+.event-success .event-type {
+    color: var(--green);
+}
+
+.event-warning {
+    border-color: rgba(250, 204, 21, .45);
+}
+
+.event-warning .event-type {
+    color: var(--yellow);
+}
+
+.event-danger,
+.event-error {
+    border-color: rgba(255, 56, 100, .45);
+}
+
+.event-danger .event-type,
+.event-error .event-type {
+    color: var(--red);
+}
+
+.service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.service-line {
+    display: grid;
+    grid-template-columns: 160px 80px 1fr;
+    gap: 8px;
+    padding: 7px 8px;
+    background: rgba(2, 6, 23, .55);
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+.service-name {
+    color: var(--cyan);
+}
+
+.service-status {
+    text-transform: uppercase;
+}
+
+.service-reason {
+    color: var(--muted);
+}
+
+.service-running {
+    border-color: rgba(0, 255, 156, .25);
+}
+
+.service-running .service-status {
+    color: var(--green);
+}
+
+.service-blocked {
+    border-color: rgba(250, 204, 21, .35);
+}
+
+.service-blocked .service-status {
+    color: var(--yellow);
+}
+
+.service-failed {
+    border-color: rgba(255, 56, 100, .45);
+}
+
+.service-failed .service-status {
+    color: var(--red);
+}
+
+.switch {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, .95);
+    border: 1px solid rgba(255, 255, 255, .18);
+    cursor: pointer;
+    padding: 0;
+}
+
+.switch span {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--muted);
+    transition: all .18s ease;
+}
+
+.switch-on {
+    border-color: rgba(0, 255, 156, .55);
+    box-shadow: 0 0 14px rgba(0, 255, 156, .12);
+}
+
+.switch-on span {
+    left: 26px;
+    background: var(--green);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .32);
+}
+
+.graph-card {
+    height: 520px;
+    border: 1px solid rgba(0, 229, 255, .18);
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, rgba(0, 229, 255, .08), transparent 38%),
+        rgba(2, 6, 23, .65);
+}
+
+.react-flow {
+    background: transparent;
+}
+
+.react-flow__node {
+    background: rgba(2, 6, 23, .92);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    white-space: pre-line;
+    box-shadow: 0 0 16px rgba(0, 0, 0, .35);
+}
+
+.react-flow__node.node-home {
+    border-color: rgba(0, 229, 255, .65);
+    color: var(--cyan);
+    box-shadow: 0 0 16px rgba(0, 229, 255, .25);
+}
+
+.react-flow__node.node-target {
+    border-color: rgba(0, 255, 156, .65);
+    color: var(--green);
+    box-shadow: 0 0 18px rgba(0, 255, 156, .28);
+}
+
+.react-flow__node.node-candidate {
+    border-color: rgba(192, 132, 252, .38);
+    color: var(--purple);
+}
+
+.react-flow__edge.edge-active path {
+    stroke: var(--green);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 6px rgba(0, 255, 156, .5));
+}
+
+.react-flow__edge.edge-candidate path {
+    stroke: var(--purple);
+    stroke-width: 1.3;
+    opacity: .55;
+}
+
+.react-flow__controls {
+    background: rgba(2, 6, 23, .8);
+    border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.react-flow__controls button {
+    background: rgba(2, 6, 23, .9);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    color: var(--text);
+}
+
+.react-flow__minimap {
+    background: rgba(2, 6, 23, .88);
+    border: 1px solid rgba(0, 229, 255, .16);
+}
+
+.react-flow__node.node-world {
+    border-color: rgba(255, 56, 100, .8);
+    color: var(--red);
+    box-shadow: 0 0 22px rgba(255, 56, 100, .35);
+}
+
+.react-flow__node.node-backdoored {
+    border-color: rgba(0, 229, 255, .75);
+    color: var(--cyan);
+    box-shadow: 0 0 18px rgba(0, 229, 255, .28);
+}
+
+.react-flow__node.node-rooted {
+    border-color: rgba(0, 255, 156, .55);
+    color: var(--green);
+    box-shadow: 0 0 15px rgba(0, 255, 156, .18);
+}
+
+.react-flow__node.node-purchased {
+    border-color: rgba(192, 132, 252, .75);
+    color: var(--purple);
+    box-shadow: 0 0 18px rgba(192, 132, 252, .25);
+}
+
+.react-flow__node.node-locked {
+    border-color: rgba(255, 56, 100, .35);
+    color: var(--muted);
+    opacity: .75;
+}

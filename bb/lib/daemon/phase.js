@@ -1,3 +1,4 @@
+//bb/lib/daemon/phoase.js
 export function getCurrentPhase(ns, decision, capabilities) {
     const hacking = ns.getHackingLevel();
     const priority = decision?.spendingPolicy?.priority;

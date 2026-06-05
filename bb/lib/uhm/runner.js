@@ -21,6 +21,7 @@ import {
 import {
     runExpSprint,
 } from "/lib/uhm/modes/exp-sprint.js";
+
 export function runLane(ns, lane, runtimeStats) {
     if (!isUsableTarget(ns, lane.target)) return null;
 
@@ -55,6 +56,22 @@ export function runLane(ns, lane, runtimeStats) {
         };
     }
 
+    if (lane.mode === "money" && shouldUseProtoMoney(ns, lane)) {
+        const protoThreads = runProtoMoney(ns, lane.target, lane.hosts);
+
+        runtimeStats.protoMoneyThreads =
+            (runtimeStats.protoMoneyThreads ?? 0) + protoThreads;
+
+        return {
+            lane: lane.name,
+            target: lane.target,
+            mode: lane.mode,
+            status: protoThreads > 0 ? "PROTO-MONEY" : "NO-RAM",
+            launched: protoThreads,
+            plan: null,
+        };
+    }
+
     const availableRam = getLaneFreeRam(lane.hosts);
 
     const plan = getBatchPlan(ns, lane.target, lane.mode, {
@@ -83,6 +100,7 @@ export function runLane(ns, lane, runtimeStats) {
 
     if (plan.tooLargeForLane) {
         const protoThreads = runProtoMoney(ns, lane.target, lane.hosts);
+
         runtimeStats.protoMoneyThreads =
             (runtimeStats.protoMoneyThreads ?? 0) + protoThreads;
 
@@ -139,6 +157,18 @@ export function runLane(ns, lane, runtimeStats) {
         launched: protoThreads,
         plan,
     };
+}
+
+function shouldUseProtoMoney(ns, lane) {
+    const homeRam = ns.getServerMaxRam("home");
+    const formulasUnlocked =
+        lane.formulasUnlocked === true &&
+        !!ns.formulas?.hacking;
+
+    if (!formulasUnlocked) return true;
+    if (homeRam < 256) return true;
+
+    return false;
 }
 
 function getLaneFreeRam(hosts = []) {

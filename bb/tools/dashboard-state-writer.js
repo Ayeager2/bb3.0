@@ -90,6 +90,9 @@ function buildDashboardState(daemonState) {
         sourceVersion: daemonState?.version ?? null,
         updatedAt: Date.now(),
         daemonUpdatedAt: daemonState?.updatedAt ?? null,
+        targetStability: daemonState?.targetStability ?? {},
+        strategicTargetPlan: daemonState?.strategicTargetPlan ?? daemonState?.controller?.strategicTargetPlan ?? {},
+        services: Array.isArray(daemonState?.services) ? daemonState.services : [],
 
         bitnode: {
             number: bitNodeNumber,

@@ -1,4 +1,4 @@
-// /tools/daemon-hud.js
+// bb/tools/daemon-hud.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { drawDashboard } from "/lib/daemon/dashboard.js";
 

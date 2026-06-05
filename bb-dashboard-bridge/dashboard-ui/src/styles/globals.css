@@ -1,0 +1,118 @@
+:root {
+    --bg: #02040a;
+    --panel: rgba(8, 13, 25, 0.88);
+    --panel2: rgba(3, 7, 18, 0.96);
+    --border: rgba(168, 85, 247, 0.55);
+    --text: #d1d5db;
+    --muted: #64748b;
+
+    --green: #00ff9c;
+    --blue: #38bdf8;
+    --cyan: #00e5ff;
+    --yellow: #facc15;
+    --purple: #c084fc;
+    --red: #ff3864;
+
+    --glow-purple: 0 0 18px rgba(192, 132, 252, .35);
+    --glow-cyan: 0 0 18px rgba(0, 229, 255, .25);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    font-family: Consolas, "JetBrains Mono", monospace;
+    background:
+        linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px),
+        radial-gradient(circle at 80% 10%, rgba(192, 132, 252, .18), transparent 30%),
+        radial-gradient(circle at 10% 80%, rgba(0, 229, 255, .12), transparent 35%),
+        var(--bg);
+    background-size:
+        32px 32px,
+        32px 32px,
+        auto,
+        auto,
+        auto;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom,
+            rgba(255, 255, 255, .025),
+            rgba(255, 255, 255, .025) 1px,
+            transparent 1px,
+            transparent 4px);
+    opacity: .35;
+    mix-blend-mode: overlay;
+}
+
+.green {
+    color: var(--green);
+    text-shadow: 0 0 8px rgba(0, 255, 156, .25);
+}
+
+.blue {
+    color: var(--blue);
+    text-shadow: 0 0 8px rgba(56, 189, 248, .25);
+}
+
+.cyan {
+    color: var(--cyan);
+    text-shadow: 0 0 8px rgba(0, 229, 255, .25);
+}
+
+.yellow {
+    color: var(--yellow);
+    text-shadow: 0 0 8px rgba(250, 204, 21, .2);
+}
+
+.purple {
+    color: var(--purple);
+    text-shadow: 0 0 8px rgba(192, 132, 252, .3);
+}
+
+.red {
+    color: var(--red);
+    text-shadow: 0 0 8px rgba(255, 56, 100, .28);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.theme-money_green {
+    --purple: #00ff9c;
+    --cyan: #22c55e;
+    --border: rgba(0, 255, 156, 0.55);
+}
+
+.theme-exp_blue {
+    --purple: #60a5fa;
+    --cyan: #38bdf8;
+    --border: rgba(96, 165, 250, 0.55);
+}
+
+.theme-faction_cyan {
+    --purple: #06b6d4;
+    --cyan: #67e8f9;
+    --border: rgba(6, 182, 212, 0.55);
+}
+
+.theme-singularity_purple {
+    --purple: #c084fc;
+    --cyan: #00e5ff;
+    --border: rgba(192, 132, 252, 0.55);
+}
+
+.theme-danger_red {
+    --purple: #ff3864;
+    --cyan: #f97316;
+    --border: rgba(255, 56, 100, 0.65);
+}
