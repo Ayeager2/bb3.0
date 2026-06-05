@@ -63,3 +63,15 @@ export async function fetchCommandStatus() {
 
     return response.json();
 }
+
+export async function fetchDaemonReasoning() {
+    const response = await fetch("/reasoning", {
+        cache: "no-store",
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch daemon reasoning: ${response.status}`);
+    }
+
+    return response.json();
+}

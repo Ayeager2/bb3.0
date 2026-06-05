@@ -1,0 +1,185 @@
+.service-health-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.service-health-summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.service-metric {
+    padding: 9px;
+    border-radius: 9px;
+    border: 1px solid rgba(0, 229, 255, .14);
+    background: rgba(2, 6, 23, .54);
+}
+
+.service-metric span {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.service-metric b {
+    display: block;
+    margin-top: 4px;
+    color: var(--cyan);
+    font-size: 16px;
+}
+
+.service-metric-green b {
+    color: var(--green);
+}
+
+.service-metric-red b {
+    color: var(--red);
+}
+
+.service-metric-yellow b {
+    color: var(--yellow);
+}
+
+.service-metric-muted b {
+    color: var(--muted);
+}
+
+.service-health-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.service-row {
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(2, 6, 23, .54);
+    border: 1px solid rgba(255, 255, 255, .10);
+}
+
+.service-row-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.service-name {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.service-script {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
+    word-break: break-word;
+}
+
+.service-status {
+    flex-shrink: 0;
+    padding: 3px 7px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .14);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.service-row-running {
+    border-color: rgba(0, 255, 156, .22);
+}
+
+.service-row-running .service-status {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .34);
+}
+
+.service-row-stopped {
+    border-color: rgba(255, 56, 100, .22);
+}
+
+.service-row-stopped .service-status {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .34);
+}
+
+.service-row-warning {
+    border-color: rgba(250, 204, 21, .28);
+}
+
+.service-row-warning .service-status {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .38);
+}
+
+.service-row-failed {
+    border-color: rgba(255, 56, 100, .36);
+    box-shadow: 0 0 18px rgba(255, 56, 100, .12);
+}
+
+.service-row-failed .service-status {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .44);
+}
+
+.service-meta {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.service-meta span {
+    padding: 3px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.service-purpose {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.service-reason {
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.service-reason-running {
+    color: var(--green);
+}
+
+.service-reason-stopped,
+.service-reason-failed {
+    color: var(--red);
+}
+
+.service-reason-warning {
+    color: var(--yellow);
+}
+
+.service-args {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 10px;
+    word-break: break-word;
+}
+
+@media (max-width: 720px) {
+    .service-health-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

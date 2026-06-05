@@ -420,6 +420,20 @@ export const SERVICES = [
         minHomeRam: 64,
         purpose: "dashboard-debug-command-runner",
     },
+    {
+        id: "daemon-reasoning-writer",
+        name: "/tools/daemon-reasoning-writer.js",
+        host: "home",
+        threads: 1,
+        args: ["--refresh", 5000],
+        tail: false,
+        type: SERVICE_TYPES.PERSISTENT,
+        keepAlive: true,
+        enabled: true,
+        requiresSingularity: false,
+        minHomeRam: 64,
+        purpose: "dashboard-daemon-reasoning-output",
+    },
 ];
 
 export function getEnabledServices() {

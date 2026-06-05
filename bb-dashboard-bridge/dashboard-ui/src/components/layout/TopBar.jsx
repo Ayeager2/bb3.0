@@ -23,6 +23,7 @@ export default function TopBar({ state, error, commandStatus }) {
             <div className="topbar-title-block">
                 <div className="topbar-title">Daemon Dashboard</div>
                 <div className="topbar-subtitle">External Bitburner tactical overlay</div>
+                <div className="topbar-hotkey">Ctrl+K Command</div>
             </div>
 
             <div className="topbar-stat-grid">

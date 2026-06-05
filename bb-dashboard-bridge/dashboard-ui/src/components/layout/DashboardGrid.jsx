@@ -20,6 +20,8 @@ export default function DashboardGrid({
     topology = { nodes: [], edges: [] },
     toastSettings,
     onToastSettingsChange,
+    workspaceSettings,
+    onWorkspaceSettingsChange,
 }) {
     const [layout, setLayout] = useState(() => loadLayout());
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -98,6 +100,8 @@ export default function DashboardGrid({
                     onReset={resetLayout}
                     toastSettings={toastSettings}
                     onToastSettingsChange={onToastSettingsChange}
+                    workspaceSettings={workspaceSettings}
+                    onWorkspaceSettingsChange={onWorkspaceSettingsChange}
                 />
             </>
         );
@@ -117,6 +121,7 @@ export default function DashboardGrid({
                             state={state}
                             events={events}
                             topology={topology}
+                            workspaceSettings={workspaceSettings}
                             collapsed={layout.collapsed[id] === true}
                             onToggle={() => toggleCard(id)}
                             onMoveUp={() => moveCard(id, -1)}
@@ -137,6 +142,8 @@ export default function DashboardGrid({
                 onReset={resetLayout}
                 toastSettings={toastSettings}
                 onToastSettingsChange={onToastSettingsChange}
+                workspaceSettings={workspaceSettings}
+                onWorkspaceSettingsChange={onWorkspaceSettingsChange}
             />
         </>
     );

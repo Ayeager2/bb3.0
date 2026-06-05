@@ -1,0 +1,110 @@
+.reasoning-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.reasoning-empty {
+    color: var(--muted);
+    padding: 12px;
+}
+
+.reasoning-summary {
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .18);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, .58);
+}
+
+.reasoning-summary-label {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.reasoning-summary-text {
+    color: var(--text);
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+.reasoning-item {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, .10);
+    background: rgba(2, 6, 23, .52);
+}
+
+.reasoning-item-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.reasoning-title {
+    color: white;
+    font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.reasoning-summary-line {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.reasoning-detail {
+    margin-top: 10px;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.reasoning-level {
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 999px;
+    padding: 3px 7px;
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.reasoning-success {
+    border-color: rgba(0, 255, 156, .25);
+}
+
+.reasoning-success .reasoning-level,
+.reasoning-success .reasoning-title {
+    color: var(--green);
+}
+
+.reasoning-warning {
+    border-color: rgba(250, 204, 21, .28);
+}
+
+.reasoning-warning .reasoning-level,
+.reasoning-warning .reasoning-title {
+    color: var(--yellow);
+}
+
+.reasoning-danger,
+.reasoning-error {
+    border-color: rgba(255, 56, 100, .32);
+}
+
+.reasoning-danger .reasoning-level,
+.reasoning-danger .reasoning-title,
+.reasoning-error .reasoning-level,
+.reasoning-error .reasoning-title {
+    color: var(--red);
+}
+
+.reasoning-info .reasoning-level,
+.reasoning-info .reasoning-title {
+    color: var(--cyan);
+}

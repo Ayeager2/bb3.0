@@ -17,6 +17,7 @@ export default function NetworkTopologyCard({
     onToggle,
     onMoveUp,
     onMoveDown,
+    workspaceSettings
 }) {
     const [selectedServerId, setSelectedServerId] = useState(null);
     const [hoveredServerId, setHoveredServerId] = useState(null);
@@ -76,28 +77,34 @@ export default function NetworkTopologyCard({
             onNodeMouseEnter={node => setHoveredServerId(node.id)}
             onNodeMouseLeave={() => { }}
             header={
-                <NetworkTopologyLegend
-                    topology={topology}
-                    state={state}
-                    refreshing={refreshing}
-                    onRefresh={refreshTopology}
-                />
+                workspaceSettings?.showLegend !== false ? (
+                    <NetworkTopologyLegend
+                        topology={topology}
+                        state={state}
+                        refreshing={refreshing}
+                        onRefresh={refreshTopology}
+                    />
+                ) : null
             }
             footer={
                 <>
-                    <PathPanel
-                        server={selectedServer}
-                        path={selectedPath}
-                        onClear={() => setSelectedServerId(null)}
-                    />
+                    {workspaceSettings?.showPathPanel !== false && (
+                        <PathPanel
+                            server={selectedServer}
+                            path={selectedPath}
+                            onClear={() => setSelectedServerId(null)}
+                        />
+                    )}
 
-                    <WorldDaemonPanel
-                        worldDaemon={worldDaemon}
-                        server={worldDaemonServer}
-                        path={worldDaemonPath}
-                        canUse={state?.victory?.canUseWorldDaemon}
-                        hasRedPill={state?.victory?.hasRedPill}
-                    />
+                    {workspaceSettings?.showWorldPanel !== false && (
+                        <WorldDaemonPanel
+                            worldDaemon={worldDaemon}
+                            server={worldDaemonServer}
+                            path={worldDaemonPath}
+                            canUse={state?.victory?.canUseWorldDaemon}
+                            hasRedPill={state?.victory?.hasRedPill}
+                        />
+                    )}
                 </>
             }
         />

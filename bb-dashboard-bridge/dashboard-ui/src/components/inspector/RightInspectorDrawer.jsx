@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import {
     FiActivity,
     FiCpu,
@@ -6,6 +7,7 @@ import {
     FiSettings,
     FiServer,
     FiX,
+    FiHelpCircle
 } from "react-icons/fi";
 
 import CoreStateView from "../views/CoreStateView.jsx";
@@ -20,6 +22,8 @@ import ServiceHealthView from "../views/ServiceHealthView.jsx";
 import DebugActionsSettings from "../settings/DebugActionsSettings.jsx";
 import EventFeedView from "../events/EventFeedView.jsx";
 import ToastSettingsView from "../settings/ToastSettingsView.jsx";
+import DaemonReasoningView from "../views/DaemonReasoningView.jsx";
+
 import "./RightInspectorDrawer.css";
 
 const TABS = [
@@ -28,6 +32,7 @@ const TABS = [
     { id: "policy", label: "Policy", icon: <FiSettings /> },
     { id: "services", label: "Services", icon: <FiServer /> },
     { id: "events", label: "Events", icon: <FiActivity /> },
+    { id: "reasoning", label: "Reasoning", icon: <FiHelpCircle /> },
 ];
 
 export default function RightInspectorDrawer({
@@ -38,9 +43,17 @@ export default function RightInspectorDrawer({
     onToggle,
     toastSettings,
     onToastSettingsChange,
+    initialTab,
+    reasoning,
 }) {
-    const [activeTab, setActiveTab] = useState("core");
+    const [activeTab, setActiveTab] = useState(initialTab ?? "core");
     const activeConfig = TABS.find(tab => tab.id === activeTab) ?? TABS[0];
+
+    useEffect(() => {
+        if (initialTab) {
+            setActiveTab(initialTab);
+        }
+    }, [initialTab]);
 
     return (
         <>
@@ -126,6 +139,14 @@ export default function RightInspectorDrawer({
 
                             <InspectorSection title="Debug Actions">
                                 <DebugActionsSettings />
+                            </InspectorSection>
+                        </InspectorStack>
+                    )}
+
+                    {activeTab === "reasoning" && (
+                        <InspectorStack>
+                            <InspectorSection title="Daemon Reasoning">
+                                <DaemonReasoningView reasoning={reasoning} />
                             </InspectorSection>
                         </InspectorStack>
                     )}

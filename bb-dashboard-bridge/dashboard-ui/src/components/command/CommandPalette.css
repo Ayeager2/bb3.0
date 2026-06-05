@@ -1,0 +1,140 @@
+.command-palette-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 160;
+    background: rgba(0, 0, 0, .34);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 11vh;
+}
+
+.command-palette {
+    width: min(720px, calc(100vw - 36px));
+    border: 1px solid rgba(0, 229, 255, .28);
+    border-radius: 16px;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .09), transparent 42%),
+        rgba(2, 6, 23, .98);
+    box-shadow:
+        0 0 42px rgba(0, 229, 255, .18),
+        0 18px 60px rgba(0, 0, 0, .58);
+}
+
+.command-palette-input-wrap {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 15px 16px;
+    border-bottom: 1px solid rgba(0, 229, 255, .18);
+    color: var(--cyan);
+}
+
+.command-palette-input-wrap input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 18px;
+    font-family: inherit;
+}
+
+.command-palette-input-wrap input::placeholder {
+    color: var(--muted);
+}
+
+.command-palette-list {
+    max-height: 420px;
+    overflow: auto;
+    padding: 8px;
+}
+
+.command-item {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 34px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 11px 12px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.command-item:hover,
+.command-item.active {
+    border-color: rgba(0, 229, 255, .24);
+    background: rgba(0, 229, 255, .06);
+}
+
+.command-item.danger.active,
+.command-item.danger:hover {
+    border-color: rgba(255, 56, 100, .32);
+    background: rgba(255, 56, 100, .07);
+}
+
+.command-icon {
+    display: grid;
+    place-items: center;
+    color: var(--cyan);
+    font-size: 18px;
+}
+
+.command-item.danger .command-icon {
+    color: var(--red);
+}
+
+.command-text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.command-label {
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.command-hint {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.command-busy {
+    color: var(--yellow);
+    font-size: 18px;
+}
+
+.command-empty {
+    padding: 18px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.command-error {
+    margin: 0 12px 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 56, 100, .34);
+    border-radius: 10px;
+    color: var(--red);
+    background: rgba(255, 56, 100, .08);
+    font-size: 12px;
+}
+
+.command-footer {
+    display: flex;
+    gap: 14px;
+    padding: 10px 14px;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    color: var(--muted);
+    font-size: 11px;
+}

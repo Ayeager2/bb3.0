@@ -17,6 +17,8 @@ const OUT_TOPOLOGY_FILE = path.join(OUT_DIR, "network-topology.json");
 const BITBURNER_COMMAND_FILE = "/data/ui/dashboard-command.txt";
 const BITBURNER_COMMAND_STATUS_FILE = "/data/ui/dashboard-command-status.txt";
 const OUT_COMMAND_STATUS_FILE = path.join(OUT_DIR, "dashboard-command-status.json");
+const BITBURNER_REASONING_FILE = "/data/ui/daemon-reasoning.txt";
+const OUT_REASONING_FILE = path.join(OUT_DIR, "daemon-reasoning.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -122,6 +124,20 @@ app.get("/topology", (_req, res) => {
     }
 });
 
+app.get("/reasoning", (_req, res) => {
+    try {
+        const raw = fs.readFileSync(OUT_REASONING_FILE, "utf8");
+        res.setHeader("Cache-Control", "no-store");
+        res.type("json").send(raw);
+    } catch {
+        res.json({
+            schemaVersion: 1,
+            updatedAt: Date.now(),
+            summary: "No daemon reasoning available yet.",
+            items: [],
+        });
+    }
+});
 
 app.listen(DASHBOARD_HTTP_PORT, () => {
     console.log(`[DASHBOARD] http://localhost:${DASHBOARD_HTTP_PORT}`);
@@ -417,9 +433,37 @@ async function pollNetworkTopology() {
     }
 }
 
+async function pollDaemonReasoning() {
+    if (!bitburnerSocket) return;
+
+    try {
+        const content = await rpc("getFile", {
+            filename: BITBURNER_REASONING_FILE,
+            server: "home"
+        });
+
+        const parsed = JSON.parse(content || "{}");
+        parsed.bridgeUpdatedAt = Date.now();
+
+        fs.writeFileSync(OUT_REASONING_FILE, JSON.stringify(parsed, null, 2));
+    } catch {
+        fs.writeFileSync(
+            OUT_REASONING_FILE,
+            JSON.stringify({
+                schemaVersion: 1,
+                updatedAt: Date.now(),
+                summary: "Could not read daemon reasoning.",
+                items: [],
+                bridgeUpdatedAt: Date.now(),
+            }, null, 2)
+        );
+    }
+}
+
 setInterval(pollDashboardState, 3000);
 setInterval(pollEventLog, 3000);
 setInterval(pollNetworkTopology, 10000);
 setInterval(pollCommandStatus, 3000);
+setInterval(pollDaemonReasoning, 5000);
 
 console.log(`[REMOTE API] Waiting for Bitburner on ws://localhost:${REMOTE_API_PORT}`);

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": 1780700495844,
+  "source": "daemon-reasoning-writer",
+  "summary": "2 warning item(s) need attention.",
+  "items": [
+    {
+      "id": "mode",
+      "title": "Current Mode",
+      "summary": "Daemon is running in money mode.",
+      "detail": "Prioritize EXP only until faction progression requirements are met.",
+      "level": "info",
+      "data": {
+        "phase": "level-hacking",
+        "priority": "income",
+        "posture": "AGGRESSIVE_INCOME"
+      },
+      "ts": 1780700495844
+    },
+    {
+      "id": "target",
+      "title": "Current Target",
+      "summary": "Current target is phantasy.",
+      "detail": "Target likely needs prep work before it becomes efficient.",
+      "level": "warning",
+      "data": {
+        "moneyPercent": 0.0004342199314806792,
+        "securityDiff": 12.50399999999999,
+        "prepNeed": 2.7858514943542323,
+        "weakenTime": 202291.2529580517
+      },
+      "ts": 1780700495844
+    },
+    {
+      "id": "policy",
+      "title": "Spending Policy",
+      "summary": "Current policy controls what automation is allowed to buy or trigger.",
+      "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+      "level": "info",
+      "data": {
+        "reserveMoney": 1000000000,
+        "allowServerPurchases": true,
+        "allowStockTrading": true,
+        "allowHacknet": true,
+        "allowHomeRam": true,
+        "allowExePurchases": true,
+        "allowAugmentPurchases": false,
+        "allowReset": false,
+        "allowIntTravel": false
+      },
+      "ts": 1780700495844
+    },
+    {
+      "id": "readiness",
+      "title": "BN4 Readiness",
+      "summary": "BN4 readiness is incomplete: 1/4.",
+      "detail": "Still waiting on: hacking level, money, augmentations.",
+      "level": "warning",
+      "data": {
+        "targetBitNode": 4,
+        "goal": "Unlock Source-File 4",
+        "ready": false,
+        "readyCount": 1,
+        "totalChecks": 4,
+        "hackingReady": false,
+        "moneyReady": false,
+        "homeRamReady": true,
+        "augReady": false,
+        "hacking": 386,
+        "hackingTarget": 2500,
+        "money": 778607947.7412372,
+        "moneyTarget": 100000000000,
+        "augmentCount": 7,
+        "augmentTarget": 30
+      },
+      "ts": 1780700495844
+    },
+    {
+      "id": "victory",
+      "title": "Victory Plan",
+      "summary": "Current victory stage is level-hacking.",
+      "detail": "Prioritize EXP only until faction progression requirements are met.",
+      "level": "info",
+      "data": {
+        "stage": "level-hacking",
+        "nextAction": "Prioritize EXP only until faction progression requirements are met.",
+        "hackingTarget": 9007199254740991,
+        "hasDaedalus": false,
+        "hasRedPill": false,
+        "worldDaemon": "w0r1d_d43m0n",
+        "canUseWorldDaemon": false
+      },
+      "ts": 1780700495844
+    }
+  ],
+  "historyHint": "Current snapshot only. History can be appended later.",
+  "bridgeUpdatedAt": 1780700496167
+}

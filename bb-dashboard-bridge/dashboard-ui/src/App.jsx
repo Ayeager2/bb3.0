@@ -3,18 +3,25 @@ import TopBar from "./components/layout/TopBar.jsx";
 import DashboardGrid from "./components/layout/DashboardGrid.jsx";
 import RightInspectorDrawer from "./components/inspector/RightInspectorDrawer.jsx";
 import ToastHost from "./components/notifications/ToastHost.jsx";
+import CommandPalette from "./components/command/CommandPalette.jsx";
 
 import {
     fetchDashboardState,
     fetchDashboardEvents,
     fetchNetworkTopology,
-    fetchCommandStatus
+    fetchCommandStatus,
+    fetchDaemonReasoning
 } from "./api/dashboardApi.js";
 
 import {
     loadToastSettings,
     saveToastSettings,
 } from "./components/notifications/toastSettings.js";
+
+import {
+    loadWorkspaceSettings,
+    saveWorkspaceSettings,
+} from "./components/layout/workspaceSettings.js";
 
 export default function App() {
     const [state, setState] = useState(null);
@@ -23,9 +30,11 @@ export default function App() {
     const [commandStatus, setCommandStatus] = useState(null);
     const [toastSettings, setToastSettings] = useState(() => loadToastSettings());
     const [topology, setTopology] = useState({ nodes: [], edges: [] });
-    const [inspectorOpen, setInspectorOpen] = useState(() => {
-        return localStorage.getItem("bbdash-inspector-open") === "true";
-    });
+    const [inspectorOpen, setInspectorOpen] = useState(() => { return localStorage.getItem("bbdash-inspector-open") === "true"; });
+    const [workspaceSettings, setWorkspaceSettings] = useState(() => loadWorkspaceSettings());
+    const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+    const [inspectorInitialTab, setInspectorInitialTab] = useState("core");
+    const [reasoning, setReasoning] = useState(null);
 
     async function refreshState() {
         try {
@@ -53,6 +62,13 @@ export default function App() {
             } catch {
                 setCommandStatus(null);
             }
+
+            try {
+                const nextReasoning = await fetchDaemonReasoning();
+                setReasoning(nextReasoning);
+            } catch {
+                setReasoning(null);
+            }
         } catch (err) {
             setError(err);
         }
@@ -74,8 +90,33 @@ export default function App() {
         setToastSettings(next);
         saveToastSettings(next);
     }
+
+    function updateWorkspaceSettings(next) {
+        setWorkspaceSettings(next);
+        saveWorkspaceSettings(next);
+    }
+
+    useEffect(() => {
+        function onKeyDown(event) {
+            const isCommandK = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k";
+
+            if (!isCommandK) return;
+
+            event.preventDefault();
+            setCommandPaletteOpen(open => !open);
+        }
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, []);
+
+    function openInspectorTab(tabId) {
+        setInspectorInitialTab(tabId);
+        setInspectorOpen(true);
+    }
     return (
-        <div className={`app-shell theme-${state?.theme?.accent ?? "default"}`}>
+        <div className={`app-shell theme-${state?.theme?.accent ?? "default"} workspace-${workspaceSettings.mode}`}>
             <TopBar state={state} error={error} commandStatus={commandStatus} />
 
             <DashboardGrid
@@ -84,14 +125,25 @@ export default function App() {
                 topology={topology}
                 toastSettings={toastSettings}
                 onToastSettingsChange={updateToastSettings}
+                workspaceSettings={workspaceSettings}
+                onWorkspaceSettingsChange={updateWorkspaceSettings}
             />
 
             <RightInspectorDrawer
                 open={inspectorOpen}
+                initialTab={inspectorInitialTab}
                 state={state}
                 events={events}
+                reasoning={reasoning}
                 onClose={() => setInspectorOpen(false)}
                 onToggle={() => setInspectorOpen(open => !open)}
+            />
+
+            <CommandPalette
+                open={commandPaletteOpen}
+                onClose={() => setCommandPaletteOpen(false)}
+                onOpenInspectorTab={openInspectorTab}
+                onWorkspaceSettingsChange={updateWorkspaceSettings}
             />
 
             <ToastHost events={events} settings={toastSettings} />

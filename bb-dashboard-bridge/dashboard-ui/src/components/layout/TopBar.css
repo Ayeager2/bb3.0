@@ -121,6 +121,13 @@
     line-height: 1.4;
 }
 
+.topbar-hotkey {
+    margin-top: 5px;
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: .08em;
+}
+
 @media (max-width: 1200px) {
     .topbar {
         grid-template-columns: 1fr;

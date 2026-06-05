@@ -1,0 +1,106 @@
+.workspace-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.workspace-mode-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.workspace-mode-card {
+    text-align: left;
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, .56);
+    cursor: pointer;
+}
+
+.workspace-mode-card:hover {
+    border-color: rgba(0, 229, 255, .36);
+}
+
+.workspace-mode-card.active {
+    border-color: rgba(0, 255, 156, .45);
+    box-shadow: 0 0 18px rgba(0, 255, 156, .12);
+}
+
+.workspace-mode-title {
+    color: var(--cyan);
+    font-weight: bold;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.workspace-mode-card.active .workspace-mode-title {
+    color: var(--green);
+}
+
+.workspace-mode-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.workspace-toggle-list {
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(2, 6, 23, .46);
+}
+
+.workspace-toggle-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+}
+
+.workspace-toggle-row:last-child {
+    border-bottom: none;
+}
+
+.workspace-toggle-row:hover {
+    background: rgba(0, 229, 255, .05);
+}
+
+.workspace-switch {
+    width: 42px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    background: rgba(255, 255, 255, .08);
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    flex-shrink: 0;
+}
+
+.workspace-switch span {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background: var(--muted);
+    transition: transform .16s ease, background .16s ease;
+}
+
+.workspace-switch-on {
+    border-color: rgba(0, 255, 156, .35);
+    background: rgba(0, 255, 156, .12);
+}
+
+.workspace-switch-on span {
+    transform: translateX(18px);
+    background: var(--green);
+}

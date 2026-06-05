@@ -178,3 +178,7 @@
 .inspector-section-body {
     padding: 10px 12px;
 }
+
+.right-inspector-tabs {
+    grid-template-columns: repeat(6, 1fr);
+}
