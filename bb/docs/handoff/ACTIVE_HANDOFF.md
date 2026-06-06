@@ -9,11 +9,11 @@ status: ACTIVE_DEVELOPMENT
 # CURRENT PRIORITY
 
 ```txt
-1. faction-stage progression intelligence
-2. stage-aware EXP caps
-3. augmentation timing logic
-4. adaptive lane affordability
-5. EXP target separation
+1. stage-aware EXP caps
+2. augmentation timing by faction stage
+3. adaptive lane affordability
+4. EXP target separation
+5. dashboard reasoning bridge health
 6. telemetry polish
 ```
 
@@ -22,28 +22,33 @@ status: ACTIVE_DEVELOPMENT
 # CURRENT NEXT TASK
 
 ```txt
-Create:
+Refine:
 /lib/daemon/faction-progression.js
+/lib/daemon/decision.js
+/lib/daemon/state.js
 ```
 
 Purpose:
 
 ```txt
-Convert progression logic from:
-    "money vs exp"
+Faction progression foundation exists and is wired into:
+    decision.js
+    state.js
 
-Into:
-    "what currently blocks progression?"
+Next step is to make its recommendations stage-aware enough to avoid
+unnecessary pre-Red-Pill EXP grinding and to guide augmentation timing.
 ```
 
-Expected outputs:
+Current outputs:
 
 ```txt
 currentFactionStage
 currentBlocker
 nextBestAction
 recommendedMode
-recommendedTarget
+targetFaction
+targetServer
+requiredHack
 ```
 
 ---
@@ -88,6 +93,8 @@ workers
 - EXP overdrive gating
 - target stability timers
 - reset planning foundation
+- faction progression foundation
+- backdoor progression retry/rooting
 ```
 
 ---
@@ -96,10 +103,11 @@ workers
 
 ```txt
 - adaptive lane affordability
-- faction progression reasoning
+- faction progression refinement
 - augmentation valuation timing
 - EXP routing logic
 - telemetry scaling
+- dashboard reasoning bridge constants
 ```
 
 ---
@@ -146,11 +154,13 @@ Destroy Node
 
 ```txt
 Before Red Pill:
-    level only as needed
+    level only as needed for the current faction blocker
+    avoid blind grinding to 3000
+    likely soft cap near 2500 unless a stage requires more
 
 After Red Pill:
     push toward 3000
-    destroy node
+    prepare and destroy w0r1d_d43m0n
 ```
 
 ---
@@ -190,6 +200,24 @@ rooted servers
 ```
 
 Otherwise RAM starvation occurs silently.
+
+---
+
+## Dashboard reasoning bridge risk
+
+The dashboard bridge references:
+
+```txt
+OUT_REASONING_FILE
+BITBURNER_REASONING_FILE
+```
+
+Verify those constants are defined before relying on:
+
+```txt
+/reasoning
+pollDaemonReasoning()
+```
 
 ---
 

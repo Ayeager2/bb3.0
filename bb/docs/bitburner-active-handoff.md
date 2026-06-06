@@ -281,7 +281,8 @@ After Formulas:
     strategic daemon authority
     formula-aware scoring
     optional EXP overdrive
-    stage-aware progression logic next
+    stage-aware progression foundation active
+    next: refine EXP caps and augmentation timing
 ```
 
 ---
@@ -298,15 +299,17 @@ Stable:
 - EXP_RUNNING status reporting
 - target stability
 - reset planner foundation
+- faction progression foundation
 - stale share-worker cleanup
 - phase/lane target blacklist system
 
 Current remaining risk areas:
 - lane affordability / adaptive lane balancing
-- faction-stage progression intelligence
+- faction-stage progression refinement
 - augmentation buying timing
 - adaptive EXP routing
 - telemetry scaling
+- dashboard reasoning bridge constants
 ```
 
 ---
@@ -487,24 +490,30 @@ After Red Pill:
 
 # NEXT CODING TASK
 
-Create:
+Refine:
 
 ```txt
 /lib/daemon/faction-progression.js
+/lib/daemon/decision.js
+/lib/daemon/state.js
 ```
 
 Goal:
 
 ```txt
+stage-aware EXP caps
+augmentation timing by faction stage
+money vs reputation urgency
+dashboard-visible progression reason
+```
+
+Already implemented and wired:
+
+```txt
 currentFactionStage
 currentBlocker
 nextBestAction
-```
-
-Then wire into:
-
-```txt
-/lib/daemon/decision.js
+recommendedMode
 ```
 
 ---

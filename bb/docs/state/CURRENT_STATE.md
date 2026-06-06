@@ -45,6 +45,7 @@ Implemented:
 - target stability timers
 - reset planning framework
 - augmentation scoring framework
+- faction progression foundation
 - darkweb purchasing
 - distributed share execution
 - stale share-worker cleanup
@@ -69,6 +70,7 @@ After Formulas.exe:
 - formula-aware scoring
 - formula-aware batch math
 - optional EXP overdrive
+- faction-stage progression foundation
 ```
 
 ---
@@ -82,6 +84,7 @@ After Formulas.exe:
 - formula-aware scoring
 - target stability
 - EXP_RUNNING reporting
+- faction progression foundation
 - share-worker cleanup
 - reset planner foundation
 ```
@@ -92,10 +95,11 @@ After Formulas.exe:
 
 ```txt id="az0lzi"
 - adaptive lane affordability
-- faction-stage progression reasoning
+- faction-stage progression refinement
 - augmentation timing
 - EXP routing
 - telemetry scaling
+- dashboard reasoning bridge constants
 ```
 
 ---
@@ -104,7 +108,9 @@ After Formulas.exe:
 
 ```txt id="x8h5vf"
 /data/daemon-state.txt
-/data/dashboard-state.txt
+/data/ui/dashboard-state.txt
+/data/ui/event-log.txt
+/data/ui/network-topology.txt
 /data/darkweb-purchase-state.txt
 /data/darkweb-buyer-complete.txt
 ```
@@ -114,7 +120,6 @@ Future:
 ```txt id="we7lf9"
 /data/control/
 /data/telemetry/
-/data/ui/
 ```
 
 ---
@@ -141,9 +146,12 @@ workers
 
 ```txt id="mofwlu"
 pre-Red-Pill:
+    faction-stage blocker detection
     progression-aware leveling
+    avoid blind grinding to 3000
 
 post-Red-Pill:
+    push hacking toward world-daemon readiness
     world-daemon preparation
 ```
 
@@ -211,4 +219,15 @@ After Formulas.exe:
 
 ```txt id="joh1k2"
 UHM should obey daemon targets.
+```
+
+---
+
+## Dashboard reasoning bridge
+
+Verify bridge constants before relying on daemon reasoning UI:
+
+```txt
+OUT_REASONING_FILE
+BITBURNER_REASONING_FILE
 ```

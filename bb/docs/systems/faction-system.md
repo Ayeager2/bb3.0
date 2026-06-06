@@ -25,16 +25,19 @@ Implemented:
 - faction progression foundation
 - backdoor retry logic
 - progression-stage roadmap
+- current stage detection
+- blocker analysis for hacking, root/backdoor, faction join, Red Pill, world daemon
+- recommendedMode emission for decision.js
 ```
 
 Planned:
 
 ```txt id="9ev0l0"
-- blocker analysis
 - augmentation valuation
 - reputation urgency
 - money urgency
-- faction-stage reasoning
+- faction-stage reasoning refinement
+- stage-aware EXP caps
 ```
 
 ---
@@ -57,9 +60,9 @@ Red Pill
 
 ---
 
-# FUTURE faction-progression.js
+# CURRENT faction-progression.js
 
-Expected outputs:
+Current outputs:
 
 ```txt id="t9r9vc"
 currentFactionStage
@@ -67,8 +70,9 @@ currentBlocker
 nextBestAction
 recommendedMode
 requiredHackLevel
-missingRep
-missingMoney
+targetFaction
+targetServer
+hasRedPill
 ```
 
 ---
@@ -90,7 +94,7 @@ WORLD_DAEMON
 
 ---
 
-# FUTURE DECISION FLOW
+# CURRENT DECISION FLOW
 
 ```txt id="jlwm2t"
 Analyze current stage
@@ -100,4 +104,11 @@ Determine blocker
 Recommend action
     ->
 decision.js selects mode
+```
+
+Next refinement:
+
+```txt
+Add augmentation valuation, missing reputation, missing money, and stage-aware
+EXP caps so pre-Red-Pill leveling only happens when the current blocker needs it.
 ```

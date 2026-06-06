@@ -15,6 +15,12 @@
 # COMPLETED RECENTLY
 
 ```txt
+- Faction progression foundation created:
+  - /lib/daemon/faction-progression.js
+  - emits currentFactionStage/currentBlocker/nextBestAction/recommendedMode
+  - wired into /lib/daemon/decision.js
+  - exposed in /lib/daemon/state.js
+
 - Progression-stage target blacklist system
 - Phase/lane-aware target filtering
 - Daemon-owned lane target authority
@@ -54,7 +60,8 @@ After Formulas:
     strategic daemon authority
     formula-aware scoring
     optional EXP overdrive
-    stage-aware progression logic next
+    stage-aware progression logic foundation active
+    next: refine EXP caps and augmentation timing
 ```
 
 # CURRENT STABILIZATION STATUS
@@ -69,15 +76,17 @@ Stable:
 - EXP_RUNNING status reporting
 - target stability
 - reset planner foundation
+- faction progression foundation
 - stale share-worker cleanup
 - phase/lane target blacklist system
 
 Current remaining risk areas:
 - lane affordability / adaptive lane balancing
-- faction-stage progression intelligence
+- faction-stage progression refinement
 - augmentation buying timing
 - adaptive EXP routing
 - telemetry scaling
+- dashboard reasoning bridge constants
 ```
 
 # CURRENT EXECUTION MODEL
@@ -108,25 +117,34 @@ workers
 # NEXT MAJOR CODING TASK
 
 ```txt
-Create:
+Refine stage-aware progression behavior across:
 /lib/daemon/faction-progression.js
+/lib/daemon/decision.js
+/lib/daemon/state.js
 ```
 
 Goal:
 
 ```txt
+- pre-Red-Pill EXP caps based on current faction blocker
+- Daedalus/Red Pill augmentation timing
+- money vs reputation vs join/backdoor recommendations
+- dashboard-visible progression reason
+```
+
+Current implementation already provides:
+
+```txt
 currentFactionStage
 currentBlocker
 nextBestAction
+recommendedMode
+targetFaction
+targetServer
+requiredHack
 ```
 
-Then wire into:
-
-```txt
-/lib/daemon/decision.js
-```
-
-Decision model:
+Target decision model:
 
 ```txt
 If next faction stage is hacking-level blocked:
@@ -149,6 +167,18 @@ Else if useful augmentation is affordable:
 
 Else:
     advance to next faction stage
+```
+
+# WATCH POINT FOUND IN CURRENT CODE
+
+```txt
+bb-dashboard-bridge/bridge.js references:
+OUT_REASONING_FILE
+BITBURNER_REASONING_FILE
+
+Those constants should be verified/defined before relying on:
+/reasoning
+pollDaemonReasoning()
 ```
 
 # UPDATED PROGRESSION MODEL

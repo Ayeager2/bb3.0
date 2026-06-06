@@ -36,43 +36,52 @@ The daemon should eventually reason about:
 # CURRENT PRIORITIES
 
 ```txt id="m1jlwm"
-1. faction-stage progression intelligence
-2. stage-aware EXP caps
-3. augmentation timing logic
-4. adaptive lane balancing
-5. better EXP routing
+1. stage-aware EXP caps
+2. augmentation timing logic
+3. adaptive lane balancing
+4. better EXP routing
+5. dashboard reasoning bridge health
 6. telemetry scaling
 ```
 
 ---
 
-# NEXT MAJOR SYSTEM
+# CURRENT MAJOR SYSTEM
 
 ## faction-progression.js
 
-Goal:
+Status:
 
 ```txt id="4gbn5n"
-Analyze:
-- current faction stage
-- progression blocker
-- required action
-- recommended mode
+Foundation implemented and wired into:
+- /lib/daemon/decision.js
+- /lib/daemon/state.js
 ```
 
-Expected outputs:
+Current outputs:
 
 ```txt id="4y1ft5"
 currentFactionStage
 currentBlocker
 nextBestAction
 recommendedMode
-recommendedTarget
+targetFaction
+targetServer
+requiredHack
+```
+
+Next refinements:
+
+```txt
+- stage-aware EXP caps
+- augmentation valuation by faction stage
+- reputation and money urgency
+- dashboard-visible progression reasoning
 ```
 
 ---
 
-# FUTURE PROGRESSION MODEL
+# CURRENT PROGRESSION MODEL
 
 ```txt id="7tuhlb"
 CyberSec
