@@ -27,20 +27,29 @@ export async function main(ns) {
   ns.disableLog("ALL");
 
   const flags = ns.flags([
+    ["exp", false],
+    ["level", false],
+    ["leveling", false],
     ["force-mode", ""],
     ["force-priority", ""],
     ["force-target", ""],
   ]);
 
+  const wantsLeveling =
+    flags.exp === true ||
+    flags.level === true ||
+    flags.leveling === true;
+
   const overrides = {
-    mode: flags["force-mode"] || null,
-    priority: flags["force-priority"] || null,
+    mode: wantsLeveling ? "exp" : normalizeMode(flags["force-mode"]),
+    priority: wantsLeveling ? "leveling" : normalizePriority(flags["force-priority"]),
     target: flags["force-target"] || null,
+    level: wantsLeveling,
   };
 
   killOtherDaemonInstances(ns);
 
-  let capabilities = detectCapabilities(ns);
+  let capabilities;
   let cachedState = null;
   let lastDecision = 0;
 
@@ -129,6 +138,7 @@ export async function main(ns) {
 
         capabilities,
         spendingPolicy,
+        overrides,
 
         bitNodePlan: roadmapState,
         roadmap: roadmapState,
@@ -148,6 +158,7 @@ export async function main(ns) {
       cachedState.controller = {
         ...cachedState.controller,
         reason: "Daemon state now built by /lib/daemon/state.js",
+        overrides,
         targetStateAgeMs: targetState?.updatedAt
           ? Date.now() - targetState.updatedAt
           : null,
@@ -212,4 +223,22 @@ function readJson(ns, file) {
   } catch {
     return {};
   }
+}
+
+function normalizeMode(mode) {
+  const normalized = String(mode ?? "").trim().toLowerCase();
+
+  if (!normalized) return null;
+  if (normalized === "level" || normalized === "leveling") return "exp";
+
+  return normalized;
+}
+
+function normalizePriority(priority) {
+  const normalized = String(priority ?? "").trim().toLowerCase();
+
+  if (!normalized) return null;
+  if (normalized === "exp" || normalized === "level") return "leveling";
+
+  return normalized;
 }

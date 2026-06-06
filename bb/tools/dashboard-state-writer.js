@@ -84,6 +84,7 @@ function buildDashboardState(daemonState) {
     const share = daemonState?.sharePolicy ?? {};
     const multi = daemonState?.multiTargetPolicy ?? {};
     const controller = daemonState?.controller ?? {};
+    const factionProgression = daemonState?.factionProgression ?? {};
 
     return {
         schemaVersion: 2,
@@ -108,11 +109,20 @@ function buildDashboardState(daemonState) {
             priority,
             posture: getPosture(phase, priority),
             nextAction:
+                factionProgression?.nextBestAction ??
                 victory?.nextAction ??
                 controller?.reason ??
                 multi?.reason ??
                 null,
+            reason:
+                factionProgression?.reason ??
+                controller?.reason ??
+                multi?.reason ??
+                null,
+            faction: normalizeFactionProgression(factionProgression),
         },
+
+        factionProgression: normalizeFactionProgression(factionProgression),
 
         daemon: {
             target,
@@ -155,6 +165,7 @@ function buildDashboardState(daemonState) {
             rootedCount: servers?.rootedCount ?? 0,
             purchasedCount: Array.isArray(servers?.purchased) ? servers.purchased.length : 0,
             cloudCount: Array.isArray(servers?.cloud) ? servers.cloud.length : 0,
+            cloudFleet: servers?.cloudFleet ?? null,
         },
 
         readiness: {
@@ -389,4 +400,19 @@ function readJson(ns, file, fallback = {}) {
     } catch {
         return fallback;
     }
+}
+
+function normalizeFactionProgression(factionProgression = {}) {
+    return {
+        currentFactionStage: factionProgression?.currentFactionStage ?? null,
+        currentBlocker: factionProgression?.currentBlocker ?? null,
+        nextBestAction: factionProgression?.nextBestAction ?? null,
+        recommendedMode: factionProgression?.recommendedMode ?? null,
+        targetFaction: factionProgression?.targetFaction ?? null,
+        targetServer: factionProgression?.targetServer ?? null,
+        requiredHack: factionProgression?.requiredHack ?? null,
+        reason: factionProgression?.reason ?? null,
+        calculations: factionProgression?.calculations ?? null,
+        daedalusRequirements: factionProgression?.daedalusRequirements ?? null,
+    };
 }

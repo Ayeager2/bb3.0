@@ -21,12 +21,16 @@ import {
     buildResetPlan,
 } from "/lib/daemon/reset-planner.js";
 import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
+import { getCloudFleetStatus } from "/lib/daemon/cloud-fleet.js";
 
 export function buildGlobalState(ns, decision, capabilities) {
     const player = ns.getPlayer();
     const targetStats = decision.target ? getTargetStats(ns, decision.target) : null;
     const resetPlan = buildResetPlan(ns);
     const factionProgression = buildFactionProgressionState(ns);
+    const cloudFleet = getCloudFleetStatus(ns);
+    const cloudEconomyTiming =
+        buildCloudEconomyTiming(ns, decision, cloudFleet);
     return {
         version: 5,
         updatedAt: Date.now(),
@@ -46,6 +50,7 @@ export function buildGlobalState(ns, decision, capabilities) {
 
         protoBatching: CONFIG.protoBatching,
         multiTargetPolicy: buildAdaptiveMultiTargetPolicy(ns, decision),
+        cloudEconomyTiming,
         controller: {
             name: "central-ai-controller-v4-stale-host-safe",
             reason: getDecisionReason(ns, decision),
@@ -60,6 +65,7 @@ export function buildGlobalState(ns, decision, capabilities) {
             rootedCount: decision.rootedServers.size,
             purchased: safeGetPurchasedServers(ns),
             cloud: safeGetCloudServers(ns),
+            cloudFleet,
         },
 
         goals: {
@@ -99,16 +105,54 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
     const money = ns.getPlayer().money;
     const mode = decision.mode;
     const priority = decision.spendingPolicy?.priority ?? "income";
+    const manualModeOrPriority =
+        !!decision.overrides?.mode ||
+        !!decision.overrides?.priority ||
+        decision.overrides?.level === true;
 
     const victoryPlan = getBn4VictoryPlan(ns);
     const world = getWorldDaemonStatus(ns);
+    const cloudFleet = getCloudFleetStatus(ns);
+    const cloudTiming = buildCloudEconomyTiming(ns, decision, cloudFleet);
 
     let primary = 0.60;
     let secondary = 0.30;
     let exp = 0.10;
     let reason = getLanePolicyReason(mode, priority, hacking, money);
 
-    if (mode === "exp" || priority === "leveling") {
+    if (
+        cloudFleet.available &&
+        !cloudFleet.maxed &&
+        priority === "income" &&
+        !cloudFleet.countMaxed
+    ) {
+        primary = 0.80;
+        secondary = 0.20;
+        exp = 0.00;
+
+        reason = `${cloudFleet.reason} Money lanes take full RAM until all cloud server slots are filled.`;
+    } else if (
+        cloudFleet.available &&
+        cloudFleet.countMaxed &&
+        !cloudFleet.ramMaxed &&
+        !manualModeOrPriority &&
+        mode !== "destroy-node" &&
+        mode !== "reset-prep"
+    ) {
+        if (cloudFleet.nextActionAffordable) {
+            primary = 0.75;
+            secondary = 0.20;
+            exp = 0.05;
+
+            reason = `${cloudFleet.reason} Next upgrade is affordable, so money stays dominant while a small EXP lane keeps leveling alive.`;
+        } else {
+            primary = 0.60;
+            secondary = 0.20;
+            exp = 0.20;
+
+            reason = `${cloudFleet.reason} ${cloudTiming.reason} Cloud RAM upgrades are a timed goal now, so EXP keeps running beside money.`;
+        }
+    } else if (mode === "exp" || priority === "leveling") {
         primary = 0.00;
         secondary = 0.00;
         exp = 1.00;
@@ -202,6 +246,7 @@ export function getDecisionReason(ns, decision) {
     const hacking = ns.getHackingLevel();
     const money = ns.getPlayer().money;
     const victoryPlan = getBn4VictoryPlan(ns);
+    const cloudFleet = getCloudFleetStatus(ns);
 
     if (decision.mode === "destroy-node") {
         return "Red Pill owned and w0r1d_d43m0n is ready. Destroy-node mode active.";
@@ -238,6 +283,14 @@ export function getDecisionReason(ns, decision) {
 
     if (decision.spendingPolicy.priority === "reset-prep") {
         return "BN4 readiness met; reset-prep mode active.";
+    }
+
+    if (cloudFleet.available && !cloudFleet.maxed) {
+        if (cloudFleet.countMaxed && !cloudFleet.nextActionAffordable) {
+            return `${cloudFleet.reason} Income remains favored, but EXP is allowed because the next RAM upgrade is not immediate.`;
+        }
+
+        return `${cloudFleet.reason} Prioritizing income before EXP/progression.`;
     }
 
     if (money < CONFIG.moneyUntilAmount) {
@@ -309,4 +362,100 @@ function buildSharePolicy(ns, decision) {
         reserveRamPercent: 0,
         reason: "Share not useful for current priority.",
     };
+}
+
+export function buildCloudEconomyTiming(ns, decision, cloudFleet) {
+    const target =
+        decision?.laneTargets?.primary ||
+        decision?.target ||
+        null;
+
+    const cost =
+        cloudFleet?.nextAction?.cost ??
+        cloudFleet?.nextUpgradeCost ??
+        cloudFleet?.nextPurchaseCost ??
+        0;
+
+    const money = ns.getPlayer().money;
+    const moneyGap =
+        cost > 0
+            ? Math.max(0, cost - money)
+            : 0;
+
+    const targetStats =
+        target
+            ? getTargetStats(ns, target)
+            : null;
+
+    const weakenTimeSeconds =
+        targetStats
+            ? Math.max(1, targetStats.weakenTime / 1000)
+            : 0;
+
+    const hackPercent = safeHackPercent(ns, target);
+    const hackChance = safeHackChance(ns, target);
+    const estimatedMoneyPerCycle =
+        targetStats
+            ? targetStats.maxMoney * hackPercent * hackChance
+            : 0;
+    const estimatedMoneyPerSecond =
+        weakenTimeSeconds > 0
+            ? estimatedMoneyPerCycle / weakenTimeSeconds
+            : 0;
+    const estimatedSecondsToNextAction =
+        moneyGap <= 0
+            ? 0
+            : estimatedMoneyPerSecond > 0
+                ? moneyGap / estimatedMoneyPerSecond
+                : null;
+
+    return {
+        target,
+        nextAction: cloudFleet?.nextAction ?? null,
+        nextActionCost: cost,
+        nextActionAffordable:
+            cloudFleet?.nextActionAffordable === true,
+        moneyGap,
+        weakenTimeMs: targetStats?.weakenTime ?? 0,
+        estimatedMoneyPerCycle,
+        estimatedMoneyPerSecond,
+        estimatedSecondsToNextAction,
+        timeBucket: getCloudTimeBucket(estimatedSecondsToNextAction),
+        reason: getCloudTimingReason(estimatedSecondsToNextAction),
+    };
+}
+
+function safeHackPercent(ns, target) {
+    try {
+        return target ? Math.max(0, ns.hackAnalyze(target)) : 0;
+    } catch {
+        return 0;
+    }
+}
+
+function safeHackChance(ns, target) {
+    try {
+        return target ? Math.max(0, ns.hackAnalyzeChance(target)) : 0;
+    } catch {
+        return 0;
+    }
+}
+
+function getCloudTimeBucket(seconds) {
+    if (seconds === null) return "unknown";
+    if (seconds <= 0) return "now";
+    if (seconds <= 5 * 60) return "soon";
+    if (seconds <= 30 * 60) return "medium";
+    return "long";
+}
+
+function getCloudTimingReason(seconds) {
+    const bucket = getCloudTimeBucket(seconds);
+
+    if (bucket === "now") return "Next cloud action is affordable now.";
+    if (bucket === "soon") return "Next cloud action looks near-term.";
+    if (bucket === "medium") return "Next cloud action needs some income time.";
+    if (bucket === "long") return "Next cloud action is not near-term.";
+
+    return "Next cloud action timing cannot be estimated from current target.";
 }

@@ -1,14 +1,19 @@
 # CURRENT ACTIVE PRIORITIES
 
 ```txt
-1. Faction-stage-driven progression intelligence
-2. Stage-aware EXP caps:
+1. Stage-aware progression calculations:
+   - money and EXP requirements are part of faction progression state
+   - calculation source is marked as fallback or Formulas.exe-backed
+2. Economy-first cloud buildout:
+   - cloud fleet server slot completion comes before EXP grinding
+   - RAM upgrades now use time-aware balancing instead of forcing EXP to 0 forever
+   - once all cloud slots are full, money stays favored while EXP keeps a lane unless the next upgrade is affordable now
+3. Stage-aware EXP caps:
    - pre-Red-Pill: level only as needed for faction progression
    - likely soft cap around 2500 before Red Pill
    - post-Red-Pill: push to 3000 for world daemon
-3. Augmentation buying logic by faction stage
-4. Better EXP target separation
-5. Adaptive lane balancing / lane affordability
+4. Augmentation buying logic by faction stage
+5. Better EXP target separation
 6. Formula-aware target telemetry polish
 ```
 
@@ -18,8 +23,20 @@
 - Faction progression foundation created:
   - /lib/daemon/faction-progression.js
   - emits currentFactionStage/currentBlocker/nextBestAction/recommendedMode
+  - includes calculations.exp, calculations.money, calculations.augmentation
+  - uses fallback estimates before Formulas.exe and formulas-backed estimates after
   - wired into /lib/daemon/decision.js
   - exposed in /lib/daemon/state.js
+  - copied into dashboard state as progression.faction/factionProgression
+
+- Economy-first cloud fleet gate added:
+  - /lib/daemon/cloud-fleet.js reports count/RAM max status
+  - decision.js keeps mode/priority on money while server slots are missing or the next cloud action is immediately affordable
+  - state.js gives money lanes 100% of lane RAM while cloud server slots are incomplete
+  - when all slots are full but RAM upgrades remain, state.js uses time-aware money/EXP lane balancing
+  - /data/daemon-state.txt includes cloudEconomyTiming for the next cloud action cost and estimated timing
+  - dashboard state exposes servers.cloudFleet
+  - manual daemon overrides can bypass this, including run daemon.js --level
 
 - Progression-stage target blacklist system
 - Phase/lane-aware target filtering
@@ -54,11 +71,13 @@ Completed:
 Current rule:
 Before Formulas:
     affordable bootstrap fallback behavior
+    fallback money/EXP estimates in faction progression
     no forced EXP overdrive
 
 After Formulas:
     strategic daemon authority
     formula-aware scoring
+    formulas-backed money/EXP estimates in faction progression
     optional EXP overdrive
     stage-aware progression logic foundation active
     next: refine EXP caps and augmentation timing
@@ -77,6 +96,9 @@ Stable:
 - target stability
 - reset planner foundation
 - faction progression foundation
+- progression money/EXP calculation payload
+- economy-first cloud fleet gate
+- time-aware cloud RAM upgrade balancing
 - stale share-worker cleanup
 - phase/lane target blacklist system
 
@@ -126,10 +148,10 @@ Refine stage-aware progression behavior across:
 Goal:
 
 ```txt
-- pre-Red-Pill EXP caps based on current faction blocker
+- refine pre-Red-Pill EXP caps based on current faction blocker
 - Daedalus/Red Pill augmentation timing
-- money vs reputation vs join/backdoor recommendations
-- dashboard-visible progression reason
+- money vs reputation vs join/backdoor recommendations using calculations
+- richer dashboard rendering for progression calculations
 ```
 
 Current implementation already provides:
@@ -142,6 +164,9 @@ recommendedMode
 targetFaction
 targetServer
 requiredHack
+calculations.exp
+calculations.money
+calculations.augmentation
 ```
 
 Target decision model:
@@ -195,6 +220,14 @@ CyberSec
 # UPDATED EXP RULE
 
 ```txt
+Manual override:
+    run daemon.js --level forces mode=exp and priority=leveling
+    run daemon.js --leveling does the same thing
+    run daemon.js --exp does the same thing
+    --force-mode leveling is normalized to exp
+    --force-priority exp is normalized to leveling
+    run daemon.js --force-mode exp remains supported
+
 Before Red Pill:
     do not blindly grind to 3000
     level only as needed for faction progression

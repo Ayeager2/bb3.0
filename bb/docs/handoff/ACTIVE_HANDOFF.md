@@ -9,11 +9,11 @@ status: ACTIVE_DEVELOPMENT
 # CURRENT PRIORITY
 
 ```txt
-1. stage-aware EXP caps
-2. augmentation timing by faction stage
-3. adaptive lane affordability
+1. verify economy-first cloud buildout behavior
+2. refine stage-aware EXP caps
+3. augmentation timing by faction stage
 4. EXP target separation
-5. dashboard reasoning bridge health
+5. dashboard rendering for progression calculations
 6. telemetry polish
 ```
 
@@ -35,8 +35,10 @@ Faction progression foundation exists and is wired into:
     decision.js
     state.js
 
-Next step is to make its recommendations stage-aware enough to avoid
-unnecessary pre-Red-Pill EXP grinding and to guide augmentation timing.
+It now includes money/EXP/augmentation calculation payloads with a
+fallback-vs-Formulas.exe source marker. Next step is to refine those
+recommendations enough to avoid unnecessary pre-Red-Pill EXP grinding
+and to guide augmentation timing.
 ```
 
 Current outputs:
@@ -49,6 +51,9 @@ recommendedMode
 targetFaction
 targetServer
 requiredHack
+calculations.exp
+calculations.money
+calculations.augmentation
 ```
 
 ---
@@ -94,6 +99,9 @@ workers
 - target stability timers
 - reset planning foundation
 - faction progression foundation
+- progression money/EXP calculations
+- economy-first cloud fleet gate
+- time-aware cloud RAM upgrade balancing
 - backdoor progression retry/rooting
 ```
 
@@ -153,6 +161,21 @@ Destroy Node
 # CURRENT EXP RULE
 
 ```txt
+Before cloud server slots are full:
+    prioritize money
+    keep EXP lane allocation at 0%
+    buy cloud servers first
+
+After cloud server slots are full:
+    money remains favored for RAM upgrades
+    EXP keeps a lane unless the next upgrade is affordable right now
+    /data/daemon-state.txt shows cloudEconomyTiming for cost/time context
+
+Manual override:
+    run daemon.js --level forces leveling mode
+    run daemon.js --leveling does the same thing
+    run daemon.js --exp does the same thing
+
 Before Red Pill:
     level only as needed for the current faction blocker
     avoid blind grinding to 3000
@@ -222,6 +245,12 @@ pollDaemonReasoning()
 ---
 
 # QUICK DEBUG
+
+Full command/cat reference:
+
+```txt
+/docs/COMMAND_CHEATSHEET.md
+```
 
 ```txt
 killall

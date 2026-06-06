@@ -36,11 +36,11 @@ The daemon should eventually reason about:
 # CURRENT PRIORITIES
 
 ```txt id="m1jlwm"
-1. stage-aware EXP caps
-2. augmentation timing logic
-3. adaptive lane balancing
+1. verify economy-first cloud buildout behavior
+2. refine stage-aware EXP caps
+3. augmentation timing logic
 4. better EXP routing
-5. dashboard reasoning bridge health
+5. dashboard rendering for progression calculations
 6. telemetry scaling
 ```
 
@@ -56,6 +56,7 @@ Status:
 Foundation implemented and wired into:
 - /lib/daemon/decision.js
 - /lib/daemon/state.js
+- /tools/dashboard-state-writer.js
 ```
 
 Current outputs:
@@ -68,6 +69,9 @@ recommendedMode
 targetFaction
 targetServer
 requiredHack
+calculations.exp
+calculations.money
+calculations.augmentation
 ```
 
 Next refinements:
@@ -76,7 +80,7 @@ Next refinements:
 - stage-aware EXP caps
 - augmentation valuation by faction stage
 - reputation and money urgency
-- dashboard-visible progression reasoning
+- dashboard rendering for progression calculations
 ```
 
 ---

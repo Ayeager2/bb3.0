@@ -28,6 +28,9 @@ Implemented:
 - current stage detection
 - blocker analysis for hacking, root/backdoor, faction join, Red Pill, world daemon
 - recommendedMode emission for decision.js
+- money, EXP, and augmentation calculation payloads
+- fallback estimates before Formulas.exe
+- formulas-backed estimates after Formulas.exe
 ```
 
 Planned:
@@ -38,6 +41,7 @@ Planned:
 - money urgency
 - faction-stage reasoning refinement
 - stage-aware EXP caps
+- dashboard rendering for calculation details
 ```
 
 ---
@@ -73,6 +77,9 @@ requiredHackLevel
 targetFaction
 targetServer
 hasRedPill
+calculations.exp
+calculations.money
+calculations.augmentation
 ```
 
 ---

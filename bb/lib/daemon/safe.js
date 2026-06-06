@@ -1,6 +1,6 @@
 export function safeGetPurchasedServers(ns) {
     try {
-        return s.cloud.getServerNames();
+        return ns.getPurchasedServers();
     } catch {
         return [];
     }

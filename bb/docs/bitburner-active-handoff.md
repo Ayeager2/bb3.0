@@ -504,7 +504,7 @@ Goal:
 stage-aware EXP caps
 augmentation timing by faction stage
 money vs reputation urgency
-dashboard-visible progression reason
+dashboard rendering for progression calculations
 ```
 
 Already implemented and wired:
@@ -514,6 +514,9 @@ currentFactionStage
 currentBlocker
 nextBestAction
 recommendedMode
+calculations.exp
+calculations.money
+calculations.augmentation
 ```
 
 ---

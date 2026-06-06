@@ -46,6 +46,9 @@ Implemented:
 - reset planning framework
 - augmentation scoring framework
 - faction progression foundation
+- progression money/EXP calculation payloads
+- economy-first cloud fleet gate
+- time-aware cloud RAM upgrade balancing
 - darkweb purchasing
 - distributed share execution
 - stale share-worker cleanup
@@ -71,6 +74,7 @@ After Formulas.exe:
 - formula-aware batch math
 - optional EXP overdrive
 - faction-stage progression foundation
+- fallback-vs-Formulas.exe progression calculations
 ```
 
 ---
@@ -85,6 +89,9 @@ After Formulas.exe:
 - target stability
 - EXP_RUNNING reporting
 - faction progression foundation
+- dashboard state exposes progression.faction/factionProgression
+- dashboard state exposes servers.cloudFleet
+- daemon state exposes cloudEconomyTiming
 - share-worker cleanup
 - reset planner foundation
 ```

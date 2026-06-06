@@ -23,6 +23,7 @@ import {
 import { getSecondaryMoneyTarget } from "/lib/daemon/targets.js";
 import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
 import { getWorldDaemonStatus } from "/lib/daemon/progression.js";
+import { getCloudFleetStatus } from "/lib/daemon/cloud-fleet.js";
 
 const EARLY_MONEY_UNTIL_HACKING = 1000;
 const EARLY_HOME_RAM_TARGET = 256;
@@ -32,10 +33,15 @@ function shouldBuildEconomyBeforeProgression(ns) {
     const money = ns.getPlayer().money;
     const homeRam = ns.getServerMaxRam("home");
     const hacking = ns.getHackingLevel();
+    const cloudFleet = getCloudFleetStatus(ns);
 
     if (hacking < EARLY_MONEY_UNTIL_HACKING) return true;
     if (homeRam < EARLY_HOME_RAM_TARGET) return true;
     if (money < EARLY_MONEY_TARGET) return true;
+    if (cloudFleet.available && !cloudFleet.maxed) {
+        if (!cloudFleet.countMaxed) return true;
+        if (cloudFleet.nextActionAffordable) return true;
+    }
 
     return false;
 }
@@ -138,6 +144,10 @@ export function chooseMode(ns, rootedServers) {
     const hacking = ns.getHackingLevel();
     const augDecision = getAugmentationDecision(ns);
 
+    if (shouldBuildEconomyBeforeProgression(ns)) {
+        return "money";
+    }
+
     if (shouldStartAugmentationPush(ns, augDecision)) {
         return getProgressionModeHint(augDecision);
     }
@@ -181,13 +191,13 @@ export function choosePriority(ns, mode) {
 
     if (mode === "destroy-node") return "destroy-node";
     if (mode === "reset-prep") return "reset-prep";
-    if (mode === "exp") return "leveling";
-
     if (resetPlan.ready) return "reset-prep";
 
     if (shouldBuildEconomyBeforeProgression(ns)) {
         return "income";
     }
+
+    if (mode === "exp") return "leveling";
 
     if (mode === "progression") return "progression";
 
@@ -226,16 +236,19 @@ export function choosePriority(ns, mode) {
 
 export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}) {
     const augDecision = getAugmentationDecision(ns);
+    const manualModeOrPriority =
+        !!overrides?.mode ||
+        !!overrides?.priority;
 
     let priority =
         overrides?.priority ||
         choosePriority(ns, mode);
 
     if (
+        !manualModeOrPriority &&
         shouldBuildEconomyBeforeProgression(ns) &&
         mode !== "destroy-node" &&
-        mode !== "reset-prep" &&
-        mode !== "exp"
+        mode !== "reset-prep"
     ) {
         mode = "money";
         priority = "income";
