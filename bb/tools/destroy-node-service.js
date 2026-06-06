@@ -1,12 +1,22 @@
+//bb\tools\destroy-node-service.js
 import { refreshDaemonState } from "/lib/daemon/dev-reset.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
     ns.disableLog("ALL");
 
+    const flags = ns.flags([
+        ["next", 4],
+        ["script", "daemon.js"],
+        ["clean", true],
+        ["volatile", true],
+        ["completions", true],
+        ["sessions", true],
+    ]);
+
     const target = "w0r1d_d43m0n";
-    const nextBitNode = Number(ns.args[0] ?? 4);
-    const nextScript = String(ns.args[1] ?? "daemon.js");
+    const nextBitNode = Number(flags.next ?? ns.args[0] ?? 4);
+    const nextScript = String(flags.script ?? ns.args[1] ?? "daemon.js");
 
     if (!ns.serverExists(target)) {
         ns.tprint("[DESTROY] w0r1d_d43m0n not discovered.");
@@ -32,8 +42,16 @@ export async function main(ns) {
         return;
     }
 
-    ns.tprint("[DESTROY] Refreshing daemon state before BitNode destruction...");
-    refreshDaemonState(ns);
+    if (flags.clean === true || flags.clean === "true") {
+        ns.tprint("[DESTROY] Refreshing daemon state before BitNode destruction...");
+
+        refreshDaemonState(ns, {
+            volatile: flags.volatile === true || flags.volatile === "true",
+            completions: flags.completions === true || flags.completions === "true",
+            sessions: flags.sessions === true || flags.sessions === "true",
+            verbose: true,
+        });
+    }
 
     ns.tprint(`[DESTROY] Destroying BitNode. Next BN=${nextBitNode}, script=${nextScript}`);
 

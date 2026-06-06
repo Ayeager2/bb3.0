@@ -351,19 +351,22 @@ export const SERVICES = [
     {
         id: "backdoor-service",
         name: "/tools/backdoor-service.js",
+        host: "home",
+        threads: 1,
+        args: ["--refresh", 15000, "--execute", true, "--debug", true],
+        tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: true,
         enabled: true,
         requiresSingularity: true,
+        minHomeRam: 64,
+
         policyFlag: "allowBackdoors",
-        args: [
-            "--refresh",
-            15000,
-            "--execute",
-            true,
-        ],
+        stopWhenBlocked: false,
+
         purpose: "daemon-controlled faction backdoor orchestration",
     },
+
     {
         id: "home-core-buyer",
         name: "/economy/home-core-buyer-service.js",
@@ -395,7 +398,12 @@ export const SERVICES = [
         host: "home",
         phases: ["destroy-node", "prep-world-daemon"],
         threads: 1,
-        args: [4, "daemon.js"],
+
+        args: [
+            "--next", 4,
+            "--script", "daemon.js",
+            "--clean", true,
+        ],
         tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: false,

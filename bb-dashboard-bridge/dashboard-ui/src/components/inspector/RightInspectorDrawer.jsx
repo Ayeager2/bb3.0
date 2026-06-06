@@ -45,6 +45,7 @@ export default function RightInspectorDrawer({
     onToastSettingsChange,
     initialTab,
     reasoning,
+    reasoningHistory = [],
 }) {
     const [activeTab, setActiveTab] = useState(initialTab ?? "core");
     const activeConfig = TABS.find(tab => tab.id === activeTab) ?? TABS[0];
@@ -146,7 +147,10 @@ export default function RightInspectorDrawer({
                     {activeTab === "reasoning" && (
                         <InspectorStack>
                             <InspectorSection title="Daemon Reasoning">
-                                <DaemonReasoningView reasoning={reasoning} />
+                                <DaemonReasoningView
+                                    reasoning={reasoning}
+                                    history={reasoningHistory}
+                                />
                             </InspectorSection>
                         </InspectorStack>
                     )}

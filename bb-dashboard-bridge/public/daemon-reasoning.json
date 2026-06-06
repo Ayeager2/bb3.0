@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1780700495844,
+  "updatedAt": 1780717492609,
   "source": "daemon-reasoning-writer",
   "summary": "2 warning item(s) need attention.",
   "items": [
@@ -15,7 +15,7 @@
         "priority": "income",
         "posture": "AGGRESSIVE_INCOME"
       },
-      "ts": 1780700495844
+      "ts": 1780717492609
     },
     {
       "id": "target",
@@ -24,12 +24,12 @@
       "detail": "Target likely needs prep work before it becomes efficient.",
       "level": "warning",
       "data": {
-        "moneyPercent": 0.0004342199314806792,
-        "securityDiff": 12.50399999999999,
-        "prepNeed": 2.7858514943542323,
-        "weakenTime": 202291.2529580517
+        "moneyPercent": 0.30693955831847,
+        "securityDiff": 3.2219999999999924,
+        "prepNeed": 1.153346155967243,
+        "weakenTime": 52942.36594142848
       },
-      "ts": 1780700495844
+      "ts": 1780717492609
     },
     {
       "id": "policy",
@@ -38,7 +38,7 @@
       "detail": "Policy currently blocks: augmentation purchases, reset execution.",
       "level": "info",
       "data": {
-        "reserveMoney": 1000000000,
+        "reserveMoney": 100000000000,
         "allowServerPurchases": true,
         "allowStockTrading": true,
         "allowHacknet": true,
@@ -48,7 +48,7 @@
         "allowReset": false,
         "allowIntTravel": false
       },
-      "ts": 1780700495844
+      "ts": 1780717492609
     },
     {
       "id": "readiness",
@@ -66,14 +66,14 @@
         "moneyReady": false,
         "homeRamReady": true,
         "augReady": false,
-        "hacking": 386,
+        "hacking": 667,
         "hackingTarget": 2500,
-        "money": 778607947.7412372,
+        "money": 134188583.30838169,
         "moneyTarget": 100000000000,
-        "augmentCount": 7,
+        "augmentCount": 19,
         "augmentTarget": 30
       },
-      "ts": 1780700495844
+      "ts": 1780717492609
     },
     {
       "id": "victory",
@@ -90,9 +90,9 @@
         "worldDaemon": "w0r1d_d43m0n",
         "canUseWorldDaemon": false
       },
-      "ts": 1780700495844
+      "ts": 1780717492609
     }
   ],
   "historyHint": "Current snapshot only. History can be appended later.",
-  "bridgeUpdatedAt": 1780700496167
+  "bridgeUpdatedAt": 1780717497257
 }

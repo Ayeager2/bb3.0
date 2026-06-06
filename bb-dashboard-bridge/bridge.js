@@ -17,8 +17,8 @@ const OUT_TOPOLOGY_FILE = path.join(OUT_DIR, "network-topology.json");
 const BITBURNER_COMMAND_FILE = "/data/ui/dashboard-command.txt";
 const BITBURNER_COMMAND_STATUS_FILE = "/data/ui/dashboard-command-status.txt";
 const OUT_COMMAND_STATUS_FILE = path.join(OUT_DIR, "dashboard-command-status.json");
-const BITBURNER_REASONING_FILE = "/data/ui/daemon-reasoning.txt";
-const OUT_REASONING_FILE = path.join(OUT_DIR, "daemon-reasoning.json");
+const BITBURNER_REASONING_HISTORY_FILE = "/data/ui/daemon-reasoning-history.txt";
+const OUT_REASONING_HISTORY_FILE = path.join(OUT_DIR, "daemon-reasoning-history.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -136,6 +136,16 @@ app.get("/reasoning", (_req, res) => {
             summary: "No daemon reasoning available yet.",
             items: [],
         });
+    }
+});
+
+app.get("/reasoning/history", (_req, res) => {
+    try {
+        const raw = fs.readFileSync(OUT_REASONING_HISTORY_FILE, "utf8");
+        res.setHeader("Cache-Control", "no-store");
+        res.type("json").send(raw);
+    } catch {
+        res.json([]);
     }
 });
 
@@ -460,10 +470,28 @@ async function pollDaemonReasoning() {
     }
 }
 
+async function pollDaemonReasoningHistory() {
+    if (!bitburnerSocket) return;
+
+    try {
+        const content = await rpc("getFile", {
+            filename: BITBURNER_REASONING_HISTORY_FILE,
+            server: "home"
+        });
+
+        const parsed = JSON.parse(content || "[]");
+
+        fs.writeFileSync(OUT_REASONING_HISTORY_FILE, JSON.stringify(parsed, null, 2));
+    } catch {
+        fs.writeFileSync(OUT_REASONING_HISTORY_FILE, JSON.stringify([], null, 2));
+    }
+}
+
 setInterval(pollDashboardState, 3000);
 setInterval(pollEventLog, 3000);
 setInterval(pollNetworkTopology, 10000);
 setInterval(pollCommandStatus, 3000);
 setInterval(pollDaemonReasoning, 5000);
+setInterval(pollDaemonReasoningHistory, 5000);
 
 console.log(`[REMOTE API] Waiting for Bitburner on ws://localhost:${REMOTE_API_PORT}`);

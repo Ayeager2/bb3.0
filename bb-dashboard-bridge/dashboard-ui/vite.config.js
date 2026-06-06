@@ -31,6 +31,10 @@ export default defineConfig({
         target: "http://127.0.0.1:31337",
         changeOrigin: true,
       },
+      "/reasoning/history": {
+        target: "http://127.0.0.1:31337",
+        changeOrigin: true,
+      },
     }
   },
 });

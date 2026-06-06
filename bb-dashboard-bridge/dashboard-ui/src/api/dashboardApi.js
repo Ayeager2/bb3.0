@@ -75,3 +75,15 @@ export async function fetchDaemonReasoning() {
 
     return response.json();
 }
+
+export async function fetchDaemonReasoningHistory() {
+    const response = await fetch("/reasoning/history", {
+        cache: "no-store",
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch daemon reasoning history: ${response.status}`);
+    }
+
+    return response.json();
+}

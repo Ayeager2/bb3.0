@@ -4,10 +4,10 @@
   "running": true,
   "status": "ready",
   "message": "Dashboard command runner heartbeat.",
-  "lastHeartbeatAt": 1780700478229,
-  "command": "clearEvents",
-  "commandId": "1780681234143-13a1d87b1bc3a",
-  "startedAt": 1780700115348,
-  "completedAt": 1780700115348,
-  "bridgeUpdatedAt": 1780700495119
+  "lastHeartbeatAt": 1780717488233,
+  "command": "eventTest",
+  "commandId": "1780717443439-0673139c18cd2",
+  "startedAt": 1780717444200,
+  "completedAt": 1780717444200,
+  "bridgeUpdatedAt": 1780717497066
 }

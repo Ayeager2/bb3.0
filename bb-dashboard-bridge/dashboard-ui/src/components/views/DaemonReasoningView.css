@@ -108,3 +108,117 @@
 .reasoning-info .reasoning-title {
     color: var(--cyan);
 }
+
+.reasoning-mode-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 1px solid rgba(0, 229, 255, .14);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.reasoning-mode-tabs button {
+    padding: 9px;
+    border: none;
+    border-right: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(2, 6, 23, .58);
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.reasoning-mode-tabs button:last-child {
+    border-right: none;
+}
+
+.reasoning-mode-tabs button.active {
+    color: var(--cyan);
+    background: rgba(0, 229, 255, .08);
+    box-shadow: inset 0 -2px 0 var(--cyan);
+}
+
+.reasoning-history {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reasoning-history-entry {
+    border: 1px solid rgba(0, 229, 255, .14);
+    border-radius: 10px;
+    background: rgba(2, 6, 23, .54);
+    padding: 10px;
+}
+
+.reasoning-history-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.reasoning-history-time {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.reasoning-history-summary {
+    color: var(--text);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.reasoning-level-counts {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.reasoning-level-counts span {
+    height: 22px;
+    min-width: 22px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.reasoning-level-counts .success {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .3);
+}
+
+.reasoning-level-counts .warning {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .3);
+}
+
+.reasoning-level-counts .danger {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .3);
+}
+
+.reasoning-history-items {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.reasoning-history-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+    font-size: 11px;
+}
+
+.reasoning-history-item b {
+    color: var(--cyan);
+}
+
+.reasoning-history-item span {
+    color: var(--muted);
+}

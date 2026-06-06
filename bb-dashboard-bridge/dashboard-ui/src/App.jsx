@@ -10,7 +10,8 @@ import {
     fetchDashboardEvents,
     fetchNetworkTopology,
     fetchCommandStatus,
-    fetchDaemonReasoning
+    fetchDaemonReasoning,
+    fetchDaemonReasoningHistory
 } from "./api/dashboardApi.js";
 
 import {
@@ -35,6 +36,7 @@ export default function App() {
     const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
     const [inspectorInitialTab, setInspectorInitialTab] = useState("core");
     const [reasoning, setReasoning] = useState(null);
+    const [reasoningHistory, setReasoningHistory] = useState([]);
 
     async function refreshState() {
         try {
@@ -68,6 +70,13 @@ export default function App() {
                 setReasoning(nextReasoning);
             } catch {
                 setReasoning(null);
+            }
+
+            try {
+                const nextReasoningHistory = await fetchDaemonReasoningHistory();
+                setReasoningHistory(Array.isArray(nextReasoningHistory) ? nextReasoningHistory : []);
+            } catch {
+                setReasoningHistory([]);
             }
         } catch (err) {
             setError(err);
@@ -135,6 +144,7 @@ export default function App() {
                 state={state}
                 events={events}
                 reasoning={reasoning}
+                reasoningHistory={reasoningHistory}
                 onClose={() => setInspectorOpen(false)}
                 onToggle={() => setInspectorOpen(open => !open)}
             />
