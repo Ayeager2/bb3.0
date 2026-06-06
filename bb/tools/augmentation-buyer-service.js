@@ -59,6 +59,9 @@ export async function main(ns) {
             allowBuying,
             forceBuy,
             policyAllowAugmentPurchases: policy.allowAugmentPurchases === true,
+            policyAllowFactionWork: policy.allowFactionWork === true,
+            backgroundFactionWork: policy.backgroundFactionWork === true,
+            backgroundFactionReason: policy.backgroundFactionReason ?? null,
             reserveMoney,
             maxPrice,
             planReady: plan.ready === true,
@@ -95,13 +98,15 @@ export async function main(ns) {
         ns.print(`Status: ${plan.blockedReason}`);
 
         if (!allowBuying || !plan.ready) {
+            const blockedReason =
+                plan.ready !== true
+                    ? plan.blockedReason ?? "Augmentation plan is not ready."
+                    : "Daemon policy has augmentation purchases turned off.";
+
             writeBuyerState(ns, {
                 ...baseState,
                 status: "blocked",
-                blockedReason:
-                    !allowBuying
-                        ? "Daemon policy has augmentation purchases turned off."
-                        : plan.blockedReason ?? "Augmentation plan is not ready.",
+                blockedReason,
             });
             await ns.sleep(refreshMs);
             continue;
@@ -276,6 +281,7 @@ function summarizeGoal(goal) {
         hasRep: goal.hasRep === true,
         affordable: goal.affordable === true,
         hasPrereqs: goal.hasPrereqs === true,
+        stagePolicy: goal.stagePolicy ?? null,
     };
 }
 function stopFactionWorkIfRunning(ns) {

@@ -354,6 +354,7 @@ function buildAugmentationCalculation(state) {
     shouldDonateFaction: decision.shouldDonateFaction === true,
     shouldEarnMoney: decision.shouldEarnMoney === true,
     shouldBuyAugment: decision.shouldBuyAugment === true,
+    stagePolicy: decision.stagePolicy ?? null,
     timing: decision.augmentationTiming ?? null,
     reason: decision.reason ?? null,
   };

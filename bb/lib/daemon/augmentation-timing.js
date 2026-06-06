@@ -62,6 +62,10 @@ export function buildAugmentationTiming(ns, options = {}) {
     const highValue =
         valueBucket === "critical" ||
         valueBucket === "high";
+    const stagePolicy = goal.stagePolicy ?? null;
+    const criticalStage =
+        stagePolicy?.buyReadiness === "finish-now" ||
+        stagePolicy?.urgency === "critical";
     const repClose =
         missingRep > 0 &&
         (repBucket === "close" || repBucket === "medium");
@@ -116,7 +120,7 @@ export function buildAugmentationTiming(ns, options = {}) {
 
     if (missingRep > 0) {
         const shouldFullFaction =
-            highValue &&
+            (criticalStage || highValue) &&
             repClose &&
             (cloudFar || cloudFleet.maxed === true);
 
@@ -128,7 +132,7 @@ export function buildAugmentationTiming(ns, options = {}) {
             allowBackgroundFaction: true,
             stayMoneyHeavy: !shouldFullFaction,
             reason: shouldFullFaction
-                ? `${goal.name} is valuable and the rep gap is close enough; switch fully to faction work.`
+                ? `${goal.name} is ${stagePolicy?.stage ?? "high-value"} stage work and the rep gap is close enough; switch fully to faction work.`
                 : `${goal.name} still needs rep; work it in the background while money remains primary.`,
             goal,
             missingRep,
@@ -144,7 +148,7 @@ export function buildAugmentationTiming(ns, options = {}) {
 
     if (missingMoney > 0) {
         const shouldFullFaction =
-            highValue &&
+            (criticalStage || highValue) &&
             moneyClose &&
             cloudFar;
 
@@ -156,7 +160,7 @@ export function buildAugmentationTiming(ns, options = {}) {
             allowBackgroundFaction: false,
             stayMoneyHeavy: !shouldFullFaction || cloudSoon,
             reason: shouldFullFaction
-                ? `${goal.name} is high value and nearly affordable; progression can lead.`
+                ? `${goal.name} is ${stagePolicy?.stage ?? "high-value"} stage work and nearly affordable; progression can lead.`
                 : `${goal.name} needs money; keep money lanes primary.`,
             goal,
             missingRep,

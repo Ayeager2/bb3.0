@@ -3,6 +3,7 @@ const AUGMENTATION_PLAN_FILE = '/data/augmentation-plan.txt';
 const AUGMENTATION_STATE_FILE = '/data/augmentation-state.txt';
 const AUGMENTATION_BUYER_STATE_FILE = '/data/augmentation-buyer-state.txt';
 const DAEMON_STATE_FILE = '/data/daemon-state.txt';
+const FACTION_WORK_PLAN_FILE = '/data/faction-work-plan.txt';
 const TOOL_VERSION = 'augmentation-status-policy-diagnostics-v2';
 
 import { buildAugmentationTiming } from '/lib/daemon/augmentation-timing.js';
@@ -15,6 +16,7 @@ export async function main(ns) {
   const state = readJson(ns, AUGMENTATION_STATE_FILE);
   const buyerState = readJson(ns, AUGMENTATION_BUYER_STATE_FILE);
   const daemonState = readJson(ns, DAEMON_STATE_FILE);
+  const factionWorkPlan = readJson(ns, FACTION_WORK_PLAN_FILE);
   const policy = daemonState?.spendingPolicy ?? {};
   const buyerService = getService(daemonState, 'augmentation-buyer');
   const timing =
@@ -66,6 +68,10 @@ export async function main(ns) {
   ns.tprint(`Next Goal: ${g.name}`);
   ns.tprint(`Faction: ${g.faction}`);
   ns.tprint(`Theme: ${g.theme}`);
+  if (g.stagePolicy) {
+    ns.tprint(`Stage: ${g.stagePolicy.stage ?? 'unknown'} (${g.stagePolicy.urgency ?? 'unknown'})`);
+    ns.tprint(`Stage Policy: ${g.stagePolicy.buyReadiness ?? 'unknown'} / ${g.stagePolicy.reason ?? 'unknown'}`);
+  }
   ns.tprint(`Tags: ${(g.tags ?? []).join(', ')}`);
   if (g.statBreakdown) {
     ns.tprint('Stat Breakdown:');
@@ -119,9 +125,25 @@ export async function main(ns) {
   ns.tprint('Augmentation Buyer Policy');
   ns.tprint(`Policy Priority: ${policy.priority ?? 'unknown'}`);
   ns.tprint(`Allow Purchases: ${policy.allowAugmentPurchases === true ? 'YES' : 'NO'}`);
+  ns.tprint(`Allow Faction Work: ${policy.allowFactionWork === true ? 'YES' : 'NO'}`);
+  ns.tprint(`Background Faction: ${policy.backgroundFactionWork === true ? 'YES' : 'NO'}`);
   ns.tprint(`Reserve: ${formatMoney(policy.reserveMoney ?? 0)}`);
   ns.tprint(`Service Status: ${buyerService?.status ?? 'unknown'}`);
   ns.tprint(`Service Reason: ${buyerService?.reason ?? 'unknown'}`);
+  if (policy.backgroundFactionReason) {
+    ns.tprint(`Faction Reason: ${policy.backgroundFactionReason}`);
+  }
+
+  if (factionWorkPlan?.updatedAt) {
+    ns.tprint('-'.repeat(60));
+    ns.tprint('Faction Work Plan');
+    ns.tprint(`Active: ${factionWorkPlan.active === true ? 'YES' : 'NO'}`);
+    ns.tprint(`Faction: ${factionWorkPlan.targetFaction ?? 'none'}`);
+    ns.tprint(`Augmentation: ${factionWorkPlan.targetAugmentation ?? 'none'}`);
+    ns.tprint(`Work Type: ${factionWorkPlan.workType ?? 'none'}`);
+    ns.tprint(`Missing Rep: ${formatNumber(factionWorkPlan.missingRep ?? 0)}`);
+    ns.tprint(`Reason: ${factionWorkPlan.reason ?? 'unknown'}`);
+  }
 
   if (buyerState?.updatedAt) {
     ns.tprint('-'.repeat(60));
@@ -129,6 +151,8 @@ export async function main(ns) {
     ns.tprint(`Updated: ${new Date(buyerState.updatedAt).toLocaleTimeString()}`);
     ns.tprint(`Status: ${buyerState.status ?? 'unknown'}`);
     ns.tprint(`Allow Buying: ${buyerState.allowBuying === true ? 'YES' : 'NO'}`);
+    ns.tprint(`Policy Allows Faction Work: ${buyerState.policyAllowFactionWork === true ? 'YES' : 'NO'}`);
+    ns.tprint(`Background Faction Work: ${buyerState.backgroundFactionWork === true ? 'YES' : 'NO'}`);
     ns.tprint(`Plan Ready: ${buyerState.planReady === true ? 'YES' : 'NO'}`);
     ns.tprint(`Reason: ${buyerState.blockedReason || buyerState.planBlockedReason || 'none'}`);
     if (buyerState.nextGoal?.name) {

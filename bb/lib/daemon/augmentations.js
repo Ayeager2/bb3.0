@@ -2,6 +2,8 @@
 const AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 const AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
 
+import { getAugmentationStagePolicy } from "/lib/daemon/augmentation-stage-policy.js";
+
 const DEFAULT_MAX_PRICE = 1_000_000_000_000; // 1t
 
 const BITNODE_STRATEGIES = {
@@ -117,12 +119,20 @@ export function buildAugmentationPlan(ns, options = {}) {
             const statScore = scoreStats(aug.stats ?? {}, strategy.statWeights);
             const strategicScore = scoreStrategicValue(aug.name, faction, aug, strategy);
             const readinessScore = scoreReadiness({ hasRep, affordable, hasPrereqs });
+            const stagePolicy = getAugmentationStagePolicy({
+                name: aug.name,
+                faction: faction.faction,
+            });
+            const priorityClass = getAugPriorityClass({
+                statBreakdown: getStatBreakdown(aug.stats ?? {}, strategy.statWeights),
+            });
             const pricePenalty = Math.log10(Math.max(10, price)) * 8;
             const repPenalty = Math.log10(Math.max(10, rep)) * 3;
 
             const score =
                 statScore +
                 strategicScore +
+                stagePolicy.priority +
                 readinessScore -
                 pricePenalty -
                 repPenalty;
@@ -140,6 +150,8 @@ export function buildAugmentationPlan(ns, options = {}) {
                 prereqs: aug.prereqs ?? [],
                 stats: aug.stats ?? {},
                 statBreakdown: getStatBreakdown(aug.stats ?? {}, strategy.statWeights),
+                priorityClass,
+                stagePolicy,
                 tags: aug.tags ?? [],
                 score,
             });
@@ -183,6 +195,11 @@ function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set()) {
 }
 
 function compareForPurchase(a, b) {
+    const aStage = a.stagePolicy?.priority ?? 0;
+    const bStage = b.stagePolicy?.priority ?? 0;
+
+    if (aStage !== bStage) return bStage - aStage;
+
     if (a.hasRep && !b.hasRep) return -1;
     if (!a.hasRep && b.hasRep) return 1;
 
@@ -394,6 +411,11 @@ function getForcedRedPillGoal(ns) {
 
             stats: {},
             statBreakdown: {},
+            priorityClass: 999,
+            stagePolicy: getAugmentationStagePolicy({
+                name: "The Red Pill",
+                faction: "Daedalus",
+            }),
 
             tags: ["red-pill", "endgame"],
 

@@ -1,4 +1,5 @@
 import { buildAugmentationTiming } from "/lib/daemon/augmentation-timing.js";
+import { getAugmentationStagePolicy } from "/lib/daemon/augmentation-stage-policy.js";
 
 const AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
 const FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
@@ -16,6 +17,9 @@ export function getAugmentationDecision(ns) {
         });
 
     const goal = augPlan?.nextGoal ?? null;
+    const stagePolicy =
+        goal?.stagePolicy ??
+        getAugmentationStagePolicy(goal);
 
     if (!goal) {
         return {
@@ -27,6 +31,7 @@ export function getAugmentationDecision(ns) {
             shouldEarnMoney: true,
             shouldBuyAugment: false,
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -42,6 +47,7 @@ export function getAugmentationDecision(ns) {
             targetFaction: goal.faction,
             targetAugmentation: goal.name,
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -59,6 +65,7 @@ export function getAugmentationDecision(ns) {
             missingRep: donationPlan.missingRep,
             estimatedDonation: donationPlan.estimatedDonation,
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -75,6 +82,7 @@ export function getAugmentationDecision(ns) {
             targetAugmentation: factionWork.targetAugmentation,
             missingRep: factionWork.missingRep,
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -91,6 +99,7 @@ export function getAugmentationDecision(ns) {
             targetAugmentation: goal.name,
             missingRep: Math.max(0, goal.rep - goal.factionRep),
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -107,6 +116,7 @@ export function getAugmentationDecision(ns) {
             targetAugmentation: goal.name,
             missingMoney: Math.max(0, goal.price - (augPlan.spendable ?? 0)),
             augmentationTiming,
+            stagePolicy,
         };
     }
 
@@ -119,6 +129,7 @@ export function getAugmentationDecision(ns) {
         shouldEarnMoney: true,
         shouldBuyAugment: false,
         augmentationTiming,
+        stagePolicy,
     };
 }
 
