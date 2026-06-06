@@ -263,6 +263,7 @@ function buildProgressionCalculations(ns, state) {
   const expTarget = getBestExpTarget(ns, rootedServers, {
     phase: state.recommendedMode === "exp" ? "exp" : "scaling",
     lane: "exp",
+    purpose: state.recommendedMode === "exp" ? "leveling" : "background",
   });
   const moneyTarget = getBestMoneyTarget(ns, rootedServers, {
     phase: "scaling",
@@ -299,7 +300,9 @@ function buildExpCalculation(ns, state, target, formulasUnlocked) {
     estimatedActions: expPerAction > 0
       ? Math.ceil(missingExp / expPerAction)
       : null,
-    targetScore: target ? scoreExpTarget(ns, target) : 0,
+    targetScore: target ? scoreExpTarget(ns, target, {
+      purpose: state.recommendedMode === "exp" ? "leveling" : "background",
+    }) : 0,
     calculationSource: formulasUnlocked ? "formulas.skills/formulas.hacking" : "fallback-skill-estimate",
   };
 }

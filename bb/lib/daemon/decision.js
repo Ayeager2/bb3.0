@@ -680,6 +680,7 @@ export function buildStrategicTargetDecision(ns, {
                 exp: getBestExpTarget(ns, rootedServers, {
                     phase,
                     lane: "exp",
+                    purpose: "background",
                 }),
                 prep: getBestPrepTarget(ns, rootedServers, {
                     phase,
@@ -691,7 +692,11 @@ export function buildStrategicTargetDecision(ns, {
 
     if (mode === "exp") {
         const expTarget =
-            getBestExpTarget(ns, rootedServers) ||
+            getBestExpTarget(ns, rootedServers, {
+                phase: "exp",
+                lane: "exp",
+                purpose: "leveling",
+            }) ||
             "joesguns";
 
         return {
@@ -704,6 +709,7 @@ export function buildStrategicTargetDecision(ns, {
             targetPlan: {
                 type: "exp",
                 target: expTarget,
+                purpose: "leveling",
             },
             reason: `exp target ${expTarget}`,
         };

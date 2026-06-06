@@ -173,22 +173,28 @@ export function buildStrategicMoneyTargetPlan(
 function buildCandidate(ns, server) {
     const maxMoney = ns.getServerMaxMoney(server);
     const money = ns.getServerMoneyAvailable(server);
-    const weakenTime = ns.getWeakenTime(server);
-    const chance = ns.hackAnalyzeChance(server);
+    const metrics = getTargetFormulaMetrics(ns, server);
+    const weakenTime = metrics.weakenTime;
+    const chance = metrics.chance;
     const requiredHacking = ns.getServerRequiredHackingLevel(server);
     const minSecurity = ns.getServerMinSecurityLevel(server);
     const security = ns.getServerSecurityLevel(server);
     const growth = ns.getServerGrowth(server);
     const score = scoreStrategicMoneyTarget(ns, server);
+    const estimatedMoneyPerSecond =
+        maxMoney * metrics.hackPercent * chance / Math.max(1, weakenTime / 1000);
 
     return {
         server,
         score,
+        scoreSource: metrics.source,
         maxMoney,
         money,
         moneyRatio: maxMoney > 0 ? money / maxMoney : 0,
         weakenTime,
         chance,
+        hackPercent: metrics.hackPercent,
+        estimatedMoneyPerSecond,
         requiredHacking,
         minSecurity,
         security,
@@ -200,6 +206,9 @@ function buildCandidate(ns, server) {
             maxMoney,
             weakenTime,
             chance,
+            hackPercent: metrics.hackPercent,
+            estimatedMoneyPerSecond,
+            scoreSource: metrics.source,
             requiredHacking,
             securityDelta: security - minSecurity,
             growth,
@@ -209,13 +218,45 @@ function buildCandidate(ns, server) {
 
 function buildCandidateReason(ns, candidate) {
     return [
+        `math=${candidate.scoreSource ?? "legacy"}`,
         `score=${formatScore(candidate.score)}`,
         `money=${formatMoney(candidate.maxMoney)}`,
         `chance=${formatPercent(candidate.chance)}`,
+        `hack/thread=${formatPercent(candidate.hackPercent)}`,
+        `est/s=${formatMoney(candidate.estimatedMoneyPerSecond)}`,
         `weak=${formatDuration(candidate.weakenTime)}`,
         `sec+${candidate.securityDelta.toFixed(1)}`,
         `growth=${candidate.growth}`,
     ].join(" ");
+}
+
+function getTargetFormulaMetrics(ns, server) {
+    const formulasUnlocked =
+        ns.fileExists("Formulas.exe", "home") &&
+        !!ns.formulas?.hacking;
+
+    if (formulasUnlocked) {
+        try {
+            const serverObj = ns.getServer(server);
+            const player = ns.getPlayer();
+
+            return {
+                source: "formulas",
+                chance: Math.max(0.01, ns.formulas.hacking.hackChance(serverObj, player)),
+                weakenTime: Math.max(1, ns.formulas.hacking.weakenTime(serverObj, player)),
+                hackPercent: Math.max(0.000001, ns.formulas.hacking.hackPercent(serverObj, player)),
+            };
+        } catch {
+            // Fall through to live legacy metrics.
+        }
+    }
+
+    return {
+        source: formulasUnlocked ? "legacy-fallback" : "legacy",
+        chance: Math.max(0.01, ns.hackAnalyzeChance(server)),
+        weakenTime: Math.max(1, ns.getWeakenTime(server)),
+        hackPercent: Math.max(0.000001, ns.hackAnalyze(server)),
+    };
 }
 
 function buildTargetStability(
@@ -268,68 +309,10 @@ function scoreStrategicMoneyTarget(ns, server) {
             ns.getServerGrowth(server)
         );
 
-        const formulasUnlocked =
-            ns.fileExists("Formulas.exe", "home") &&
-            !!ns.formulas?.hacking;
-
-        let chance;
-        let weakenTime;
-        let hackPercent;
-
-        if (formulasUnlocked) {
-            try {
-                const serverObj = ns.getServer(server);
-                const player = ns.getPlayer();
-
-                chance = Math.max(
-                    0.01,
-                    ns.formulas.hacking.hackChance(
-                        serverObj,
-                        player
-                    )
-                );
-
-                weakenTime = Math.max(
-                    1,
-                    ns.formulas.hacking.weakenTime(
-                        serverObj,
-                        player
-                    )
-                );
-
-                hackPercent = Math.max(
-                    0.000001,
-                    ns.formulas.hacking.hackPercent(
-                        serverObj,
-                        player
-                    )
-                );
-            } catch {
-                chance = Math.max(
-                    0.01,
-                    ns.hackAnalyzeChance(server)
-                );
-
-                weakenTime = Math.max(
-                    1,
-                    ns.getWeakenTime(server)
-                );
-
-                hackPercent = 0.001;
-            }
-        } else {
-            chance = Math.max(
-                0.01,
-                ns.hackAnalyzeChance(server)
-            );
-
-            weakenTime = Math.max(
-                1,
-                ns.getWeakenTime(server)
-            );
-
-            hackPercent = 0.001;
-        }
+        const metrics = getTargetFormulaMetrics(ns, server);
+        const chance = metrics.chance;
+        const weakenTime = metrics.weakenTime;
+        const hackPercent = metrics.hackPercent;
 
         const minSec = Math.max(
             1,

@@ -54,6 +54,7 @@ function printLaneSummary(ns, c, laneSnapshots) {
             `  ${compactLaneName(lane.name).padEnd(10)} ` +
             `${String(lane.mode ?? "-").padEnd(6)} ` +
             `${String(lane.target ?? "-").padEnd(18)} ` +
+            `${formatTargetSource(lane).padEnd(10)} ` +
             `hosts ${ram.hostCount} | ` +
             `alloc ${pct(allocationPercent)} | ` +
             `free ${ns.format.ram(ram.freeRam)}/${ns.format.ram(ram.maxRam)}`
@@ -94,6 +95,7 @@ function printActiveResults(ns, c, results, laneSnapshots) {
             `  ${compactLaneName(result.lane).padEnd(10)} ` +
             `${String(result.mode).padEnd(6)} ` +
             `${c.yellow}${target}${c.reset} ` +
+            `${formatTargetSource(result)} ` +
             `${statusColor}${result.status}${c.reset}`
         );
 
@@ -128,6 +130,7 @@ function printRuntimeLine(ns, c, runtimeStats) {
     if (runtimeStats.expOverdrive?.active) {
         ns.print(
             `  EXP ${runtimeStats.expOverdrive.target} | ` +
+            `${runtimeStats.expOverdrive.purpose ?? "background"} | ` +
             `${runtimeStats.expOverdrive.status} | ` +
             `workers ${runtimeStats.expOverdrive.activeProcesses}/` +
             `${runtimeStats.expOverdrive.maxProcesses} | ` +
@@ -206,6 +209,14 @@ function compactLaneName(name) {
 
 function pct(value) {
     return `${((value ?? 0) * 100).toFixed(0)}%`;
+}
+
+function formatTargetSource(item) {
+    const source = item?.targetSource ?? "";
+    if (source === "affordable-fallback") return "fallback";
+    if (source === "daemon") return "daemon";
+    if (source === "selected") return "selected";
+    return "-";
 }
 
 function colors() {

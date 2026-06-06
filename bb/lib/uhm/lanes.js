@@ -32,6 +32,12 @@ export function buildTargetLanes(
 
     const laneTargets =
         daemonState?.laneTargets ?? {};
+    const requestedPrimaryTarget =
+        laneTargets.primary ?? daemonState?.target ?? null;
+    const requestedSecondaryTarget =
+        laneTargets.secondary ?? null;
+    const requestedExpTarget =
+        laneTargets.exp ?? null;
 
     const formulasUnlocked =
         daemonState?.formulasUnlocked === true &&
@@ -40,26 +46,37 @@ export function buildTargetLanes(
     const moneyTarget = getValidTargetOrFallback(
         ns,
         cleanServers,
-        laneTargets.primary ?? daemonState?.target,
+        requestedPrimaryTarget,
         "money",
-        groups.high
+        groups.high,
+        {
+            laneName: "primary",
+            minAffordability: 0.85,
+        }
     );
 
     const secondaryMoneyTarget =
         getValidTargetOrFallback(
             ns,
             cleanServers,
-            laneTargets.secondary,
+            requestedSecondaryTarget,
             "money",
-            groups.mid
+            groups.mid,
+            {
+                laneName: "secondary",
+                minAffordability: 0.70,
+            }
         );
 
     const expTarget = getValidTargetOrFallback(
         ns,
         cleanServers,
-        laneTargets.exp,
+        requestedExpTarget,
         "exp",
-        groups.low
+        groups.low,
+        {
+            expPurpose: "background",
+        }
     );
 
     const prepTarget = getValidTargetOrFallback(
@@ -74,9 +91,12 @@ export function buildTargetLanes(
         const expSprintTarget = getValidTargetOrFallback(
             ns,
             cleanServers,
-            "joesguns",
+            requestedExpTarget ?? daemonState?.target,
             "exp",
-            hosts
+            hosts,
+            {
+                expPurpose: "leveling",
+            }
         );
 
         return [
@@ -84,8 +104,11 @@ export function buildTargetLanes(
                 name: "ALL / EXP",
                 mode: "exp",
                 target: expSprintTarget ?? "",
+                requestedTarget: requestedExpTarget ?? daemonState?.target ?? null,
+                targetSource: getTargetSource(expSprintTarget, requestedExpTarget ?? daemonState?.target),
                 hosts,
                 formulasUnlocked,
+                expPurpose: "leveling",
             },
         ];
     }
@@ -128,6 +151,8 @@ export function buildTargetLanes(
             name: "HIGH / MONEY",
             mode: "money",
             target: moneyTarget ?? "",
+            requestedTarget: requestedPrimaryTarget,
+            targetSource: getTargetSource(moneyTarget, requestedPrimaryTarget),
             hosts: groups.high,
             formulasUnlocked,
         },
@@ -135,6 +160,8 @@ export function buildTargetLanes(
             name: "MID / SECONDARY",
             mode: "money",
             target: secondaryMoneyTarget ?? "",
+            requestedTarget: requestedSecondaryTarget,
+            targetSource: getTargetSource(secondaryMoneyTarget, requestedSecondaryTarget),
             hosts: groups.mid,
             formulasUnlocked,
         },
@@ -142,8 +169,17 @@ export function buildTargetLanes(
             name: "LOW / EXP",
             mode: "exp",
             target: expTarget ?? "",
+            requestedTarget: requestedExpTarget,
+            targetSource: getTargetSource(expTarget, requestedExpTarget),
             hosts: groups.low,
             formulasUnlocked,
+            expPurpose: "background",
         },
     ];
+}
+
+function getTargetSource(actual, requested) {
+    if (!requested) return "selected";
+    if (!actual) return "none";
+    return actual === requested ? "daemon" : "affordable-fallback";
 }

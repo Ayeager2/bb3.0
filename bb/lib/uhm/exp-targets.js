@@ -22,7 +22,17 @@ const FALLBACK_TARGETS = [
     "iron-gym",
 ];
 
-export function getBestExpTarget(ns, rootedServers, preferredTarget = null) {
+export function getBestExpTarget(ns, rootedServers, options = {}) {
+    const preferredTarget =
+        typeof options === "string"
+            ? options
+            : options.preferredTarget ?? null;
+
+    const purpose =
+        typeof options === "object"
+            ? options.purpose ?? "background"
+            : "background";
+
     const candidates = [...new Set([
         ...FALLBACK_TARGETS,
         ...Array.from(rootedServers ?? []),
@@ -33,7 +43,7 @@ export function getBestExpTarget(ns, rootedServers, preferredTarget = null) {
         .filter(server => isExpCandidate(ns, server))
         .map(server => ({
             server,
-            score: scoreExpTarget(ns, server),
+            score: scoreExpTarget(ns, server, { purpose }),
         }))
         .sort((a, b) => b.score - a.score)[0]?.server ?? "joesguns";
 }
@@ -54,7 +64,12 @@ function isExpCandidate(ns, server) {
     }
 }
 
-function scoreExpTarget(ns, server) {
+function scoreExpTarget(ns, server, options = {}) {
+    const purpose = options.purpose ?? "background";
+    const hacking = Math.max(1, ns.getHackingLevel());
+    const requiredHack = Math.max(1, ns.getServerRequiredHackingLevel(server));
+    const levelRatio = requiredHack / hacking;
+
     const maxMoney = Math.max(1, safeGetServerMaxMoney(ns, server));
     const growth = Math.max(1, safeGetServerGrowth(ns, server));
     const sec = safeGetServerSecurityLevel(ns, server);
@@ -62,10 +77,34 @@ function scoreExpTarget(ns, server) {
     const secPenalty = Math.max(1, sec - minSec + 1);
     const chance = Math.max(0.01, safeHackAnalyzeChance(ns, server));
     const hackTime = Math.max(1, ns.getHackTime(server));
+    const timeSeconds = Math.max(1, hackTime / 1000);
+
+    if (purpose === "leveling") {
+        const levelBand =
+            levelRatio >= 0.70 && levelRatio <= 1.00 ? 5.0 :
+                levelRatio >= 0.45 && levelRatio < 0.70 ? 3.0 :
+                    levelRatio >= 0.25 && levelRatio < 0.45 ? 1.5 :
+                        levelRatio >= 0.10 && levelRatio < 0.25 ? 0.4 :
+                            0.05;
+
+        return (
+            levelBand *
+            Math.sqrt(growth) *
+            Math.log10(maxMoney + 1) *
+            chance
+        ) / (Math.pow(timeSeconds, 0.60) * Math.sqrt(secPenalty));
+    }
+
+    const quickCycleBonus =
+        timeSeconds <= 30 ? 3.0 :
+            timeSeconds <= 90 ? 1.5 :
+                timeSeconds <= 180 ? 0.75 :
+                    0.25;
 
     return (
-        Math.log10(maxMoney + 1) *
-        growth *
-        chance
-    ) / (secPenalty * Math.sqrt(hackTime / 1000));
+        quickCycleBonus *
+        Math.sqrt(growth) *
+        chance *
+        Math.log10(maxMoney + 1)
+    ) / (secPenalty * Math.sqrt(timeSeconds));
 }

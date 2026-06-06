@@ -40,6 +40,9 @@ export function snapshotLanes(lanes, getLaneRamStats) {
         name: lane.name,
         mode: lane.mode,
         target: lane.target,
+        requestedTarget: lane.requestedTarget ?? null,
+        targetSource: lane.targetSource ?? null,
+        expPurpose: lane.expPurpose ?? null,
         hosts: lane.hosts.map(host => ({ ...host })),
         ram: getLaneRamStats(lane.hosts),
     }));

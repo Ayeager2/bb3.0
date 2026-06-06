@@ -43,6 +43,8 @@ export function buildGlobalState(ns, decision, capabilities) {
         targetOverride: decision.targetOverride,
         targetStats,
         targetStability: decision.targetStability ?? null,
+        targetPlan: decision.targetPlan ?? null,
+        targetReason: decision.targetReason ?? null,
         targetSince: decision.targetSince ?? null,
         laneTargets: decision.laneTargets ?? null,
         spendingPolicy: decision.spendingPolicy,

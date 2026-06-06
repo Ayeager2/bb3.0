@@ -47,6 +47,7 @@ export function drawDashboard(ns, state, overrides) {
     }
 
     printTargetStability(ns, c, state);
+    printTargetIntelligence(ns, c, state);
     printBnCompact(ns, c, state);
     printResetCompact(ns, c, state);
     printPolicyCompact(ns, c, state);
@@ -341,6 +342,16 @@ function percentText(value) {
     return (n * 100).toFixed(0) + "%";
 }
 
+function formatScore(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return "0";
+    if (Math.abs(n) >= 1e12) return (n / 1e12).toFixed(2) + "t";
+    if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + "b";
+    if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + "m";
+    if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + "k";
+    return n.toFixed(2);
+}
+
 function colors() {
     return {
         reset: "\u001b[0m",
@@ -385,4 +396,38 @@ function formatDuration(ms) {
         String(minutes).padStart(2, "0"),
         String(seconds).padStart(2, "0"),
     ].join(":");
+}
+
+function printTargetIntelligence(ns, c, state) {
+    const plan =
+        state.targetPlan ??
+        state.strategicTargetPlan ??
+        state.controller?.strategicTargetPlan ??
+        null;
+
+    if (!plan) return;
+
+    const best = plan.bestCandidate;
+    const current = plan.currentCandidate;
+    const reason =
+        state.targetReason ??
+        state.strategicTargetReason ??
+        state.controller?.strategicTargetReason ??
+        plan.reason ??
+        "target decision";
+
+    ns.print(
+        `${section(c, "TARGET AI")} ` +
+        `${badge(c, "MATH", best?.scoreSource ?? current?.scoreSource ?? "unknown", c.cyan)} ` +
+        `${badge(c, "BEST", best?.server ?? "none", c.green)} ` +
+        `${badge(c, "CUR", current?.server ?? state.target ?? "none", c.yellow)} ` +
+        `${badge(c, "SCORE", formatScore(best?.score ?? 0), c.magenta)}`
+    );
+
+    const detail =
+        best?.reason ??
+        current?.reason ??
+        reason;
+
+    ns.print(`${c.gray}${shorten(reason, 70)} | ${shorten(detail, 120)}${c.reset}`);
 }

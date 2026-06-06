@@ -15,17 +15,25 @@ import {
     getBestMoneyTarget,
 } from "/lib/daemon/targets.js";
 
+import {
+    getBestExpTarget,
+} from "/lib/uhm/exp-targets.js";
+
 export function getValidTargetOrFallback(
     ns,
     rootedServers,
     target,
     mode,
-    hosts = []
+    hosts = [],
+    options = {}
 ) {
     if (mode === "exp") {
         return target && isUsableTarget(ns, target)
             ? target
-            : getBestExpTarget(ns, rootedServers);
+            : getBestExpTarget(ns, rootedServers, {
+                preferredTarget: options.preferredTarget,
+                purpose: options.expPurpose ?? "background",
+            });
     }
 
     const formulasUnlocked =
@@ -35,9 +43,10 @@ export function getValidTargetOrFallback(
     const availableRam = getTotalFreeRam(hosts);
 
     const affordable =
-        mode === "exp"
-            ? getBestAffordableMoneyTarget(ns, rootedServers, hosts)
-            : getBestAffordableMoneyTarget(ns, rootedServers, hosts);
+        getBestAffordableMoneyTarget(ns, rootedServers, hosts, {
+            minAffordability: options.minAffordability,
+            laneName: options.laneName,
+        });
 
     if (!target || !isUsableTarget(ns, target)) {
         return affordable ?? getBestMoneyTarget(ns, rootedServers);
@@ -84,10 +93,7 @@ export function getValidTargetOrFallback(
 
     const targetAffordable =
         targetPlan &&
-        (
-            targetPlan.tooLargeForLane !== true ||
-            availableRam >= targetPlan.totalRam * 0.75
-        );
+        targetPlan.tooLargeForLane !== true;
 
     if (!targetAffordable && affordable) {
         return affordable;
@@ -99,9 +105,14 @@ export function getValidTargetOrFallback(
 export function getBestAffordableMoneyTarget(
     ns,
     servers,
-    hosts = []
+    hosts = [],
+    options = {}
 ) {
     const availableRam = getTotalFreeRam(hosts);
+    const minAffordability =
+        Number.isFinite(Number(options.minAffordability))
+            ? Number(options.minAffordability)
+            : 0.85;
 
     return [...servers]
         .filter(server => safeServerExists(ns, server))
@@ -122,17 +133,22 @@ export function getBestAffordableMoneyTarget(
                 availableRam > 0
                     ? availableRam / Math.max(1, plan.totalRam)
                     : 0;
+            const fitsLane =
+                plan.tooLargeForLane !== true &&
+                affordability >= minAffordability;
 
             return {
                 server,
                 plan,
                 affordability,
+                fitsLane,
                 score:
                     scoreMoneyTarget(ns, server) *
-                    Math.min(1, affordability),
+                    Math.min(1, affordability) *
+                    (fitsLane ? 1 : 0.10),
             };
         })
-        .filter(x => x && x.affordability >= 0.35)
+        .filter(x => x && x.fitsLane)
         .sort((a, b) => b.score - a.score)[0]?.server;
 }
 
@@ -143,34 +159,3 @@ function getTotalFreeRam(hosts = []) {
     );
 }
 
-function getBestExpTarget(ns, servers) {
-    const hacking = ns.getHackingLevel();
-
-    const candidates = [...servers]
-        .filter(server => safeServerExists(ns, server))
-        .filter(server => isUsableTarget(ns, server))
-        .filter(server => ns.hasRootAccess(server))
-        .filter(server => ns.getServerRequiredHackingLevel(server) <= hacking)
-        .filter(server => safeGetServerMaxMoney(ns, server) > 0)
-        .map(server => {
-            const requiredHack =
-                ns.getServerRequiredHackingLevel(server);
-
-            const growth =
-                safeGetServerGrowth(ns, server);
-
-            const maxMoney =
-                safeGetServerMaxMoney(ns, server);
-
-            return {
-                server,
-                score:
-                    requiredHack * 10 +
-                    growth +
-                    Math.log10(Math.max(1, maxMoney)),
-            };
-        })
-        .sort((a, b) => b.score - a.score);
-
-    return candidates[0]?.server ?? "joesguns";
-}
