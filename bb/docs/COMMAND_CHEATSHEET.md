@@ -198,6 +198,25 @@ Good things to check:
 "services"
 ```
 
+For stage-aware leveling, check:
+
+```txt
+"factionProgression": {
+  "expPolicy": {
+    "shouldLevelNow": true,
+    "targetLevel": 2500,
+    "reason": "..."
+  },
+  "progressionAction": {
+    "type": "hacking",
+    "action": "exp",
+    "blocker": "hacking-level"
+  }
+}
+```
+
+If `shouldLevelNow` is `false`, automatic pre-Red-Pill EXP grinding should stay off unless you manually force leveling.
+
 ---
 
 ## Dashboard State

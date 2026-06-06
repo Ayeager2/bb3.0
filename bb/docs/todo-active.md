@@ -8,13 +8,9 @@
    - cloud fleet server slot completion comes before EXP grinding
    - RAM upgrades now use time-aware balancing instead of forcing EXP to 0 forever
    - once all cloud slots are full, money stays favored while EXP keeps a lane unless the next upgrade is affordable now
-3. Stage-aware EXP caps:
-   - pre-Red-Pill: level only as needed for faction progression
-   - likely soft cap around 2500 before Red Pill
-   - post-Red-Pill: push to 3000 for world daemon
-4. Augmentation buying logic by faction stage
-5. Better EXP target separation
-6. Formula-aware target telemetry polish
+3. Augmentation buying logic by faction stage
+4. Better EXP target separation
+5. Formula-aware target telemetry polish
 ```
 
 # COMPLETED RECENTLY
@@ -37,6 +33,14 @@
   - /data/daemon-state.txt includes cloudEconomyTiming for the next cloud action cost and estimated timing
   - dashboard state exposes servers.cloudFleet
   - manual daemon overrides can bypass this, including run daemon.js --level
+
+- Stage-aware EXP caps added:
+  - factionProgression.expPolicy says whether EXP is useful right now
+  - factionProgression.progressionAction exposes the current blocker/action pair
+  - decision.js uses expPolicy before entering automatic EXP mode
+  - pre-Red-Pill leveling only happens for an active hacking blocker
+  - post-Red-Pill leveling still targets w0r1d_d43m0n readiness
+  - dashboard state exposes expPolicy and progressionAction
 
 - Progression-stage target blacklist system
 - Phase/lane-aware target filtering
@@ -80,7 +84,8 @@ After Formulas:
     formulas-backed money/EXP estimates in faction progression
     optional EXP overdrive
     stage-aware progression logic foundation active
-    next: refine EXP caps and augmentation timing
+    stage-aware EXP caps active
+    next: refine augmentation timing
 ```
 
 # CURRENT STABILIZATION STATUS
@@ -99,6 +104,7 @@ Stable:
 - progression money/EXP calculation payload
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
+- stage-aware EXP caps
 - stale share-worker cleanup
 - phase/lane target blacklist system
 
@@ -139,7 +145,7 @@ workers
 # NEXT MAJOR CODING TASK
 
 ```txt
-Refine stage-aware progression behavior across:
+Refine augmentation timing across:
 /lib/daemon/faction-progression.js
 /lib/daemon/decision.js
 /lib/daemon/state.js
@@ -148,7 +154,6 @@ Refine stage-aware progression behavior across:
 Goal:
 
 ```txt
-- refine pre-Red-Pill EXP caps based on current faction blocker
 - Daedalus/Red Pill augmentation timing
 - money vs reputation vs join/backdoor recommendations using calculations
 - richer dashboard rendering for progression calculations
@@ -167,6 +172,8 @@ requiredHack
 calculations.exp
 calculations.money
 calculations.augmentation
+expPolicy
+progressionAction
 ```
 
 Target decision model:

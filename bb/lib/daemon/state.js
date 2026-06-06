@@ -247,12 +247,17 @@ export function getDecisionReason(ns, decision) {
     const money = ns.getPlayer().money;
     const victoryPlan = getBn4VictoryPlan(ns);
     const cloudFleet = getCloudFleetStatus(ns);
+    const factionProgression = buildFactionProgressionState(ns);
 
     if (decision.mode === "destroy-node") {
         return "Red Pill owned and w0r1d_d43m0n is ready. Destroy-node mode active.";
     }
 
     if (decision.mode === "exp") {
+        if (factionProgression.expPolicy?.reason) {
+            return factionProgression.expPolicy.reason;
+        }
+
         if (victoryPlan.hasRedPill) {
             return `Post-Red-Pill EXP sprint: hacking ${hacking}/${victoryPlan.hackingTarget}.`;
         }

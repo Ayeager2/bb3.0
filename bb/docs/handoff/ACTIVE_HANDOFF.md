@@ -10,11 +10,10 @@ status: ACTIVE_DEVELOPMENT
 
 ```txt
 1. verify economy-first cloud buildout behavior
-2. refine stage-aware EXP caps
-3. augmentation timing by faction stage
-4. EXP target separation
-5. dashboard rendering for progression calculations
-6. telemetry polish
+2. augmentation timing by faction stage
+3. EXP target separation
+4. dashboard rendering for progression calculations
+5. telemetry polish
 ```
 
 ---
@@ -54,6 +53,8 @@ requiredHack
 calculations.exp
 calculations.money
 calculations.augmentation
+expPolicy
+progressionAction
 ```
 
 ---
@@ -102,6 +103,7 @@ workers
 - progression money/EXP calculations
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
+- stage-aware EXP caps
 - backdoor progression retry/rooting
 ```
 
@@ -180,6 +182,7 @@ Before Red Pill:
     level only as needed for the current faction blocker
     avoid blind grinding to 3000
     likely soft cap near 2500 unless a stage requires more
+    factionProgression.expPolicy explains whether EXP is useful now
 
 After Red Pill:
     push toward 3000

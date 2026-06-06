@@ -240,20 +240,10 @@ NO_RAM
 # CURRENT ACTIVE PRIORITIES
 
 ```txt
-1. Faction-stage-driven progression intelligence
-2. Stage-aware EXP caps:
-   - pre-Red-Pill:
-       level only as needed for faction progression
-       likely soft cap around 2500
-
-   - post-Red-Pill:
-       push to 3000
-       enter destroy-node mode
-
-3. Augmentation buying logic by faction stage
-4. Better EXP target separation
-5. Adaptive lane balancing / lane affordability
-6. Formula-aware target telemetry polish
+1. Augmentation buying logic by faction stage
+2. Better EXP target separation
+3. Adaptive lane balancing / lane affordability
+4. Formula-aware target telemetry polish
 ```
 
 ---
@@ -282,7 +272,8 @@ After Formulas:
     formula-aware scoring
     optional EXP overdrive
     stage-aware progression foundation active
-    next: refine EXP caps and augmentation timing
+    stage-aware EXP caps active
+    next: refine augmentation timing
 ```
 
 ---
@@ -501,7 +492,6 @@ Refine:
 Goal:
 
 ```txt
-stage-aware EXP caps
 augmentation timing by faction stage
 money vs reputation urgency
 dashboard rendering for progression calculations
@@ -517,6 +507,8 @@ recommendedMode
 calculations.exp
 calculations.money
 calculations.augmentation
+expPolicy
+progressionAction
 ```
 
 ---

@@ -49,6 +49,7 @@ Implemented:
 - progression money/EXP calculation payloads
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
+- stage-aware EXP caps
 - darkweb purchasing
 - distributed share execution
 - stale share-worker cleanup
@@ -92,6 +93,7 @@ After Formulas.exe:
 - dashboard state exposes progression.faction/factionProgression
 - dashboard state exposes servers.cloudFleet
 - daemon state exposes cloudEconomyTiming
+- dashboard state exposes faction expPolicy/progressionAction
 - share-worker cleanup
 - reset planner foundation
 ```
@@ -156,6 +158,7 @@ pre-Red-Pill:
     faction-stage blocker detection
     progression-aware leveling
     avoid blind grinding to 3000
+    EXP mode only activates for an active hacking blocker
 
 post-Red-Pill:
     push hacking toward world-daemon readiness

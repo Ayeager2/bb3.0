@@ -31,6 +31,8 @@ Implemented:
 - money, EXP, and augmentation calculation payloads
 - fallback estimates before Formulas.exe
 - formulas-backed estimates after Formulas.exe
+- stage-aware EXP policy
+- structured progression action output
 ```
 
 Planned:
@@ -40,7 +42,6 @@ Planned:
 - reputation urgency
 - money urgency
 - faction-stage reasoning refinement
-- stage-aware EXP caps
 - dashboard rendering for calculation details
 ```
 
@@ -77,6 +78,8 @@ requiredHackLevel
 targetFaction
 targetServer
 hasRedPill
+expPolicy
+progressionAction
 calculations.exp
 calculations.money
 calculations.augmentation
@@ -113,9 +116,17 @@ Recommend action
 decision.js selects mode
 ```
 
+Current refinement:
+
+```txt
+expPolicy prevents blind pre-Red-Pill EXP grinding. EXP mode now activates
+automatically only when the current progression blocker is a hacking level.
+Post-Red-Pill EXP still targets w0r1d_d43m0n readiness.
+```
+
 Next refinement:
 
 ```txt
-Add augmentation valuation, missing reputation, missing money, and stage-aware
-EXP caps so pre-Red-Pill leveling only happens when the current blocker needs it.
+Add augmentation valuation, missing reputation urgency, and missing money urgency
+so Daedalus/Red Pill timing is more deliberate.
 ```

@@ -196,7 +196,64 @@ function makeState(stage, data) {
 function withCalculations(ns, state) {
   return {
     ...state,
+    expPolicy: buildExpPolicy(ns, state),
+    progressionAction: buildProgressionAction(state),
     calculations: buildProgressionCalculations(ns, state),
+  };
+}
+
+function buildExpPolicy(ns, state) {
+  const currentLevel = ns.getHackingLevel();
+  const hasRedPill = state.hasRedPill === true;
+  const targetLevel = getProgressionHackTarget(state, currentLevel);
+  const shouldLevelNow =
+    state.currentBlocker === "hacking-level" &&
+    targetLevel > currentLevel;
+
+  if (hasRedPill) {
+    return {
+      phase: "post-red-pill",
+      softCap: WORLD_DAEMON_HACKING_REQUIREMENT,
+      targetLevel: Math.max(currentLevel, WORLD_DAEMON_HACKING_REQUIREMENT),
+      shouldLevelNow: currentLevel < WORLD_DAEMON_HACKING_REQUIREMENT,
+      reason: `Red Pill owned; level toward hacking ${WORLD_DAEMON_HACKING_REQUIREMENT} for w0r1d_d43m0n.`,
+    };
+  }
+
+  return {
+    phase: "pre-red-pill",
+    softCap: DAEDALUS_HACKING_REQUIREMENT,
+    targetLevel,
+    shouldLevelNow,
+    reason: shouldLevelNow
+      ? `Current blocker needs hacking ${targetLevel}; EXP is useful now.`
+      : `No active hacking blocker; hold pre-Red-Pill EXP at current stage instead of blindly grinding to ${DAEDALUS_HACKING_REQUIREMENT}.`,
+  };
+}
+
+function buildProgressionAction(state) {
+  const action = state.nextBestAction ?? "none";
+  const blocker = state.currentBlocker ?? "none";
+
+  const actionTypes = {
+    exp: "hacking",
+    backdoor: "backdoor",
+    "faction-join": "join",
+    "faction-work": "reputation",
+    "faction-donation": "donation",
+    "earn-money": "money",
+    "buy-augmentation": "buy-augmentation",
+    "augmentation-progress": "augmentation",
+    "destroy-node": "destroy-node",
+  };
+
+  return {
+    type: actionTypes[action] ?? blocker,
+    action,
+    blocker,
+    targetFaction: state.targetFaction ?? null,
+    targetServer: state.targetServer ?? null,
+    reason: state.reason ?? null,
   };
 }
 

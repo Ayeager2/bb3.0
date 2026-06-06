@@ -412,6 +412,8 @@ function normalizeFactionProgression(factionProgression = {}) {
         targetServer: factionProgression?.targetServer ?? null,
         requiredHack: factionProgression?.requiredHack ?? null,
         reason: factionProgression?.reason ?? null,
+        expPolicy: factionProgression?.expPolicy ?? null,
+        progressionAction: factionProgression?.progressionAction ?? null,
         calculations: factionProgression?.calculations ?? null,
         daedalusRequirements: factionProgression?.daedalusRequirements ?? null,
     };

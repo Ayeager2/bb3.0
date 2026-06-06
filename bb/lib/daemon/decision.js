@@ -113,11 +113,13 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
             return factionProgression.recommendedMode;
         }
 
-        if (shouldStartAugmentationPush(ns, augDecision)) {
-            return getProgressionModeHint(augDecision);
-        }
+    if (shouldStartAugmentationPush(ns, augDecision)) {
+        return getProgressionModeHint(augDecision);
+    }
 
-        if (plan.stage === "level-hacking") return "exp";
+    if (factionProgression.expPolicy?.shouldLevelNow === true) {
+        return "exp";
+    }
 
         if (
             plan.stage === "join-daedalus" ||
@@ -143,9 +145,14 @@ export function chooseMode(ns, rootedServers) {
     const money = ns.getPlayer().money;
     const hacking = ns.getHackingLevel();
     const augDecision = getAugmentationDecision(ns);
+    const factionProgression = buildFactionProgressionState(ns);
 
     if (shouldBuildEconomyBeforeProgression(ns)) {
         return "money";
+    }
+
+    if (factionProgression.expPolicy?.shouldLevelNow === true) {
+        return "exp";
     }
 
     if (shouldStartAugmentationPush(ns, augDecision)) {
@@ -166,7 +173,12 @@ export function chooseMode(ns, rootedServers) {
         return "money";
     }
 
-    if (hacking < CONFIG.expUntilHackingLevel) return "exp";
+    if (
+        factionProgression.hasRedPill === true &&
+        hacking < CONFIG.expUntilHackingLevel
+    ) {
+        return "exp";
+    }
     if (money < CONFIG.moneyUntilAmount) return "money";
 
     const bestMoney = getBestMoneyTarget(ns, rootedServers);
@@ -188,6 +200,7 @@ export function choosePriority(ns, mode) {
     const bn4 = getBn4Readiness(ns);
     const augDecision = getAugmentationDecision(ns);
     const resetPlan = buildResetPlan(ns);
+    const factionProgression = buildFactionProgressionState(ns);
 
     if (mode === "destroy-node") return "destroy-node";
     if (mode === "reset-prep") return "reset-prep";
@@ -197,11 +210,13 @@ export function choosePriority(ns, mode) {
         return "income";
     }
 
+    if (factionProgression.expPolicy?.shouldLevelNow === true) {
+        return "leveling";
+    }
+
     if (mode === "exp") return "leveling";
 
     if (mode === "progression") return "progression";
-
-    const factionProgression = buildFactionProgressionState(ns);
 
     if (
         factionProgression.currentBlocker !== "none" &&
@@ -224,7 +239,12 @@ export function choosePriority(ns, mode) {
     if (bn4.ready) return "progression";
     if (bn4.readyCount >= 3) return "progression";
 
-    if (hacking < CONFIG.expUntilHackingLevel) return "leveling";
+    if (
+        factionProgression.hasRedPill === true &&
+        hacking < CONFIG.expUntilHackingLevel
+    ) {
+        return "leveling";
+    }
     if (money < CONFIG.moneyUntilAmount) return "income";
 
     if (!hasAllPortOpeners(ns)) return "income";

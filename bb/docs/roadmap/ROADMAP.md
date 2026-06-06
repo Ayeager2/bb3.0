@@ -37,11 +37,10 @@ The daemon should eventually reason about:
 
 ```txt id="m1jlwm"
 1. verify economy-first cloud buildout behavior
-2. refine stage-aware EXP caps
-3. augmentation timing logic
-4. better EXP routing
-5. dashboard rendering for progression calculations
-6. telemetry scaling
+2. augmentation timing logic
+3. better EXP routing
+4. dashboard rendering for progression calculations
+5. telemetry scaling
 ```
 
 ---
@@ -69,6 +68,8 @@ recommendedMode
 targetFaction
 targetServer
 requiredHack
+expPolicy
+progressionAction
 calculations.exp
 calculations.money
 calculations.augmentation
@@ -77,7 +78,6 @@ calculations.augmentation
 Next refinements:
 
 ```txt
-- stage-aware EXP caps
 - augmentation valuation by faction stage
 - reputation and money urgency
 - dashboard rendering for progression calculations
