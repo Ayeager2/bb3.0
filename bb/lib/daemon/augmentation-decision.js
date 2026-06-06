@@ -1,3 +1,5 @@
+import { buildAugmentationTiming } from "/lib/daemon/augmentation-timing.js";
+
 const AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
 const FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
@@ -6,6 +8,12 @@ export function getAugmentationDecision(ns) {
     const augPlan = readJson(ns, AUGMENTATION_PLAN_FILE);
     const factionWork = readJson(ns, FACTION_WORK_PLAN_FILE);
     const donationPlan = readJson(ns, FACTION_DONATION_PLAN_FILE);
+    const augmentationTiming =
+        buildAugmentationTiming(ns, {
+            augPlan,
+            factionWork,
+            donationPlan,
+        });
 
     const goal = augPlan?.nextGoal ?? null;
 
@@ -18,6 +26,7 @@ export function getAugmentationDecision(ns) {
             shouldDonateFaction: false,
             shouldEarnMoney: true,
             shouldBuyAugment: false,
+            augmentationTiming,
         };
     }
 
@@ -32,6 +41,7 @@ export function getAugmentationDecision(ns) {
             shouldBuyAugment: true,
             targetFaction: goal.faction,
             targetAugmentation: goal.name,
+            augmentationTiming,
         };
     }
 
@@ -48,6 +58,7 @@ export function getAugmentationDecision(ns) {
             targetAugmentation: donationPlan.targetAugmentation,
             missingRep: donationPlan.missingRep,
             estimatedDonation: donationPlan.estimatedDonation,
+            augmentationTiming,
         };
     }
 
@@ -63,6 +74,7 @@ export function getAugmentationDecision(ns) {
             targetFaction: factionWork.targetFaction,
             targetAugmentation: factionWork.targetAugmentation,
             missingRep: factionWork.missingRep,
+            augmentationTiming,
         };
     }
 
@@ -78,6 +90,7 @@ export function getAugmentationDecision(ns) {
             targetFaction: goal.faction,
             targetAugmentation: goal.name,
             missingRep: Math.max(0, goal.rep - goal.factionRep),
+            augmentationTiming,
         };
     }
 
@@ -93,6 +106,7 @@ export function getAugmentationDecision(ns) {
             targetFaction: goal.faction,
             targetAugmentation: goal.name,
             missingMoney: Math.max(0, goal.price - (augPlan.spendable ?? 0)),
+            augmentationTiming,
         };
     }
 
@@ -104,6 +118,7 @@ export function getAugmentationDecision(ns) {
         shouldDonateFaction: false,
         shouldEarnMoney: true,
         shouldBuyAugment: false,
+        augmentationTiming,
     };
 }
 

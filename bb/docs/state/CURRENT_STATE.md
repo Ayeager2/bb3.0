@@ -50,6 +50,7 @@ Implemented:
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
 - stage-aware EXP caps
+- augmentation timing score
 - darkweb purchasing
 - distributed share execution
 - stale share-worker cleanup
@@ -94,6 +95,7 @@ After Formulas.exe:
 - dashboard state exposes servers.cloudFleet
 - daemon state exposes cloudEconomyTiming
 - dashboard state exposes faction expPolicy/progressionAction
+- daemon/dashboard state exposes augmentationTiming
 - share-worker cleanup
 - reset planner foundation
 ```
@@ -105,7 +107,7 @@ After Formulas.exe:
 ```txt id="az0lzi"
 - adaptive lane affordability
 - faction-stage progression refinement
-- augmentation timing
+- augmentation timing threshold tuning
 - EXP routing
 - telemetry scaling
 - dashboard reasoning bridge constants

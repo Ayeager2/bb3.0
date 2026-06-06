@@ -8,7 +8,7 @@
    - cloud fleet server slot completion comes before EXP grinding
    - RAM upgrades now use time-aware balancing instead of forcing EXP to 0 forever
    - once all cloud slots are full, money stays favored while EXP keeps a lane unless the next upgrade is affordable now
-3. Augmentation buying logic by faction stage
+3. Tune augmentation timing thresholds from live daemon-state output
 4. Better EXP target separation
 5. Formula-aware target telemetry polish
 ```
@@ -41,6 +41,27 @@
   - pre-Red-Pill leveling only happens for an active hacking blocker
   - post-Red-Pill leveling still targets w0r1d_d43m0n readiness
   - dashboard state exposes expPolicy and progressionAction
+
+- Background faction work during money mode added:
+  - money/income policy can allow faction work when a useful reputation plan exists
+  - daemon stays in money mode while server buildout remains the main priority
+  - full faction/progression mode waits until the basic server gate is complete
+  - dashboard state exposes allowFactionWork/backgroundFactionWork/backgroundFactionReason
+
+- Forced faction mode added:
+  - run daemon.js --faction forces mode=faction and priority=faction
+  - --force-mode faction and --force-priority faction are supported
+  - rep/reputation aliases normalize to faction
+  - forced modes are now money, exp/leveling, and faction
+
+- Augmentation timing score first pass added:
+  - /lib/daemon/augmentation-timing.js compares augmentation value, rep gap, money gap, and cloud upgrade pressure
+  - augmentationTiming.recommendation can be money-heavy, background-faction, full-faction, donate-now, buy-now, or wait
+  - decision.js uses augmentationTiming.shouldFullFaction before fully switching from money to faction work
+  - money mode uses augmentationTiming.allowBackgroundFaction for background rep work
+  - daemon/dashboard state expose augmentationTiming for testing
+  - thresholds are named in AUGMENTATION_TIMING_THRESHOLDS and emitted into augmentationTiming
+  - /tools/augmentation-status.js prints timing recommendation and bucket details
 
 - Progression-stage target blacklist system
 - Phase/lane-aware target filtering
@@ -85,7 +106,8 @@ After Formulas:
     optional EXP overdrive
     stage-aware progression logic foundation active
     stage-aware EXP caps active
-    next: refine augmentation timing
+    augmentation timing first pass active
+    next: tune thresholds from live augmentation-status output
 ```
 
 # CURRENT STABILIZATION STATUS
@@ -105,6 +127,7 @@ Stable:
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
 - stage-aware EXP caps
+- augmentation timing score
 - stale share-worker cleanup
 - phase/lane target blacklist system
 
@@ -145,18 +168,20 @@ workers
 # NEXT MAJOR CODING TASK
 
 ```txt
-Refine augmentation timing across:
-/lib/daemon/faction-progression.js
-/lib/daemon/decision.js
-/lib/daemon/state.js
+Tune augmentation timing thresholds using:
+/data/daemon-state.txt
+/data/augmentation-plan.txt
+/data/faction-work-plan.txt
+/tools/augmentation-status.js
 ```
 
 Goal:
 
 ```txt
-- Daedalus/Red Pill augmentation timing
-- money vs reputation vs join/backdoor recommendations using calculations
-- richer dashboard rendering for progression calculations
+- verify cloudBucket matches real upgrade timing
+- verify repBucket feels right for faction work time
+- adjust valueBucket thresholds for hacking/money/faction multiplier quality
+- make full-faction vs background-faction choices match live gameplay
 ```
 
 Current implementation already provides:
@@ -174,6 +199,7 @@ calculations.money
 calculations.augmentation
 expPolicy
 progressionAction
+augmentationTiming
 ```
 
 Target decision model:
@@ -228,11 +254,15 @@ CyberSec
 
 ```txt
 Manual override:
+    run daemon.js --money forces mode=money and priority=income
     run daemon.js --level forces mode=exp and priority=leveling
     run daemon.js --leveling does the same thing
     run daemon.js --exp does the same thing
+    run daemon.js --faction forces mode=faction and priority=faction
     --force-mode leveling is normalized to exp
     --force-priority exp is normalized to leveling
+    --force-mode rep/reputation is normalized to faction
+    --force-priority rep/reputation is normalized to faction
     run daemon.js --force-mode exp remains supported
 
 Before Red Pill:

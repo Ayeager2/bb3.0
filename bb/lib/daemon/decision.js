@@ -46,6 +46,37 @@ function shouldBuildEconomyBeforeProgression(ns) {
     return false;
 }
 
+function isBasicEconomyReadyForFactionWork(ns) {
+    const cloudFleet = getCloudFleetStatus(ns);
+
+    if (!cloudFleet.available) return true;
+
+    return cloudFleet.maxed === true;
+}
+
+function shouldSwitchFullyToFaction(ns, augDecision) {
+    if (augDecision?.augmentationTiming?.shouldFullFaction === true) {
+        return true;
+    }
+
+    return (
+        augDecision?.shouldWorkFaction === true &&
+        isBasicEconomyReadyForFactionWork(ns)
+    );
+}
+
+function shouldFinishAugmentationNow(augDecision) {
+    const recommendation =
+        augDecision?.augmentationTiming?.recommendation ?? "";
+
+    return (
+        augDecision?.shouldBuyAugment === true ||
+        augDecision?.shouldDonateFaction === true ||
+        recommendation === "buy-now" ||
+        recommendation === "donate-now"
+    );
+}
+
 export function getCurrentBitNode(ns) {
     try {
         return ns.getResetInfo()?.currentNode ?? 1;
@@ -102,24 +133,45 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
             return "reset-prep";
         }
 
-        if (shouldBuildEconomyBeforeProgression(ns)) {
+        if (
+            shouldBuildEconomyBeforeProgression(ns) &&
+            !shouldFinishAugmentationNow(augDecision)
+        ) {
             return "money";
+        }
+
+        if (shouldFinishAugmentationNow(augDecision)) {
+            return "progression";
         }
 
         if (
             factionProgression.currentBlocker !== "none" &&
             factionProgression.recommendedMode
         ) {
+            if (
+                factionProgression.recommendedMode === "progression" &&
+                factionProgression.progressionAction?.type === "reputation" &&
+                !shouldSwitchFullyToFaction(ns, augDecision)
+            ) {
+                return "money";
+            }
+
             return factionProgression.recommendedMode;
         }
 
-    if (shouldStartAugmentationPush(ns, augDecision)) {
-        return getProgressionModeHint(augDecision);
-    }
+        if (
+            shouldStartAugmentationPush(ns, augDecision) &&
+            (
+                augDecision.shouldWorkFaction !== true ||
+                shouldSwitchFullyToFaction(ns, augDecision)
+            )
+        ) {
+            return getProgressionModeHint(augDecision);
+        }
 
-    if (factionProgression.expPolicy?.shouldLevelNow === true) {
-        return "exp";
-    }
+        if (factionProgression.expPolicy?.shouldLevelNow === true) {
+            return "exp";
+        }
 
         if (
             plan.stage === "join-daedalus" ||
@@ -147,22 +199,38 @@ export function chooseMode(ns, rootedServers) {
     const augDecision = getAugmentationDecision(ns);
     const factionProgression = buildFactionProgressionState(ns);
 
-    if (shouldBuildEconomyBeforeProgression(ns)) {
+    if (
+        shouldBuildEconomyBeforeProgression(ns) &&
+        !shouldFinishAugmentationNow(augDecision)
+    ) {
         return "money";
+    }
+
+    if (shouldFinishAugmentationNow(augDecision)) {
+        return "progression";
     }
 
     if (factionProgression.expPolicy?.shouldLevelNow === true) {
         return "exp";
     }
 
-    if (shouldStartAugmentationPush(ns, augDecision)) {
+    if (
+        shouldStartAugmentationPush(ns, augDecision) &&
+        (
+            augDecision.shouldWorkFaction !== true ||
+            shouldSwitchFullyToFaction(ns, augDecision)
+        )
+    ) {
         return getProgressionModeHint(augDecision);
     }
 
     if (hacking < EARLY_MONEY_UNTIL_HACKING) return "money";
 
     if (
-        augDecision.shouldWorkFaction ||
+        (
+            augDecision.shouldWorkFaction &&
+            shouldSwitchFullyToFaction(ns, augDecision)
+        ) ||
         augDecision.shouldDonateFaction ||
         augDecision.shouldBuyAugment
     ) {
@@ -206,8 +274,15 @@ export function choosePriority(ns, mode) {
     if (mode === "reset-prep") return "reset-prep";
     if (resetPlan.ready) return "reset-prep";
 
-    if (shouldBuildEconomyBeforeProgression(ns)) {
+    if (
+        shouldBuildEconomyBeforeProgression(ns) &&
+        !shouldFinishAugmentationNow(augDecision)
+    ) {
         return "income";
+    }
+
+    if (shouldFinishAugmentationNow(augDecision)) {
+        return "progression";
     }
 
     if (factionProgression.expPolicy?.shouldLevelNow === true) {
@@ -220,18 +295,33 @@ export function choosePriority(ns, mode) {
 
     if (
         factionProgression.currentBlocker !== "none" &&
-        factionProgression.recommendedMode === "progression"
+        factionProgression.recommendedMode === "progression" &&
+        (
+            factionProgression.progressionAction?.type !== "reputation" ||
+            shouldSwitchFullyToFaction(ns, augDecision)
+        )
     ) {
         return "progression";
     }
 
-    if (shouldStartAugmentationPush(ns, augDecision)) {
+    if (
+        shouldStartAugmentationPush(ns, augDecision) &&
+        (
+            augDecision.shouldWorkFaction !== true ||
+            shouldSwitchFullyToFaction(ns, augDecision)
+        )
+    ) {
         return augDecision.shouldEarnMoney ? "income" : "progression";
     }
 
     if (hacking < EARLY_MONEY_UNTIL_HACKING) return "income";
 
-    if (augDecision.shouldWorkFaction) return "progression";
+    if (
+        augDecision.shouldWorkFaction &&
+        shouldSwitchFullyToFaction(ns, augDecision)
+    ) {
+        return "progression";
+    }
     if (augDecision.shouldDonateFaction) return "progression";
     if (augDecision.shouldBuyAugment) return "progression";
     if (augDecision.shouldEarnMoney) return "income";
@@ -267,6 +357,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
     if (
         !manualModeOrPriority &&
         shouldBuildEconomyBeforeProgression(ns) &&
+        !shouldFinishAugmentationNow(augDecision) &&
         mode !== "destroy-node" &&
         mode !== "reset-prep"
     ) {
@@ -278,6 +369,22 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
     const joiningDaedalus =
         factionProgression.currentFactionStage === "daedalus" &&
         factionProgression.currentBlocker === "daedalus-join";
+    const allowBackgroundFactionWork =
+        capabilities.singularity === true &&
+        augDecision.augmentationTiming?.allowBackgroundFaction === true;
+    const factionWorkUpgradeGateReady =
+        isBasicEconomyReadyForFactionWork(ns);
+    const augmentationTiming =
+        augDecision.augmentationTiming ?? null;
+
+    if (
+        shouldFinishAugmentationNow(augDecision) &&
+        mode !== "destroy-node" &&
+        mode !== "reset-prep"
+    ) {
+        mode = "progression";
+        priority = "progression";
+    }
 
     if (mode === "bootstrap") {
         return {
@@ -360,7 +467,18 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowExePurchases: true,
 
             allowAugmentPurchases: false,
-            allowFactionWork: false,
+            allowFactionWork: allowBackgroundFactionWork,
+            backgroundFactionWork: allowBackgroundFactionWork,
+            backgroundFactionReason:
+                allowBackgroundFactionWork
+                    ? (
+                        augmentationTiming?.shouldFullFaction === true
+                            ? augmentationTiming.reason
+                            : factionWorkUpgradeGateReady
+                            ? "Money mode can work faction reputation; cloud servers are maxed."
+                            : "Money mode can work faction reputation in the background while server buildout remains the main priority."
+                    )
+                    : "No useful faction reputation work is currently planned.",
             allowFactionDonation: false,
             allowFactionJoin: capabilities.singularity === true,
             allowBackdoors: capabilities.singularity === true,
@@ -369,9 +487,17 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         };
     }
 
-    if (priority === "progression" || mode === "progression") {
+    if (
+        priority === "progression" ||
+        priority === "faction" ||
+        mode === "progression" ||
+        mode === "faction"
+    ) {
         return {
-            priority: "progression",
+            priority:
+                priority === "faction" || mode === "faction"
+                    ? "faction"
+                    : "progression",
 
             reserveMoney:
                 joiningDaedalus
@@ -519,7 +645,11 @@ export function buildStrategicTargetDecision(ns, {
         ? "scaling"
         : mode;
 
-    if (mode === "money" || mode === "progression") {
+    if (
+        mode === "money" ||
+        mode === "progression" ||
+        mode === "faction"
+    ) {
         const plan = buildStrategicMoneyTargetPlan(
             ns,
             rootedServers,

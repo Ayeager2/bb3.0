@@ -85,6 +85,7 @@ function buildDashboardState(daemonState) {
     const multi = daemonState?.multiTargetPolicy ?? {};
     const controller = daemonState?.controller ?? {};
     const factionProgression = daemonState?.factionProgression ?? {};
+    const augmentationTiming = daemonState?.augmentationTiming ?? null;
 
     return {
         schemaVersion: 2,
@@ -116,13 +117,16 @@ function buildDashboardState(daemonState) {
                 null,
             reason:
                 factionProgression?.reason ??
+                augmentationTiming?.reason ??
                 controller?.reason ??
                 multi?.reason ??
                 null,
             faction: normalizeFactionProgression(factionProgression),
+            augmentationTiming,
         },
 
         factionProgression: normalizeFactionProgression(factionProgression),
+        augmentationTiming,
 
         daemon: {
             target,
@@ -157,6 +161,9 @@ function buildDashboardState(daemonState) {
             allowHomeRam: bool(policy?.allowHomeRam),
             allowExePurchases: bool(policy?.allowExePurchases),
             allowAugmentPurchases: bool(policy?.allowAugmentPurchases),
+            allowFactionWork: bool(policy?.allowFactionWork),
+            backgroundFactionWork: bool(policy?.backgroundFactionWork),
+            backgroundFactionReason: policy?.backgroundFactionReason ?? null,
             allowReset: bool(policy?.allowReset),
             allowIntTravel: bool(policy?.allowIntTravel),
         },

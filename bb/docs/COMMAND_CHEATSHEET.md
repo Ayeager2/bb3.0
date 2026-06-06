@@ -37,6 +37,7 @@ cat /data/daemon-state.txt
 ## Force Money Mode
 
 ```txt
+run daemon.js --money
 run daemon.js --force-mode money
 ```
 
@@ -55,6 +56,64 @@ Expected signs:
 ```txt
 "mode": "money"
 "priority": "income"
+```
+
+Money mode can still work useful faction reputation in the background:
+
+```txt
+"spendingPolicy": {
+  "priority": "income",
+  "allowFactionWork": true,
+  "backgroundFactionWork": true,
+  "backgroundFactionReason": "..."
+}
+```
+
+The daemon should stay in money/income while server buildout is still the main requirement. It should only switch fully into faction/progression work after the basic server gate is complete.
+
+---
+
+## Force Faction Mode
+
+```txt
+run daemon.js --faction
+```
+
+Also supported:
+
+```txt
+run daemon.js --force-mode faction
+run daemon.js --force-priority faction
+run daemon.js --force-mode rep
+run daemon.js --force-priority reputation
+```
+
+Forces:
+
+```txt
+mode = faction
+priority = faction
+```
+
+What it does:
+
+```txt
+- bypasses the normal money-first choice
+- lets faction work/backdoors/joins/donations/augmentation logic lead
+- still uses the progression machinery underneath
+```
+
+Check it with:
+
+```txt
+cat /data/daemon-state.txt
+```
+
+Look for:
+
+```txt
+"mode": "faction"
+"priority": "faction"
 ```
 
 ---
@@ -194,7 +253,9 @@ Good things to check:
 "spendingPolicy"
 "multiTargetPolicy"
 "servers.cloudFleet"
+"cloudEconomyTiming"
 "factionProgression"
+"augmentationTiming"
 "services"
 ```
 
@@ -216,6 +277,31 @@ For stage-aware leveling, check:
 ```
 
 If `shouldLevelNow` is `false`, automatic pre-Red-Pill EXP grinding should stay off unless you manually force leveling.
+
+For augmentation timing, check:
+
+```txt
+"augmentationTiming": {
+  "recommendation": "background-faction",
+  "shouldFullFaction": false,
+  "allowBackgroundFaction": true,
+  "valueBucket": "high",
+  "repBucket": "close",
+  "moneyBucket": "ready",
+  "cloudBucket": "far",
+  "reason": "..."
+}
+```
+
+Common recommendations:
+
+```txt
+money-heavy        = stay focused on income
+background-faction = work rep while money stays primary
+full-faction       = switch fully to faction/progression
+donate-now         = donation is ready
+buy-now            = augmentation is ready to purchase
+```
 
 ---
 
@@ -422,6 +508,7 @@ Contains:
 - whether it is affordable
 - whether rep is ready
 - blocked reason
+- daemon augmentationTiming compares aug value, rep/money gaps, and cloud upgrade pressure
 ```
 
 Useful status command:
@@ -429,6 +516,18 @@ Useful status command:
 ```txt
 run /tools/augmentation-status.js
 ```
+
+That status command now also shows augmentation timing:
+
+```txt
+Recommendation
+Full Faction
+Background Faction
+Value / Rep Gap / Money Gap / Cloud buckets
+Reason
+```
+
+Use it to tune thresholds. If the output says `full-faction` too early, the value or gap thresholds are too loose. If it says `money-heavy` when a strong augmentation is nearly ready, the thresholds are too strict.
 
 ---
 

@@ -4,6 +4,7 @@ import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";
 import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const AUGMENTATION_EVENTS_FILE = "/data/augmentation-events.txt";
+const AUGMENTATION_BUYER_STATE_FILE = "/data/augmentation-buyer-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -51,6 +52,19 @@ export async function main(ns) {
             maxPrice,
             reserveMoney,
         });
+        const baseState = {
+            updatedAt: Date.now(),
+            mode: daemonState?.mode ?? "unknown",
+            priority: policy.priority ?? "unknown",
+            allowBuying,
+            forceBuy,
+            policyAllowAugmentPurchases: policy.allowAugmentPurchases === true,
+            reserveMoney,
+            maxPrice,
+            planReady: plan.ready === true,
+            nextGoal: summarizeGoal(plan.nextGoal),
+            planBlockedReason: plan.blockedReason ?? "unknown",
+        };
 
         ns.clearLog();
         ns.print("Augmentation Buyer");
@@ -63,6 +77,11 @@ export async function main(ns) {
 
         if (!plan.nextGoal) {
             ns.print(plan.blockedReason);
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "blocked",
+                blockedReason: plan.blockedReason ?? "No augmentation goal.",
+            });
             await ns.sleep(refreshMs);
             continue;
         }
@@ -76,6 +95,14 @@ export async function main(ns) {
         ns.print(`Status: ${plan.blockedReason}`);
 
         if (!allowBuying || !plan.ready) {
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "blocked",
+                blockedReason:
+                    !allowBuying
+                        ? "Daemon policy has augmentation purchases turned off."
+                        : plan.blockedReason ?? "Augmentation plan is not ready.",
+            });
             await ns.sleep(refreshMs);
             continue;
         }
@@ -88,16 +115,43 @@ export async function main(ns) {
             Math.max(0, ns.getPlayer().money - reserveMoney);
 
         if (livePrice > maxPrice) {
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "blocked",
+                blockedReason: `${goal.name} is above max price.`,
+                livePrice,
+                liveRepReq,
+                liveFactionRep,
+                spendable,
+            });
             await ns.sleep(refreshMs);
             continue;
         }
 
         if (liveFactionRep < liveRepReq) {
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "blocked",
+                blockedReason: `Need more live rep with ${goal.faction}.`,
+                livePrice,
+                liveRepReq,
+                liveFactionRep,
+                spendable,
+            });
             await ns.sleep(refreshMs);
             continue;
         }
 
         if (spendable < livePrice) {
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "blocked",
+                blockedReason: `Need more spendable money for ${goal.name}.`,
+                livePrice,
+                liveRepReq,
+                liveFactionRep,
+                spendable,
+            });
             await ns.sleep(refreshMs);
             continue;
         }
@@ -133,6 +187,27 @@ export async function main(ns) {
             await ns.sleep(2000);
 
             ns.print("[AUG] Progression plans refreshed after purchase.");
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "purchased",
+                blockedReason: "",
+                purchased: goal.name,
+                purchasedFaction: goal.faction,
+                livePrice,
+                liveRepReq,
+                liveFactionRep,
+                spendable,
+            });
+        } else {
+            writeBuyerState(ns, {
+                ...baseState,
+                status: "failed",
+                blockedReason: `purchaseAugmentation returned false for ${goal.name}.`,
+                livePrice,
+                liveRepReq,
+                liveFactionRep,
+                spendable,
+            });
         }
         
         await ns.sleep(refreshMs);
@@ -183,6 +258,25 @@ function readJson(ns, file) {
     } catch {
         return {};
     }
+}
+
+function writeBuyerState(ns, state) {
+    ns.write(AUGMENTATION_BUYER_STATE_FILE, JSON.stringify(state, null, 2), "w");
+}
+
+function summarizeGoal(goal) {
+    if (!goal) return null;
+
+    return {
+        name: goal.name,
+        faction: goal.faction,
+        price: goal.price,
+        rep: goal.rep,
+        factionRep: goal.factionRep,
+        hasRep: goal.hasRep === true,
+        affordable: goal.affordable === true,
+        hasPrereqs: goal.hasPrereqs === true,
+    };
 }
 function stopFactionWorkIfRunning(ns) {
     try {

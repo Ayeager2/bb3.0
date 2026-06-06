@@ -30,6 +30,8 @@ export async function main(ns) {
     ["exp", false],
     ["level", false],
     ["leveling", false],
+    ["money", false],
+    ["faction", false],
     ["force-mode", ""],
     ["force-priority", ""],
     ["force-target", ""],
@@ -39,12 +41,39 @@ export async function main(ns) {
     flags.exp === true ||
     flags.level === true ||
     flags.leveling === true;
+  const wantsMoney =
+    flags.money === true;
+  const wantsFaction =
+    flags.faction === true;
+
+  const forcedMode =
+    wantsLeveling
+      ? "exp"
+      : wantsFaction
+        ? "faction"
+        : wantsMoney
+          ? "money"
+          : normalizeMode(flags["force-mode"]);
+
+  const explicitPriority =
+    wantsLeveling
+      ? "leveling"
+      : wantsFaction
+        ? "faction"
+        : wantsMoney
+          ? "income"
+          : normalizePriority(flags["force-priority"]);
+  const forcedPriority =
+    explicitPriority ||
+    getDefaultPriorityForMode(forcedMode);
 
   const overrides = {
-    mode: wantsLeveling ? "exp" : normalizeMode(flags["force-mode"]),
-    priority: wantsLeveling ? "leveling" : normalizePriority(flags["force-priority"]),
+    mode: forcedMode,
+    priority: forcedPriority,
     target: flags["force-target"] || null,
     level: wantsLeveling,
+    money: wantsMoney,
+    faction: wantsFaction,
   };
 
   killOtherDaemonInstances(ns);
@@ -230,6 +259,7 @@ function normalizeMode(mode) {
 
   if (!normalized) return null;
   if (normalized === "level" || normalized === "leveling") return "exp";
+  if (normalized === "rep" || normalized === "reputation") return "faction";
 
   return normalized;
 }
@@ -239,6 +269,15 @@ function normalizePriority(priority) {
 
   if (!normalized) return null;
   if (normalized === "exp" || normalized === "level") return "leveling";
+  if (normalized === "rep" || normalized === "reputation") return "faction";
 
   return normalized;
+}
+
+function getDefaultPriorityForMode(mode) {
+  if (mode === "faction") return "faction";
+  if (mode === "money") return "income";
+  if (mode === "exp") return "leveling";
+
+  return null;
 }

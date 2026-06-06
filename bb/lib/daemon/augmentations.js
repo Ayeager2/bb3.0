@@ -94,22 +94,31 @@ export function buildAugmentationPlan(ns, options = {}) {
     const money = ns.getPlayer().money;
     const spendable = Math.max(0, money - reserveMoney);
     const candidates = [];
+    const ownedAugmentations = getOwnedAugmentationSet(ns);
 
     for (const faction of data.factions) {
         if (!faction.joined) continue;
 
         for (const aug of faction.augmentations ?? []) {
-            if (shouldSkipAug(aug, maxPrice)) continue;
+            if (shouldSkipAug(aug, maxPrice, ownedAugmentations)) continue;
 
-            const hasRep = aug.hasRep === true;
-            const affordable = spendable >= aug.price;
+            const live =
+                getLiveAugmentationSnapshot(ns, faction.faction, aug.name);
+            const price =
+                live.price ?? aug.price;
+            const rep =
+                live.rep ?? aug.rep;
+            const factionRep =
+                live.factionRep ?? aug.factionRep;
+            const hasRep = factionRep >= rep;
+            const affordable = spendable >= price;
             const hasPrereqs = hasPrereqsMet(data, aug);
 
             const statScore = scoreStats(aug.stats ?? {}, strategy.statWeights);
             const strategicScore = scoreStrategicValue(aug.name, faction, aug, strategy);
             const readinessScore = scoreReadiness({ hasRep, affordable, hasPrereqs });
-            const pricePenalty = Math.log10(Math.max(10, aug.price)) * 8;
-            const repPenalty = Math.log10(Math.max(10, aug.rep)) * 3;
+            const pricePenalty = Math.log10(Math.max(10, price)) * 8;
+            const repPenalty = Math.log10(Math.max(10, rep)) * 3;
 
             const score =
                 statScore +
@@ -122,9 +131,9 @@ export function buildAugmentationPlan(ns, options = {}) {
                 name: aug.name,
                 faction: faction.faction,
                 theme: faction.theme,
-                price: aug.price,
-                rep: aug.rep,
-                factionRep: aug.factionRep,
+                price,
+                rep,
+                factionRep,
                 hasRep,
                 affordable,
                 hasPrereqs,
@@ -161,9 +170,10 @@ export function buildAugmentationPlan(ns, options = {}) {
     });
 }
 
-function shouldSkipAug(aug, maxPrice) {
+function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set()) {
     if (!aug) return true;
     if (aug.owned || aug.installed || aug.queued) return true;
+    if (ownedAugmentations.has(aug.name)) return true;
     if (aug.name === "NeuroFlux Governor") return true;
     if (!Number.isFinite(aug.price) || aug.price <= 0) return true;
     // Do not skip expensive augments entirely.
@@ -400,6 +410,26 @@ function readJson(ns, file) {
         const raw = ns.read(file);
         if (!raw.trim()) return {};
         return JSON.parse(raw);
+    } catch {
+        return {};
+    }
+}
+
+function getOwnedAugmentationSet(ns) {
+    try {
+        return new Set(ns.singularity.getOwnedAugmentations(true));
+    } catch {
+        return new Set();
+    }
+}
+
+function getLiveAugmentationSnapshot(ns, faction, aug) {
+    try {
+        return {
+            price: ns.singularity.getAugmentationPrice(aug),
+            rep: ns.singularity.getAugmentationRepReq(aug),
+            factionRep: ns.singularity.getFactionRep(faction),
+        };
     } catch {
         return {};
     }

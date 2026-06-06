@@ -33,14 +33,14 @@ Implemented:
 - formulas-backed estimates after Formulas.exe
 - stage-aware EXP policy
 - structured progression action output
+- background faction work during money mode
+- augmentation timing score first pass
 ```
 
 Planned:
 
 ```txt id="9ev0l0"
-- augmentation valuation
-- reputation urgency
-- money urgency
+- augmentation timing threshold tuning
 - faction-stage reasoning refinement
 - dashboard rendering for calculation details
 ```
@@ -83,6 +83,7 @@ progressionAction
 calculations.exp
 calculations.money
 calculations.augmentation
+augmentationTiming
 ```
 
 ---
@@ -124,9 +125,24 @@ automatically only when the current progression blocker is a hacking level.
 Post-Red-Pill EXP still targets w0r1d_d43m0n readiness.
 ```
 
+Augmentation timing:
+
+```txt
+augmentationTiming compares augmentation value, missing reputation, missing
+money, and cloud upgrade pressure. It recommends money-heavy,
+background-faction, full-faction, donate-now, buy-now, or wait.
+```
+
 Next refinement:
 
 ```txt
-Add augmentation valuation, missing reputation urgency, and missing money urgency
-so Daedalus/Red Pill timing is more deliberate.
+Tune augmentationTiming thresholds from live daemon-state output.
+```
+
+Money mode note:
+
+```txt
+When a useful faction reputation plan exists, money mode may allow faction work
+in the background. The daemon should not switch fully from money/income to
+faction/progression until the basic server buildout gate is complete.
 ```

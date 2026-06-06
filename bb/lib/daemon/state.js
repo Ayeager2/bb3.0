@@ -22,12 +22,14 @@ import {
 } from "/lib/daemon/reset-planner.js";
 import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
 import { getCloudFleetStatus } from "/lib/daemon/cloud-fleet.js";
+import { getAugmentationDecision } from "/lib/daemon/augmentation-decision.js";
 
 export function buildGlobalState(ns, decision, capabilities) {
     const player = ns.getPlayer();
     const targetStats = decision.target ? getTargetStats(ns, decision.target) : null;
     const resetPlan = buildResetPlan(ns);
     const factionProgression = buildFactionProgressionState(ns);
+    const augmentationDecision = getAugmentationDecision(ns);
     const cloudFleet = getCloudFleetStatus(ns);
     const cloudEconomyTiming =
         buildCloudEconomyTiming(ns, decision, cloudFleet);
@@ -85,6 +87,8 @@ export function buildGlobalState(ns, decision, capabilities) {
 
         bitNodePlan: decision.bitNodePlan,
         factionProgression,
+        augmentationTiming:
+            augmentationDecision.augmentationTiming ?? null,
         bn4Readiness: getBn4Readiness(ns),
         bn4VictoryPlan: getBn4VictoryPlan(ns),
         resetPlan,
@@ -283,7 +287,7 @@ export function getDecisionReason(ns, decision) {
     }
 
     if (decision.spendingPolicy.priority === "faction") {
-        return "Faction prep active; preserving cash for augmentation progression.";
+        return "Faction mode forced; working faction joins, reputation, donations, augmentations, and backdoors as policy allows.";
     }
 
     if (decision.spendingPolicy.priority === "reset-prep") {

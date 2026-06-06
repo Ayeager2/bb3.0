@@ -29,11 +29,13 @@ export function refreshDaemonState(ns, options = {}) {
         volatile = true,
         completions = true,
         sessions = true,
+        allDataText = true,
         verbose = true,
     } = options;
 
     const files = [];
 
+    if (allDataText) files.push(...findDataTextFiles(ns));
     if (volatile) files.push(...VOLATILE_FILES);
     if (completions) files.push(...COMPLETION_FILES);
     if (sessions) files.push(...SESSION_FILES);
@@ -44,7 +46,21 @@ export function refreshDaemonState(ns, options = {}) {
 /** @param {NS} ns */
 export function refreshAllDaemonState(ns, options = {}) {
     const { verbose = true } = options;
-    return removeFiles(ns, unique(DEV_REFRESH_FILES), verbose);
+    return removeFiles(ns, unique([...findDataTextFiles(ns), ...DEV_REFRESH_FILES]), verbose);
+}
+
+/** @param {NS} ns */
+function findDataTextFiles(ns) {
+    try {
+        return ns
+            .ls("home", "/data/")
+            .filter(file =>
+                file.startsWith("/data/") &&
+                file.endsWith(".txt")
+            );
+    } catch {
+        return [];
+    }
 }
 
 /** @param {NS} ns */
