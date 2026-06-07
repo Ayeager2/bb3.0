@@ -179,6 +179,12 @@
     padding: 10px 12px;
 }
 
+.inspector-section-body .service-health-view + .settings-list {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 229, 255, .12);
+}
+
 .right-inspector-tabs {
     grid-template-columns: repeat(6, 1fr);
 }

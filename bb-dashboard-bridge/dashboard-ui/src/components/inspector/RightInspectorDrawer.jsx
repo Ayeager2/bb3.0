@@ -12,16 +12,11 @@ import {
 
 import CoreStateView from "../views/CoreStateView.jsx";
 import TargetIntelView from "../views/TargetIntelView.jsx";
-import TargetStabilityView from "../views/TargetStabilityView.jsx";
 import VictoryPlanView from "../views/VictoryPlanView.jsx";
-import BN4ReadinessView from "../views/BN4ReadinessView.jsx";
 import PolicyView from "../views/PolicyView.jsx";
-import CapabilitiesView from "../views/CapabilitiesView.jsx";
-import LaneAllocationView from "../views/LaneAllocationView.jsx";
 import ServiceHealthView from "../views/ServiceHealthView.jsx";
 import DebugActionsSettings from "../settings/DebugActionsSettings.jsx";
 import EventFeedView from "../events/EventFeedView.jsx";
-import ToastSettingsView from "../settings/ToastSettingsView.jsx";
 import DaemonReasoningView from "../views/DaemonReasoningView.jsx";
 
 import "./RightInspectorDrawer.css";
@@ -97,10 +92,6 @@ export default function RightInspectorDrawer({
                             <InspectorSection title="Target Intel">
                                 <TargetIntelView state={state} />
                             </InspectorSection>
-
-                            <InspectorSection title="Target Stability">
-                                <TargetStabilityView state={state} />
-                            </InspectorSection>
                         </InspectorStack>
                     )}
 
@@ -109,36 +100,21 @@ export default function RightInspectorDrawer({
                             <InspectorSection title="Victory Plan">
                                 <VictoryPlanView state={state} />
                             </InspectorSection>
-
-                            <InspectorSection title="BN4 Readiness">
-                                <BN4ReadinessView state={state} />
-                            </InspectorSection>
                         </InspectorStack>
                     )}
 
                     {activeTab === "policy" && (
                         <InspectorStack>
-                            <InspectorSection title="Spending Policy">
+                            <InspectorSection title="Automation Policy">
                                 <PolicyView state={state} />
-                            </InspectorSection>
-
-                            <InspectorSection title="Capabilities">
-                                <CapabilitiesView state={state} />
-                            </InspectorSection>
-
-                            <InspectorSection title="Lane Allocation">
-                                <LaneAllocationView state={state} />
                             </InspectorSection>
                         </InspectorStack>
                     )}
 
                     {activeTab === "services" && (
                         <InspectorStack>
-                            <InspectorSection title="Service Health">
+                            <InspectorSection title="Services & Commands">
                                 <ServiceHealthView state={state} />
-                            </InspectorSection>
-
-                            <InspectorSection title="Debug Actions">
                                 <DebugActionsSettings />
                             </InspectorSection>
                         </InspectorStack>

@@ -5,6 +5,13 @@ export default function FloatingNodeTooltip({ node, position }) {
 
     const moneyPercent = percent(node.moneyAvailable, node.moneyMax);
     const securityDiff = diff(node.security, node.minSecurity);
+    const pathHops = Array.isArray(node.pathFromHome)
+        ? Math.max(0, node.pathFromHome.length - 1)
+        : "n/a";
+    const nextHop = Array.isArray(node.pathFromHome) && node.pathFromHome.length > 1
+        ? node.pathFromHome[1]
+        : "home";
+    const tacticalRole = getTacticalRole(node);
 
     return (
         <div
@@ -18,17 +25,32 @@ export default function FloatingNodeTooltip({ node, position }) {
 
             <div className="floating-node-grid">
                 <span>Type</span><b>{node.type ?? "unknown"}</b>
+                <span>Role</span><b className={`floating-tone-${tacticalRole.tone}`}>{tacticalRole.label}</b>
                 <span>Root</span><b>{node.rooted ? "YES" : "NO"}</b>
                 <span>BD</span><b>{node.backdoored ? "YES" : "NO"}</b>
+                <span>Faction</span><b>{node.factionServer ? "YES" : "NO"}</b>
+                <span>Need BD</span><b>{node.needsBackdoor ? "YES" : "NO"}</b>
                 <span>Hack</span><b>{formatNumber(node.requiredHack)}</b>
                 <span>RAM</span><b>{formatNumber(node.maxRam)}GB</b>
                 <span>Money</span><b>{moneyPercent}</b>
                 <span>Sec+</span><b>{securityDiff}</b>
                 <span>Prep</span><b>{node.prepWarning ? "WARN" : "OK"}</b>
                 <span>Money%</span><b>{formatPercent(node.moneyPercent)}</b>
+                <span>Hops</span><b>{pathHops}</b>
+                <span>Next</span><b>{nextHop}</b>
             </div>
         </div>
     );
+}
+
+function getTacticalRole(node) {
+    if (node.type === "world") return { label: "WORLD", tone: "red" };
+    if (node.factionServer && node.needsBackdoor) return { label: "FACTION BD", tone: "yellow" };
+    if (node.factionServer) return { label: "FACTION", tone: "purple" };
+    if (node.needsBackdoor) return { label: "BACKDOOR", tone: "yellow" };
+    if (node.purchased) return { label: "OWNED", tone: "purple" };
+    if (node.moneyMax > 0) return { label: "MONEY", tone: "green" };
+    return { label: "SERVER", tone: "cyan" };
 }
 
 function percent(value, max) {

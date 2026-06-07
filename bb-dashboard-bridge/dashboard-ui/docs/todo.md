@@ -1,5 +1,24 @@
 # Bitburner Tactical Dashboard + Bridge Progress Recap
 
+## Current Pause Note - 2026-06-07
+
+The current source-of-truth handoff is:
+
+```txt
+../../docs/handoff-2026-06-07.md
+```
+
+Recent completed work includes:
+
+* consolidated inspector tabs
+* polished daemon reasoning panel
+* improved service health display
+* hardened Ctrl+K command palette
+* condensed one-third-width topology card
+* topology tactical overlays for faction servers, backdoor-needed routes, daemon focus, and richer hover telemetry
+
+Next planned work is World Daemon mission mode.
+
 ## Overview
 
 The project has evolved from:

@@ -17,6 +17,8 @@ const OUT_TOPOLOGY_FILE = path.join(OUT_DIR, "network-topology.json");
 const BITBURNER_COMMAND_FILE = "/data/ui/dashboard-command.txt";
 const BITBURNER_COMMAND_STATUS_FILE = "/data/ui/dashboard-command-status.txt";
 const OUT_COMMAND_STATUS_FILE = path.join(OUT_DIR, "dashboard-command-status.json");
+const BITBURNER_REASONING_FILE = "/data/ui/daemon-reasoning.txt";
+const OUT_REASONING_FILE = path.join(OUT_DIR, "daemon-reasoning.json");
 const BITBURNER_REASONING_HISTORY_FILE = "/data/ui/daemon-reasoning-history.txt";
 const OUT_REASONING_HISTORY_FILE = path.join(OUT_DIR, "daemon-reasoning-history.json");
 
@@ -90,7 +92,7 @@ app.use(express.static(OUT_DIR));
 app.get("/state", (_req, res) => {
     try {
         const raw = fs.readFileSync(OUT_FILE, "utf8");
-        const parsed = JSON.parse(raw);
+        const parsed = normalizeDashboardState(JSON.parse(raw));
 
         parsed.servedFrom = OUT_FILE;
         parsed.servedAt = new Date().toLocaleTimeString();
@@ -380,7 +382,7 @@ async function pollDashboardState() {
             server: "home"
         });
 
-        const parsed = JSON.parse(content);
+        const parsed = normalizeDashboardState(JSON.parse(content));
 
         parsed.bridgeUpdatedAt = Date.now();
         parsed.bridgeUpdatedAtText = new Date().toLocaleTimeString();
@@ -399,6 +401,81 @@ async function pollDashboardState() {
     } catch (error) {
         console.log(`[STATE] ${String(error?.message ?? error)}`);
     }
+}
+
+function normalizeDashboardState(state = {}) {
+    const plan =
+        state?.targetAnalysis?.plan ??
+        state?.strategicTargetPlan ??
+        state?.targetPlan ??
+        state?.controller?.strategicTargetPlan ??
+        {};
+
+    const target = state?.target?.name ?? state?.daemon?.target ?? plan?.target ?? null;
+
+    return {
+        ...state,
+        strategicTargetPlan: state?.strategicTargetPlan ?? plan,
+        targetAnalysis: normalizeTargetAnalysis({
+            existing: state?.targetAnalysis,
+            target,
+            targetReason:
+                state?.targetAnalysis?.reason ??
+                state?.targetReason ??
+                state?.strategicTargetReason ??
+                state?.controller?.strategicTargetReason ??
+                plan?.reason ??
+                null,
+            targetStability:
+                state?.targetAnalysis?.targetStability ??
+                state?.targetStability ??
+                plan?.targetStability ??
+                {},
+            plan,
+        }),
+    };
+}
+
+function normalizeTargetAnalysis({ existing = {}, target, targetReason, targetStability, plan }) {
+    return {
+        ...existing,
+        target: existing?.target ?? target ?? null,
+        reason: targetReason ?? null,
+        changed: Boolean(existing?.changed ?? plan?.changed),
+        blockedSwap: Boolean(existing?.blockedSwap ?? plan?.blockedSwap),
+        blockedTarget: existing?.blockedTarget ?? plan?.blockedTarget ?? null,
+        targetStability: targetStability ?? {},
+        bestCandidate: normalizeTargetCandidate(existing?.bestCandidate ?? plan?.bestCandidate),
+        currentCandidate: normalizeTargetCandidate(existing?.currentCandidate ?? plan?.currentCandidate),
+        candidates: Array.isArray(existing?.candidates) && existing.candidates.length > 0
+            ? existing.candidates.slice(0, 5).map(normalizeTargetCandidate)
+            : Array.isArray(plan?.candidates)
+                ? plan.candidates.slice(0, 5).map(normalizeTargetCandidate)
+                : [],
+    };
+}
+
+function normalizeTargetCandidate(candidate = null) {
+    if (!candidate) return null;
+
+    return {
+        server: candidate.server ?? null,
+        score: candidate.score ?? 0,
+        scoreSource: candidate.scoreSource ?? null,
+        reason: candidate.reason ?? null,
+        maxMoney: candidate.maxMoney ?? 0,
+        money: candidate.money ?? 0,
+        moneyRatio: candidate.moneyRatio ?? 0,
+        weakenTime: candidate.weakenTime ?? 0,
+        chance: candidate.chance ?? 0,
+        hackPercent: candidate.hackPercent ?? 0,
+        estimatedMoneyPerSecond: candidate.estimatedMoneyPerSecond ?? 0,
+        requiredHacking: candidate.requiredHacking ?? 0,
+        minSecurity: candidate.minSecurity ?? 0,
+        security: candidate.security ?? 0,
+        securityDelta: candidate.securityDelta ?? 0,
+        growth: candidate.growth ?? 0,
+    };
 }
 
 async function pollEventLog() {

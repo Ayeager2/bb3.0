@@ -3,7 +3,10 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "start": "node bridge.js"
+        "start": "node bridge.js",
+        "dev": "node bridge.js",
+        "ui": "npm --prefix dashboard-ui run dev",
+        "build": "npm --prefix dashboard-ui run build"
     },
     "dependencies": {
         "ws": "^8.18.0",

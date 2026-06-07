@@ -25,6 +25,15 @@ export default function NetworkTopologyCard({
 
     const activeTarget = state?.daemon?.target ?? null;
     const worldDaemon = state?.victory?.worldDaemon ?? "w0r1d_d43m0n";
+    const backdoorQueue = useMemo(() => {
+        return [...(topology?.nodes ?? [])]
+            .filter(node => node?.needsBackdoor)
+            .sort((a, b) => {
+                const aHops = Array.isArray(a.pathFromHome) ? a.pathFromHome.length : 999;
+                const bHops = Array.isArray(b.pathFromHome) ? b.pathFromHome.length : 999;
+                return aHops - bHops || Number(a.requiredHack ?? 0) - Number(b.requiredHack ?? 0);
+            });
+    }, [topology]);
 
     const selectedServer = useMemo(() => {
         return topology?.nodes?.find(node => node.id === selectedServerId) ?? null;
@@ -67,8 +76,8 @@ export default function NetworkTopologyCard({
             title="Network Topology"
             nodes={nodes}
             edges={edges}
-            size="full"
-            height={620}
+            size="third"
+            height="calc(100vh - 190px)"
             collapsed={collapsed}
             onToggle={onToggle}
             onMoveUp={onMoveUp}
@@ -81,6 +90,7 @@ export default function NetworkTopologyCard({
                     <NetworkTopologyLegend
                         topology={topology}
                         state={state}
+                        backdoorQueue={backdoorQueue}
                         refreshing={refreshing}
                         onRefresh={refreshTopology}
                     />
@@ -92,6 +102,7 @@ export default function NetworkTopologyCard({
                         <PathPanel
                             server={selectedServer}
                             path={selectedPath}
+                            activeTarget={activeTarget}
                             onClear={() => setSelectedServerId(null)}
                         />
                     )}
@@ -111,7 +122,7 @@ export default function NetworkTopologyCard({
     );
 }
 
-function PathPanel({ server, path, onClear }) {
+function PathPanel({ server, path, activeTarget, onClear }) {
     if (!server) {
         return (
             <div className="path-panel muted">
@@ -121,20 +132,35 @@ function PathPanel({ server, path, onClear }) {
     }
 
     const command = buildConnectCommand(path);
+    const backdoorCommand = buildBackdoorCommand(path);
+    const isActiveTarget = server.id === activeTarget;
 
     async function copyCommand() {
         await navigator.clipboard.writeText(command);
     }
 
+    async function copyBackdoorCommand() {
+        await navigator.clipboard.writeText(backdoorCommand);
+    }
+
     return (
-        <div className="path-panel">
+        <div className={`path-panel ${server.needsBackdoor ? "path-panel-warning" : ""}`}>
             <div>
-                <div className="path-title">{server.id}</div>
-                <div className="path-route">{path.join(" → ")}</div>
+                <div className="path-title">
+                    {server.id}
+                    {isActiveTarget && <span>Daemon Focus</span>}
+                    {server.factionServer && <span>Faction</span>}
+                    {server.needsBackdoor && <span>Backdoor Needed</span>}
+                </div>
+                <div className="path-route">{path.join(" -> ")}</div>
+                <div className="path-status">{describeSelectedServer(server, path)}</div>
             </div>
 
             <div className="path-actions">
                 <button onClick={copyCommand}>Copy Path</button>
+                {server.needsBackdoor && (
+                    <button onClick={copyBackdoorCommand}>Copy Backdoor</button>
+                )}
                 <button onClick={onClear}>Clear</button>
             </div>
         </div>
@@ -214,13 +240,14 @@ function buildTopologyGraph({
         const backdoorNeededClass = node.needsBackdoor ? " node-backdoor-needed" : "";
         const factionClass = node.factionServer ? " node-faction-server" : "";
         const prepWarningClass = node.prepWarning ? " node-prep-warning" : "";
+        const tacticalClass = node.needsBackdoor || node.factionServer ? " node-tactical" : "";
 
         return graphNode(
             node.id,
             label,
             node.x,
             node.y,
-            `${getNodeClass(node)}${pathClass}${activeClass}${worldClass}${worldDaemonClass}${backdoorNeededClass}${factionClass}${prepWarningClass}`,
+            `${getNodeClass(node)}${pathClass}${activeClass}${worldClass}${worldDaemonClass}${backdoorNeededClass}${factionClass}${prepWarningClass}${tacticalClass}`,
             node
         );
     });
@@ -259,13 +286,15 @@ function layoutNodes(rawNodes, activeTarget) {
         n.id !== "home" &&
         n.id !== activeTarget
     );
+    const special = others.filter(n => isSpecialTopologyNode(n));
+    const regular = others.filter(n => !isSpecialTopologyNode(n));
 
     const groups = {
-        special: others.filter(n => n.type === "world" || n.backdoored),
-        purchased: others.filter(n => n.purchased),
-        highValue: others.filter(n => !n.purchased && n.moneyMax >= 1_000_000_000),
-        rooted: others.filter(n => !n.purchased && n.moneyMax < 1_000_000_000 && n.rooted),
-        locked: others.filter(n => !n.rooted),
+        special,
+        purchased: regular.filter(n => n.purchased),
+        highValue: regular.filter(n => !n.purchased && n.moneyMax >= 1_000_000_000),
+        rooted: regular.filter(n => !n.purchased && n.moneyMax < 1_000_000_000 && n.rooted),
+        locked: regular.filter(n => !n.rooted),
     };
 
     const result = [];
@@ -285,6 +314,15 @@ function layoutNodes(rawNodes, activeTarget) {
     placeArc(result, groups.locked, 800, -50, 50);
 
     return result;
+}
+
+function isSpecialTopologyNode(node) {
+    return Boolean(
+        node?.type === "world" ||
+        node?.backdoored ||
+        node?.factionServer ||
+        node?.needsBackdoor
+    );
 }
 
 function placeArc(result, nodes, radius, startDeg, endDeg) {
@@ -333,9 +371,37 @@ function buildConnectCommand(path) {
     }).join("; ");
 }
 
+function buildBackdoorCommand(path) {
+    const connect = buildConnectCommand(path);
+    return connect ? `${connect}; backdoor` : "backdoor";
+}
+
+function describeSelectedServer(server, path) {
+    const bits = [];
+    const hops = Array.isArray(path) ? Math.max(0, path.length - 1) : 0;
+
+    bits.push(`${hops} hop${hops === 1 ? "" : "s"}`);
+    bits.push(server.rooted ? "rooted" : "locked");
+
+    if (server.factionServer) {
+        bits.push(server.needsBackdoor ? "faction route pending" : "faction route complete");
+    } else if (server.needsBackdoor) {
+        bits.push("backdoor pending");
+    }
+
+    if (Number(server.moneyMax) > 0) {
+        bits.push(`${formatCompact(server.moneyAvailable)} / ${formatCompact(server.moneyMax)}`);
+    }
+
+    return bits.join(" | ");
+}
+
 function buildNodeLabel(node) {
     const parts = [node.label ?? node.id];
 
+    if (node.factionServer && node.needsBackdoor) parts.push("FACTION BD");
+    else if (node.factionServer) parts.push("FACTION");
+    else if (node.needsBackdoor) parts.push("BACKDOOR");
     if (node.requiredHack) parts.push(`H:${node.requiredHack}`);
     if (node.moneyMax > 0) parts.push(formatCompact(node.moneyMax));
 

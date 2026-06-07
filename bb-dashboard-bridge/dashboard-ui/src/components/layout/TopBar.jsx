@@ -1,5 +1,6 @@
 import {
     FiActivity,
+    FiCommand,
     FiCpu,
     FiDatabase,
     FiDollarSign,
@@ -10,7 +11,7 @@ import {
 import { formatMoney, formatNumber } from "../../utils/formatters.js";
 import "./TopBar.css";
 
-export default function TopBar({ state, error, commandStatus }) {
+export default function TopBar({ state, error, commandStatus, onOpenCommandPalette }) {
     const player = state?.player ?? {};
     const progression = state?.progression ?? {};
     const daemon = state?.daemon ?? {};
@@ -23,7 +24,16 @@ export default function TopBar({ state, error, commandStatus }) {
             <div className="topbar-title-block">
                 <div className="topbar-title">Daemon Dashboard</div>
                 <div className="topbar-subtitle">External Bitburner tactical overlay</div>
-                <div className="topbar-hotkey">Ctrl+K Command</div>
+                <button
+                    type="button"
+                    className="topbar-command-button"
+                    onClick={onOpenCommandPalette}
+                    title="Open command palette"
+                >
+                    <FiCommand />
+                    <span>Command</span>
+                    <kbd>Ctrl K</kbd>
+                </button>
             </div>
 
             <div className="topbar-stat-grid">
@@ -102,7 +112,7 @@ function formatCommandStatus(status) {
     const online = status.running ? "ONLINE" : "OFFLINE";
     const state = status.status ?? "unknown";
 
-    return `${online} · ${state}`;
+    return `${online} - ${state}`;
 }
 
 function formatTime(value) {

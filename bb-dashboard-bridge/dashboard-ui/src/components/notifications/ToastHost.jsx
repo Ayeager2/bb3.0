@@ -10,6 +10,8 @@ const LEVEL_CONFIG = {
     error: { icon: <FiXCircle />, ttl: "close" },
 };
 
+const COMMAND_TOAST_TTL = 3000;
+
 export default function ToastHost({ events = [], settings }) {
     const [dismissed, setDismissed] = useState(() => new Set());
     const [seen, setSeen] = useState(() => new Set());
@@ -86,6 +88,8 @@ export default function ToastHost({ events = [], settings }) {
 }
 
 function getEventTtl(event) {
+    if (isCommandEvent(event)) return COMMAND_TOAST_TTL;
+
     const explicit =
         event?.ttl ??
         event?.toastTtl ??
@@ -99,6 +103,10 @@ function getEventTtl(event) {
 
     const level = normalizeLevel(event?.level);
     return LEVEL_CONFIG[level]?.ttl ?? 5000;
+}
+
+function isCommandEvent(event) {
+    return String(event?.type ?? "").toLowerCase().startsWith("command");
 }
 
 function shouldToast(event, settings) {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
     FiActivity,
     FiCommand,
@@ -160,6 +160,8 @@ export default function CommandPalette({
     const [activeIndex, setActiveIndex] = useState(0);
     const [busyId, setBusyId] = useState(null);
     const [error, setError] = useState("");
+    const inputRef = useRef(null);
+    const itemRefs = useRef([]);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -183,7 +185,27 @@ export default function CommandPalette({
         setQuery("");
         setActiveIndex(0);
         setError("");
+
+        requestAnimationFrame(() => inputRef.current?.focus());
     }, [open]);
+
+    useEffect(() => {
+        if (!open) return;
+        if (filtered.length === 0) {
+            setActiveIndex(0);
+            return;
+        }
+
+        setActiveIndex(index => Math.min(index, filtered.length - 1));
+    }, [open, filtered.length]);
+
+    useEffect(() => {
+        if (!open) return;
+
+        itemRefs.current[activeIndex]?.scrollIntoView({
+            block: "nearest",
+        });
+    }, [open, activeIndex]);
 
     useEffect(() => {
         if (!open) return;
@@ -196,7 +218,11 @@ export default function CommandPalette({
 
             if (event.key === "ArrowDown") {
                 event.preventDefault();
-                setActiveIndex(index => Math.min(index + 1, filtered.length - 1));
+                setActiveIndex(index => {
+                    if (filtered.length === 0) return 0;
+
+                    return Math.min(index + 1, filtered.length - 1);
+                });
                 return;
             }
 
@@ -209,16 +235,18 @@ export default function CommandPalette({
             if (event.key === "Enter") {
                 event.preventDefault();
                 const command = filtered[activeIndex];
-                if (command) runCommand(command);
+                if (command && !busyId) runCommand(command);
             }
         }
 
         window.addEventListener("keydown", onKeyDown);
 
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [open, filtered, activeIndex]);
+    }, [open, filtered, activeIndex, busyId]);
 
     async function runCommand(command) {
+        if (busyId) return;
+
         setBusyId(command.id);
         setError("");
 
@@ -241,10 +269,19 @@ export default function CommandPalette({
 
     return (
         <div className="command-palette-backdrop" onMouseDown={onClose}>
-            <section className="command-palette" onMouseDown={event => event.stopPropagation()}>
+            <section
+                className="command-palette"
+                onMouseDown={event => event.stopPropagation()}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Command palette"
+            >
+                <div className="command-palette-scanline" aria-hidden="true" />
+
                 <div className="command-palette-input-wrap">
                     <FiCommand />
                     <input
+                        ref={inputRef}
                         autoFocus
                         value={query}
                         onChange={event => {
@@ -252,10 +289,11 @@ export default function CommandPalette({
                             setActiveIndex(0);
                         }}
                         placeholder="Type a command..."
+                        aria-label="Search commands"
                     />
                 </div>
 
-                <div className="command-palette-list">
+                <div className="command-palette-list" role="listbox" aria-label="Available commands">
                     {filtered.length === 0 && (
                         <div className="command-empty">No commands found.</div>
                     )}
@@ -263,14 +301,20 @@ export default function CommandPalette({
                     {filtered.map((command, index) => (
                         <button
                             key={command.id}
+                            ref={element => {
+                                itemRefs.current[index] = element;
+                            }}
                             className={[
                                 "command-item",
                                 index === activeIndex ? "active" : "",
                                 command.danger ? "danger" : "",
                             ].join(" ")}
+                            type="button"
+                            role="option"
+                            aria-selected={index === activeIndex}
                             onMouseEnter={() => setActiveIndex(index)}
                             onClick={() => runCommand(command)}
-                            disabled={busyId === command.id}
+                            disabled={busyId !== null}
                         >
                             <span className="command-icon">{command.icon}</span>
 
@@ -289,7 +333,7 @@ export default function CommandPalette({
                 {error && <div className="command-error">{error}</div>}
 
                 <div className="command-footer">
-                    <span>↑↓ Navigate</span>
+                    <span>Up/Down Navigate</span>
                     <span>Enter Run</span>
                     <span>Esc Close</span>
                 </div>

@@ -1,213 +1,248 @@
 {
   "schemaVersion": 2,
   "sourceVersion": 5,
-  "updatedAt": 1780717443206,
-  "daemonUpdatedAt": 1780717442157,
+  "updatedAt": 1780784568963,
+  "daemonUpdatedAt": 1780784567698,
   "targetStability": {
-    "currentTarget": "phantasy",
-    "proposedTarget": "omega-net",
-    "targetAgeMs": 270544,
+    "currentTarget": "the-hub",
+    "proposedTarget": "the-hub",
+    "targetAgeMs": 40093,
     "minHoldMs": 300000,
     "holdSatisfied": false,
-    "blockedSwap": true,
-    "remainingHoldMs": 29456
+    "blockedSwap": false,
+    "remainingHoldMs": 259907
   },
   "strategicTargetPlan": {
-    "target": "phantasy",
-    "previousTarget": "phantasy",
+    "target": "the-hub",
+    "previousTarget": "the-hub",
     "changed": false,
-    "blockedSwap": true,
-    "blockedTarget": "omega-net",
-    "reason": "blocked target swap by hold timer: phantasy -> omega-net",
+    "blockedSwap": false,
+    "reason": "current target remains strategically acceptable",
     "targetStability": {
-      "currentTarget": "phantasy",
-      "proposedTarget": "omega-net",
-      "targetAgeMs": 270544,
+      "currentTarget": "the-hub",
+      "proposedTarget": "the-hub",
+      "targetAgeMs": 40093,
       "minHoldMs": 300000,
       "holdSatisfied": false,
-      "blockedSwap": true,
-      "remainingHoldMs": 29456
+      "blockedSwap": false,
+      "remainingHoldMs": 259907
     },
     "bestCandidate": {
-      "server": "omega-net",
-      "score": 79782.4989031094,
-      "maxMoney": 186574545,
-      "money": 186574545,
+      "server": "the-hub",
+      "score": 505749.9168163512,
+      "scoreSource": "formulas",
+      "maxMoney": 538682070.9375,
+      "money": 538682070.9375,
       "moneyRatio": 1,
-      "weakenTime": 102228.7543951655,
+      "weakenTime": 88776.64104386972,
       "chance": 1,
-      "requiredHacking": 216,
-      "minSecurity": 10,
-      "security": 10,
+      "hackPercent": 0.0016746078490801654,
+      "estimatedMoneyPerSecond": 10161.245272897011,
+      "requiredHacking": 303,
+      "minSecurity": 14,
+      "security": 14,
       "securityDelta": 0,
-      "growth": 38,
-      "reason": "score=79.78k money=$186.57m chance=100.0% weak=1m42s sec+0.0 growth=38"
+      "growth": 51,
+      "reason": "math=formulas score=505.75k money=$538.68m chance=100.0% hack/thread=0.2% est/s=$10.16k weak=1m28s sec+0.0 growth=51"
     },
     "currentCandidate": {
-      "server": "phantasy",
-      "score": 19173.170096300408,
-      "maxMoney": 67500000,
-      "money": 20718420.186496723,
-      "moneyRatio": 0.30693955831847,
-      "weakenTime": 52942.36594142848,
+      "server": "the-hub",
+      "score": 505749.9168163512,
+      "scoreSource": "formulas",
+      "maxMoney": 538682070.9375,
+      "money": 538682070.9375,
+      "moneyRatio": 1,
+      "weakenTime": 88776.64104386972,
       "chance": 1,
-      "requiredHacking": 100,
-      "minSecurity": 7,
-      "security": 10.221999999999992,
-      "securityDelta": 3.2219999999999924,
-      "growth": 35,
-      "reason": "score=19.17k money=$67.50m chance=100.0% weak=52s sec+3.2 growth=35"
+      "hackPercent": 0.0016746078490801654,
+      "estimatedMoneyPerSecond": 10161.245272897011,
+      "requiredHacking": 303,
+      "minSecurity": 14,
+      "security": 14,
+      "securityDelta": 0,
+      "growth": 51,
+      "reason": "math=formulas score=505.75k money=$538.68m chance=100.0% hack/thread=0.2% est/s=$10.16k weak=1m28s sec+0.0 growth=51"
     },
     "candidates": [
       {
-        "server": "omega-net",
-        "score": 79782.4989031094,
-        "maxMoney": 186574545,
-        "money": 186574545,
+        "server": "the-hub",
+        "score": 505749.9168163512,
+        "scoreSource": "formulas",
+        "maxMoney": 538682070.9375,
+        "money": 538682070.9375,
         "moneyRatio": 1,
-        "weakenTime": 102228.7543951655,
+        "weakenTime": 88776.64104386972,
         "chance": 1,
-        "requiredHacking": 216,
-        "minSecurity": 10,
-        "security": 10,
+        "hackPercent": 0.0016746078490801654,
+        "estimatedMoneyPerSecond": 10161.245272897011,
+        "requiredHacking": 303,
+        "minSecurity": 14,
+        "security": 14,
         "securityDelta": 0,
-        "growth": 38,
-        "reason": "score=79.78k money=$186.57m chance=100.0% weak=1m42s sec+0.0 growth=38"
+        "growth": 51,
+        "reason": "math=formulas score=505.75k money=$538.68m chance=100.0% hack/thread=0.2% est/s=$10.16k weak=1m28s sec+0.0 growth=51"
       },
       {
-        "server": "phantasy",
-        "score": 19173.170096300408,
-        "maxMoney": 67500000,
-        "money": 20718420.186496723,
-        "moneyRatio": 0.30693955831847,
-        "weakenTime": 52942.36594142848,
+        "server": "johnson-ortho",
+        "score": 282772.94742802426,
+        "scoreSource": "formulas",
+        "maxMoney": 238775324.0625,
+        "money": 238775324.0625,
+        "moneyRatio": 1,
+        "weakenTime": 70189.90620127655,
         "chance": 1,
-        "requiredHacking": 100,
-        "minSecurity": 7,
-        "security": 10.221999999999992,
-        "securityDelta": 3.2219999999999924,
-        "growth": 35,
-        "reason": "score=19.17k money=$67.50m chance=100.0% weak=52s sec+3.2 growth=35"
+        "hackPercent": 0.0017579532828044158,
+        "estimatedMoneyPerSecond": 5980.288156884955,
+        "requiredHacking": 276,
+        "minSecurity": 12,
+        "security": 12,
+        "securityDelta": 0,
+        "growth": 49,
+        "reason": "math=formulas score=282.77k money=$238.78m chance=100.0% hack/thread=0.2% est/s=$5.98k weak=1m10s sec+0.0 growth=49"
       },
       {
-        "server": "neo-net",
-        "score": 5684.677058817484,
-        "maxMoney": 14062500,
-        "money": 451.15904192740356,
-        "moneyRatio": 0.00003208242075928203,
-        "weakenTime": 29087.546006929504,
+        "server": "omega-net",
+        "score": 13843.190772126882,
+        "scoreSource": "formulas",
+        "maxMoney": 189058165.3125,
+        "money": 189058165.3125,
+        "moneyRatio": 1,
+        "weakenTime": 131449.54583998796,
         "chance": 1,
-        "requiredHacking": 50,
-        "minSecurity": 8,
-        "security": 9.429999999999998,
-        "securityDelta": 1.429999999999998,
-        "growth": 25,
-        "reason": "score=5.68k money=$14.06m chance=100.0% weak=29s sec+1.4 growth=25"
+        "hackPercent": 0.0014438629884692272,
+        "estimatedMoneyPerSecond": 2076.645345697152,
+        "requiredHacking": 194,
+        "minSecurity": 11,
+        "security": 32.872,
+        "securityDelta": 21.872,
+        "growth": 36,
+        "reason": "math=formulas score=13.84k money=$189.06m chance=100.0% hack/thread=0.1% est/s=$2.08k weak=2m11s sec+21.9 growth=36"
+      },
+      {
+        "server": "crush-fitness",
+        "score": 13265.96081180223,
+        "scoreSource": "formulas",
+        "maxMoney": 123076012.5,
+        "money": 3449767.6021548677,
+        "moneyRatio": 0.028029569142523754,
+        "weakenTime": 117430.59102077599,
+        "chance": 1,
+        "hackPercent": 0.001573309136188299,
+        "estimatedMoneyPerSecond": 1648.9452469639434,
+        "requiredHacking": 235,
+        "minSecurity": 14,
+        "security": 24.152000000000037,
+        "securityDelta": 10.152000000000037,
+        "growth": 30,
+        "reason": "math=formulas score=13.27k money=$123.08m chance=100.0% hack/thread=0.2% est/s=$1.65k weak=1m57s sec+10.2 growth=30"
       },
       {
         "server": "silver-helix",
-        "score": 3581.812857248897,
+        "score": 12135.472767441282,
+        "scoreSource": "formulas",
         "maxMoney": 126562500,
         "money": 33750000,
         "moneyRatio": 0.26666666666666666,
-        "weakenTime": 203591.16341410074,
+        "weakenTime": 93932.96103246008,
         "chance": 1,
+        "hackPercent": 0.0015631940652541603,
+        "estimatedMoneyPerSecond": 2106.2015581022956,
         "requiredHacking": 150,
         "minSecurity": 10,
         "security": 30,
         "securityDelta": 20,
         "growth": 30,
-        "reason": "score=3.58k money=$126.56m chance=100.0% weak=3m23s sec+20.0 growth=30"
-      },
-      {
-        "server": "alpha-ent",
-        "score": 3529.3629334211446,
-        "maxMoney": 2051308434.375,
-        "money": 547015582.5,
-        "moneyRatio": 0.26666666666666666,
-        "weakenTime": 1262438.4822426708,
-        "chance": 0.4313175408630545,
-        "requiredHacking": 536,
-        "minSecurity": 18,
-        "security": 54,
-        "securityDelta": 36,
-        "growth": 60,
-        "reason": "score=3.53k money=$2.05b chance=43.1% weak=21m2s sec+36.0 growth=60"
-      },
-      {
-        "server": "the-hub",
-        "score": 3160.2114277184187,
-        "maxMoney": 518293659.375,
-        "money": 138211642.5,
-        "moneyRatio": 0.26666666666666666,
-        "weakenTime": 628100.3977669067,
-        "chance": 0.7005948560429386,
-        "requiredHacking": 325,
-        "minSecurity": 15,
-        "security": 44,
-        "securityDelta": 29,
-        "growth": 54,
-        "reason": "score=3.16k money=$518.29m chance=70.1% weak=10m28s sec+29.0 growth=54"
-      },
-      {
-        "server": "summit-uni",
-        "score": 2584.5227800311072,
-        "maxMoney": 848058252.1875,
-        "money": 226148867.25,
-        "moneyRatio": 0.26666666666666666,
-        "weakenTime": 952633.3757027456,
-        "chance": 0.5509130012249618,
-        "requiredHacking": 454,
-        "minSecurity": 16,
-        "security": 48,
-        "securityDelta": 32,
-        "growth": 58,
-        "reason": "score=2.58k money=$848.06m chance=55.1% weak=15m52s sec+32.0 growth=58"
+        "reason": "math=formulas score=12.14k money=$126.56m chance=100.0% hack/thread=0.2% est/s=$2.11k weak=1m33s sec+20.0 growth=30"
       },
       {
         "server": "rho-construction",
-        "score": 2277.139197051269,
-        "maxMoney": 1587377849.0625,
-        "money": 423300759.75,
+        "score": 5077.314212988591,
+        "scoreSource": "formulas",
+        "maxMoney": 1488975901.875,
+        "money": 397060240.5,
         "moneyRatio": 0.26666666666666666,
-        "weakenTime": 1297525.4699799947,
-        "chance": 0.4081604493019524,
-        "requiredHacking": 513,
+        "weakenTime": 571432.1748595954,
+        "chance": 0.622548562829801,
+        "hackPercent": 0.0006890387516324136,
+        "estimatedMoneyPerSecond": 1117.737601907358,
+        "requiredHacking": 507,
         "minSecurity": 19,
-        "security": 58,
-        "securityDelta": 39,
-        "growth": 55,
-        "reason": "score=2.28k money=$1.59b chance=40.8% weak=21m37s sec+39.0 growth=55"
+        "security": 56,
+        "securityDelta": 37,
+        "growth": 46,
+        "reason": "math=formulas score=5.08k money=$1.49b chance=62.3% hack/thread=0.1% est/s=$1.12k weak=9m31s sec+37.0 growth=46"
       },
       {
-        "server": "johnson-ortho",
-        "score": 1689.4872126660716,
-        "maxMoney": 229012079.0625,
-        "money": 61069887.75,
+        "server": "rothman-uni",
+        "score": 4122.38990774384,
+        "scoreSource": "formulas",
+        "maxMoney": 533553398.4375,
+        "money": 142280906.25,
         "moneyRatio": 0.26666666666666666,
-        "weakenTime": 500401.0893105728,
-        "chance": 0.7647521797923228,
-        "requiredHacking": 264,
-        "minSecurity": 14,
-        "security": 43,
-        "securityDelta": 29,
-        "growth": 39,
-        "reason": "score=1.69k money=$229.01m chance=76.5% weak=8m20s sec+29.0 growth=39"
+        "weakenTime": 397716.15415871394,
+        "chance": 0.750769947044069,
+        "hackPercent": 0.000888581922329173,
+        "estimatedMoneyPerSecond": 894.9711020143887,
+        "requiredHacking": 394,
+        "minSecurity": 17,
+        "security": 50,
+        "securityDelta": 33,
+        "growth": 41,
+        "reason": "math=formulas score=4.12k money=$533.55m chance=75.1% hack/thread=0.1% est/s=$895 weak=6m37s sec+33.0 growth=41"
       },
       {
-        "server": "millenium-fitness",
-        "score": 1674.3270007458873,
-        "maxMoney": 703125000,
-        "money": 187500000,
+        "server": "summit-uni",
+        "score": 4051.4845494511114,
+        "scoreSource": "formulas",
+        "maxMoney": 570720079.6875,
+        "money": 152192021.25,
         "moneyRatio": 0.26666666666666666,
-        "weakenTime": 1006693.3271795111,
-        "chance": 0.5308306485690221,
-        "requiredHacking": 480,
+        "weakenTime": 426075.914095961,
+        "chance": 0.7513144278023951,
+        "hackPercent": 0.0008710905936372676,
+        "estimatedMoneyPerSecond": 876.6398750354058,
+        "requiredHacking": 431,
+        "minSecurity": 16,
+        "security": 49,
+        "securityDelta": 33,
+        "growth": 41,
+        "reason": "math=formulas score=4.05k money=$570.72m chance=75.1% hack/thread=0.1% est/s=$877 weak=7m6s sec+33.0 growth=41"
+      },
+      {
+        "server": "snap-fitness",
+        "score": 3841.008390250757,
+        "scoreSource": "formulas",
+        "maxMoney": 1265625000,
+        "money": 337500000,
+        "moneyRatio": 0.26666666666666666,
+        "weakenTime": 681273.7820584041,
+        "chance": 0.6563830572767717,
+        "hackPercent": 0.0006209421685626447,
+        "estimatedMoneyPerSecond": 757.1673621686045,
+        "requiredHacking": 706,
         "minSecurity": 16,
         "security": 48,
         "securityDelta": 32,
-        "growth": 33,
-        "reason": "score=1.67k money=$703.13m chance=53.1% weak=16m46s sec+32.0 growth=33"
+        "growth": 46,
+        "reason": "math=formulas score=3.84k money=$1.27b chance=65.6% hack/thread=0.1% est/s=$757 weak=11m21s sec+32.0 growth=46"
+      },
+      {
+        "server": "alpha-ent",
+        "score": 3297.9504270691896,
+        "scoreSource": "formulas",
+        "maxMoney": 1975083997.5,
+        "money": 526689066,
+        "moneyRatio": 0.26666666666666666,
+        "weakenTime": 676916.8915254092,
+        "chance": 0.49225661798527864,
+        "hackPercent": 0.0005409043899435944,
+        "estimatedMoneyPerSecond": 776.89493234309,
+        "requiredHacking": 518,
+        "minSecurity": 22,
+        "security": 65,
+        "securityDelta": 43,
+        "growth": 55,
+        "reason": "math=formulas score=3.30k money=$1.98b chance=49.2% hack/thread=0.1% est/s=$777 weak=11m16s sec+43.0 growth=55"
       }
     ]
   },
@@ -227,7 +262,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 17,
+      "pid": 2,
       "reason": "already running"
     },
     {
@@ -275,7 +310,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 18,
+      "pid": 3,
       "reason": "already running"
     },
     {
@@ -295,11 +330,11 @@
       "tail": false,
       "purpose": "daemon-controlled faction reputation work",
       "key": "home:/tools/faction-work-service.js:[\"--refresh\",15000,\"--force\",\"false\"]",
-      "status": "blocked",
-      "kind": "locked",
-      "running": false,
-      "pid": 0,
-      "reason": "allowFactionWork blocked by policy"
+      "status": "running",
+      "kind": "live",
+      "running": true,
+      "pid": 4,
+      "reason": "already running"
     },
     {
       "id": "reset-executor",
@@ -339,7 +374,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 19,
+      "pid": 17,
       "reason": "already running"
     },
     {
@@ -357,7 +392,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 20,
+      "pid": 5,
       "reason": "already running"
     },
     {
@@ -402,11 +437,11 @@
       "tail": false,
       "purpose": "TOR and darkweb program purchases",
       "key": "home:/economy/darkweb-buyer-service.js:[\"--refresh\",15000,\"--reserve\",200000]",
-      "status": "running",
-      "kind": "live",
-      "running": true,
-      "pid": 51,
-      "reason": "already running"
+      "status": "completed",
+      "kind": "done",
+      "running": false,
+      "pid": 0,
+      "reason": "completion file exists"
     },
     {
       "id": "server-purchaser",
@@ -428,7 +463,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 21,
+      "pid": 6,
       "reason": "already running"
     },
     {
@@ -446,7 +481,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 22,
+      "pid": 7,
       "reason": "already running"
     },
     {
@@ -464,7 +499,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 23,
+      "pid": 8,
       "reason": "already running"
     },
     {
@@ -482,7 +517,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 24,
+      "pid": 9,
       "reason": "already running"
     },
     {
@@ -505,7 +540,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 25,
+      "pid": 10,
       "reason": "already running"
     },
     {
@@ -534,7 +569,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 26,
+      "pid": 11,
       "reason": "already running"
     },
     {
@@ -555,7 +590,7 @@
       "status": "started",
       "kind": "once",
       "running": true,
-      "pid": 14712,
+      "pid": 51364,
       "reason": "started by daemon"
     },
     {
@@ -601,7 +636,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 28,
+      "pid": 12,
       "reason": "already running"
     },
     {
@@ -626,7 +661,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 29,
+      "pid": 13,
       "reason": "already running"
     },
     {
@@ -651,7 +686,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 30,
+      "pid": 14,
       "reason": "already running"
     },
     {
@@ -660,15 +695,19 @@
       "host": "home",
       "threads": 1,
       "args": [
+        "--next",
         4,
-        "daemon.js"
+        "--script",
+        "daemon.js",
+        "--clean",
+        true
       ],
       "type": "CONDITIONAL",
       "keepAlive": false,
       "enabled": true,
       "tail": false,
       "purpose": "final BitNode destruction executor",
-      "key": "home:/tools/destroy-node-service.js:[4,\"daemon.js\"]",
+      "key": "home:/tools/destroy-node-service.js:[\"--next\",4,\"--script\",\"daemon.js\",\"--clean\",true]",
       "status": "blocked",
       "kind": "locked",
       "running": false,
@@ -690,7 +729,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 31,
+      "pid": 15,
       "reason": "already running"
     },
     {
@@ -711,7 +750,7 @@
       "status": "running",
       "kind": "live",
       "running": true,
-      "pid": 32,
+      "pid": 16,
       "reason": "already running"
     }
   ],
@@ -725,45 +764,427 @@
     "mode": "money",
     "priority": "income",
     "posture": "AGGRESSIVE_INCOME",
-    "nextAction": "Prioritize EXP only until faction progression requirements are met."
+    "nextAction": "exp",
+    "reason": "Daedalus requires hacking 2500; current 1344.",
+    "faction": {
+      "currentFactionStage": "daedalus",
+      "currentBlocker": "hacking-level",
+      "nextBestAction": "exp",
+      "recommendedMode": "exp",
+      "targetFaction": "Daedalus",
+      "targetServer": null,
+      "requiredHack": 2500,
+      "reason": "Daedalus requires hacking 2500; current 1344.",
+      "expPolicy": {
+        "phase": "pre-red-pill",
+        "softCap": 2500,
+        "targetLevel": 2500,
+        "shouldLevelNow": true,
+        "reason": "Current blocker needs hacking 2500; EXP is useful now."
+      },
+      "progressionAction": {
+        "type": "hacking",
+        "action": "exp",
+        "blocker": "hacking-level",
+        "targetFaction": "Daedalus",
+        "targetServer": null,
+        "reason": "Daedalus requires hacking 2500; current 1344."
+      },
+      "calculations": {
+        "formulasUnlocked": true,
+        "source": "formulas",
+        "exp": {
+          "target": "johnson-ortho",
+          "currentLevel": 1344,
+          "targetLevel": 2500,
+          "levelsRemaining": 1156,
+          "currentExp": 2193041667.2749915,
+          "targetExp": 1121695180051.2458,
+          "missingExp": 1119502138383.971,
+          "expPerAction": 20.06200057321189,
+          "estimatedActions": 55802118752,
+          "targetScore": 4.62454842653606,
+          "calculationSource": "formulas.skills/formulas.hacking"
+        },
+        "money": {
+          "target": "the-hub",
+          "currentMoney": 86423788792.57176,
+          "reserveMoney": 25000000000,
+          "spendable": 61423788792.57176,
+          "requiredMoney": 0,
+          "requiredSpendableMoney": 0,
+          "missingMoney": 0,
+          "goalType": "none",
+          "estimatedMoneyPerSecond": 10161.245272897011,
+          "estimatedSecondsToGoal": 0,
+          "targetScore": 22104.258583899817,
+          "calculationSource": "formulas",
+          "incomeModel": "single-thread hack value per weaken window"
+        },
+        "augmentation": {
+          "targetFaction": "BitRunners",
+          "targetAugmentation": "Cranial Signal Processors - Gen V",
+          "missingRep": 94438.38786744833,
+          "missingMoney": 0,
+          "estimatedDonation": 0,
+          "shouldWorkFaction": true,
+          "shouldDonateFaction": false,
+          "shouldEarnMoney": false,
+          "shouldBuyAugment": false,
+          "stagePolicy": {
+            "stage": "bitrunners",
+            "priority": 800,
+            "urgency": "high",
+            "buyReadiness": "stage-progress",
+            "factionWork": "background-until-close",
+            "moneyWork": "money-primary",
+            "reason": "BitRunners is part of the BN4 hacking faction path."
+          },
+          "timing": {
+            "recommendation": "background-faction",
+            "shouldFullFaction": false,
+            "allowBackgroundFaction": true,
+            "stayMoneyHeavy": true,
+            "reason": "Cranial Signal Processors - Gen V still needs rep; work it in the background while money remains primary.",
+            "targetFaction": "BitRunners",
+            "targetAugmentation": "Cranial Signal Processors - Gen V",
+            "missingRep": 94438.38786744833,
+            "missingMoney": 0,
+            "valueScore": 14656.75869102147,
+            "valueBucket": "high",
+            "repBucket": "close",
+            "moneyBucket": "ready",
+            "cloudBucket": "now",
+            "cloudNextAction": {
+              "type": "upgrade",
+              "server": "Server13",
+              "ram": 262144,
+              "cost": 74988446735.36946,
+              "reason": "Next cloud action: upgrade Server13 to 256.00TB."
+            },
+            "thresholds": {
+              "value": {
+                "high": 1200,
+                "medium": 500
+              },
+              "rep": {
+                "close": 100000,
+                "medium": 1000000
+              },
+              "money": {
+                "closeFlat": 1000000000,
+                "closeCurrentMoneyRatio": 0.25,
+                "mediumFlat": 5000000000,
+                "mediumCurrentMoneyRatio": 1
+              },
+              "cloud": {
+                "soonCostToMoneyRatio": 1.5,
+                "farCostToMoneyRatio": 10
+              }
+            }
+          },
+          "reason": "Need 94.44k rep with BitRunners for Cranial Signal Processors - Gen V."
+        }
+      },
+      "daedalusRequirements": {
+        "hackingRequired": 2500,
+        "hacking": 1344,
+        "hackingReady": false,
+        "moneyRequired": 100000000000,
+        "money": 86423788792.57176,
+        "moneyReady": false,
+        "augmentRequired": 30,
+        "augmentCount": 24,
+        "augmentReady": false
+      }
+    },
+    "augmentationTiming": {
+      "recommendation": "background-faction",
+      "shouldFullFaction": false,
+      "allowBackgroundFaction": true,
+      "stayMoneyHeavy": true,
+      "reason": "Cranial Signal Processors - Gen V still needs rep; work it in the background while money remains primary.",
+      "targetFaction": "BitRunners",
+      "targetAugmentation": "Cranial Signal Processors - Gen V",
+      "missingRep": 94438.38786744833,
+      "missingMoney": 0,
+      "valueScore": 14656.75869102147,
+      "valueBucket": "high",
+      "repBucket": "close",
+      "moneyBucket": "ready",
+      "cloudBucket": "now",
+      "cloudNextAction": {
+        "type": "upgrade",
+        "server": "Server13",
+        "ram": 262144,
+        "cost": 74988446735.36946,
+        "reason": "Next cloud action: upgrade Server13 to 256.00TB."
+      },
+      "thresholds": {
+        "value": {
+          "high": 1200,
+          "medium": 500
+        },
+        "rep": {
+          "close": 100000,
+          "medium": 1000000
+        },
+        "money": {
+          "closeFlat": 1000000000,
+          "closeCurrentMoneyRatio": 0.25,
+          "mediumFlat": 5000000000,
+          "mediumCurrentMoneyRatio": 1
+        },
+        "cloud": {
+          "soonCostToMoneyRatio": 1.5,
+          "farCostToMoneyRatio": 10
+        }
+      }
+    }
+  },
+  "factionProgression": {
+    "currentFactionStage": "daedalus",
+    "currentBlocker": "hacking-level",
+    "nextBestAction": "exp",
+    "recommendedMode": "exp",
+    "targetFaction": "Daedalus",
+    "targetServer": null,
+    "requiredHack": 2500,
+    "reason": "Daedalus requires hacking 2500; current 1344.",
+    "expPolicy": {
+      "phase": "pre-red-pill",
+      "softCap": 2500,
+      "targetLevel": 2500,
+      "shouldLevelNow": true,
+      "reason": "Current blocker needs hacking 2500; EXP is useful now."
+    },
+    "progressionAction": {
+      "type": "hacking",
+      "action": "exp",
+      "blocker": "hacking-level",
+      "targetFaction": "Daedalus",
+      "targetServer": null,
+      "reason": "Daedalus requires hacking 2500; current 1344."
+    },
+    "calculations": {
+      "formulasUnlocked": true,
+      "source": "formulas",
+      "exp": {
+        "target": "johnson-ortho",
+        "currentLevel": 1344,
+        "targetLevel": 2500,
+        "levelsRemaining": 1156,
+        "currentExp": 2193041667.2749915,
+        "targetExp": 1121695180051.2458,
+        "missingExp": 1119502138383.971,
+        "expPerAction": 20.06200057321189,
+        "estimatedActions": 55802118752,
+        "targetScore": 4.62454842653606,
+        "calculationSource": "formulas.skills/formulas.hacking"
+      },
+      "money": {
+        "target": "the-hub",
+        "currentMoney": 86423788792.57176,
+        "reserveMoney": 25000000000,
+        "spendable": 61423788792.57176,
+        "requiredMoney": 0,
+        "requiredSpendableMoney": 0,
+        "missingMoney": 0,
+        "goalType": "none",
+        "estimatedMoneyPerSecond": 10161.245272897011,
+        "estimatedSecondsToGoal": 0,
+        "targetScore": 22104.258583899817,
+        "calculationSource": "formulas",
+        "incomeModel": "single-thread hack value per weaken window"
+      },
+      "augmentation": {
+        "targetFaction": "BitRunners",
+        "targetAugmentation": "Cranial Signal Processors - Gen V",
+        "missingRep": 94438.38786744833,
+        "missingMoney": 0,
+        "estimatedDonation": 0,
+        "shouldWorkFaction": true,
+        "shouldDonateFaction": false,
+        "shouldEarnMoney": false,
+        "shouldBuyAugment": false,
+        "stagePolicy": {
+          "stage": "bitrunners",
+          "priority": 800,
+          "urgency": "high",
+          "buyReadiness": "stage-progress",
+          "factionWork": "background-until-close",
+          "moneyWork": "money-primary",
+          "reason": "BitRunners is part of the BN4 hacking faction path."
+        },
+        "timing": {
+          "recommendation": "background-faction",
+          "shouldFullFaction": false,
+          "allowBackgroundFaction": true,
+          "stayMoneyHeavy": true,
+          "reason": "Cranial Signal Processors - Gen V still needs rep; work it in the background while money remains primary.",
+          "targetFaction": "BitRunners",
+          "targetAugmentation": "Cranial Signal Processors - Gen V",
+          "missingRep": 94438.38786744833,
+          "missingMoney": 0,
+          "valueScore": 14656.75869102147,
+          "valueBucket": "high",
+          "repBucket": "close",
+          "moneyBucket": "ready",
+          "cloudBucket": "now",
+          "cloudNextAction": {
+            "type": "upgrade",
+            "server": "Server13",
+            "ram": 262144,
+            "cost": 74988446735.36946,
+            "reason": "Next cloud action: upgrade Server13 to 256.00TB."
+          },
+          "thresholds": {
+            "value": {
+              "high": 1200,
+              "medium": 500
+            },
+            "rep": {
+              "close": 100000,
+              "medium": 1000000
+            },
+            "money": {
+              "closeFlat": 1000000000,
+              "closeCurrentMoneyRatio": 0.25,
+              "mediumFlat": 5000000000,
+              "mediumCurrentMoneyRatio": 1
+            },
+            "cloud": {
+              "soonCostToMoneyRatio": 1.5,
+              "farCostToMoneyRatio": 10
+            }
+          }
+        },
+        "reason": "Need 94.44k rep with BitRunners for Cranial Signal Processors - Gen V."
+      }
+    },
+    "daedalusRequirements": {
+      "hackingRequired": 2500,
+      "hacking": 1344,
+      "hackingReady": false,
+      "moneyRequired": 100000000000,
+      "money": 86423788792.57176,
+      "moneyReady": false,
+      "augmentRequired": 30,
+      "augmentCount": 24,
+      "augmentReady": false
+    }
+  },
+  "augmentationTiming": {
+    "recommendation": "background-faction",
+    "shouldFullFaction": false,
+    "allowBackgroundFaction": true,
+    "stayMoneyHeavy": true,
+    "reason": "Cranial Signal Processors - Gen V still needs rep; work it in the background while money remains primary.",
+    "targetFaction": "BitRunners",
+    "targetAugmentation": "Cranial Signal Processors - Gen V",
+    "missingRep": 94438.38786744833,
+    "missingMoney": 0,
+    "valueScore": 14656.75869102147,
+    "valueBucket": "high",
+    "repBucket": "close",
+    "moneyBucket": "ready",
+    "cloudBucket": "now",
+    "cloudNextAction": {
+      "type": "upgrade",
+      "server": "Server13",
+      "ram": 262144,
+      "cost": 74988446735.36946,
+      "reason": "Next cloud action: upgrade Server13 to 256.00TB."
+    },
+    "thresholds": {
+      "value": {
+        "high": 1200,
+        "medium": 500
+      },
+      "rep": {
+        "close": 100000,
+        "medium": 1000000
+      },
+      "money": {
+        "closeFlat": 1000000000,
+        "closeCurrentMoneyRatio": 0.25,
+        "mediumFlat": 5000000000,
+        "mediumCurrentMoneyRatio": 1
+      },
+      "cloud": {
+        "soonCostToMoneyRatio": 1.5,
+        "farCostToMoneyRatio": 10
+      }
+    }
   },
   "daemon": {
-    "target": "phantasy",
+    "target": "the-hub",
     "targetOverride": null,
     "status": "running",
     "controller": "central-ai-controller-v4-stale-host-safe",
     "reason": "Daemon state now built by /lib/daemon/state.js"
   },
   "player": {
-    "money": 134188583.30838169,
-    "hacking": 667
+    "money": 86423788792.57176,
+    "hacking": 1344
   },
   "target": {
-    "name": "phantasy",
-    "maxMoney": 67500000,
-    "money": 20718420.186496723,
-    "moneyPercent": 0.30693955831847,
-    "minSecurity": 7,
-    "security": 10.221999999999992,
-    "securityDiff": 3.2219999999999924,
-    "weakenTime": 52942.36594142848,
-    "prepNeed": 1.153346155967243
+    "name": "the-hub",
+    "maxMoney": 538682070.9375,
+    "money": 538682070.9375,
+    "moneyPercent": 1,
+    "minSecurity": 14,
+    "security": 14,
+    "securityDiff": 0,
+    "weakenTime": 88776.64104386972,
+    "prepNeed": 0
   },
   "policy": {
-    "reserveMoney": 100000000000,
+    "reserveMoney": 1000000000,
     "allowServerPurchases": true,
     "allowStockTrading": true,
     "allowHacknet": true,
     "allowHomeRam": true,
     "allowExePurchases": true,
     "allowAugmentPurchases": false,
+    "allowFactionWork": true,
+    "backgroundFactionWork": true,
+    "backgroundFactionReason": "Money mode can work faction reputation in the background while server buildout remains the main priority.",
     "allowReset": false,
     "allowIntTravel": false
   },
   "servers": {
     "rootedCount": 95,
     "purchasedCount": 0,
-    "cloudCount": 25
+    "cloudCount": 25,
+    "cloudFleet": {
+      "available": true,
+      "maxed": false,
+      "countMaxed": true,
+      "ramMaxed": false,
+      "ownedCount": 25,
+      "serverLimit": 25,
+      "maxRam": 1048576,
+      "minRam": 131072,
+      "maxedCount": 0,
+      "totalRam": 4849664,
+      "weakestServer": {
+        "name": "Server13",
+        "ram": 131072
+      },
+      "nextAction": {
+        "type": "upgrade",
+        "server": "Server13",
+        "ram": 262144,
+        "cost": 74988446735.36946,
+        "reason": "Next cloud action: upgrade Server13 to 256.00TB."
+      },
+      "nextPurchaseCost": 0,
+      "nextUpgradeCost": 74988446735.36946,
+      "nextUpgradeRam": 262144,
+      "nextActionAffordable": true,
+      "reason": "Cloud fleet needs RAM upgrades: weakest 128.00TB / max 1.00PB. Next cloud action: upgrade Server13 to 256.00TB."
+    }
   },
   "readiness": {
     "targetBitNode": 4,
@@ -775,11 +1196,11 @@
     "moneyReady": false,
     "homeRamReady": true,
     "augReady": false,
-    "hacking": 667,
+    "hacking": 1344,
     "hackingTarget": 2500,
-    "money": 134188583.30838169,
+    "money": 86423788792.57176,
     "moneyTarget": 100000000000,
-    "augmentCount": 19,
+    "augmentCount": 24,
     "augmentTarget": 30
   },
   "victory": {
@@ -812,7 +1233,7 @@
     "secondaryMoneyRamPercent": 0.2,
     "expRamPercent": 0.05,
     "adaptive": true,
-    "reason": "Income priority: primary money lane boosted."
+    "reason": "Cloud fleet needs RAM upgrades: weakest 128.00TB / max 1.00PB. Next cloud action: upgrade Server13 to 256.00TB. Next upgrade is affordable, so money stays dominant while a small EXP lane keeps leveling alive."
   },
   "widgets": {
     "visible": [
@@ -842,6 +1263,6 @@
     "accent": "singularity_purple",
     "dangerLevel": "normal"
   },
-  "bridgeUpdatedAt": 1780717497015,
-  "bridgeUpdatedAtText": "11:44:57 PM"
+  "bridgeUpdatedAt": 1780807212872,
+  "bridgeUpdatedAtText": "12:40:12 AM"
 }

@@ -41,3 +41,23 @@
     font-weight: 600;
     text-align: right;
 }
+
+.floating-node-grid .floating-tone-cyan {
+    color: var(--cyan);
+}
+
+.floating-node-grid .floating-tone-green {
+    color: var(--green);
+}
+
+.floating-node-grid .floating-tone-purple {
+    color: var(--purple);
+}
+
+.floating-node-grid .floating-tone-yellow {
+    color: var(--yellow);
+}
+
+.floating-node-grid .floating-tone-red {
+    color: var(--red);
+}

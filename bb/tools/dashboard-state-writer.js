@@ -86,6 +86,11 @@ function buildDashboardState(daemonState) {
     const controller = daemonState?.controller ?? {};
     const factionProgression = daemonState?.factionProgression ?? {};
     const augmentationTiming = daemonState?.augmentationTiming ?? null;
+    const strategicTargetPlan =
+        daemonState?.targetPlan ??
+        daemonState?.strategicTargetPlan ??
+        daemonState?.controller?.strategicTargetPlan ??
+        {};
 
     return {
         schemaVersion: 2,
@@ -93,7 +98,17 @@ function buildDashboardState(daemonState) {
         updatedAt: Date.now(),
         daemonUpdatedAt: daemonState?.updatedAt ?? null,
         targetStability: daemonState?.targetStability ?? {},
-        strategicTargetPlan: daemonState?.strategicTargetPlan ?? daemonState?.controller?.strategicTargetPlan ?? {},
+        strategicTargetPlan,
+        targetAnalysis: normalizeTargetAnalysis({
+            target,
+            targetStability: daemonState?.targetStability ?? {},
+            targetReason:
+                daemonState?.targetReason ??
+                daemonState?.strategicTargetReason ??
+                controller?.strategicTargetReason ??
+                null,
+            plan: strategicTargetPlan,
+        }),
         services: Array.isArray(daemonState?.services) ? daemonState.services : [],
 
         bitnode: {
@@ -423,5 +438,51 @@ function normalizeFactionProgression(factionProgression = {}) {
         progressionAction: factionProgression?.progressionAction ?? null,
         calculations: factionProgression?.calculations ?? null,
         daedalusRequirements: factionProgression?.daedalusRequirements ?? null,
+    };
+}
+
+function normalizeTargetAnalysis({ target, targetReason, targetStability, plan }) {
+    const best = normalizeTargetCandidate(plan?.bestCandidate);
+    const current = normalizeTargetCandidate(plan?.currentCandidate);
+
+    return {
+        target,
+        reason:
+            targetReason ??
+            plan?.reason ??
+            null,
+        changed: bool(plan?.changed),
+        blockedSwap: bool(plan?.blockedSwap),
+        blockedTarget: plan?.blockedTarget ?? null,
+        targetStability:
+            plan?.targetStability ??
+            targetStability ??
+            {},
+        bestCandidate: best,
+        currentCandidate: current,
+        candidates: Array.isArray(plan?.candidates)
+            ? plan.candidates.slice(0, 5).map(normalizeTargetCandidate)
+            : [],
+    };
+}
+
+function normalizeTargetCandidate(candidate = null) {
+    if (!candidate) return null;
+
+    return {
+        server: candidate.server ?? null,
+        score: candidate.score ?? 0,
+        scoreSource: candidate.scoreSource ?? null,
+        reason: candidate.reason ?? null,
+        maxMoney: candidate.maxMoney ?? 0,
+        money: candidate.money ?? 0,
+        moneyRatio: candidate.moneyRatio ?? 0,
+        weakenTime: candidate.weakenTime ?? 0,
+        chance: candidate.chance ?? 0,
+        hackPercent: candidate.hackPercent ?? 0,
+        estimatedMoneyPerSecond: candidate.estimatedMoneyPerSecond ?? 0,
+        requiredHacking: candidate.requiredHacking ?? 0,
+        securityDelta: candidate.securityDelta ?? 0,
+        growth: candidate.growth ?? 0,
     };
 }

@@ -1,35 +1,36 @@
 {
-  "schemaVersion": 1,
-  "updatedAt": 1780717492609,
+  "schemaVersion": 2,
+  "updatedAt": 1780807209868,
   "source": "daemon-reasoning-writer",
-  "summary": "2 warning item(s) need attention.",
+  "summary": "1 warning item(s) need attention.",
+  "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
   "items": [
     {
       "id": "mode",
       "title": "Current Mode",
       "summary": "Daemon is running in money mode.",
-      "detail": "Prioritize EXP only until faction progression requirements are met.",
+      "detail": "exp",
       "level": "info",
       "data": {
         "phase": "level-hacking",
         "priority": "income",
         "posture": "AGGRESSIVE_INCOME"
       },
-      "ts": 1780717492609
+      "ts": 1780807209868
     },
     {
       "id": "target",
       "title": "Current Target",
-      "summary": "Current target is phantasy.",
-      "detail": "Target likely needs prep work before it becomes efficient.",
-      "level": "warning",
+      "summary": "Current target is the-hub.",
+      "detail": "Target appears stable enough for current automation.",
+      "level": "success",
       "data": {
-        "moneyPercent": 0.30693955831847,
-        "securityDiff": 3.2219999999999924,
-        "prepNeed": 1.153346155967243,
-        "weakenTime": 52942.36594142848
+        "moneyPercent": 1,
+        "securityDiff": 0,
+        "prepNeed": 0,
+        "weakenTime": 88776.64104386972
       },
-      "ts": 1780717492609
+      "ts": 1780807209868
     },
     {
       "id": "policy",
@@ -38,17 +39,20 @@
       "detail": "Policy currently blocks: augmentation purchases, reset execution.",
       "level": "info",
       "data": {
-        "reserveMoney": 100000000000,
+        "reserveMoney": 1000000000,
         "allowServerPurchases": true,
         "allowStockTrading": true,
         "allowHacknet": true,
         "allowHomeRam": true,
         "allowExePurchases": true,
         "allowAugmentPurchases": false,
+        "allowFactionWork": true,
+        "backgroundFactionWork": true,
+        "backgroundFactionReason": "Money mode can work faction reputation in the background while server buildout remains the main priority.",
         "allowReset": false,
         "allowIntTravel": false
       },
-      "ts": 1780717492609
+      "ts": 1780807209868
     },
     {
       "id": "readiness",
@@ -66,14 +70,14 @@
         "moneyReady": false,
         "homeRamReady": true,
         "augReady": false,
-        "hacking": 667,
+        "hacking": 1344,
         "hackingTarget": 2500,
-        "money": 134188583.30838169,
+        "money": 86423788792.57176,
         "moneyTarget": 100000000000,
-        "augmentCount": 19,
+        "augmentCount": 24,
         "augmentTarget": 30
       },
-      "ts": 1780717492609
+      "ts": 1780807209868
     },
     {
       "id": "victory",
@@ -90,9 +94,8 @@
         "worldDaemon": "w0r1d_d43m0n",
         "canUseWorldDaemon": false
       },
-      "ts": 1780717492609
+      "ts": 1780807209868
     }
   ],
-  "historyHint": "Current snapshot only. History can be appended later.",
-  "bridgeUpdatedAt": 1780717497257
+  "bridgeUpdatedAt": 1780807210647
 }

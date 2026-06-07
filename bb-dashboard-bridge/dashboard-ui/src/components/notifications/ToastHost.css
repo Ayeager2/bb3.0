@@ -11,7 +11,7 @@
 }
 
 .toast-item {
-    pointer-events: auto;
+    pointer-events: none;
     display: grid;
     grid-template-columns: 28px 1fr 28px;
     gap: 10px;
@@ -52,6 +52,7 @@
 }
 
 .toast-close {
+    pointer-events: auto;
     border: none;
     background: transparent;
     color: var(--muted);

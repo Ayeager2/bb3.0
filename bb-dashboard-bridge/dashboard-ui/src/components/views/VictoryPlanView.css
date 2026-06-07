@@ -1,0 +1,129 @@
+.victory-plan {
+    display: grid;
+    gap: 12px;
+}
+
+.victory-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: start;
+    padding: 12px;
+    border: 1px solid rgba(192, 132, 252, .24);
+    border-radius: 8px;
+    background:
+        linear-gradient(90deg, rgba(192, 132, 252, .12), transparent 58%),
+        rgba(3, 7, 18, .72);
+}
+
+.victory-ready {
+    border-color: rgba(0, 255, 156, .36);
+    box-shadow: 0 0 22px rgba(0, 255, 156, .08);
+}
+
+.victory-kicker,
+.victory-section-title,
+.victory-check div,
+.victory-artifact span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.victory-stage {
+    margin-top: 4px;
+    color: var(--purple);
+    font-size: 19px;
+    line-height: 1.1;
+    text-shadow: var(--glow-purple);
+    overflow-wrap: anywhere;
+}
+
+.victory-next,
+.victory-world-note {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.victory-status {
+    min-width: 74px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.victory-status-ready {
+    border: 1px solid rgba(0, 255, 156, .46);
+    color: var(--green);
+    background: rgba(0, 255, 156, .08);
+}
+
+.victory-status-pending {
+    border: 1px solid rgba(250, 204, 21, .38);
+    color: var(--yellow);
+    background: rgba(250, 204, 21, .07);
+}
+
+.victory-readiness-panel,
+.victory-world-panel {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 8px;
+    background: rgba(2, 6, 23, .62);
+}
+
+.victory-check-grid,
+.victory-artifact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.victory-check,
+.victory-artifact {
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, .10);
+    border-radius: 7px;
+    background: rgba(3, 7, 18, .68);
+}
+
+.victory-check strong,
+.victory-artifact strong {
+    display: block;
+    margin-top: 5px;
+    color: var(--yellow);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.victory-check-ready strong,
+.victory-artifact-on strong {
+    color: var(--green);
+}
+
+.victory-check-pending strong,
+.victory-artifact-off strong {
+    color: var(--red);
+}
+
+.victory-world-name {
+    color: var(--cyan);
+    font-size: 18px;
+    text-shadow: var(--glow-cyan);
+}
+
+@media (max-width: 720px) {
+    .victory-hero,
+    .victory-check-grid,
+    .victory-artifact-grid {
+        grid-template-columns: 1fr;
+    }
+}

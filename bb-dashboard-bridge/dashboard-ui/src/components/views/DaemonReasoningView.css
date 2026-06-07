@@ -4,9 +4,64 @@
     gap: 12px;
 }
 
+.reasoning-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: start;
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .20);
+    border-radius: 8px;
+    background:
+        linear-gradient(90deg, rgba(0, 229, 255, .10), transparent 62%),
+        rgba(3, 7, 18, .70);
+}
+
+.reasoning-hero-warning {
+    border-color: rgba(250, 204, 21, .32);
+    box-shadow: 0 0 18px rgba(250, 204, 21, .08);
+}
+
+.reasoning-hero-danger,
+.reasoning-hero-error {
+    border-color: rgba(255, 56, 100, .38);
+    box-shadow: 0 0 20px rgba(255, 56, 100, .10);
+}
+
+.reasoning-hero-success {
+    border-color: rgba(0, 255, 156, .32);
+    box-shadow: 0 0 18px rgba(0, 255, 156, .08);
+}
+
+.reasoning-kicker {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.reasoning-hero-summary {
+    margin-top: 5px;
+    color: var(--cyan);
+    font-size: 18px;
+    line-height: 1.15;
+    text-shadow: var(--glow-cyan);
+}
+
+.reasoning-hero-meta {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
 .reasoning-empty {
     color: var(--muted);
     padding: 12px;
+}
+
+.reasoning-current {
+    display: grid;
+    gap: 10px;
 }
 
 .reasoning-summary {
@@ -169,8 +224,10 @@
 
 .reasoning-level-counts {
     display: flex;
+    flex-wrap: wrap;
     gap: 5px;
     flex-shrink: 0;
+    justify-content: flex-end;
 }
 
 .reasoning-level-counts span {
@@ -182,6 +239,11 @@
     border: 1px solid rgba(255, 255, 255, .12);
     color: var(--muted);
     font-size: 10px;
+}
+
+.reasoning-level-counts-compact span {
+    height: 20px;
+    min-width: 20px;
 }
 
 .reasoning-level-counts .success {
@@ -197,6 +259,16 @@
 .reasoning-level-counts .danger {
     color: var(--red);
     border-color: rgba(255, 56, 100, .3);
+}
+
+.reasoning-level-counts .error {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .3);
+}
+
+.reasoning-level-counts .info {
+    color: var(--cyan);
+    border-color: rgba(0, 229, 255, .24);
 }
 
 .reasoning-history-items {
@@ -221,4 +293,15 @@
 
 .reasoning-history-item span {
     color: var(--muted);
+}
+
+@media (max-width: 720px) {
+    .reasoning-hero,
+    .reasoning-history-item {
+        grid-template-columns: 1fr;
+    }
+
+    .reasoning-level-counts {
+        justify-content: flex-start;
+    }
 }

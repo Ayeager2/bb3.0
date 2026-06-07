@@ -126,7 +126,12 @@ export default function App() {
     }
     return (
         <div className={`app-shell theme-${state?.theme?.accent ?? "default"} workspace-${workspaceSettings.mode}`}>
-            <TopBar state={state} error={error} commandStatus={commandStatus} />
+            <TopBar
+                state={state}
+                error={error}
+                commandStatus={commandStatus}
+                onOpenCommandPalette={() => setCommandPaletteOpen(true)}
+            />
 
             <DashboardGrid
                 state={state}
