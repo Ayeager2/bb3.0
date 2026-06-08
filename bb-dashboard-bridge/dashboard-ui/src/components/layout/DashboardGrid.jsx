@@ -2,16 +2,19 @@ import { useState, useEffect, useMemo } from "react";
 import { FiSettings } from "react-icons/fi";
 
 import NetworkTopologyCard from "../cards/NetworkTopologyCard.jsx";
+import ServerTickerCard from "../cards/ServerTickerCard.jsx";
 import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
 
 const DEFAULT_CARD_ORDER = [
     "networkTopology",
+    "serverTicker",
 ];
 
 const CARD_STORAGE_KEY = "bbdash-card-layout-v2";
 
 const CARD_REGISTRY = {
     networkTopology: { title: "Network Topology", component: NetworkTopologyCard },
+    serverTicker: { title: "Server Ticker", component: ServerTickerCard },
 };
 
 export default function DashboardGrid({

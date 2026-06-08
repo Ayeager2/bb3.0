@@ -2,6 +2,7 @@
 
 const DASHBOARD_STATE_FILE = "/data/ui/dashboard-state.txt";
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
+const SERVER_TICKER_FILE = "/data/ui/server-ticker.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -19,7 +20,7 @@ export async function main(ns) {
 
     while (true) {
         const daemonState = readJson(ns, DAEMON_STATE_FILE, {});
-        const dashboardState = buildDashboardState(daemonState);
+        const dashboardState = buildDashboardState(ns, daemonState);
 
         ns.write(DASHBOARD_STATE_FILE, JSON.stringify(dashboardState, null, 2), "w");
 
@@ -41,7 +42,8 @@ export async function main(ns) {
     }
 }
 
-function buildDashboardState(daemonState) {
+function buildDashboardState(ns, daemonState) {
+    const serverTicker = readJson(ns, SERVER_TICKER_FILE, null);
     const bitNodeNumber =
         daemonState?.bitNodePlan?.bitNode ??
         daemonState?.bitnode?.number ??
@@ -188,6 +190,7 @@ function buildDashboardState(daemonState) {
             purchasedCount: Array.isArray(servers?.purchased) ? servers.purchased.length : 0,
             cloudCount: Array.isArray(servers?.cloud) ? servers.cloud.length : 0,
             cloudFleet: servers?.cloudFleet ?? null,
+            serverTicker,
         },
 
         readiness: {
@@ -440,6 +443,7 @@ function normalizeFactionProgression(factionProgression = {}) {
         daedalusRequirements: factionProgression?.daedalusRequirements ?? null,
     };
 }
+
 
 function normalizeTargetAnalysis({ target, targetReason, targetStability, plan }) {
     const best = normalizeTargetCandidate(plan?.bestCandidate);

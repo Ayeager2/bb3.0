@@ -300,6 +300,7 @@ export const SERVICES = [
         enabled: true,
         requiresSingularity: true,
         minHomeRam: 128,
+        completionFile: "/data/augmentation-data-builder-complete.txt",
         purpose: "build augmentation data cache once",
     },
     {

@@ -14,6 +14,8 @@ status: ACTIVE_DEVELOPMENT
 3. EXP target separation
 4. dashboard rendering for progression calculations
 5. telemetry polish
+6. test pre-Red-Pill BitRunners NeuroFlux favor loop
+7. replace server purchaser terminal spam with dashboard server ticker telemetry
 ```
 
 ---
@@ -25,6 +27,9 @@ Refine:
 /lib/daemon/faction-progression.js
 /lib/daemon/decision.js
 /lib/daemon/state.js
+/lib/daemon/augmentation-stage-policy.js
+/lib/daemon/augmentations.js
+/economy/server-purchaser-service.js
 ```
 
 Purpose:
@@ -38,6 +43,16 @@ It now includes money/EXP/augmentation calculation payloads with a
 fallback-vs-Formulas.exe source marker. Next step is to refine those
 recommendations enough to avoid unnecessary pre-Red-Pill EXP grinding
 and to guide augmentation timing.
+
+New user TODO from 2026-06-07:
+
+- Pre-Red-Pill EXP still feels slow.
+- Test a BitRunners-stage loop that repeatedly buys regular NeuroFlux Governor from BitRunners to build favor faster.
+- Hypothesis: reaching roughly 40+ BitRunners favor may unlock donations sooner, allowing faster rep purchases and faster completion of higher-rep BitRunners augmentations.
+- Keep cash/money favored during this loop so home RAM/core upgrades can continue while BitRunners rep and favor build.
+- Do not rush Red Pill if BitRunners augmentations and low-trillion home upgrades are still useful.
+- Quiet `/economy/server-purchaser-service.js` terminal spam by default.
+- Add dashboard-facing server ticker telemetry showing purchased server name and RAM in a compact cyberpunk graphic.
 ```
 
 Current outputs:
@@ -116,6 +131,8 @@ workers
 - faction progression refinement
 - augmentation valuation timing
 - EXP routing logic
+- pre-Red-Pill NeuroFlux/favor loop may be good, but favor threshold is still experimental
+- server purchaser currently `tprint`s purchases; desired future behavior is dashboard telemetry instead
 - telemetry scaling
 - dashboard reasoning bridge constants
 ```
@@ -183,6 +200,8 @@ Before Red Pill:
     avoid blind grinding to 3000
     likely soft cap near 2500 unless a stage requires more
     factionProgression.expPolicy explains whether EXP is useful now
+    new hypothesis to test: during BitRunners stage, regular NeuroFlux Governor purchases may accelerate favor/donation unlock and make faction rep buying viable sooner
+    keep money favored while useful BitRunners augmentations and home RAM/core upgrades remain attractive
 
 After Red Pill:
     push toward 3000

@@ -105,10 +105,12 @@ export async function main(ns) {
       );
 
       const mode =
-        overrides.mode ||
-        (bootstrapMode
-          ? "bootstrap"
-          : decidedMode || targetState?.mode || "money");
+        decidedMode === "destroy-node"
+          ? "destroy-node"
+          : overrides.mode ||
+            (bootstrapMode
+              ? "bootstrap"
+              : decidedMode || targetState?.mode || "money");
 
       const spendingPolicy = chooseSpendingPolicy(
         ns,

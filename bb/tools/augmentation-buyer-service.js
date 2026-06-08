@@ -118,8 +118,11 @@ export async function main(ns) {
 
         const spendable =
             Math.max(0, ns.getPlayer().money - reserveMoney);
+        const bypassMaxPrice =
+            goal.repeatable === true &&
+            goal.favorLoop?.stage === "daedalus-neuroflux";
 
-        if (livePrice > maxPrice) {
+        if (!bypassMaxPrice && livePrice > maxPrice) {
             writeBuyerState(ns, {
                 ...baseState,
                 status: "blocked",
@@ -128,6 +131,7 @@ export async function main(ns) {
                 liveRepReq,
                 liveFactionRep,
                 spendable,
+                bypassMaxPrice,
             });
             await ns.sleep(refreshMs);
             continue;
@@ -142,6 +146,7 @@ export async function main(ns) {
                 liveRepReq,
                 liveFactionRep,
                 spendable,
+                bypassMaxPrice,
             });
             await ns.sleep(refreshMs);
             continue;
@@ -156,6 +161,7 @@ export async function main(ns) {
                 liveRepReq,
                 liveFactionRep,
                 spendable,
+                bypassMaxPrice,
             });
             await ns.sleep(refreshMs);
             continue;
@@ -202,6 +208,7 @@ export async function main(ns) {
                 liveRepReq,
                 liveFactionRep,
                 spendable,
+                bypassMaxPrice,
             });
         } else {
             writeBuyerState(ns, {
@@ -212,6 +219,7 @@ export async function main(ns) {
                 liveRepReq,
                 liveFactionRep,
                 spendable,
+                bypassMaxPrice,
             });
         }
         
@@ -282,6 +290,8 @@ function summarizeGoal(goal) {
         affordable: goal.affordable === true,
         hasPrereqs: goal.hasPrereqs === true,
         stagePolicy: goal.stagePolicy ?? null,
+        repeatable: goal.repeatable === true,
+        favorLoop: goal.favorLoop ?? null,
     };
 }
 function stopFactionWorkIfRunning(ns) {

@@ -3,6 +3,7 @@ import { ALL_FACTION_PROFILES } from "/lib/daemon/faction-profiles.js";
 
 const AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 const AUGMENTATION_CACHE_FILE = "/data/augmentation-cache.txt";
+const AUGMENTATION_BUILDER_COMPLETE_FILE = "/data/augmentation-data-builder-complete.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -21,6 +22,7 @@ export async function main(ns) {
     if (!force && existing?.updatedAt && Date.now() - existing.updatedAt < maxAge) {
         ns.tprint(`[AUG DATA] Using existing cache from ${new Date(existing.updatedAt).toLocaleTimeString()}.`);
         ns.write(AUGMENTATION_STATE_FILE, JSON.stringify(existing, null, 2), "w");
+        markComplete(ns, "cache");
         return;
     }
 
@@ -28,6 +30,7 @@ export async function main(ns) {
 
     ns.write(AUGMENTATION_CACHE_FILE, JSON.stringify(state, null, 2), "w");
     ns.write(AUGMENTATION_STATE_FILE, JSON.stringify(state, null, 2), "w");
+    markComplete(ns, "rebuilt");
 
     // ns.tprint(
     //     `[AUG DATA] Built cache: ` +
@@ -35,6 +38,19 @@ export async function main(ns) {
     //     `${state.augmentationCount} faction-augmentation entries, ` +
     //     `${state.uniqueAugmentationCount} unique augmentations.`
     // );
+}
+
+function markComplete(ns, status) {
+    ns.write(
+        AUGMENTATION_BUILDER_COMPLETE_FILE,
+        JSON.stringify({
+            updatedAt: Date.now(),
+            status,
+            stateFile: AUGMENTATION_STATE_FILE,
+            cacheFile: AUGMENTATION_CACHE_FILE,
+        }, null, 2),
+        "w"
+    );
 }
 
 function getJoinedFactions(ns, player) {

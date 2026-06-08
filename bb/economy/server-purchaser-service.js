@@ -4,6 +4,7 @@ import { runServerPurchaser } from "/lib/daemon/server-purchases.js";
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const PRE_FORMULAS_MAX_UPGRADE_COST = 1_000_000_000;
+const SERVER_TICKER_FILE = "/data/ui/server-ticker.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -12,10 +13,14 @@ export async function main(ns) {
     const flags = ns.flags([
         ["refresh", 10000],
         ["debug", true],
+        ["toast", true],
+        ["terminal", false],
     ]);
 
     const refreshMs = Number(flags.refresh) || 10000;
     const debug = flags.debug === true;
+    const toast = flags.toast === true;
+    const terminal = flags.terminal === true;
 
     while (true) {
         const state = readJson(ns, STATE_FILE);
@@ -56,8 +61,13 @@ export async function main(ns) {
             const message =
                 `[SERVER PURCHASER] ${result.message}`;
 
-            ns.toast(result.message, "success", 8000);
-            ns.tprint(message);
+            if (toast) {
+                ns.toast(result.message, "success", 8000);
+            }
+
+            if (terminal) {
+                ns.tprint(message);
+            }
 
             logPurchase(ns, {
                 source: "server-purchaser",
@@ -74,6 +84,13 @@ export async function main(ns) {
             });
         }
 
+        writeServerTicker(ns, {
+            result,
+            moneyBefore,
+            moneyAfter,
+            policy: serverPurchasePolicy,
+        });
+
         await ns.sleep(refreshMs);
     }
 }
@@ -89,5 +106,88 @@ function readJson(ns, file) {
         return JSON.parse(raw);
     } catch {
         return {};
+    }
+}
+
+function writeServerTicker(ns, data) {
+    try {
+        const result = data.result ?? {};
+        const fleet = getFleetSummary(ns);
+        const acted = result.acted === true;
+        const cost =
+            Number.isFinite(result.cost)
+                ? result.cost
+                : Math.max(0, data.moneyBefore - data.moneyAfter);
+
+        ns.write(
+            SERVER_TICKER_FILE,
+            JSON.stringify({
+                updatedAt: Date.now(),
+                source: "server-purchaser",
+                acted,
+                status: acted ? "acted" : "idle",
+                type: result.type ?? "none",
+                server:
+                    result.server ??
+                    result.serverName ??
+                    result.item ??
+                    null,
+                ram:
+                    result.ram ??
+                    fleet?.serverRam?.[result.server] ??
+                    null,
+                cost,
+                message: result.message ?? "No server purchase action.",
+                moneyBefore: data.moneyBefore,
+                moneyAfter: data.moneyAfter,
+                policy: {
+                    maxServerUpgradeCost:
+                        Number.isFinite(data.policy?.maxServerUpgradeCost)
+                            ? data.policy.maxServerUpgradeCost
+                            : null,
+                    serverUpgradeCapReason:
+                        data.policy?.serverUpgradeCapReason ?? null,
+                },
+                fleet,
+            }, null, 2),
+            "w"
+        );
+    } catch {
+        // Telemetry should never break the purchaser.
+    }
+}
+
+function getFleetSummary(ns) {
+    try {
+        if (!ns.cloud) {
+            return {
+                available: false,
+                reason: "Cloud API unavailable.",
+            };
+        }
+
+        const names = ns.cloud.getServerNames();
+        const ramValues =
+            names.map(name => ns.getServerMaxRam(name));
+        const serverRam =
+            Object.fromEntries(
+                names.map(name => [name, ns.getServerMaxRam(name)])
+            );
+
+        return {
+            available: true,
+            count: names.length,
+            limit: ns.cloud.getServerLimit(),
+            maxRamLimit: ns.cloud.getRamLimit(),
+            minRam: ramValues.length ? Math.min(...ramValues) : 0,
+            maxRam: ramValues.length ? Math.max(...ramValues) : 0,
+            names,
+            serverRam,
+        };
+    } catch (error) {
+        return {
+            available: false,
+            reason: String(error),
+        };
     }
 }

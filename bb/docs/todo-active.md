@@ -11,11 +11,65 @@
 3. Tune augmentation timing thresholds from live daemon-state output
 4. Better EXP target separation
 5. Formula-aware target telemetry polish
+6. Test pre-Red-Pill BitRunners NeuroFlux favor loop in live BN4 state
+7. Verify server ticker telemetry in dashboard after next server purchase/upgrade
+8. Test Daedalus NeuroFlux donation-unlock loop:
+   - before Red Pill, buy Daedalus NeuroFlux until projected favor reaches donation unlock
+   - projection should come from formulas.reputation diagnostics
+   - after projected favor is ready, donate for Red Pill rep, buy Red Pill first, then continue post-Red-Pill 3000/destroy-node path
+```
+
+# NEW TODO - 2026-06-07
+
+```txt
+Pre-Red-Pill BitRunners / EXP hypothesis:
+- Current pre-Red-Pill EXP logic still feels slow.
+- Investigate buying regular NeuroFlux Governor from BitRunners repeatedly during the BitRunners stage.
+- Goal is to build BitRunners favor faster, possibly toward 40+ favor, so faction donation unlocks sooner.
+- If donations unlock, daemon can buy missing BitRunners rep faster and finish higher-rep BitRunners augmentations sooner.
+- Keep money/cash mode favored during this loop so home RAM/core upgrades can continue while BitRunners rep/favor builds.
+- Do not rush Red Pill if BitRunners augmentations and low-trillion home upgrades are still valuable.
+- Candidate implementation: a pre-Red-Pill BitRunners stage policy that treats NeuroFlux Governor as a repeatable favor/leveling accelerator, gated by cash reserve, current BitRunners rep, queued critical augments, favor progress, and reset timing.
+- Needs testing: target favor threshold may be around 40+, but this is still experimental.
+
+Server purchaser / dashboard ticker:
+- Remove or gate terminal spam from /economy/server-purchaser-service.js.
+- Current behavior: successful actions toast and tprint every purchase/upgrade.
+- Desired behavior: keep optional toasts if useful, but stop noisy terminal prints by default.
+- Add a dashboard-facing "server ticker" item instead.
+- Server ticker should show purchased server name and RAM in a compact cyberpunk graphic.
+- Likely data path: server purchaser writes latest action/fleet summary to /data/ui or daemon state, dashboard-state-writer/bridge exposes it, dashboard renders a small ticker/card.
 ```
 
 # COMPLETED RECENTLY
 
 ```txt
+- Pre-Red-Pill BitRunners NeuroFlux favor-loop first pass:
+  - BitRunners NeuroFlux has a dedicated augmentation stage policy
+  - augmentation planner allows NeuroFlux only for joined BitRunners before Red Pill
+  - NeuroFlux is opportunistic only: it must already have rep and be affordable
+  - money mode can allow only this specific ready NeuroFlux purchase
+  - normal EXP/progression mode is not forced just because NeuroFlux is ready
+  - buyer diagnostics include repeatable/favorLoop metadata
+  - user decided not to broaden BitRunners NFG after Daedalus join
+  - correction: Red Pill remains the first Daedalus purchase priority and masks other Daedalus candidates while unowned
+  - post-Red-Pill logic remains the normal level-to-3000 / destroy world daemon path
+
+- Pre-Red-Pill Daedalus NeuroFlux donation-unlock loop:
+  - Daedalus NeuroFlux can now be selected before Red Pill only while projected Daedalus favor is below donation unlock
+  - favor projection uses formulas.reputation when available
+  - buyer can bypass the normal max-price cap for this exact Daedalus NeuroFlux favor loop
+  - once projected favor reaches donation unlock, Red Pill returns as the forced first Daedalus purchase
+  - normal Daedalus augmentations still do not jump ahead of Red Pill
+
+- Server purchaser ticker first pass:
+  - /economy/server-purchaser-service.js no longer tprints purchase spam by default
+  - --terminal true can re-enable terminal prints for debugging
+  - --toast controls upgrade toasts
+  - writes /data/ui/server-ticker.txt every cycle
+  - dashboard-state-writer exposes servers.serverTicker
+  - dashboard bridge UI includes Server Ticker card
+
 - Faction progression foundation created:
   - /lib/daemon/faction-progression.js
   - emits currentFactionStage/currentBlocker/nextBestAction/recommendedMode

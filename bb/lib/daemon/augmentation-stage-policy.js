@@ -32,6 +32,34 @@ export function getAugmentationStagePolicy(goal = {}) {
         });
     }
 
+    if (
+        lowerName.includes("neuroflux governor") &&
+        faction === "Daedalus"
+    ) {
+        return makePolicy("daedalus-neuroflux", {
+            priority: STAGE_PRIORITY["red-pill"] + 25,
+            urgency: "high",
+            buyReadiness: "favor-to-donate",
+            factionWork: "full",
+            moneyWork: "full",
+            reason: "Daedalus NeuroFlux is used before Red Pill only to build projected favor to the donation unlock threshold.",
+        });
+    }
+
+    if (
+        lowerName.includes("neuroflux governor") &&
+        faction === "BitRunners"
+    ) {
+        return makePolicy("bitrunners-neuroflux", {
+            priority: STAGE_PRIORITY.bitrunners + 25,
+            urgency: "medium",
+            buyReadiness: "favor-loop",
+            factionWork: "background-until-close",
+            moneyWork: "money-primary",
+            reason: "BitRunners NeuroFlux can be used as a pre-Red-Pill favor and augmentation-count accelerator.",
+        });
+    }
+
     const stage = FACTION_STAGE_BY_FACTION[faction] ?? "side";
 
     if (stage === "daedalus") {

@@ -97,12 +97,16 @@ export function buildAugmentationPlan(ns, options = {}) {
     const spendable = Math.max(0, money - reserveMoney);
     const candidates = [];
     const ownedAugmentations = getOwnedAugmentationSet(ns);
+    const neuroFluxPolicy = getNeuroFluxPolicy(ns);
 
     for (const faction of data.factions) {
         if (!faction.joined) continue;
 
         for (const aug of faction.augmentations ?? []) {
-            if (shouldSkipAug(aug, maxPrice, ownedAugmentations)) continue;
+            if (shouldSkipAug(aug, maxPrice, ownedAugmentations, {
+                faction: faction.faction,
+                neuroFluxPolicy,
+            })) continue;
 
             const live =
                 getLiveAugmentationSnapshot(ns, faction.faction, aug.name);
@@ -116,6 +120,21 @@ export function buildAugmentationPlan(ns, options = {}) {
             const affordable = spendable >= price;
             const hasPrereqs = hasPrereqsMet(data, aug);
 
+            if (
+                isNeuroFlux(aug.name) &&
+                !isAllowedNeuroFluxFaction(faction.faction, neuroFluxPolicy)
+            ) {
+                continue;
+            }
+
+            if (
+                isNeuroFlux(aug.name) &&
+                faction.faction === "BitRunners" &&
+                (!hasRep || !affordable)
+            ) {
+                continue;
+            }
+
             const statScore = scoreStats(aug.stats ?? {}, strategy.statWeights);
             const strategicScore = scoreStrategicValue(aug.name, faction, aug, strategy);
             const readinessScore = scoreReadiness({ hasRep, affordable, hasPrereqs });
@@ -128,6 +147,10 @@ export function buildAugmentationPlan(ns, options = {}) {
             });
             const pricePenalty = Math.log10(Math.max(10, price)) * 8;
             const repPenalty = Math.log10(Math.max(10, rep)) * 3;
+            const neuroFluxBoost =
+                isNeuroFlux(aug.name) && isAllowedNeuroFluxFaction(faction.faction, neuroFluxPolicy)
+                    ? 650
+                    : 0;
 
             const score =
                 statScore +
@@ -135,7 +158,8 @@ export function buildAugmentationPlan(ns, options = {}) {
                 stagePolicy.priority +
                 readinessScore -
                 pricePenalty -
-                repPenalty;
+                repPenalty +
+                neuroFluxBoost;
 
             candidates.push({
                 name: aug.name,
@@ -152,6 +176,10 @@ export function buildAugmentationPlan(ns, options = {}) {
                 statBreakdown: getStatBreakdown(aug.stats ?? {}, strategy.statWeights),
                 priorityClass,
                 stagePolicy,
+                repeatable: isNeuroFlux(aug.name),
+                favorLoop: isNeuroFlux(aug.name) && isAllowedNeuroFluxFaction(faction.faction, neuroFluxPolicy)
+                    ? neuroFluxPolicy
+                    : null,
                 tags: aug.tags ?? [],
                 score,
             });
@@ -160,9 +188,13 @@ export function buildAugmentationPlan(ns, options = {}) {
 
     candidates.sort((a, b) => compareForPurchase(a, b, strategy));
 
+    const daedalusNeuroFluxGoal =
+        getDaedalusNeuroFluxGoal(candidates, neuroFluxPolicy);
+
     const forcedRedPill = getForcedRedPillGoal(ns);
 
     const nextGoal =
+        daedalusNeuroFluxGoal ??
         forcedRedPill ??
         candidates[0] ??
         null;
@@ -178,15 +210,25 @@ export function buildAugmentationPlan(ns, options = {}) {
         ready: !!nextGoal && nextGoal.hasRep && nextGoal.affordable && nextGoal.hasPrereqs,
         nextGoal,
         blockedReason: getBlockedReason(nextGoal),
+        neuroFluxPolicy,
         candidates: candidates.slice(0, 25),
     });
 }
 
-function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set()) {
+function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set(), context = {}) {
     if (!aug) return true;
+    const neuroFlux =
+        isNeuroFlux(aug.name);
+
+    if (neuroFlux) {
+        return !(
+            isAllowedNeuroFluxFaction(context?.faction, context?.neuroFluxPolicy) &&
+            context?.neuroFluxPolicy?.enabled === true
+        );
+    }
+
     if (aug.owned || aug.installed || aug.queued) return true;
     if (ownedAugmentations.has(aug.name)) return true;
-    if (aug.name === "NeuroFlux Governor") return true;
     if (!Number.isFinite(aug.price) || aug.price <= 0) return true;
     // Do not skip expensive augments entirely.
     // Keep them visible as blocked goals unless they are absurdly beyond policy.
@@ -255,6 +297,8 @@ function scoreStrategicValue(name, faction, aug, strategy) {
     let score = 0;
     const lower = String(name).toLowerCase();
 
+    if (lower.includes("neuroflux governor") && faction.faction === "Daedalus") score += 900;
+    if (lower.includes("neuroflux governor") && faction.faction === "BitRunners") score += 500;
     if (lower.includes("red pill")) score += 5000;
     if (lower.includes("bitwire")) score += 400;
     if (lower.includes("cranial")) score += 350;
@@ -269,6 +313,158 @@ function scoreStrategicValue(name, faction, aug, strategy) {
     if (faction.theme === "company") score += strategy.statWeights.company_rep ?? 0;
 
     return score;
+}
+
+function isNeuroFlux(name) {
+    return String(name ?? "") === "NeuroFlux Governor";
+}
+
+function isAllowedNeuroFluxFaction(faction, policy) {
+    if (!policy?.enabled) return false;
+    if (faction === policy.targetFaction) return true;
+    return faction === "Daedalus" && policy.allowDaedalus === true;
+}
+
+function getNeuroFluxPolicy(ns) {
+    try {
+        const player = ns.getPlayer();
+        const joinedBitRunners =
+            player.factions?.includes("BitRunners") === true;
+        const joinedDaedalus =
+            player.factions?.includes("Daedalus") === true;
+        const owned =
+            ns.singularity.getOwnedAugmentations(true);
+        const hasRedPill =
+            owned.includes("The Red Pill");
+        const bitRunnersFavorState =
+            buildFactionFavorState(ns, "BitRunners");
+        const daedalusFavorState =
+            buildFactionFavorState(ns, "Daedalus");
+
+        if (
+            joinedDaedalus &&
+            !hasRedPill &&
+            daedalusFavorState.favorReady !== true
+        ) {
+            return {
+                enabled: true,
+                stage: "daedalus-neuroflux",
+                targetFaction: "Daedalus",
+                targetAugmentation: "NeuroFlux Governor",
+                allowDaedalus: true,
+                favor: daedalusFavorState.currentFavor,
+                favorToDonate: daedalusFavorState.favorToDonate,
+                favorRemaining: daedalusFavorState.missingProjectedFavor,
+                donationUnlocked: daedalusFavorState.currentFavor >= daedalusFavorState.favorToDonate,
+                projectedDonationUnlocked: daedalusFavorState.favorReady,
+                moneyModePreferred: false,
+                installRequiredForFavor: true,
+                favorState: daedalusFavorState,
+                reason: "Daedalus NeuroFlux is prioritized before Red Pill until projected Daedalus favor reaches the donation unlock threshold.",
+            };
+        }
+
+        return {
+            enabled:
+                joinedBitRunners &&
+                !hasRedPill,
+            stage: "bitrunners-neuroflux",
+            targetFaction: "BitRunners",
+            targetAugmentation: "NeuroFlux Governor",
+            allowDaedalus: false,
+            favor: bitRunnersFavorState.currentFavor,
+            favorToDonate: bitRunnersFavorState.favorToDonate,
+            favorRemaining: bitRunnersFavorState.missingProjectedFavor,
+            donationUnlocked: bitRunnersFavorState.currentFavor >= bitRunnersFavorState.favorToDonate,
+            projectedDonationUnlocked: bitRunnersFavorState.favorReady,
+            moneyModePreferred: true,
+            installRequiredForFavor: true,
+            favorState: bitRunnersFavorState,
+            reason:
+                joinedBitRunners
+                    ? "Pre-Red-Pill BitRunners NeuroFlux loop is eligible; queue NFG opportunistically while money remains primary."
+                    : "BitRunners not joined; NeuroFlux favor loop unavailable.",
+        };
+    } catch (error) {
+        return {
+            enabled: false,
+            stage: "bitrunners-neuroflux",
+            targetFaction: "BitRunners",
+            targetAugmentation: "NeuroFlux Governor",
+            allowDaedalus: false,
+            reason: `Unable to evaluate BitRunners NeuroFlux loop: ${String(error)}`,
+        };
+    }
+}
+
+function getDaedalusNeuroFluxGoal(candidates, neuroFluxPolicy) {
+    if (neuroFluxPolicy?.enabled !== true) return null;
+    if (neuroFluxPolicy.stage !== "daedalus-neuroflux") return null;
+    if (neuroFluxPolicy.favorState?.favorReady === true) return null;
+
+    return candidates.find(candidate =>
+        candidate.faction === "Daedalus" &&
+        isNeuroFlux(candidate.name)
+    ) ?? null;
+}
+
+function buildFactionFavorState(ns, faction) {
+    const currentFavor =
+        safeNumber(() => ns.singularity.getFactionFavor(faction), 0);
+    const currentRep =
+        safeNumber(() => ns.singularity.getFactionRep(faction), 0);
+    const favorToDonate =
+        safeNumber(() => ns.singularity.getFavorToDonate(), 150);
+
+    const projectedFavorGain =
+        safeNumber(
+            () => ns.formulas.reputation.calculateRepToFavor(currentRep),
+            null
+        );
+    const requiredRepForFavorTarget =
+        safeNumber(
+            () => ns.formulas.reputation.calculateFavorToRep(
+                Math.max(0, favorToDonate - currentFavor)
+            ),
+            null
+        );
+    const projectedFavor =
+        projectedFavorGain === null
+            ? currentFavor
+            : currentFavor + projectedFavorGain;
+    const missingProjectedFavor =
+        Math.max(0, favorToDonate - projectedFavor);
+    const missingRepForFavorTarget =
+        requiredRepForFavorTarget === null
+            ? null
+            : Math.max(0, requiredRepForFavorTarget - currentRep);
+
+    return {
+        faction,
+        currentFavor,
+        currentRep,
+        favorToDonate,
+        targetFavor: favorToDonate,
+        projectedFavorGain,
+        projectedFavor,
+        missingProjectedFavor,
+        requiredRepForFavorTarget,
+        missingRepForFavorTarget,
+        favorReady: projectedFavor >= favorToDonate,
+        formulaSource:
+            projectedFavorGain === null || requiredRepForFavorTarget === null
+                ? "unavailable"
+                : "formulas.reputation",
+    };
+}
+
+function safeNumber(fn, fallback) {
+    try {
+        const value = fn();
+        return Number.isFinite(value) ? value : fallback;
+    } catch {
+        return fallback;
+    }
 }
 
 function scoreStats(stats, weights) {

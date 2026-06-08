@@ -1,0 +1,150 @@
+.server-ticker {
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+    padding: 12px;
+    border: 1px solid rgba(0, 229, 255, .18);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .12), transparent 42%),
+        linear-gradient(180deg, rgba(192, 132, 252, .09), transparent 62%),
+        rgba(2, 6, 23, .62);
+}
+
+.server-ticker::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, .035),
+        rgba(255, 255, 255, .035) 1px,
+        transparent 1px,
+        transparent 7px
+    );
+    opacity: .45;
+}
+
+.server-ticker > * {
+    position: relative;
+    z-index: 1;
+}
+
+.server-ticker-header,
+.server-ticker-main,
+.server-ticker-fleet-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.server-ticker-label,
+.server-ticker-fleet-row span,
+.server-ticker-cost span,
+.server-ticker-time {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.server-ticker-name {
+    margin-top: 4px;
+    color: var(--cyan);
+    font-size: 18px;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.server-ticker-status {
+    border: 1px solid rgba(0, 229, 255, .35);
+    border-radius: 6px;
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 7px;
+    box-shadow: 0 0 12px rgba(0, 229, 255, .14);
+}
+
+.server-ticker-live .server-ticker-status {
+    border-color: rgba(0, 255, 156, .42);
+    color: var(--green);
+}
+
+.server-ticker-main {
+    margin-top: 16px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 8px;
+    background: rgba(2, 6, 23, .5);
+}
+
+.server-ticker-ram b {
+    color: var(--green);
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.server-ticker-ram span {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.server-ticker-cost {
+    text-align: right;
+}
+
+.server-ticker-cost b {
+    display: block;
+    margin-top: 4px;
+    color: var(--yellow);
+    font-size: 12px;
+}
+
+.server-ticker-fleet {
+    margin-top: 12px;
+    display: grid;
+    gap: 5px;
+}
+
+.server-ticker-fleet-row b {
+    color: var(--text);
+    font-size: 11px;
+}
+
+.server-ticker-bar {
+    height: 7px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 999px;
+    background: rgba(2, 6, 23, .8);
+}
+
+.server-ticker-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    box-shadow: 0 0 12px rgba(0, 255, 156, .28);
+}
+
+.server-ticker-message {
+    margin-top: 12px;
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.server-ticker-time {
+    margin-top: 8px;
+    text-align: right;
+}

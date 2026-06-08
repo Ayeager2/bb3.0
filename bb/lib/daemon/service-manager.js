@@ -245,14 +245,21 @@ function getServiceGate(ns, service, daemonState) {
         return block(`disabled after ${ns.format.ram(service.maxHomeRam)} home RAM`);
     }
 
-    const phase = daemonState?.phase ?? daemonState?.mode ?? "unknown";
+    const phase = daemonState?.phase ?? "unknown";
+    const mode = daemonState?.mode ?? "unknown";
+    const serviceContexts = new Set([phase, mode]);
 
-    if (service.phases.length > 0 && !service.phases.includes(phase)) {
-        return block(`phase ${phase} not allowed`);
+    if (
+        service.phases.length > 0 &&
+        !service.phases.some(x => serviceContexts.has(x))
+    ) {
+        return block(`phase ${phase} / mode ${mode} not allowed`);
     }
 
-    if (service.disabledPhases.includes(phase)) {
-        return block(`disabled during ${phase}`);
+    if (
+        service.disabledPhases.some(x => serviceContexts.has(x))
+    ) {
+        return block(`disabled during phase ${phase} / mode ${mode}`);
     }
 
     return {

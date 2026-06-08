@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "updatedAt": 1780807209868,
+  "updatedAt": 1780872081645,
   "source": "daemon-reasoning-writer",
   "summary": "1 warning item(s) need attention.",
   "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
@@ -16,7 +16,7 @@
         "priority": "income",
         "posture": "AGGRESSIVE_INCOME"
       },
-      "ts": 1780807209868
+      "ts": 1780872081645
     },
     {
       "id": "target",
@@ -30,7 +30,7 @@
         "prepNeed": 0,
         "weakenTime": 88776.64104386972
       },
-      "ts": 1780807209868
+      "ts": 1780872081645
     },
     {
       "id": "policy",
@@ -52,7 +52,7 @@
         "allowReset": false,
         "allowIntTravel": false
       },
-      "ts": 1780807209868
+      "ts": 1780872081645
     },
     {
       "id": "readiness",
@@ -77,7 +77,7 @@
         "augmentCount": 24,
         "augmentTarget": 30
       },
-      "ts": 1780807209868
+      "ts": 1780872081645
     },
     {
       "id": "victory",
@@ -94,8 +94,8 @@
         "worldDaemon": "w0r1d_d43m0n",
         "canUseWorldDaemon": false
       },
-      "ts": 1780807209868
+      "ts": 1780872081645
     }
   ],
-  "bridgeUpdatedAt": 1780807210647
+  "bridgeUpdatedAt": 1780872086114
 }

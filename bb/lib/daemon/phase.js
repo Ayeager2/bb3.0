@@ -5,15 +5,19 @@ export function getCurrentPhase(ns, decision, capabilities) {
     const mode = decision?.mode;
     const roadmap = decision?.bitNodePlan?.roadmap;
 
+    if (mode === "destroy-node" || priority === "destroy-node") {
+        return "destroy-node";
+    }
+
+    if (mode === "reset-prep" || priority === "reset-prep") {
+        return "reset-prep";
+    }
+
     const isProgression =
         priority === "progression" ||
         priority === "faction" ||
         mode === "progression" ||
         mode === "faction";
-
-    if (priority === "reset-prep" || mode === "reset-prep") {
-        return "Reset Prep";
-    }
 
     if (roadmap === "singularity" || capabilities?.singularity) {
         if (isProgression) return "Singularity";
@@ -27,4 +31,4 @@ export function getCurrentPhase(ns, decision, capabilities) {
     if (isProgression) return "Faction";
 
     return "Late Game";
-} 
+}

@@ -186,6 +186,8 @@ function buyNewServer(
     return acted(
         "buy",
         purchased,
+        desiredRam,
+        null,
         cost,
         `Purchased ${purchased} with ${ns.format.ram(desiredRam)}.`
     );
@@ -264,6 +266,8 @@ function upgradeWeakestServer(
             return acted(
                 "upgrade",
                 weakest.name,
+                targetRam,
+                weakest.ram,
                 upgradeCost,
                 `Upgraded ${weakest.name} from ${ns.format.ram(weakest.ram)} to ${ns.format.ram(targetRam)}.`
             );
@@ -333,6 +337,8 @@ function getNextServerName(ns) {
 function acted(
     type,
     server,
+    ram,
+    previousRam,
     cost,
     message
 ) {
@@ -341,6 +347,8 @@ function acted(
         type,
         server,
         item: server,
+        ram,
+        previousRam,
         cost,
         message,
     };

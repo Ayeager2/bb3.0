@@ -194,5 +194,68 @@
     "level": "success",
     "message": "Triggered topology refresh.",
     "data": null
+  },
+  {
+    "ts": 1780807648243,
+    "type": "command",
+    "level": "success",
+    "message": "Dashboard command runner online.",
+    "data": null
+  },
+  {
+    "ts": 1780807648243,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1780807648243,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
+    "data": null
+  },
+  {
+    "ts": 1780866751819,
+    "type": "command",
+    "level": "success",
+    "message": "Dashboard command runner online.",
+    "data": null
+  },
+  {
+    "ts": 1780866751819,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1780866751829,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
+    "data": null
+  },
+  {
+    "ts": 1780867947679,
+    "type": "command",
+    "level": "success",
+    "message": "Dashboard command runner online.",
+    "data": null
+  },
+  {
+    "ts": 1780867947679,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1780867947679,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
+    "data": null
   }
 ]

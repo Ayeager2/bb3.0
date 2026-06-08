@@ -69,6 +69,10 @@ function shouldFinishAugmentationNow(augDecision) {
     const recommendation =
         augDecision?.augmentationTiming?.recommendation ?? "";
 
+    if (isBitRunnersNeuroFluxLoop(augDecision)) {
+        return false;
+    }
+
     return (
         augDecision?.shouldBuyAugment === true ||
         augDecision?.shouldDonateFaction === true ||
@@ -376,6 +380,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         isBasicEconomyReadyForFactionWork(ns);
     const augmentationTiming =
         augDecision.augmentationTiming ?? null;
+    const allowMoneyModeAugmentPurchase =
+        isMoneyModeAugmentPurchaseAllowed(augDecision);
 
     if (
         shouldFinishAugmentationNow(augDecision) &&
@@ -466,7 +472,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowHomeRam: true,
             allowExePurchases: true,
 
-            allowAugmentPurchases: false,
+            allowAugmentPurchases: allowMoneyModeAugmentPurchase,
             allowFactionWork: allowBackgroundFactionWork,
             backgroundFactionWork: allowBackgroundFactionWork,
             backgroundFactionReason:
@@ -591,6 +597,21 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         allowReset: false,
         allowIntTravel: false,
     };
+}
+
+function isMoneyModeAugmentPurchaseAllowed(augDecision) {
+    return (
+        augDecision?.shouldBuyAugment === true &&
+        isBitRunnersNeuroFluxLoop(augDecision)
+    );
+}
+
+function isBitRunnersNeuroFluxLoop(augDecision) {
+    return (
+        augDecision?.stagePolicy?.stage === "bitrunners-neuroflux" &&
+        augDecision?.targetFaction === "BitRunners" &&
+        augDecision?.targetAugmentation === "NeuroFlux Governor"
+    );
 }
 
 function getProgressionModeHint(augDecision) {
