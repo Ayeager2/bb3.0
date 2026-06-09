@@ -44,14 +44,14 @@ function buildBn4StagePlan({
         };
     }
 
-    if (!hasDaedalus) {
-        return {
-            stage: "join-daedalus",
-            nextAction: "Meet Daedalus requirements and accept invitation.",
-        };
-    }
-
     if (!hasRedPill) {
+        if (!hasDaedalus) {
+            return {
+                stage: "join-daedalus",
+                nextAction: "Meet Daedalus requirements and accept invitation.",
+            };
+        }
+
         return {
             stage: "get-red-pill",
             nextAction: "Grind Daedalus reputation and buy The Red Pill.",
@@ -122,16 +122,16 @@ export function getBn4Readiness(ns) {
 
 export function getOwnedAugmentationsSafe(ns) {
     try {
-        const resetInfo = ns.getResetInfo();
-        if (Array.isArray(resetInfo?.ownedAugs)) {
-            return resetInfo.ownedAugs;
-        }
+        return ns.singularity.getOwnedAugmentations(false);
     } catch (error) {
     console.error(error);
 }
 
     try {
-        return ns.singularity.getOwnedAugmentations(false);
+        const resetInfo = ns.getResetInfo();
+        if (Array.isArray(resetInfo?.ownedAugs)) {
+            return resetInfo.ownedAugs;
+        }
     } catch (error) {
     console.error(error);
 }

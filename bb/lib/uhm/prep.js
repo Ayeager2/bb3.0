@@ -1,6 +1,7 @@
 // /lib/uhm/prep.js
 import {
     growScript,
+    maxPrepThreadsPerProcess,
     weakenScript,
 } from "/lib/uhm/config.js";
 
@@ -117,16 +118,19 @@ export function runDistributed(ns, script, threadsNeeded, hosts, target, delay) 
         if (remaining <= 0) return true;
         if (!safeServerExists(ns, hostInfo.host)) continue;
 
-        const threads = Math.min(
-            remaining,
-            Math.floor(Math.max(0, hostInfo.freeRam ?? 0) / scriptRam)
-        );
+        while (remaining > 0) {
+            const threads = Math.min(
+                remaining,
+                maxPrepThreadsPerProcess,
+                Math.floor(Math.max(0, hostInfo.freeRam ?? 0) / scriptRam)
+            );
 
-        if (threads <= 0) continue;
+            if (threads <= 0) break;
 
-        const pid = ns.exec(script, hostInfo.host, threads, target, delay);
+            const pid = ns.exec(script, hostInfo.host, threads, target, delay);
 
-        if (pid !== 0) {
+            if (pid === 0) break;
+
             hostInfo.freeRam -= threads * scriptRam;
             remaining -= threads;
         }

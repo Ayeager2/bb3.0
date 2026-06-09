@@ -60,7 +60,8 @@ export async function main(ns) {
     ["cycle-delay", 100],
     ["max-batches", 750],
     ["exp-cycle-delay", 25],
-    ["exp-max-batches", 50000],
+    // EXP sprint saturation is controlled by /lib/uhm/runner.js process caps.
+    // ["exp-max-batches", 100000],
     ["exp-ram", 1],
   ]);
 
@@ -110,7 +111,8 @@ export async function main(ns) {
 
           protoBatching: {
             ...(daemonState?.protoBatching ?? {}),
-            maxBatchesPerCycle: Number(flags["exp-max-batches"]) || 50000,
+            // EXP mode does not use proto batch count; runner.js fills RAM with capped workers.
+            // maxBatchesPerCycle: Number(flags["exp-max-batches"]) || 100000,
             cycleDelayMs: Number(flags["exp-cycle-delay"]) || 25,
           },
         }
@@ -143,9 +145,7 @@ export async function main(ns) {
 
     runtimeStats.expOverdrive = {
       active: isExpMode,
-      maxBatches: isExpMode
-        ? Number(flags["exp-max-batches"]) || 50000
-        : Number(flags["max-batches"]) || 750,
+      maxBatches: isExpMode ? null : Number(flags["max-batches"]) || 750,
       cycleDelayMs: delayMs,
     };
 

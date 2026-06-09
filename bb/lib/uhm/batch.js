@@ -7,6 +7,7 @@ import {
     expHackPercent,
     batchSpacingMs,
     maxBatchesPerCycle,
+    maxWorkerThreadsPerProcess,
 } from "/lib/uhm/config.js";
 
 import {
@@ -145,19 +146,25 @@ export function reserveDistributed(ns, hosts, script, threadsNeeded, target, del
         if (remaining <= 0) break;
         if (!safeServerExists(ns, hostInfo.host)) continue;
 
-        const threads = Math.min(remaining, Math.floor(hostInfo.freeRam / scriptRam));
-        if (threads <= 0) continue;
+        while (remaining > 0) {
+            const threads = Math.min(
+                remaining,
+                maxWorkerThreadsPerProcess,
+                Math.floor(hostInfo.freeRam / scriptRam)
+            );
+            if (threads <= 0) break;
 
-        reservations.push({
-            script,
-            server: hostInfo.host,
-            threads,
-            target,
-            delay,
-        });
+            reservations.push({
+                script,
+                server: hostInfo.host,
+                threads,
+                target,
+                delay,
+            });
 
-        hostInfo.freeRam -= threads * scriptRam;
-        remaining -= threads;
+            hostInfo.freeRam -= threads * scriptRam;
+            remaining -= threads;
+        }
     }
 
     return remaining <= 0 ? reservations : null;

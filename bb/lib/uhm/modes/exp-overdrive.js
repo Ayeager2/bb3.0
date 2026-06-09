@@ -1,11 +1,13 @@
-import { homeReserveRam } from "/lib/uhm/config.js";
+import {
+    expGrowScript,
+    expWeakenScript,
+    homeReserveRam,
+    maxExpThreadsPerProcess,
+} from "/lib/uhm/config.js";
 import { safeServerExists, isUsableTarget } from "/lib/uhm/safe.js";
 
-const EXP_WEAKEN = "/workers/exp-weaken.js";
-const EXP_GROW = "/workers/exp-grow.js";
-
-const DEFAULT_MAX_THREADS_PER_PROCESS = 50_000;
-const DEFAULT_MAX_PROCESSES_PER_HOST = 32;
+const DEFAULT_MAX_THREADS_PER_PROCESS = maxExpThreadsPerProcess;
+const DEFAULT_MAX_PROCESSES_PER_HOST = 5000;
 
 export function runExpOverdrive(ns, target, hosts, options = {}) {
     const maxProcesses = options.maxProcesses ?? 100;
@@ -111,7 +113,7 @@ function launchChunkedExpWorkers(ns, {
         launched < maxProcessesRemaining &&
         launched < maxProcessesForHost
     ) {
-        const script = Math.random() < growRatio ? EXP_GROW : EXP_WEAKEN;
+        const script = Math.random() < growRatio ? expGrowScript : expWeakenScript;
         const scriptRam = ns.getScriptRam(script, host);
 
         if (scriptRam <= 0 || remainingRam < scriptRam) break;
@@ -149,8 +151,8 @@ function countActiveExpWorkers(ns, hosts) {
 function countActiveExpWorkersOnHost(ns, host) {
     try {
         return ns.ps(host).filter(p =>
-            sameScript(p.filename, EXP_WEAKEN) ||
-            sameScript(p.filename, EXP_GROW)
+            sameScript(p.filename, expWeakenScript) ||
+            sameScript(p.filename, expGrowScript)
         ).length;
     } catch {
         return 0;

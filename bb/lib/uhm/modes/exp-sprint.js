@@ -5,8 +5,8 @@ const EXP_HACK = "/workers/exp-hack.js";
 const EXP_GROW = "/workers/exp-grow.js";
 const EXP_WEAKEN = "/workers/exp-weaken.js";
 
-const DEFAULT_MAX_THREADS_PER_PROCESS = 50_000;
-const DEFAULT_MAX_PROCESSES_PER_HOST = 48;
+const DEFAULT_MAX_THREADS_PER_PROCESS = 64;
+const DEFAULT_MAX_PROCESSES_PER_HOST = 5000;
 
 export function runExpSprint(ns, target, hosts, options = {}) {
     const maxProcesses = options.maxProcesses ?? 100000;
@@ -16,6 +16,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
         options.maxProcessesPerHost ?? DEFAULT_MAX_PROCESSES_PER_HOST;
 
     const reserveHomeRam = options.homeReserveRam ?? homeReserveRam;
+    const purpose = options.purpose ?? "background";
 
     if (!isUsableTarget(ns, target)) {
         return result("INVALID_TARGET", 0, 0, 0, { target });
@@ -40,7 +41,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
 
         if (freeRam <= 0) continue;
 
-        const script = chooseSprintScript(ns, target);
+        const script = chooseSprintScript(ns, target, purpose);
 
         const launchResult = launchChunks(ns, {
             host: host.host,
@@ -68,11 +69,14 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             maxProcesses,
             maxThreadsPerProcess,
             maxProcessesPerHost,
+            purpose,
         }
     );
 }
 
-function chooseSprintScript(ns, target) {
+function chooseSprintScript(ns, target, purpose = "background") {
+    if (purpose === "leveling") return EXP_HACK;
+
     const money = ns.getServerMoneyAvailable(target);
     const maxMoney = ns.getServerMaxMoney(target);
     const sec = ns.getServerSecurityLevel(target);

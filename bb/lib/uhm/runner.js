@@ -15,7 +15,11 @@ import {
 
 import {
     hackScript,
+    expGrowScript,
+    expHackScript,
+    expWeakenScript,
     growScript,
+    maxWorkerThreadsPerProcess,
     weakenScript,
 } from "/lib/uhm/config.js";
 import {
@@ -25,11 +29,16 @@ import {
 export function runLane(ns, lane, runtimeStats) {
     if (!isUsableTarget(ns, lane.target)) return null;
 
+    killOversizedUhmWorkers(ns, lane.hosts);
+
     if (lane.mode === "exp") {
+        const leveling =
+            lane.expPurpose === "leveling";
         const result = runExpSprint(ns, lane.target, lane.hosts, {
-            maxProcesses: 100000,
-            maxThreadsPerProcess: 50_000,
-            maxProcessesPerHost: 48,
+            purpose: lane.expPurpose ?? "background",
+            maxProcesses: leveling ? 100000 : 10000,
+            maxThreadsPerProcess: maxWorkerThreadsPerProcess,
+            maxProcessesPerHost: leveling ? 5000 : 1000,
         });
 
         runtimeStats.expOverdrive = {
@@ -214,18 +223,52 @@ function runTinyDistributed(ns, script, target, hosts = []) {
     let launched = 0;
 
     for (const host of hosts) {
-        const freeRam = Math.max(0, host.freeRam ?? 0);
-        const threads = Math.floor(freeRam / scriptRam);
+        while (true) {
+            const freeRam = Math.max(0, host.freeRam ?? 0);
+            const threads = Math.min(
+                maxWorkerThreadsPerProcess,
+                Math.floor(freeRam / scriptRam)
+            );
 
-        if (threads <= 0) continue;
+            if (threads <= 0) break;
 
-        const pid = ns.exec(script, host.host, threads, target, 0);
+            const pid = ns.exec(script, host.host, threads, target, launched);
 
-        if (pid !== 0) {
+            if (pid === 0) break;
+
             host.freeRam -= threads * scriptRam;
             launched += threads;
         }
     }
 
     return launched;
+}
+
+function killOversizedUhmWorkers(ns, hosts = []) {
+    const workerScripts = new Set([
+        normalizeScript(hackScript),
+        normalizeScript(growScript),
+        normalizeScript(weakenScript),
+        normalizeScript(expHackScript),
+        normalizeScript(expGrowScript),
+        normalizeScript(expWeakenScript),
+    ]);
+
+    for (const host of hosts) {
+        try {
+            for (const proc of ns.ps(host.host)) {
+                const script = normalizeScript(proc.filename);
+                if (!workerScripts.has(script)) continue;
+                if ((proc.threads ?? 0) <= maxWorkerThreadsPerProcess) continue;
+
+                ns.kill(proc.pid);
+            }
+        } catch {
+            // Ignore hosts that disappeared between scans.
+        }
+    }
+}
+
+function normalizeScript(path) {
+    return String(path ?? "").replace(/^\/+/, "");
 }

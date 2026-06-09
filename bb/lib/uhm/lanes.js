@@ -91,7 +91,7 @@ export function buildTargetLanes(
         const expSprintTarget = getValidTargetOrFallback(
             ns,
             cleanServers,
-            requestedExpTarget ?? daemonState?.target,
+            requestedExpTarget,
             "exp",
             hosts,
             {
@@ -104,8 +104,8 @@ export function buildTargetLanes(
                 name: "ALL / EXP",
                 mode: "exp",
                 target: expSprintTarget ?? "",
-                requestedTarget: requestedExpTarget ?? daemonState?.target ?? null,
-                targetSource: getTargetSource(expSprintTarget, requestedExpTarget ?? daemonState?.target),
+                requestedTarget: requestedExpTarget ?? null,
+                targetSource: getTargetSource(expSprintTarget, requestedExpTarget),
                 hosts,
                 formulasUnlocked,
                 expPurpose: "leveling",

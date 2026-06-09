@@ -1,6 +1,7 @@
 // bb/tools/daemon-hud.js
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { drawDashboard } from "/lib/daemon/dashboard.js";
+import { buildResetPlan } from "/lib/daemon/reset-planner.js";
 
 const RESET_PLAN_FILE = "/data/reset-plan.txt";
 
@@ -17,7 +18,7 @@ export async function main(ns) {
 
     while (true) {
         const state = readJson(ns, STATE_FILE);
-        const resetPlan = readJson(ns, RESET_PLAN_FILE);
+        const resetPlan = getLiveResetPlan(ns, state);
 
         if (!state || !state.mode) {
             ns.clearLog();
@@ -151,6 +152,18 @@ function printResetPlan(ns, plan) {
 
     if (plan.reason) {
         ns.print(`RESET REASON: ${plan.reason}`);
+    }
+}
+
+function getLiveResetPlan(ns, state) {
+    if (state?.resetPlan?.updatedAt) {
+        return state.resetPlan;
+    }
+
+    try {
+        return buildResetPlan(ns);
+    } catch {
+        return readJson(ns, RESET_PLAN_FILE);
     }
 }
 

@@ -5,6 +5,9 @@ export const hackScript = "/workers/h1.js";
 export const growScript = "/workers/g1.js";
 export const weakenScript = "/workers/w1.js";
 export const SHARE_WORKER = "/workers/share-worker.js";
+export const expHackScript = "/workers/exp-hack.js";
+export const expGrowScript = "/workers/exp-grow.js";
+export const expWeakenScript = "/workers/exp-weaken.js";
 
 export const scriptsToCopy = [
     hackScript,
@@ -13,8 +16,9 @@ export const scriptsToCopy = [
 
     "/workers/share-worker.js",
 
-"/workers/exp-weaken.js",
-    "/workers/exp-grow.js",
+    expHackScript,
+    expWeakenScript,
+    expGrowScript,
 ];
 
 export const defaultHackPercent = 0.01;
@@ -25,3 +29,7 @@ export const rescanIntervalMs = 10000;
 export const homeReserveRam = 64;
 export const maxBatchesPerCycle = 25;
 export const cycleDelayMs = 1000;
+
+export const maxWorkerThreadsPerProcess = 64;
+export const maxPrepThreadsPerProcess = 64;
+export const maxExpThreadsPerProcess = 64;

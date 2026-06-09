@@ -39,12 +39,20 @@ export function getBestExpTarget(ns, rootedServers, options = {}) {
         preferredTarget,
     ])];
 
-    return candidates
+    const scored = candidates
         .filter(server => isExpCandidate(ns, server))
         .map(server => ({
             server,
             score: scoreExpTarget(ns, server, { purpose }),
-        }))
+            hackTime: safeHackTime(ns, server),
+        }));
+
+    const fastLevelingCandidates =
+        purpose === "leveling"
+            ? scored.filter(x => x.hackTime <= 60_000)
+            : scored;
+
+    return (fastLevelingCandidates.length > 0 ? fastLevelingCandidates : scored)
         .sort((a, b) => b.score - a.score)[0]?.server ?? "joesguns";
 }
 
@@ -81,18 +89,22 @@ function scoreExpTarget(ns, server, options = {}) {
 
     if (purpose === "leveling") {
         const levelBand =
-            levelRatio >= 0.70 && levelRatio <= 1.00 ? 5.0 :
-                levelRatio >= 0.45 && levelRatio < 0.70 ? 3.0 :
-                    levelRatio >= 0.25 && levelRatio < 0.45 ? 1.5 :
-                        levelRatio >= 0.10 && levelRatio < 0.25 ? 0.4 :
-                            0.05;
+            levelRatio >= 0.35 && levelRatio <= 1.00 ? 3.0 :
+                levelRatio >= 0.15 && levelRatio < 0.35 ? 1.5 :
+                    0.5;
+        const fastCycleBonus =
+            timeSeconds <= 10 ? 5.0 :
+                timeSeconds <= 30 ? 3.0 :
+                    timeSeconds <= 60 ? 1.0 :
+                        0.15;
 
         return (
             levelBand *
+            fastCycleBonus *
             Math.sqrt(growth) *
             Math.log10(maxMoney + 1) *
             chance
-        ) / (Math.pow(timeSeconds, 0.60) * Math.sqrt(secPenalty));
+        ) / (Math.pow(timeSeconds, 1.25) * Math.sqrt(secPenalty));
     }
 
     const quickCycleBonus =
@@ -107,4 +119,12 @@ function scoreExpTarget(ns, server, options = {}) {
         chance *
         Math.log10(maxMoney + 1)
     ) / (secPenalty * Math.sqrt(timeSeconds));
+}
+
+function safeHackTime(ns, server) {
+    try {
+        return ns.getHackTime(server);
+    } catch {
+        return Infinity;
+    }
 }

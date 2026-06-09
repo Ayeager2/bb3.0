@@ -1,4 +1,5 @@
 import {
+    maxExpThreadsPerProcess,
     weakenScript,
 } from "/lib/uhm/config.js";
 
@@ -13,13 +14,19 @@ export function runExpFallback(ns, target, hosts) {
         if (!safeServerExists(ns, hostInfo.host)) continue;
 
         const scriptRam = ns.getScriptRam(weakenScript);
-        const threads = Math.floor(hostInfo.freeRam / scriptRam);
 
-        if (threads <= 0) continue;
+        while (true) {
+            const threads = Math.min(
+                maxExpThreadsPerProcess,
+                Math.floor(hostInfo.freeRam / scriptRam)
+            );
 
-        const pid = ns.exec(weakenScript, hostInfo.host, threads, target, 0);
+            if (threads <= 0) break;
 
-        if (pid !== 0) {
+            const pid = ns.exec(weakenScript, hostInfo.host, threads, target, launchedThreads);
+
+            if (pid === 0) break;
+
             hostInfo.freeRam -= threads * scriptRam;
             launchedThreads += threads;
         }
