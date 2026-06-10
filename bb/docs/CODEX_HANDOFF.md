@@ -9,6 +9,8 @@ Bitburner daemon automation for BN4 is being tuned around:
 - faction mode
 - augmentation timing and buying
 - clean daemon state resets
+- bootstrap rebuild speed after a fresh start
+- UHM final-leveling execution balance
 
 `exp`, `leveling`, and `level` are intended to mean the same forced mode. `money` stays separate. `faction` is a forced mode for direct faction progression work.
 
@@ -28,18 +30,23 @@ Signs that Bitburner is still running old files:
 
 Updated local project files:
 
-- `/lib/daemon/dev-reset.js`
-- `/tools/dev-refresh-state.js`
-- `/lib/daemon/augmentations.js`
-- `/tools/augmentation-buyer-service.js`
-- `/tools/augmentation-status.js`
+- `/tools/build-bootstrap-cheatsheet.js`
+- `/lib/bootstrap/formula-cheatsheet.js`
+- `/bootstrap-daemon.js`
+- `/workers/tiny-worker.js`
+- `/tools/bootstrap-money.js`
+- `/lib/uhm/modes/exp-sprint.js`
 
 What changed:
 
-- Dev refresh now removes all `.txt` state files under `/data/`, not only an old hard-coded list.
-- Augmentation plans now refresh live game values for price, required rep, faction rep, and owned/queued augmentations.
-- Augmentation buyer now writes `/data/augmentation-buyer-state.txt` every cycle.
-- Augmentation status now displays buyer policy and buyer state diagnostics.
+- Late-game Formulas.exe can generate a bootstrap cheat sheet for the next fresh start.
+- Bootstrap daemon now writes `/data/bootstrap-plan.txt`.
+- Bootstrap workers can run explicit hack/grow/weaken roles.
+- Bootstrap launch logic repeats a logical H/G/W cycle instead of one oversized one-role process.
+- `/tools/bootstrap-money.js` now uses `/workers/tiny-worker.js`; the old `/workers/bootstrap-worker.js` file does not exist.
+- UHM EXP sprint no longer makes leveling hack-only.
+- Final leveling/endgame EXP sprint should launch `exp-hack.js`, `exp-grow.js`, and `exp-weaken.js` together.
+- EXP sprint rebalances stale single-role worker walls.
 
 ## Verification Commands In Bitburner
 
@@ -60,32 +67,36 @@ cat /data/augmentation-buyer-state.txt
 
 Expected signs the new files are active:
 
-- `augmentation-status.js` prints `Diagnostic Version: augmentation-status-policy-diagnostics-v2`.
-- Status output includes `Buyer Allowed`.
-- Status output includes `Augmentation Buyer Policy`.
-- Status output includes `Augmentation Buyer State`.
-- `/data/augmentation-buyer-state.txt` exists.
-- Dev refresh removes more than the old small five-file list when more state files exist.
+- `cat /data/bootstrap-plan.txt` shows a `cycle` with hack/grow/weaken roles after `run bootstrap-daemon.js`.
+- `tail /controllers/uhm.js` during `run daemon.js --level` reports EXP sprint and process lists show all three EXP worker scripts.
+- `/workers/exp-hack.js`, `/workers/exp-grow.js`, and `/workers/exp-weaken.js` all appear during final leveling.
 
 ## Quick File Checks In Bitburner
 
 Use these to confirm the right in-game files were copied:
 
 ```txt
-grep Diagnostic /tools/augmentation-status.js
-grep AUGMENTATION_BUYER_STATE_FILE /tools/augmentation-buyer-service.js
-grep all-data-text /tools/dev-refresh-state.js
-grep findDataTextFiles /lib/daemon/dev-reset.js
+grep buildSprintCycle /lib/uhm/modes/exp-sprint.js
+grep bootstrap-plan /bootstrap-daemon.js
+grep BOOTSTRAP_FORMULA_CHEATSHEET /lib/bootstrap/formula-cheatsheet.js
+grep build-bootstrap-cheatsheet /tools/build-bootstrap-cheatsheet.js
 ```
 
 If any command has no match, that file is still old or copied to the wrong Bitburner path.
 
 ## Next Debug Target
 
-Once the correct folder is synced, if augmentations still do not buy, inspect:
+Once the correct folder is synced, if leveling/endgame still collapses into hack-only, inspect:
 
 ```txt
-cat /data/augmentation-buyer-state.txt
+tail /controllers/uhm.js
+ps
 ```
 
-That file should show whether buying is blocked by policy, plan readiness, live faction rep, live money, max price, or `purchaseAugmentation` returning false.
+Expected process mix:
+
+```txt
+/workers/exp-hack.js
+/workers/exp-grow.js
+/workers/exp-weaken.js
+```

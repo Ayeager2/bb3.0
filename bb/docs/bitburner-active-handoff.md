@@ -312,20 +312,20 @@ Current remaining risk areas:
 After any change touching UHM mode logic, verify early game does not collapse into:
 
 ```txt
+all servers running only exp-hack.js
+all servers running only exp-grow.js
 all servers running only exp-weaken.js
+one role dominating nearly all EXP sprint processes
 ```
 
 If that happens, inspect:
 
 ```txt
-shouldForceExpMode()
+/lib/uhm/modes/exp-sprint.js
+/lib/uhm/runner.js
 ```
 
-inside:
-
-```txt
-/controllers/uhm.js
-```
+Expected final-leveling sprint mix is exp-hack.js, exp-grow.js, and exp-weaken.js together.
 
 ---
 

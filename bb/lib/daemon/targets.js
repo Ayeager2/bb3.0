@@ -17,10 +17,21 @@ import {
 export function getDaemonTarget(ns, rootedServers, mode, targetOverride) {
     rootedServers = sanitizeServerSet(ns, rootedServers);
 
+    if (mode === "exp") {
+        if (
+            targetOverride &&
+            canUseTarget(ns, targetOverride) &&
+            isExpTargetInCurrentBand(ns, targetOverride, { purpose: "leveling" })
+        ) {
+            return targetOverride;
+        }
+
+        return getBestExpTarget(ns, rootedServers, {
+            purpose: "leveling",
+        });
+    }
+
     if (targetOverride && canUseTarget(ns, targetOverride)) return targetOverride;
-    if (mode === "exp") return getBestExpTarget(ns, rootedServers, {
-        purpose: "leveling",
-    });
     if (mode === "prep") return getBestPrepTarget(ns, rootedServers);
 
     return getBestMoneyTarget(ns, rootedServers);
@@ -159,9 +170,16 @@ export function getBestExpTarget(ns, servers, options = {}) {
         .filter(server => safeGetServerGrowth(ns, server) > 0)
         .filter(server => safeGetWeakenTime(ns, server) <= getMaxExpWeakenTime(hacking));
 
-    const pool = candidates.length > 0
-        ? candidates
-        : cleanServers.filter(server => canUseTarget(ns, server));
+    const currentBandCandidates =
+        purpose === "leveling"
+            ? candidates.filter(server => isExpTargetInCurrentBand(ns, server, { purpose }))
+            : candidates;
+
+    const pool = currentBandCandidates.length > 0
+        ? currentBandCandidates
+        : candidates.length > 0
+            ? candidates
+            : cleanServers.filter(server => canUseTarget(ns, server));
 
     return pool
         .sort((a, b) =>
@@ -188,12 +206,16 @@ export function scoreExpTarget(ns, server, options = {}) {
     const securityPenalty = 1 + Math.max(0, sec - minSec) * 0.10;
 
     const levelRatio = requiredHack / hacking;
+    const churnPenalty =
+        purpose === "leveling"
+            ? getFastTargetChurnPenalty(timeSeconds, levelRatio)
+            : 1;
 
     const levelingBandBonus =
-        levelRatio >= 0.55 && levelRatio <= 0.95 ? 4.0 :
-            levelRatio >= 0.35 && levelRatio < 0.55 ? 2.5 :
-                levelRatio >= 0.20 && levelRatio < 0.35 ? 1.25 :
-                    0.20;
+        levelRatio >= 0.65 && levelRatio <= 1.00 ? 5.0 :
+            levelRatio >= 0.40 && levelRatio < 0.65 ? 3.0 :
+                levelRatio >= 0.20 && levelRatio < 0.40 ? 1.0 :
+                    0.05;
 
     const backgroundBandBonus =
         levelRatio >= 0.15 && levelRatio <= 0.65 ? 2.0 :
@@ -219,12 +241,38 @@ export function scoreExpTarget(ns, server, options = {}) {
         growthScale *
         chance *
         levelBandBonus *
+        churnPenalty *
         (
             purpose === "leveling"
                 ? outgrownPenalty
                 : Math.max(outgrownPenalty, 0.20)
         )
     ) / (timePenalty * securityPenalty);
+}
+
+export function isExpTargetInCurrentBand(ns, server, options = {}) {
+    const purpose = options.purpose ?? "background";
+    if (purpose !== "leveling") return true;
+
+    const hacking = Math.max(1, ns.getHackingLevel());
+    const requiredHack = Math.max(1, safeGetRequiredHackingLevel(ns, server));
+    return requiredHack >= getMinimumLevelingTargetHack(hacking);
+}
+
+export function getMinimumLevelingTargetHack(hacking) {
+    if (hacking < 250) return 1;
+    if (hacking < 750) return Math.floor(hacking * 0.10);
+    if (hacking < 1500) return Math.floor(hacking * 0.18);
+    if (hacking < 2500) return Math.floor(hacking * 0.24);
+    return Math.floor(hacking * 0.30);
+}
+
+function getFastTargetChurnPenalty(timeSeconds, levelRatio) {
+    if (levelRatio >= 0.20) return 1;
+    if (timeSeconds <= 15) return 0.05;
+    if (timeSeconds <= 30) return 0.15;
+    if (timeSeconds <= 60) return 0.40;
+    return 0.75;
 }
 
 export function getOutgrownPenalty(levelRatio) {

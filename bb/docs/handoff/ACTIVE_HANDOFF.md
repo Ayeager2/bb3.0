@@ -9,13 +9,12 @@ status: ACTIVE_DEVELOPMENT
 # CURRENT PRIORITY
 
 ```txt
-1. verify economy-first cloud buildout behavior
-2. augmentation timing by faction stage
-3. EXP target separation
+1. verify bootstrap cheat-sheet flow after the next fresh start
+2. verify UHM leveling/endgame H/G/W sprint mix under live RAM pressure
+3. augmentation timing by faction stage
 4. dashboard rendering for progression calculations
 5. telemetry polish
-6. test pre-Red-Pill BitRunners NeuroFlux favor loop
-7. replace server purchaser terminal spam with dashboard server ticker telemetry
+6. tune pre-Red-Pill BitRunners/Daedalus NeuroFlux favor loops from live state
 ```
 
 ---
@@ -130,9 +129,8 @@ workers
 - adaptive lane affordability
 - faction progression refinement
 - augmentation valuation timing
-- EXP routing logic
+- EXP routing logic, especially any collapse into a single hack/grow/weaken role
 - pre-Red-Pill NeuroFlux/favor loop may be good, but favor threshold is still experimental
-- server purchaser currently `tprint`s purchases; desired future behavior is dashboard telemetry instead
 - telemetry scaling
 - dashboard reasoning bridge constants
 ```
@@ -210,6 +208,31 @@ After Red Pill:
 
 ---
 
+# BOOTSTRAP CHEAT SHEET
+
+Late-game, while Formulas.exe is available, rebuild the early-game target cheat sheet:
+
+```txt
+run /tools/build-bootstrap-cheatsheet.js
+```
+
+This writes:
+
+```txt
+/lib/bootstrap/formula-cheatsheet.js
+```
+
+Fresh-start bootstrap uses:
+
+```txt
+run bootstrap-daemon.js
+cat /data/bootstrap-plan.txt
+```
+
+The bootstrap plan should show a mixed H/G/W cycle. Bootstrap should not fill hosts with one giant repeated hack process.
+
+---
+
 # KNOWN WATCH POINTS
 
 ## EXP collapse risk
@@ -217,19 +240,24 @@ After Red Pill:
 If daemon changes cause:
 
 ```txt
-all servers running exp-weaken.js
+all servers running only exp-hack.js
+all servers running only exp-grow.js
+all servers running only exp-weaken.js
+one role dominating nearly all EXP sprint processes
 ```
 
 inspect:
 
 ```txt
-shouldForceExpMode()
+/lib/uhm/modes/exp-sprint.js
+/lib/uhm/runner.js
 ```
 
-inside:
+Expected behavior:
 
 ```txt
-/controllers/uhm.js
+EXP sprint / final leveling uses a live H/G/W cycle.
+It should launch exp-hack.js, exp-grow.js, and exp-weaken.js together.
 ```
 
 ---

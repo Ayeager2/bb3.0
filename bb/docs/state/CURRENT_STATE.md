@@ -50,6 +50,9 @@ Implemented:
 - economy-first cloud fleet gate
 - time-aware cloud RAM upgrade balancing
 - stage-aware EXP caps
+- bootstrap formula cheat-sheet builder
+- bootstrap mixed H/G/W plan
+- UHM leveling/endgame H/G/W sprint cycle
 - augmentation timing score
 - darkweb purchasing
 - distributed share execution
@@ -65,6 +68,7 @@ Before Formulas.exe:
 ```txt id="uh6x9j"
 - fallback target logic
 - safe bootstrap behavior
+- bootstrap can consume a prebuilt formula cheat sheet from /lib/bootstrap/formula-cheatsheet.js
 - no forced EXP overdrive
 ```
 
@@ -111,6 +115,8 @@ After Formulas.exe:
 - EXP routing
 - telemetry scaling
 - dashboard reasoning bridge constants
+- bootstrap cheat-sheet flow still needs a live fresh-start test
+- UHM final-leveling H/G/W mix still needs live process-list verification
 ```
 
 ---
@@ -124,6 +130,8 @@ After Formulas.exe:
 /data/ui/network-topology.txt
 /data/darkweb-purchase-state.txt
 /data/darkweb-buyer-complete.txt
+/data/bootstrap-plan.txt
+/data/ui/server-ticker.txt
 ```
 
 Future:
@@ -165,6 +173,7 @@ pre-Red-Pill:
 post-Red-Pill:
     push hacking toward world-daemon readiness
     world-daemon preparation
+    EXP sprint should remain mixed H/G/W, not hack-only
 ```
 
 ---
@@ -202,13 +211,20 @@ service-manager.js
 Symptom:
 
 ```txt id="2sr4w9"
-all servers running exp-weaken.js
+all servers running only exp-hack.js, only exp-grow.js, or only exp-weaken.js
 ```
 
 Inspect:
 
 ```txt id="t0fkpq"
-shouldForceExpMode()
+/lib/uhm/modes/exp-sprint.js
+/lib/uhm/runner.js
+```
+
+Expected:
+
+```txt
+exp-hack.js, exp-grow.js, and exp-weaken.js are all present during leveling/endgame sprint.
 ```
 
 ---

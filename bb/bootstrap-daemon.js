@@ -1,8 +1,14 @@
 //bb/bootstrap-daemon.js
+import {
+  BOOTSTRAP_FORMULA_CHEATSHEET,
+  getBootstrapCheatTarget,
+  getBootstrapCheatTargetNames,
+} from "/lib/bootstrap/formula-cheatsheet.js";
 
 const FULL_DAEMON = "daemon.js";
 const TINY_WORKER = "/workers/tiny-worker.js";
 const TARGET_FILE = "/data/bootstrap-target.txt";
+const PLAN_FILE = "/data/bootstrap-plan.txt";
 
 const CONFIG = {
   refreshMs: 2000,
@@ -15,7 +21,7 @@ const CONFIG = {
 
   homeReserveRam: 8,
 
-  earlyTargets: [
+  earlyTargets: getBootstrapCheatTargetNames().length > 0 ? getBootstrapCheatTargetNames() : [
     "n00dles",
     "foodnstuff",
     "sigma-cosmetics",
@@ -36,12 +42,14 @@ export async function main(ns) {
     buyEarlyUpgrades(ns);
 
     const target = chooseBestTarget(ns, rootedServers);
+    const plan = buildBootstrapPlan(ns, target);
     writeBootstrapTarget(ns, target);
+    writeBootstrapPlan(ns, plan);
 
     await copyBootstrapFiles(ns, rootedServers);
 
-    runWorkers(ns, rootedServers);
-    draw(ns, rootedServers, target);
+    runWorkers(ns, rootedServers, plan);
+    draw(ns, rootedServers, target, plan);
     if (shouldStartFullDaemon(ns)) {
       startFullDaemon(ns, rootedServers);
       return;
@@ -51,9 +59,14 @@ export async function main(ns) {
 }
 
 function shouldStartFullDaemon(ns) {
+  const daemonRam = ns.getScriptRam(FULL_DAEMON, "home");
+  const freeHomeRam = getFreeRam(ns, "home", 0) + getRunningScriptRam(ns, "home", TINY_WORKER);
+
   return (
     ns.fileExists(FULL_DAEMON, "home") &&
     ns.getServerMaxRam("home") >= CONFIG.minHomeRamForFullDaemon &&
+    daemonRam > 0 &&
+    freeHomeRam >= daemonRam &&
     ns.getPlayer().money >= CONFIG.minMoneyForFullDaemon
   );
 }
@@ -130,7 +143,7 @@ function tryRoot(ns, server) {
     }
   } catch (error) {
     console.error(error);
-}
+  }
 }
 
 async function copyBootstrapFiles(ns, rootedServers) {
@@ -145,6 +158,10 @@ async function copyBootstrapFiles(ns, rootedServers) {
 
       if (ns.fileExists(TARGET_FILE, "home")) {
         await ns.scp(TARGET_FILE, server, "home");
+      }
+
+      if (ns.fileExists(PLAN_FILE, "home")) {
+        await ns.scp(PLAN_FILE, server, "home");
       }
     } catch (error) {
       console.error(error);
@@ -179,6 +196,16 @@ function canHack(ns, server) {
 }
 
 function scoreTarget(ns, server) {
+  const cheat = getBootstrapCheatTarget(server);
+  if (cheat) {
+    const hackLevel = ns.getHackingLevel();
+    const levelPenalty = hackLevel < Number(cheat.minHack ?? 1) ? 0.1 : 1;
+    const liveMoney = Math.max(1, ns.getServerMaxMoney(server));
+    const liveTime = Math.max(1, ns.getWeakenTime(server));
+    const liveScore = (liveMoney * Math.max(1, ns.getServerGrowth(server))) / liveTime;
+    return ((Number(cheat.rank) || 1) * 1_000_000 + liveScore) * levelPenalty;
+  }
+
   const money = Math.max(1, ns.getServerMaxMoney(server));
   const growth = Math.max(1, ns.getServerGrowth(server));
   const weakenTime = Math.max(1, ns.getWeakenTime(server));
@@ -186,8 +213,92 @@ function scoreTarget(ns, server) {
   return (money * growth) / weakenTime;
 }
 
-function runWorkers(ns, rootedServers) {
+function buildBootstrapPlan(ns, target) {
+  const cheat = getBootstrapCheatTarget(target);
+  const money = ns.getServerMoneyAvailable(target);
+  const maxMoney = Math.max(1, ns.getServerMaxMoney(target));
+  const sec = ns.getServerSecurityLevel(target);
+  const minSec = ns.getServerMinSecurityLevel(target);
+  const weakenAtSecurityGap = Number(cheat?.weakenAtSecurityGap ?? 5);
+  const growAtMoneyRatio = Number(cheat?.growAtMoneyRatio ?? 0.75);
+  const hackAtMoneyRatio = Number(cheat?.hackAtMoneyRatio ?? 0.95);
+  const securityGap = sec - minSec;
+  const moneyRatio = money / maxMoney;
+  const chance = getHackChance(ns, target);
+  const hackPercent = Math.max(0.0001, ns.hackAnalyze(target));
+  const weakenPerThread = Math.max(0.0001, ns.weakenAnalyze(1));
+  const desiredStealFraction = chooseStealFraction(chance, moneyRatio, securityGap, weakenAtSecurityGap);
+  const hackThreads = Math.max(1, Math.min(128, Math.floor(desiredStealFraction / hackPercent)));
+  const hackSecurity = hackThreads * 0.002;
+  const growMultiplier = Math.max(1.02, 1 / Math.max(0.05, 1 - (hackThreads * hackPercent)));
+  const repairGrowThreads = Math.max(1, Math.ceil(safeGrowthAnalyze(ns, target, growMultiplier)));
+  const prepGrowThreads = moneyRatio < growAtMoneyRatio
+    ? Math.max(1, Math.ceil(safeGrowthAnalyze(ns, target, Math.max(1.1, growAtMoneyRatio / Math.max(0.01, moneyRatio)))))
+    : 0;
+  const growThreads = Math.min(256, repairGrowThreads + prepGrowThreads);
+  const growSecurity = growThreads * 0.004;
+  const prepSecurity = Math.max(0, securityGap - weakenAtSecurityGap);
+  const weakenThreads = Math.max(1, Math.min(256, Math.ceil((hackSecurity + growSecurity + prepSecurity) / weakenPerThread)));
+  const cycle = [
+    { role: "hack", threads: hackThreads },
+    { role: "grow", threads: growThreads },
+    { role: "weaken", threads: weakenThreads },
+  ];
+
+  return {
+    updatedAt: Date.now(),
+    source: "bootstrap-daemon",
+    cheatSheetVersion: BOOTSTRAP_FORMULA_CHEATSHEET.version,
+    target,
+    moneyRatio,
+    securityGap,
+    chance,
+    hackPercent,
+    desiredStealFraction,
+    weakenAtSecurityGap,
+    growAtMoneyRatio,
+    hackAtMoneyRatio,
+    cycle,
+    cycleThreads: cycle.reduce((sum, item) => sum + item.threads, 0),
+    cheat: cheat ? {
+      rank: cheat.rank,
+      minHack: cheat.minHack,
+      samples: cheat.samples ?? [],
+    } : null,
+  };
+}
+
+function chooseStealFraction(chance, moneyRatio, securityGap, weakenAtSecurityGap) {
+  if (securityGap > weakenAtSecurityGap * 2) return 0.01;
+  if (moneyRatio < 0.5) return 0.01;
+  if (chance < 0.35) return 0.01;
+  if (chance < 0.6) return 0.025;
+  if (chance < 0.8) return 0.05;
+  return 0.08;
+}
+
+function getHackChance(ns, target) {
+  try {
+    return Number(ns.hackAnalyzeChance(target)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function safeGrowthAnalyze(ns, target, multiplier) {
+  try {
+    const threads = ns.growthAnalyze(target, multiplier);
+    return Number.isFinite(threads) ? threads : 1;
+  } catch {
+    return 1;
+  }
+}
+
+function runWorkers(ns, rootedServers, plan) {
   if (!ns.fileExists(TINY_WORKER, "home")) return;
+  const cycle = Array.isArray(plan?.cycle) && plan.cycle.length > 0
+    ? plan.cycle.filter(item => item.threads > 0)
+    : [{ role: "hack", threads: 1 }, { role: "grow", threads: 1 }, { role: "weaken", threads: 1 }];
 
   for (const server of rootedServers) {
     if (!ns.serverExists(server)) continue;
@@ -197,13 +308,52 @@ function runWorkers(ns, rootedServers) {
 
     if (!ns.fileExists(TINY_WORKER, scriptHost)) continue;
 
-    // No target arg now. All workers read /data/bootstrap-target.txt.
-    if (ns.isRunning(TINY_WORKER, scriptHost)) continue;
+    const scriptRam = ns.getScriptRam(TINY_WORKER, scriptHost);
+    if (scriptRam <= 0) continue;
+    stopStaleTinyWorkers(ns, scriptHost, TINY_WORKER, cycle);
 
-    const threads = getThreads(ns, scriptHost, TINY_WORKER);
-    if (threads <= 0) continue;
+    let cycleIndex = getRunningScriptCount(ns, scriptHost, TINY_WORKER) % cycle.length;
+    while (true) {
+      const freeThreads = getThreads(ns, scriptHost, TINY_WORKER);
+      if (freeThreads <= 0) break;
 
-    ns.exec(TINY_WORKER, scriptHost, threads);
+      const batch = cycle[cycleIndex % cycle.length];
+      const threads = Math.min(freeThreads, Math.max(1, Number(batch.threads) || 1));
+
+      const pid = ns.exec(TINY_WORKER, scriptHost, threads, batch.role, `${Date.now()}-${cycleIndex}`);
+      if (pid === 0) break;
+      cycleIndex++;
+    }
+  }
+}
+
+function stopStaleTinyWorkers(ns, host, script, cycle) {
+  const roles = new Set(cycle.map(item => item.role));
+  const maxThreadsByRole = new Map(cycle.map(item => [item.role, Math.max(1, Number(item.threads) || 1)]));
+
+  for (const proc of ns.ps(host)) {
+    if (proc.filename !== script) continue;
+
+    const role = String(proc.args?.[0] ?? "legacy");
+    const maxThreads = maxThreadsByRole.get(role) ?? 0;
+    const stale = !roles.has(role) || Number(proc.threads) > maxThreads;
+    if (!stale) continue;
+
+    try {
+      ns.kill(proc.filename, host, ...proc.args);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+function getRunningScriptCount(ns, host, script) {
+  try {
+    return ns.ps(host)
+      .filter(proc => proc.filename === script)
+      .length;
+  } catch {
+    return 0;
   }
 }
 
@@ -226,8 +376,8 @@ function buyEarlyUpgrades(ns) {
 
 function buyTorAndPrograms(ns) {
   try {
-    if (!ns.hasTorRouter() && ns.getPlayer().money > 250_000) {
-      ns.purchaseTor();
+    if (!hasTorOrDarkweb(ns) && ns.getPlayer().money > 250_000) {
+      purchaseTor(ns);
     }
 
     const programs = [
@@ -240,17 +390,17 @@ function buyTorAndPrograms(ns) {
 
     for (const program of programs) {
       if (!ns.fileExists(program, "home")) {
-        ns.purchaseProgram(program);
+        purchaseProgram(ns, program);
       }
     }
   } catch (error) {
     console.error(error);
-}
+  }
 }
 
 function buyHomeRam(ns) {
   try {
-    while (ns.getPlayer().money > 1_000_000 && ns.upgradeHomeRam()) {
+    while (ns.getPlayer().money > 1_000_000 && upgradeHomeRam(ns)) {
       // Keep upgrading while affordable.
     }
   } catch (error) {
@@ -258,7 +408,7 @@ function buyHomeRam(ns) {
   }
 }
 
-function draw(ns, rootedServers, target) {
+function draw(ns, rootedServers, target, plan) {
   ns.clearLog();
 
   ns.print("Bootstrap Daemon v2");
@@ -268,8 +418,21 @@ function draw(ns, rootedServers, target) {
   ns.print(`Home RAM    : ${ns.format.ram(ns.getServerMaxRam("home"))}`);
   ns.print(`Rooted      : ${rootedServers.length}`);
   ns.print(`Target      : ${target}`);
+  ns.print(`Plan        : ${formatCycle(plan.cycle)} | ${formatPercent(plan.moneyRatio)} | sec +${ns.format.number(plan.securityGap)}`);
+  ns.print(`Hack odds   : ${formatPercent(plan.chance)} | steal ${formatPercent(plan.desiredStealFraction)}`);
+  ns.print(`Cheat sheet : ${BOOTSTRAP_FORMULA_CHEATSHEET.version}`);
   ns.print("");
   ns.print(`Full daemon : ${shouldStartFullDaemon(ns) ? "READY" : "WAITING"}`);
+}
+
+function formatPercent(value) {
+  return `${Math.round(Number(value) * 100)}%`;
+}
+
+function formatCycle(cycle) {
+  return (cycle ?? [])
+    .map(item => `${item.role[0].toUpperCase()}${item.threads}`)
+    .join(" ");
 }
 
 function writeBootstrapTarget(ns, target) {
@@ -286,6 +449,13 @@ function startFullDaemon(ns, rootedServers) {
   stopTinyWorkers(ns, rootedServers);
 
   if (!ns.isRunning(FULL_DAEMON, "home")) {
+    const daemonRam = ns.getScriptRam(FULL_DAEMON, "home");
+    const freeHomeRam = getFreeRam(ns, "home", 0);
+    if (freeHomeRam < daemonRam) {
+      ns.tprint(`[BOOTSTRAP] Waiting for daemon RAM. Need ${ns.format.ram(daemonRam)}, free ${ns.format.ram(freeHomeRam)}.`);
+      return;
+    }
+
     ns.tprint("[BOOTSTRAP] Starting full daemon.");
     const pid = ns.exec(FULL_DAEMON, "home", 1);
 
@@ -305,5 +475,93 @@ function stopTinyWorkers(ns, rootedServers) {
     } catch (error) {
       console.error(error);
     }
+  }
+}
+
+function getFreeRam(ns, host, reserve = 0) {
+  return Math.max(0, ns.getServerMaxRam(host) - ns.getServerUsedRam(host) - reserve);
+}
+
+function getRunningScriptRam(ns, host, script) {
+  const scriptRam = ns.getScriptRam(script, host);
+  if (scriptRam <= 0) return 0;
+
+  try {
+    return ns.ps(host)
+      .filter(proc => normalizeScript(proc.filename) === normalizeScript(script))
+      .reduce((total, proc) => total + ((Number(proc.threads) || 0) * scriptRam), 0);
+  } catch {
+    return 0;
+  }
+}
+
+function normalizeScript(path) {
+  return String(path ?? "").replace(/^\/+/, "");
+}
+
+function hasTorOrDarkweb(ns) {
+  try {
+    if (ns.hasTorRouter()) return true;
+  } catch {
+    // Fall back below.
+  }
+
+  try {
+    if (ns.scan("home").includes("darkweb")) return true;
+  } catch {
+    // Fall back to program ownership below.
+  }
+
+  return ["BruteSSH.exe", "FTPCrack.exe", "relaySMTP.exe", "HTTPWorm.exe", "SQLInject.exe"]
+    .some(program => ns.fileExists(program, "home"));
+}
+
+function purchaseTor(ns) {
+  try {
+    if (ns.singularity?.purchaseTor()) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.purchaseTor === "function" && ns.purchaseTor();
+  } catch {
+    return false;
+  }
+}
+
+function purchaseProgram(ns, program) {
+  try {
+    if (ns.singularity?.purchaseProgram(program)) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.purchaseProgram === "function" && ns.purchaseProgram(program);
+  } catch {
+    return false;
+  }
+}
+
+function upgradeHomeRam(ns) {
+  try {
+    if (ns.singularity?.upgradeHomeRam()) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.upgradeHomeRam === "function" && ns.upgradeHomeRam();
+  } catch {
+    return false;
+  }
+}
+
+function writeBootstrapPlan(ns, plan) {
+  try {
+    ns.write(PLAN_FILE, JSON.stringify(plan, null, 2), "w");
+  } catch (error) {
+    console.error(error);
   }
 }

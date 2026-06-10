@@ -732,6 +732,12 @@ export function buildStrategicTargetDecision(ns, {
                 target: expTarget,
                 purpose: "leveling",
             },
+            laneTargets: {
+                primary: null,
+                secondary: null,
+                exp: expTarget,
+                prep: null,
+            },
             reason: `exp target ${expTarget}`,
         };
     }

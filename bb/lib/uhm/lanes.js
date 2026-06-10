@@ -37,7 +37,7 @@ export function buildTargetLanes(
     const requestedSecondaryTarget =
         laneTargets.secondary ?? null;
     const requestedExpTarget =
-        laneTargets.exp ?? null;
+        laneTargets.exp ?? (mode === "exp" ? daemonState?.target : null) ?? null;
 
     const formulasUnlocked =
         daemonState?.formulasUnlocked === true &&

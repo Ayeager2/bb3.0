@@ -28,7 +28,7 @@ export async function main(ns) {
         const usedRam = ns.getServerUsedRam("home");
         const freeRam = Math.max(0, maxRam - usedRam - reserveRam);
 
-        const worker = "/workers/bootstrap-worker.js";
+        const worker = "/workers/tiny-worker.js";
         const ramPerThread = ns.getScriptRam(worker, "home");
 
         if (ramPerThread <= 0 || freeRam < ramPerThread) {
@@ -36,10 +36,11 @@ export async function main(ns) {
             continue;
         }
 
-        const threads = Math.floor(freeRam / ramPerThread);
+        const threads = Math.min(8, Math.floor(freeRam / ramPerThread));
 
-        if (!ns.isRunning(worker, "home", target)) {
-            ns.exec(worker, "home", threads, target);
+        if (threads > 0) {
+            ns.write("/data/bootstrap-target.txt", target, "w");
+            ns.exec(worker, "home", threads, "auto", Date.now());
         }
 
         await ns.sleep(5000);

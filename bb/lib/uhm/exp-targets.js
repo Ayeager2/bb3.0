@@ -47,12 +47,12 @@ export function getBestExpTarget(ns, rootedServers, options = {}) {
             hackTime: safeHackTime(ns, server),
         }));
 
-    const fastLevelingCandidates =
+    const currentBandCandidates =
         purpose === "leveling"
-            ? scored.filter(x => x.hackTime <= 60_000)
+            ? scored.filter(x => isInCurrentLevelingBand(ns, x.server))
             : scored;
 
-    return (fastLevelingCandidates.length > 0 ? fastLevelingCandidates : scored)
+    return (currentBandCandidates.length > 0 ? currentBandCandidates : scored)
         .sort((a, b) => b.score - a.score)[0]?.server ?? "joesguns";
 }
 
@@ -89,22 +89,19 @@ function scoreExpTarget(ns, server, options = {}) {
 
     if (purpose === "leveling") {
         const levelBand =
-            levelRatio >= 0.35 && levelRatio <= 1.00 ? 3.0 :
-                levelRatio >= 0.15 && levelRatio < 0.35 ? 1.5 :
-                    0.5;
-        const fastCycleBonus =
-            timeSeconds <= 10 ? 5.0 :
-                timeSeconds <= 30 ? 3.0 :
-                    timeSeconds <= 60 ? 1.0 :
-                        0.15;
+            levelRatio >= 0.65 && levelRatio <= 1.00 ? 5.0 :
+                levelRatio >= 0.40 && levelRatio < 0.65 ? 3.0 :
+                    levelRatio >= 0.20 && levelRatio < 0.40 ? 1.0 :
+                        0.05;
+        const churnPenalty = getFastTargetChurnPenalty(timeSeconds, levelRatio);
 
         return (
             levelBand *
-            fastCycleBonus *
+            churnPenalty *
             Math.sqrt(growth) *
             Math.log10(maxMoney + 1) *
             chance
-        ) / (Math.pow(timeSeconds, 1.25) * Math.sqrt(secPenalty));
+        ) / (Math.pow(timeSeconds, 0.45) * Math.sqrt(secPenalty));
     }
 
     const quickCycleBonus =
@@ -119,6 +116,28 @@ function scoreExpTarget(ns, server, options = {}) {
         chance *
         Math.log10(maxMoney + 1)
     ) / (secPenalty * Math.sqrt(timeSeconds));
+}
+
+function isInCurrentLevelingBand(ns, server) {
+    const hacking = Math.max(1, ns.getHackingLevel());
+    const requiredHack = Math.max(1, ns.getServerRequiredHackingLevel(server));
+    return requiredHack >= getMinimumLevelingTargetHack(hacking);
+}
+
+function getMinimumLevelingTargetHack(hacking) {
+    if (hacking < 250) return 1;
+    if (hacking < 750) return Math.floor(hacking * 0.10);
+    if (hacking < 1500) return Math.floor(hacking * 0.18);
+    if (hacking < 2500) return Math.floor(hacking * 0.24);
+    return Math.floor(hacking * 0.30);
+}
+
+function getFastTargetChurnPenalty(timeSeconds, levelRatio) {
+    if (levelRatio >= 0.20) return 1;
+    if (timeSeconds <= 15) return 0.05;
+    if (timeSeconds <= 30) return 0.15;
+    if (timeSeconds <= 60) return 0.40;
+    return 0.75;
 }
 
 function safeHackTime(ns, server) {

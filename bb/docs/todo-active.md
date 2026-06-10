@@ -1,19 +1,26 @@
 # CURRENT ACTIVE PRIORITIES
 
 ```txt
-1. Stage-aware progression calculations:
+1. Verify bootstrap cheat-sheet flow on next fresh start:
+   - run /tools/build-bootstrap-cheatsheet.js late-game with Formulas.exe
+   - after reset, run bootstrap-daemon.js
+   - confirm /data/bootstrap-plan.txt has a mixed H/G/W cycle
+2. Verify UHM leveling/endgame H/G/W sprint under live RAM pressure:
+   - forced --level and post-Red-Pill final leveling should not become hack-only
+   - process list should show exp-hack.js, exp-grow.js, and exp-weaken.js together
+3. Stage-aware progression calculations:
    - money and EXP requirements are part of faction progression state
    - calculation source is marked as fallback or Formulas.exe-backed
-2. Economy-first cloud buildout:
+4. Economy-first cloud buildout:
    - cloud fleet server slot completion comes before EXP grinding
    - RAM upgrades now use time-aware balancing instead of forcing EXP to 0 forever
    - once all cloud slots are full, money stays favored while EXP keeps a lane unless the next upgrade is affordable now
-3. Tune augmentation timing thresholds from live daemon-state output
-4. Better EXP target separation
-5. Formula-aware target telemetry polish
-6. Test pre-Red-Pill BitRunners NeuroFlux favor loop in live BN4 state
-7. Verify server ticker telemetry in dashboard after next server purchase/upgrade
-8. Test Daedalus NeuroFlux donation-unlock loop:
+5. Tune augmentation timing thresholds from live daemon-state output
+6. Better EXP target separation
+7. Formula-aware target telemetry polish
+8. Test pre-Red-Pill BitRunners NeuroFlux favor loop in live BN4 state
+9. Verify server ticker telemetry in dashboard after next server purchase/upgrade
+10. Test Daedalus NeuroFlux donation-unlock loop:
    - before Red Pill, buy Daedalus NeuroFlux until projected favor reaches donation unlock
    - projection should come from formulas.reputation diagnostics
    - after projected favor is ready, donate for Red Pill rep, buy Red Pill first, then continue post-Red-Pill 3000/destroy-node path
@@ -69,6 +76,20 @@ Server purchaser / dashboard ticker:
   - writes /data/ui/server-ticker.txt every cycle
   - dashboard-state-writer exposes servers.serverTicker
   - dashboard bridge UI includes Server Ticker card
+
+- Bootstrap formula cheat-sheet first pass:
+  - /tools/build-bootstrap-cheatsheet.js generates /lib/bootstrap/formula-cheatsheet.js while Formulas.exe is available
+  - bootstrap-daemon imports the cheat sheet for early target ordering
+  - bootstrap-daemon writes /data/bootstrap-plan.txt with target, money ratio, security gap, hack odds, and H/G/W cycle
+  - tiny-worker accepts explicit hack/grow/weaken roles
+  - bootstrap-money now uses /workers/tiny-worker.js instead of missing /workers/bootstrap-worker.js
+  - bootstrap launch logic avoids one giant fixed-size worker shape and repeats a logical H/G/W cycle across available RAM
+
+- UHM leveling/endgame H/G/W sprint first pass:
+  - /lib/uhm/modes/exp-sprint.js no longer special-cases leveling into EXP_HACK only
+  - EXP sprint builds a live H/G/W cycle from hackAnalyze, growthAnalyze, weakenAnalyze, money ratio, and security gap
+  - final leveling should launch exp-hack.js, exp-grow.js, and exp-weaken.js together
+  - sprint rebalancer kills/reduces stale single-role or heavily dominated worker sets
 
 - Faction progression foundation created:
   - /lib/daemon/faction-progression.js

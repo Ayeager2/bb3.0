@@ -149,6 +149,7 @@ What it does:
 - bypasses the economy-first cloud gate
 - gives EXP mode priority
 - routes UHM toward EXP lanes
+- uses a mixed exp-hack / exp-grow / exp-weaken sprint cycle
 ```
 
 Check it with:
@@ -166,6 +167,16 @@ Look for:
   "level": true
 }
 ```
+
+In the script/process list, expected final-leveling behavior is mixed:
+
+```txt
+/workers/exp-hack.js
+/workers/exp-grow.js
+/workers/exp-weaken.js
+```
+
+It should not be only hack workers.
 
 ---
 
@@ -216,6 +227,37 @@ run /controllers/uhm.js --overdrive
 ```
 
 That forces EXP overdrive for testing.
+
+---
+
+## Bootstrap From Fresh Start
+
+Late-game, before destroying the world or installing into a fresh opening, rebuild the bootstrap cheat sheet while Formulas.exe exists:
+
+```txt
+run /tools/build-bootstrap-cheatsheet.js
+```
+
+Then after the fresh start:
+
+```txt
+run bootstrap-daemon.js
+```
+
+Check the bootstrap plan:
+
+```txt
+cat /data/bootstrap-plan.txt
+```
+
+Expected signs:
+
+```txt
+- /lib/bootstrap/formula-cheatsheet.js exists
+- /data/bootstrap-plan.txt has target, moneyRatio, securityGap, and cycle
+- cycle includes hack, grow, and weaken roles
+- process list is not a wall of one oversized hack/grow/weaken process
+```
 
 ---
 

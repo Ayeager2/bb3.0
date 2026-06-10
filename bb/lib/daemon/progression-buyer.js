@@ -33,7 +33,7 @@ function buyTorAndPrograms(ns, reserveMoney) {
 
   if (!hasTorOrDarkweb(ns) && money > 450_000) {
     try {
-      if (ns.purchaseTor()) {
+      if (purchaseTor(ns)) {
         return {
           bought: true,
           type: "tor",
@@ -54,7 +54,7 @@ function buyTorAndPrograms(ns, reserveMoney) {
     if (spendable < program.cost) continue;
 
     try {
-      if (ns.purchaseProgram(program.name)) {
+      if (purchaseProgram(ns, program.name)) {
         return {
           bought: true,
           type: "program",
@@ -97,5 +97,45 @@ function buyHomeRam(ns, reserveMoney) {
 }
 
 function hasTorOrDarkweb(ns) {
+  try {
+    if (ns.hasTorRouter()) return true;
+  } catch {
+    // Bitburner v3 may only expose darkweb through Singularity.
+  }
+
+  try {
+    if (ns.scan("home").includes("darkweb")) return true;
+  } catch {
+    // Fall back to program ownership below.
+  }
+
   return PROGRAMS.some(p => ns.fileExists(p.name, "home"));
+}
+
+function purchaseTor(ns) {
+  try {
+    if (ns.singularity?.purchaseTor()) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.purchaseTor === "function" && ns.purchaseTor();
+  } catch {
+    return false;
+  }
+}
+
+function purchaseProgram(ns, program) {
+  try {
+    if (ns.singularity?.purchaseProgram(program)) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.purchaseProgram === "function" && ns.purchaseProgram(program);
+  } catch {
+    return false;
+  }
 }

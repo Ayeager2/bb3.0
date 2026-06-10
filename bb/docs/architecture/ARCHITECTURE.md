@@ -97,6 +97,8 @@ Pure execution scripts.
 
 No strategic reasoning allowed.
 
+Workers may accept a role or target argument from the daemon/UHM, but they should not choose progression strategy, faction priorities, reset timing, or target policy.
+
 ---
 
 # TARGET PIPELINE
@@ -133,6 +135,7 @@ Before Formulas.exe:
 fallback targeting
 legacy math
 safe bootstrap behavior
+optional prebuilt bootstrap cheat sheet
 ```
 
 After Formulas.exe:
@@ -141,7 +144,51 @@ After Formulas.exe:
 formula-aware timing
 formula-aware scoring
 daemon target authority
+bootstrap cheat-sheet generation for the next fresh start
 ```
+
+---
+
+# BOOTSTRAP MODEL
+
+The bootstrap daemon is a temporary rebuild helper, not the long-term strategy brain.
+
+Late-game, while Formulas.exe exists:
+
+```txt
+run /tools/build-bootstrap-cheatsheet.js
+```
+
+This updates:
+
+```txt
+/lib/bootstrap/formula-cheatsheet.js
+```
+
+Fresh-start bootstrap then uses that static cheat sheet plus live fallback math to choose early targets and publish:
+
+```txt
+/data/bootstrap-target.txt
+/data/bootstrap-plan.txt
+```
+
+Bootstrap workers should run a mixed hack/grow/weaken cycle. They should not fill RAM with one oversized one-role process.
+
+---
+
+# EXP / LEVELING EXECUTION RULE
+
+UHM may run EXP sprint during forced leveling or post-Red-Pill world-daemon readiness.
+
+That sprint must remain hack/grow/weaken balanced:
+
+```txt
+exp-hack.js
+exp-grow.js
+exp-weaken.js
+```
+
+The endgame leveling path must not special-case into hack-only execution. If target money or security drifts, the sprint math should repair it with grow/weaken work while still gaining EXP.
 
 ---
 
