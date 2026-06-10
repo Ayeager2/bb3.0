@@ -75,7 +75,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
 }
 
 function chooseSprintScript(ns, target, purpose = "background") {
-    if (purpose === "leveling") return EXP_HACK;
+    // if (purpose === "leveling") return EXP_HACK;
 
     const money = ns.getServerMoneyAvailable(target);
     const maxMoney = ns.getServerMaxMoney(target);

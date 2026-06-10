@@ -414,3 +414,66 @@ function formatDuration(ms) {
 
     return `${minutes}m${remainingSeconds}s`;
 }
+
+/** @param {NS} ns **/
+export async function main(ns) {
+    ns.disableLog("ALL");
+
+    const rootedServers = getRootedServers(ns);
+    const currentTarget = ns.args[0] ?? null;
+
+    const plan = buildStrategicMoneyTargetPlan(
+        ns,
+        rootedServers,
+        currentTarget,
+        {
+            phase: "scaling",
+            lane: "primary",
+        }
+    );
+
+    ns.tprint("=== TARGET INTELLIGENCE ===");
+    ns.tprint(`Target: ${plan.target}`);
+    ns.tprint(`Reason: ${plan.reason}`);
+    ns.tprint(`Changed: ${plan.changed}`);
+    ns.tprint(`Blocked Swap: ${plan.blockedSwap}`);
+
+    if (plan.bestCandidate) {
+        ns.tprint("");
+        ns.tprint("=== BEST CANDIDATE ===");
+        ns.tprint(`${plan.bestCandidate.server}`);
+        ns.tprint(plan.bestCandidate.reason);
+    }
+
+    ns.tprint("");
+    ns.tprint("=== TOP CANDIDATES ===");
+
+    for (const candidate of plan.candidates.slice(0, 5)) {
+        ns.tprint(`${candidate.server.padEnd(20)} ${candidate.reason}`);
+    }
+}
+
+function getRootedServers(ns) {
+    const visited = new Set();
+    const stack = ["home"];
+    const rooted = [];
+
+    while (stack.length > 0) {
+        const server = stack.pop();
+
+        if (visited.has(server)) continue;
+        visited.add(server);
+
+        if (ns.hasRootAccess(server)) {
+            rooted.push(server);
+        }
+
+        for (const neighbor of ns.scan(server)) {
+            if (!visited.has(neighbor)) {
+                stack.push(neighbor);
+            }
+        }
+    }
+
+    return rooted;
+}
