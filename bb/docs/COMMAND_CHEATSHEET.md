@@ -261,6 +261,40 @@ Expected signs:
 
 ---
 
+## Fresh Start Life Bridge
+
+```txt
+cat /data/fresh-start-life-state.txt
+```
+
+Completion marker:
+
+```txt
+cat /data/fresh-start-life-complete.txt
+```
+
+Daemon service:
+
+```txt
+/tools/fresh-start-life-service.js
+```
+
+What it does:
+
+```txt
+- studies Computer Science at Rothman University until hacking 100
+- then does Slums/crime work for bootstrap money and physical stats
+- stops once daemon policy allows faction work or a faction work plan is active
+```
+
+Useful manual test:
+
+```txt
+run /tools/fresh-start-life-service.js --study-until-hacking 100 --crime Mug
+```
+
+---
+
 # Most Useful `cat` Files
 
 ## Daemon State
@@ -668,6 +702,51 @@ cat /data/darkweb-buyer-complete.txt
 
 ---
 
+## Darknet Scout State
+
+```txt
+cat /data/darknet-scout.txt
+```
+
+Manual scan:
+
+```txt
+run /tools/darknet-scout.js
+```
+
+Continuous service mode:
+
+```txt
+run /tools/darknet-scout.js --once false --refresh 60000
+```
+
+What it does:
+
+```txt
+- waits until ns.dnet exists after DarkscapeNavigator.exe is available
+- probes darknet neighbors
+- reads dnet depth, required charisma, blocked RAM, and server details
+- runs heartbleed with peek enabled by default
+- can try authentication with --password
+- can optionally run memory reallocation or stasis when explicitly enabled
+```
+
+Useful flags:
+
+```txt
+--depth 3
+--password your-password
+--auth true
+--peek true
+--spread true
+--realloc false
+--stasis false
+```
+
+Daemon defaults are safe: it scouts and records data, but does not run memory reallocation or stasis unless those flags are changed.
+
+---
+
 ## Cloud / Server Buildout
 
 Cloud fleet status now appears inside:
@@ -899,6 +978,8 @@ Main execution engine. Runs hack/grow/weaken/EXP/share lanes.
 /economy/home-ram-buyer-service.js
 /economy/home-core-buyer-service.js
 /economy/darkweb-buyer-service.js
+/tools/darknet-scout.js
+/tools/fresh-start-life-service.js
 /economy/progression-buyer-service.js
 /economy/stock-trader.js
 ```
@@ -910,6 +991,8 @@ What they do:
 - buy home RAM
 - buy home CPU cores
 - buy TOR/programs
+- scout darknet state after DarkscapeNavigator is available
+- study/crime bridge after fresh installs until faction work is ready
 - handle larger progression purchases
 - trade stocks when enabled and TIX is available
 ```
