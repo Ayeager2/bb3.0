@@ -85,6 +85,8 @@ export async function main(ns) {
       daemonState,
       flags
     );
+    const forcedExpTarget = getForcedExpTargetLevel(daemonState);
+    const forcedExpReason = `Forced EXP mode until hacking ${ns.format.number(forcedExpTarget)}`;
 
     const daemonWantsExp =
       daemonState?.mode === "exp";
@@ -95,7 +97,7 @@ export async function main(ns) {
           ...daemonState,
           mode: "exp",
           phase: forcedExpMode
-            ? "forced-exp-until-3000"
+            ? "forced-exp"
             : daemonState?.phase ?? "exp-overdrive",
 
           multiTargetPolicy: {
@@ -105,7 +107,7 @@ export async function main(ns) {
             expRamPercent: Number(flags["exp-ram"]) || 1,
             shareRamPercent: 0,
             reason: forcedExpMode
-              ? "Forced EXP mode until hacking 3000"
+              ? forcedExpReason
               : "Endgame EXP overdrive",
           },
 
@@ -121,7 +123,7 @@ export async function main(ns) {
     if (forcedExpMode) {
       phase = {
         ...phase,
-        name: "forced-exp-until-3000",
+        name: "forced-exp",
         moneyRamRatio: 0.00,
         shareRamRatio: 0.00,
         expRamRatio: 1.00,
@@ -272,6 +274,7 @@ function shouldForceExpMode(ns, daemonState, flags) {
   if (daemonState?.mode !== "exp") return false;
 
   const hacking = ns.getHackingLevel();
+  const forcedTarget = getForcedExpTargetLevel(daemonState);
   const money = ns.getPlayer().money;
   const reserve = daemonState?.reserveMoney ?? 0;
   const spendable = Math.max(0, money - reserve);
@@ -291,8 +294,25 @@ function shouldForceExpMode(ns, daemonState, flags) {
   if (bootstrapActive) return false;
   if (!darkwebComplete) return false;
   if (priority === "upgrades") return false;
-  if (hacking >= 2500) return false;
+  if (hacking >= forcedTarget) return false;
   if (spendable < 1_000_000_000) return false;
 
   return true;
+}
+
+function getForcedExpTargetLevel(daemonState) {
+  const candidates = [
+    daemonState?.bn4VictoryPlan?.hackingTarget,
+    daemonState?.factionProgression?.requiredHack,
+    daemonState?.factionProgression?.expPolicy?.targetLevel,
+    daemonState?.bn4Readiness?.hackingTarget,
+    daemonState?.progression?.hackingTarget,
+  ];
+
+  for (const candidate of candidates) {
+    const value = Number(candidate);
+    if (Number.isFinite(value) && value > 0) return value;
+  }
+
+  return 2500;
 }

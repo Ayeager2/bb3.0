@@ -114,6 +114,11 @@ function writeServerTicker(ns, data) {
         const result = data.result ?? {};
         const fleet = getFleetSummary(ns);
         const acted = result.acted === true;
+        const server =
+            result.server ??
+            result.serverName ??
+            result.item ??
+            null;
         const cost =
             Number.isFinite(result.cost)
                 ? result.cost
@@ -127,14 +132,10 @@ function writeServerTicker(ns, data) {
                 acted,
                 status: acted ? "acted" : "idle",
                 type: result.type ?? "none",
-                server:
-                    result.server ??
-                    result.serverName ??
-                    result.item ??
-                    null,
+                server,
                 ram:
                     result.ram ??
-                    fleet?.serverRam?.[result.server] ??
+                    fleet?.serverRam?.[server] ??
                     null,
                 cost,
                 message: result.message ?? "No server purchase action.",

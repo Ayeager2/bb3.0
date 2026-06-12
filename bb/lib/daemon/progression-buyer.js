@@ -41,8 +41,8 @@ function buyTorAndPrograms(ns, reserveMoney) {
         };
       }
     } catch (error) {
-    console.error(error);
-}
+      console.error(error);
+    }
   }
 
   if (!hasTorOrDarkweb(ns)) {
@@ -62,8 +62,8 @@ function buyTorAndPrograms(ns, reserveMoney) {
         };
       }
     } catch (error) {
-    console.error(error);
-}
+      console.error(error);
+    }
   }
 
   return { bought: false };
@@ -72,17 +72,13 @@ function buyTorAndPrograms(ns, reserveMoney) {
 function buyHomeRam(ns, reserveMoney) {
   const spendable = Math.max(0, ns.getPlayer().money - reserveMoney);
 
-  let cost = Infinity;
-  try {
-    cost = ns.singularity.getUpgradeHomeRamCost();
-  } catch {
-    return { bought: false };
-  }
+  const cost = getUpgradeHomeRamCost(ns);
+  if (!Number.isFinite(cost) || cost <= 0) return { bought: false };
 
   if (spendable < cost) return { bought: false };
 
   try {
-    if (ns.singularity.upgradeHomeRam()) {
+    if (upgradeHomeRam(ns)) {
       return {
         bought: true,
         type: "homeRam",
@@ -91,9 +87,29 @@ function buyHomeRam(ns, reserveMoney) {
     }
   } catch (error) {
     console.error(error);
-}
+  }
 
   return { bought: false };
+}
+
+function getUpgradeHomeRamCost(ns) {
+  try {
+    const cost = ns.singularity?.getUpgradeHomeRamCost?.();
+    if (Number.isFinite(cost)) return cost;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    if (typeof ns.getUpgradeHomeRamCost === "function") {
+      const cost = ns.getUpgradeHomeRamCost();
+      if (Number.isFinite(cost)) return cost;
+    }
+  } catch {
+    // No home RAM purchase API available.
+  }
+
+  return Infinity;
 }
 
 function hasTorOrDarkweb(ns) {
@@ -135,6 +151,20 @@ function purchaseProgram(ns, program) {
 
   try {
     return typeof ns.purchaseProgram === "function" && ns.purchaseProgram(program);
+  } catch {
+    return false;
+  }
+}
+
+function upgradeHomeRam(ns) {
+  try {
+    if (ns.singularity?.upgradeHomeRam?.()) return true;
+  } catch {
+    // Fall back to legacy API below.
+  }
+
+  try {
+    return typeof ns.upgradeHomeRam === "function" && ns.upgradeHomeRam();
   } catch {
     return false;
   }

@@ -7,9 +7,13 @@ import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";
 export async function main(ns) {
     ns.disableLog("ALL");
 
-    ns.run("/tools/augmentation-data-builder.js", 1, "--force");
+    const builderPid = ns.run("/tools/augmentation-data-builder.js", 1, "--force");
 
-    await ns.sleep(1000);
+    if (builderPid !== 0) {
+        await waitForProcess(ns, builderPid, 10000);
+    } else {
+        ns.tprint("[REFRESH] Augmentation data builder did not start; using existing augmentation data.");
+    }
 
     const augPlan = buildAugmentationPlan(ns);
     const workPlan = buildFactionWorkPlan(ns);
@@ -19,4 +23,20 @@ export async function main(ns) {
     ns.tprint(`Aug: ${augPlan?.nextGoal?.name ?? "none"} | ${augPlan?.blockedReason ?? "ok"}`);
     ns.tprint(`Work: ${workPlan?.reason ?? "none"}`);
     ns.tprint(`Donation: ${donationPlan?.reason ?? "none"}`);
+}
+
+async function waitForProcess(ns, pid, timeoutMs) {
+    const startedAt = Date.now();
+
+    while (Date.now() - startedAt < timeoutMs) {
+        try {
+            if (!ns.isRunning(pid)) return true;
+        } catch {
+            return true;
+        }
+
+        await ns.sleep(250);
+    }
+
+    return false;
 }

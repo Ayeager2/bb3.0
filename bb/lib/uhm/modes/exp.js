@@ -7,6 +7,8 @@ import {
     safeServerExists,
 } from "/lib/uhm/safe.js";
 
+// Legacy fallback. Active EXP mode is exp-sprint.js, which keeps hack/grow/weaken
+// ratios together and avoids single-role fleet saturation.
 export function runExpFallback(ns, target, hosts) {
     let launchedThreads = 0;
 

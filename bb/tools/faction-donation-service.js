@@ -1,6 +1,7 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildFactionDonationPlan } from "/lib/daemon/faction-donations.js";
 import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const DONATION_EVENTS_FILE = "/data/faction-donation-events.txt";
 
@@ -96,6 +97,6 @@ function refreshAugmentationCache(ns) {
     try {
         ns.run("/tools/augmentation-data-builder.js", 1, "--force");
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 }

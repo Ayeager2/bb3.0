@@ -39,7 +39,7 @@
       "detail": "Policy currently blocks: augmentation purchases, reset execution.",
       "level": "info",
       "data": {
-        "reserveMoney": 1000000000,
+        "reserveMoney": 100000,
         "allowServerPurchases": true,
         "allowStockTrading": true,
         "allowHacknet": true,

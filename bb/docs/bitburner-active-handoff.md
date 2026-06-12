@@ -473,7 +473,7 @@ Before Red Pill:
 
 After Red Pill:
     enter destroy-node / kill-node mode
-    push hacking to 3000
+    push hacking to live w0r1d_d43m0n required hacking level
     hack w0r1d_d43m0n
 ```
 

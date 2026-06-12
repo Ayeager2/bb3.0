@@ -29,17 +29,7 @@ export async function main(ns) {
 
         const coresBefore = ns.getServer("home").cpuCores;
 
-        let bought = false;
-
-        try {
-            bought = ns.singularity.upgradeHomeCores();
-        } catch (error) {
-            try {
-                bought = ns.upgradeHomeCores();
-            } catch (fallbackError) {
-                bought = false;
-            }
-        }
+        const bought = upgradeHomeCores(ns);
 
         const moneyAfter = ns.getPlayer().money;
         const coresAfter = ns.getServer("home").cpuCores;
@@ -66,4 +56,16 @@ export async function main(ns) {
 
         await ns.sleep(refreshMs);
     }
+}
+
+function upgradeHomeCores(ns) {
+    try {
+        if (ns.singularity?.upgradeHomeCores?.()) return true;
+    } catch { }
+
+    try {
+        return typeof ns.upgradeHomeCores === "function" && ns.upgradeHomeCores();
+    } catch { }
+
+    return false;
 }

@@ -21,6 +21,7 @@ import { TARGET_STATE_FILE } from "/lib/daemon/target-state-config.js";
 import { buildGlobalState } from "/lib/daemon/state.js";
 import { logTargetDecision } from "/lib/daemon/telemetry.js";
 import { buildBackdoorState } from "/lib/daemon/backdoor.js";
+import { refreshDaemonState } from "/lib/daemon/dev-reset.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -77,6 +78,14 @@ export async function main(ns) {
   };
 
   killOtherDaemonInstances(ns);
+  refreshDaemonState(ns, {
+    volatile: true,
+    completions: true,
+    sessions: true,
+    allDataText: true,
+    verbose: true,
+  });
+  ns.tprint("[DAEMON] Startup state refresh complete.");
 
   let capabilities;
   let cachedState = null;

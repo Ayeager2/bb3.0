@@ -9,12 +9,13 @@ status: ACTIVE_DEVELOPMENT
 # CURRENT PRIORITY
 
 ```txt
-1. verify bootstrap cheat-sheet flow after the next fresh start
-2. verify UHM leveling/endgame H/G/W sprint mix under live RAM pressure
-3. augmentation timing by faction stage
-4. dashboard rendering for progression calculations
-5. telemetry polish
-6. tune pre-Red-Pill BitRunners/Daedalus NeuroFlux favor loops from live state
+1. live verify daemon-managed service audit after next restart
+2. verify bootstrap cheat-sheet flow after the next fresh start
+3. verify UHM leveling/endgame H/G/W sprint mix under live RAM pressure
+4. tune augmentation timing by faction stage
+5. dashboard rendering for progression calculations
+6. telemetry polish
+7. tune pre-Red-Pill BitRunners/Daedalus NeuroFlux favor loops from live state
 ```
 
 ---
@@ -23,35 +24,26 @@ status: ACTIVE_DEVELOPMENT
 
 ```txt
 Refine:
-/lib/daemon/faction-progression.js
-/lib/daemon/decision.js
-/lib/daemon/state.js
-/lib/daemon/augmentation-stage-policy.js
-/lib/daemon/augmentations.js
-/economy/server-purchaser-service.js
+/data/daemon-state.txt
+/data/ui/server-ticker.txt
+/data/ui/dashboard-command-status.txt
+/data/augmentation-buyer-state.txt
+/data/faction-donation-plan.txt
 ```
 
 Purpose:
 
 ```txt
-Faction progression foundation exists and is wired into:
-    decision.js
-    state.js
+The daemon/UHM service audit has been implemented. Next step is live
+verification after a clean daemon restart:
 
-It now includes money/EXP/augmentation calculation payloads with a
-fallback-vs-Formulas.exe source marker. Next step is to refine those
-recommendations enough to avoid unnecessary pre-Red-Pill EXP grinding
-and to guide augmentation timing.
-
-New user TODO from 2026-06-07:
-
-- Pre-Red-Pill EXP still feels slow.
-- Test a BitRunners-stage loop that repeatedly buys regular NeuroFlux Governor from BitRunners to build favor faster.
-- Hypothesis: reaching roughly 40+ BitRunners favor may unlock donations sooner, allowing faster rep purchases and faster completion of higher-rep BitRunners augmentations.
-- Keep cash/money favored during this loop so home RAM/core upgrades can continue while BitRunners rep and favor build.
-- Do not rush Red Pill if BitRunners augmentations and low-trillion home upgrades are still useful.
-- Quiet `/economy/server-purchaser-service.js` terminal spam by default.
-- Add dashboard-facing server ticker telemetry showing purchased server name and RAM in a compact cyberpunk graphic.
+- `/tools/daemon-session-service.js` should not be running.
+- `/data/daemon-state.txt` should still include `sessionStats`.
+- faction donation should not crash on successful donation.
+- dashboard commands should report failed helper launches honestly.
+- `/tools/refresh-augmentation-plans.js` should wait for augmentation data builder.
+- `/data/ui/server-ticker.txt` should show server/fleet telemetry after purchaser cycles.
+- `run daemon.js` should print startup DEV REFRESH removals before services start.
 ```
 
 Current outputs:
@@ -119,6 +111,12 @@ workers
 - time-aware cloud RAM upgrade balancing
 - stage-aware EXP caps
 - backdoor progression retry/rooting
+- daemon-owned session stats
+- daemon startup state refresh
+- retired service shutdown through stopWhenBlocked
+- server ticker telemetry
+- dashboard command runner launch verification
+- live world-daemon hacking requirement
 ```
 
 ---
@@ -133,6 +131,7 @@ workers
 - pre-Red-Pill NeuroFlux/favor loop may be good, but favor threshold is still experimental
 - telemetry scaling
 - dashboard reasoning bridge constants
+- stale checked-in `lib/daemon/daemon-state.txt` should be removed after explicit approval
 ```
 
 ---
@@ -202,7 +201,7 @@ Before Red Pill:
     keep money favored while useful BitRunners augmentations and home RAM/core upgrades remain attractive
 
 After Red Pill:
-    push toward 3000
+    push toward live w0r1d_d43m0n required hacking level
     prepare and destroy w0r1d_d43m0n
 ```
 
@@ -309,3 +308,5 @@ tail /controllers/uhm.js
 cat /data/daemon-state.txt
 ps
 ```
+
+`daemon.js` now performs the dev state refresh automatically on startup.

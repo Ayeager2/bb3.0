@@ -279,10 +279,11 @@ export const SERVICES = [
         tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: true,
-        enabled: true,
+        enabled: false,
         requiresSingularity: false,
         minHomeRam: 128,
-        purpose: "daemon-session-tracking",
+        stopWhenBlocked: true,
+        purpose: "legacy daemon-session-tracking; session stats now update inside state.js",
     },
     {
         id: "target-service",
@@ -319,7 +320,7 @@ export const SERVICES = [
         args: [
             "--refresh", 15000,
             "--max-price", 1_000_000_000_000,
-            "--reserve", 100_000_000,
+            "--reserve", 1_000_000,
             "--use-policy-reserve", false,
             "--force-buy", false
         ],
@@ -495,5 +496,11 @@ export const SERVICES = [
 ];
 
 export function getEnabledServices() {
-    return SERVICES.filter(s => s.enabled === true && s.type !== SERVICE_TYPES.ARCHIVED);
+    return SERVICES.filter(s =>
+        s.type !== SERVICE_TYPES.ARCHIVED &&
+        (
+            s.enabled === true ||
+            s.stopWhenBlocked === true
+        )
+    );
 }

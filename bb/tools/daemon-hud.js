@@ -57,7 +57,6 @@ function fixSingularityStage(ns, singularity = {}) {
     const hacking = ns.getHackingLevel();
     const requiredHack = safeRequiredHack(ns, worldDaemon);
     const worldRooted = safeRoot(ns, worldDaemon);
-    const worldBackdoored = safeBackdoor(ns, worldDaemon);
 
     if (hacking < requiredHack) {
         return {
@@ -78,17 +77,6 @@ function fixSingularityStage(ns, singularity = {}) {
             worldDaemonReady: false,
             message:
                 `Red Pill owned. Root ${worldDaemon}.`,
-        };
-    }
-
-    if (!worldBackdoored) {
-        return {
-            ...singularity,
-            stage: "backdoor-world-daemon",
-            redPillOwned: true,
-            worldDaemonReady: false,
-            message:
-                `Red Pill owned. Backdoor ${worldDaemon}.`,
         };
     }
 
@@ -123,15 +111,6 @@ function safeRequiredHack(ns, server) {
 function safeRoot(ns, server) {
     try {
         return ns.serverExists(server) && ns.hasRootAccess(server);
-    } catch {
-        return false;
-    }
-}
-
-function safeBackdoor(ns, server) {
-    try {
-        return ns.serverExists(server) &&
-            ns.getServer(server).backdoorInstalled === true;
     } catch {
         return false;
     }

@@ -15,7 +15,11 @@ import {
     getBn4VictoryPlan,
     getWorldDaemonStatus
 } from "/lib/daemon/progression.js";
-import { buildSessionStats } from "/lib/daemon/session.js";
+import {
+    buildSessionStats,
+    initializeSession,
+    updateSessionTracking,
+} from "/lib/daemon/session.js";
 import { getTelemetryCounts } from "/lib/daemon/telemetry.js";
 import {
     buildResetPlan,
@@ -26,6 +30,13 @@ import { getAugmentationDecision } from "/lib/daemon/augmentation-decision.js";
 
 export function buildGlobalState(ns, decision, capabilities) {
     const player = ns.getPlayer();
+    const sessionState = {
+        mode: decision.mode,
+        target: decision.target,
+    };
+    initializeSession(ns, sessionState);
+    updateSessionTracking(sessionState);
+
     const targetStats = decision.target ? getTargetStats(ns, decision.target) : null;
     const resetPlan = buildResetPlan(ns);
     const factionProgression = buildFactionProgressionState(ns);

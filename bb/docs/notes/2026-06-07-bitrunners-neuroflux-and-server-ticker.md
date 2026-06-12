@@ -27,7 +27,7 @@ Implementation status:
 - If Daedalus is joined, Red Pill is not owned, and projected Daedalus favor is still below `ns.singularity.getFavorToDonate()`, the planner may select Daedalus `NeuroFlux Governor` before Red Pill.
 - The favor projection uses `ns.formulas.reputation.calculateRepToFavor(currentRep)` and reports the rep required for the favor target with `ns.formulas.reputation.calculateFavorToRep(missingFavor)`.
 - Once projected Daedalus favor reaches the donation threshold, the NeuroFlux exception turns off and Red Pill becomes the forced goal again.
-- After donation unlock, the intended path is: donate for Red Pill rep, buy Red Pill first, then let the normal post-Red-Pill level-to-3000 / destroy-node flow take over.
+- After donation unlock, the intended path is: donate for Red Pill rep, buy Red Pill first, then let the normal post-Red-Pill level-to-live-world-daemon-requirement / destroy-node flow take over.
 - Normal Daedalus augmentations still do not jump ahead of Red Pill.
 
 Problem:

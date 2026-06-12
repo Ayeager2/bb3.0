@@ -4,6 +4,7 @@ import { buildBackdoorState } from "/lib/daemon/backdoor.js";
 import { getAugmentationDecision } from "/lib/daemon/augmentation-decision.js";
 import { CONFIG } from "/lib/daemon/config.js";
 import { getAllServers, getRootedServers } from "/lib/daemon/network.js";
+import { getWorldDaemonStatus } from "/lib/daemon/progression.js";
 import {
   getBestExpTarget,
   getBestMoneyTarget,
@@ -15,7 +16,6 @@ import {
 const DAEDALUS_HACKING_REQUIREMENT = 2500;
 const DAEDALUS_MONEY_REQUIREMENT = 100_000_000_000;
 const DAEDALUS_AUGMENT_REQUIREMENT = 30;
-const WORLD_DAEMON_HACKING_REQUIREMENT = 3000;
 
 const FACTION_STAGES = [
   {
@@ -159,7 +159,9 @@ export function buildFactionProgressionState(ns) {
     });
   }
 
-  const worldReady = playerHack >= WORLD_DAEMON_HACKING_REQUIREMENT;
+  const world = getWorldDaemonStatus(ns);
+  const worldHackRequirement = getWorldDaemonHackingRequirement(ns, world);
+  const worldReady = world.hackReady === true;
 
   return withCalculations(ns, {
     currentFactionStage: "complete",
@@ -168,12 +170,13 @@ export function buildFactionProgressionState(ns) {
     recommendedMode: worldReady ? "destroy-node" : "exp",
     targetFaction: null,
     targetServer: "w0r1d_d43m0n",
-    requiredHack: WORLD_DAEMON_HACKING_REQUIREMENT,
+    requiredHack: worldHackRequirement,
     reason: worldReady
       ? "Faction progression complete. Red Pill owned. Destroy BitNode."
-      : `Red Pill owned. Need hacking ${WORLD_DAEMON_HACKING_REQUIREMENT} for w0r1d_d43m0n; current ${playerHack}.`,
+      : `Red Pill owned. Need hacking ${worldHackRequirement} for w0r1d_d43m0n; current ${playerHack}.`,
     playerHack,
     hasRedPill,
+    world,
   });
 }
 
@@ -211,12 +214,15 @@ function buildExpPolicy(ns, state) {
     targetLevel > currentLevel;
 
   if (hasRedPill) {
+    const world = getWorldDaemonStatus(ns);
+    const worldHackRequirement = getWorldDaemonHackingRequirement(ns, world);
+
     return {
       phase: "post-red-pill",
-      softCap: WORLD_DAEMON_HACKING_REQUIREMENT,
-      targetLevel: Math.max(currentLevel, WORLD_DAEMON_HACKING_REQUIREMENT),
-      shouldLevelNow: currentLevel < WORLD_DAEMON_HACKING_REQUIREMENT,
-      reason: `Red Pill owned; level toward hacking ${WORLD_DAEMON_HACKING_REQUIREMENT} for w0r1d_d43m0n.`,
+      softCap: worldHackRequirement,
+      targetLevel: Math.max(currentLevel, worldHackRequirement),
+      shouldLevelNow: currentLevel < worldHackRequirement,
+      reason: `Red Pill owned; level toward hacking ${worldHackRequirement} for w0r1d_d43m0n.`,
     };
   }
 
@@ -369,10 +375,21 @@ function getProgressionHackTarget(state, currentLevel) {
   }
 
   if (state.hasRedPill) {
-    return Math.max(currentLevel, WORLD_DAEMON_HACKING_REQUIREMENT);
+    return Math.max(currentLevel, Number(state.requiredHack) || 0);
   }
 
   return Math.max(currentLevel, getNextFactionHackTarget(currentLevel));
+}
+
+function getWorldDaemonHackingRequirement(ns, world = null) {
+  const liveWorld = world ?? getWorldDaemonStatus(ns);
+  const required = Number(liveWorld?.requiredHack);
+
+  if (Number.isFinite(required) && required > 0 && required < Number.MAX_SAFE_INTEGER) {
+    return required;
+  }
+
+  return CONFIG.bn4Plan?.minHackingLevel ?? DAEDALUS_HACKING_REQUIREMENT;
 }
 
 function getNextFactionHackTarget(currentLevel) {

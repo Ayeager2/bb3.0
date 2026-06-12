@@ -134,7 +134,7 @@ function printRuntimeLine(ns, c, runtimeStats) {
             `${runtimeStats.expOverdrive.status} | ` +
             `workers ${runtimeStats.expOverdrive.activeProcesses}/` +
             `${runtimeStats.expOverdrive.maxProcesses} | ` +
-            `threads ${runtimeStats.expOverdrive.threads} | ` +
+            `threads ${runtimeStats.expOverdrive.totalThreads ?? runtimeStats.expOverdrive.threads ?? 0} | ` +
             `grow ${(runtimeStats.expOverdrive.growRatio * 100).toFixed(0)}%`
         );
     }

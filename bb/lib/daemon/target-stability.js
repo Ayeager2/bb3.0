@@ -1,6 +1,8 @@
-//lib/daemon/target-stability.js
-const DEFAULT_MIN_HOLD_MS = 5 * 60 * 1000;
 import { logEvent } from "/lib/daemon/telemetry.js";
+
+// Legacy helper retained for target-hold experiments. Current target authority
+// lives in decision.js plus UHM lane target snapshots.
+const DEFAULT_MIN_HOLD_MS = 5 * 60 * 1000;
 
 export function applyTargetStability(ns, previousDecision, nextDecision, options = {}) {
     const minHoldMs = options.minimumHoldMs ?? DEFAULT_MIN_HOLD_MS;
@@ -115,7 +117,7 @@ export function applyTargetStability(ns, previousDecision, nextDecision, options
 export function formatDuration(ms) {
     const total = Math.floor(ms / 1000);
     const m = Math.floor(total / 60);
-const s = total % 60;
+    const s = total % 60;
 
     return `${m}m ${s}s`;
 }

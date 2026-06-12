@@ -19,6 +19,7 @@ Starts the central automation brain.
 What it does:
 
 ```txt
+- performs startup state refresh first
 - chooses money / exp / progression / reset / destroy-node mode
 - starts and stops services
 - chooses targets
@@ -318,7 +319,7 @@ Contains:
 - money/EXP/augmentation calculations
 - service status
 - reset plan
-- session stats
+- session stats updated by daemon state builder
 - telemetry counts
 ```
 
@@ -793,6 +794,29 @@ Extra timing info appears as:
 
 ---
 
+## Server Ticker
+
+```txt
+cat /data/ui/server-ticker.txt
+```
+
+Written by:
+
+```txt
+/economy/server-purchaser-service.js
+```
+
+Contains:
+
+```txt
+- latest cloud server purchase/upgrade action
+- server name and RAM
+- fleet count and RAM range
+- server upgrade cap reason
+```
+
+---
+
 ## Event Log
 
 ```txt
@@ -1047,7 +1071,6 @@ What they do:
 /tools/dashboard-command-runner.js
 /tools/network-topology-writer.js
 /tools/daemon-reasoning-writer.js
-/tools/daemon-session-service.js
 /tools/daemon-telemetry-service.js
 ```
 
@@ -1059,9 +1082,17 @@ What they do:
 - accept dashboard commands
 - write network topology
 - write daemon reasoning summaries
-- track session stats
 - track telemetry/history
 ```
+
+Retired:
+
+```txt
+/tools/daemon-session-service.js
+```
+
+Session stats now update inside `/lib/daemon/state.js`. The retired service
+should not be running because it can race-write `/data/daemon-state.txt`.
 
 ---
 
@@ -1121,6 +1152,9 @@ killall
 run daemon.js
 ```
 
+`daemon.js` now removes stale `/data/*.txt` daemon state on startup, so the
+separate dev-refresh command is only needed for manual cleanup/debugging.
+
 For money-first behavior, check:
 
 ```txt
@@ -1137,6 +1171,24 @@ Look for:
 
 If cloud slots are still missing, `expRamPercent` should be `0`.
 If slots are full and only RAM upgrades remain, `expRamPercent` should usually be above `0` unless the next upgrade is already affordable.
+
+For service-audit checks:
+
+```txt
+ps
+cat /data/daemon-state.txt
+cat /data/ui/server-ticker.txt
+cat /data/ui/dashboard-command-status.txt
+```
+
+Expected:
+
+```txt
+- /tools/daemon-session-service.js is not running
+- daemon-state has sessionStats
+- dashboard command status reflects real launch success/failure
+- server ticker has latest fleet summary
+```
 
 For forced leveling, run:
 

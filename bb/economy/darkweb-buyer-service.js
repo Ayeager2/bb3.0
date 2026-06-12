@@ -208,41 +208,47 @@ function getCost(ns, item) {
     if (item.action === "tor") return item.cost;
 
     try {
-        return ns.singularity.getDarkwebProgramCost(item.name);
+        const cost = ns.singularity?.getDarkwebProgramCost?.(item.name);
+        if (Number.isFinite(cost)) return cost;
     } catch {
         // fallback below
     }
 
     try {
-        return ns.getDarkwebProgramCost(item.name);
+        if (typeof ns.getDarkwebProgramCost === "function") {
+            const cost = ns.getDarkwebProgramCost(item.name);
+            if (Number.isFinite(cost)) return cost;
+        }
     } catch {
         return Infinity;
     }
+
+    return Infinity;
 }
 
 function buyItem(ns, item) {
     if (item.action === "tor") {
         try {
-            return ns.singularity.purchaseTor();
+            if (ns.singularity?.purchaseTor?.()) return true;
         } catch {
             // fallback below
         }
 
         try {
-            return ns.purchaseTor();
+            return typeof ns.purchaseTor === "function" && ns.purchaseTor();
         } catch {
             return false;
         }
     }
 
     try {
-        return ns.singularity.purchaseProgram(item.name);
+        if (ns.singularity?.purchaseProgram?.(item.name)) return true;
     } catch {
         // fallback below
     }
 
     try {
-        return ns.purchaseProgram(item.name);
+        return typeof ns.purchaseProgram === "function" && ns.purchaseProgram(item.name);
     } catch {
         return false;
     }

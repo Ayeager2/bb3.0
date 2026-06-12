@@ -28,6 +28,7 @@ Owns:
 * strategic mode selection
 * phase progression
 * target authority
+* startup state refresh
 * service policy
 * reset planning
 * state generation
@@ -63,10 +64,19 @@ Responsible for:
 
 * starting services
 * stopping blocked services
+* stopping retired services that opt into `stopWhenBlocked`
 * completion-file gating
 * cooldowns
 * duplicate prevention
 * daemon policy enforcement
+
+Disabled services are normally ignored. If a retired service might already be
+running and must be stopped, keep it in the managed list with:
+
+```txt
+enabled: false
+stopWhenBlocked: true
+```
 
 ---
 
@@ -189,6 +199,31 @@ exp-weaken.js
 ```
 
 The endgame leveling path must not special-case into hack-only execution. If target money or security drifts, the sprint math should repair it with grow/weaken work while still gaining EXP.
+
+Each EXP worker process should stay capped to a reasonable thread count. Fleet
+saturation should come from many logical H/G/W workers, not one huge process per
+server.
+
+---
+
+# STATE OWNERSHIP RULE
+
+`/data/daemon-state.txt` is owned by `daemon.js` and `/lib/daemon/state.js`.
+
+Every `daemon.js` startup performs a dev state refresh before reading cached
+state or launching services. This keeps `/data/*.txt` daemon/service/runtime
+state from leaking across runs.
+
+Helper services may read daemon state, but should not write it back. Session
+tracking is now updated during state generation, not by
+`/tools/daemon-session-service.js`.
+
+If a helper needs dashboard or diagnostic output, write a dedicated file under:
+
+```txt
+/data/
+/data/ui/
+```
 
 ---
 

@@ -105,7 +105,7 @@ function formatMoney(value) {
 
 function formatNumber(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return "∞";
+    if (!Number.isFinite(n)) return "Infinity";
     if (Math.abs(n) >= 1e12) return (n / 1e12).toFixed(2) + "t";
     if (Math.abs(n) >= 1e9) return (n / 1e9).toFixed(2) + "b";
     if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + "m";

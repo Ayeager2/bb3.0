@@ -106,8 +106,8 @@ function startFactionWork(ns, faction, workType) {
                 return true;
             }
         } catch (error) {
-    console.error(error);
-}
+            console.error(error);
+        }
     }
 
     return false;
@@ -167,14 +167,14 @@ function stopCurrentWork(ns) {
     try {
         return ns.singularity.stopAction();
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 
     try {
         return ns.singularity.stopWork();
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 
     return false;
 }
@@ -192,6 +192,6 @@ function refreshAugmentationCache(ns) {
     try {
         ns.run("/tools/augmentation-data-builder.js", 1, "--force");
     } catch (error) {
-    console.error(error);
-}
+        console.error(error);
+    }
 }

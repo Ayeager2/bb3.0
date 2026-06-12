@@ -6,6 +6,8 @@ import {
 } from "/lib/uhm/config.js";
 import { safeServerExists, isUsableTarget } from "/lib/uhm/safe.js";
 
+// Legacy EXP engine. runner.js now uses exp-sprint.js so EXP always runs
+// balanced hack/grow/weaken workers instead of weaken/grow-only saturation.
 const DEFAULT_MAX_THREADS_PER_PROCESS = maxExpThreadsPerProcess;
 const DEFAULT_MAX_PROCESSES_PER_HOST = 5000;
 

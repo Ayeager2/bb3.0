@@ -5,6 +5,7 @@ import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const AUGMENTATION_EVENTS_FILE = "/data/augmentation-events.txt";
 const AUGMENTATION_BUYER_STATE_FILE = "/data/augmentation-buyer-state.txt";
+const DEFAULT_RESERVE_MONEY = 1_000_000;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -13,7 +14,7 @@ export async function main(ns) {
     const flags = ns.flags([
         ["refresh", 15000],
         ["max-price", 1_000_000_000_000],
-        ["reserve", 1_000_000_000],
+        ["reserve", DEFAULT_RESERVE_MONEY],
 
         ["use-policy-reserve", "true"],
 
@@ -23,7 +24,7 @@ export async function main(ns) {
 
     const refreshMs = Number(flags.refresh) || 15000;
     const maxPrice = Number(flags["max-price"]) || 1_000_000_000_000;
-    const fallbackReserve = Number(flags.reserve) || 1_000_000_000;
+    const fallbackReserve = Number(flags.reserve) || DEFAULT_RESERVE_MONEY;
 
     const usePolicyReserve =
         String(flags["use-policy-reserve"]).toLowerCase() !== "false";

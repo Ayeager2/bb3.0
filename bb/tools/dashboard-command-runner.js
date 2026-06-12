@@ -74,7 +74,11 @@ async function handleCommand(ns, command) {
 
     try {
         if (name === "refreshTopology") {
-            ns.run("/tools/network-topology-writer.js", 1, "--once");
+            const pid = ns.run("/tools/network-topology-writer.js", 1, "--once");
+            if (pid === 0) {
+                fail(ns, command, "Failed to start topology refresh.");
+                return;
+            }
 
             complete(ns, command, "Triggered topology refresh.", "success");
             return;
@@ -93,7 +97,11 @@ async function handleCommand(ns, command) {
         }
 
         if (name === "debugSnapshot") {
-            ns.run("/tools/dashboard-state-writer.js", 1, "--once");
+            const pid = ns.run("/tools/dashboard-state-writer.js", 1, "--once");
+            if (pid === 0) {
+                fail(ns, command, "Failed to start dashboard state snapshot.");
+                return;
+            }
 
             complete(ns, command, "Triggered dashboard state snapshot.", "success");
             return;

@@ -84,11 +84,15 @@ export async function main(ns) {
 
 function getHomeRamUpgradeCost(ns) {
     try {
-        return ns.singularity.getUpgradeHomeRamCost();
+        const cost = ns.singularity?.getUpgradeHomeRamCost?.();
+        if (Number.isFinite(cost)) return cost;
     } catch { }
 
     try {
-        return ns.getUpgradeHomeRamCost();
+        if (typeof ns.getUpgradeHomeRamCost === "function") {
+            const cost = ns.getUpgradeHomeRamCost();
+            if (Number.isFinite(cost)) return cost;
+        }
     } catch { }
 
     return Infinity;
@@ -96,11 +100,11 @@ function getHomeRamUpgradeCost(ns) {
 
 function upgradeHomeRam(ns) {
     try {
-        return ns.singularity.upgradeHomeRam();
+        if (ns.singularity?.upgradeHomeRam?.()) return true;
     } catch { }
 
     try {
-        return ns.upgradeHomeRam();
+        return typeof ns.upgradeHomeRam === "function" && ns.upgradeHomeRam();
     } catch { }
 
     return false;

@@ -32,13 +32,15 @@ export function runLane(ns, lane, runtimeStats) {
 
     runtimeStats.expOverdrive = {
       active: true,
-      engine: result.engine ?? 'hack-sprint',
+      engine: result.engine ?? "hack-sprint",
       target: lane.target,
-      purpose: lane.expPurpose ?? 'background',
+      purpose: lane.expPurpose ?? "background",
       launched: result.launched,
       threads: result.threads,
       status: result.status,
       activeProcesses: result.activeProcesses ?? 0,
+      activeThreads: result.activeThreads ?? 0,
+      totalThreads: result.totalThreads ?? result.threads ?? 0,
       maxProcesses: result.maxProcesses ?? 0,
       maxThreadsPerProcess: result.maxThreadsPerProcess ?? 0,
       growRatio: Number.isFinite(result.growRatio) ? result.growRatio : 0,

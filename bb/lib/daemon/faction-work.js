@@ -98,7 +98,7 @@ function readJson(ns, file) {
 
 function formatNumber(value) {
     const n = Number(value);
-    if (!Number.isFinite(n)) return "∞";
+    if (!Number.isFinite(n)) return "Infinity";
     if (Math.abs(n) >= 1_000_000_000_000) return (n / 1_000_000_000_000).toFixed(2) + "t";
     if (Math.abs(n) >= 1_000_000_000) return (n / 1_000_000_000).toFixed(2) + "b";
     if (Math.abs(n) >= 1_000_000) return (n / 1_000_000).toFixed(2) + "m";

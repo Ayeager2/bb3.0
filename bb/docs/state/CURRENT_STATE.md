@@ -53,10 +53,12 @@ Implemented:
 - bootstrap formula cheat-sheet builder
 - bootstrap mixed H/G/W plan
 - UHM leveling/endgame H/G/W sprint cycle
+- session stats owned by daemon state builder
 - augmentation timing score
 - darkweb purchasing
 - distributed share execution
 - stale share-worker cleanup
+- dashboard/server ticker command telemetry fixes
 ```
 
 ---
@@ -102,6 +104,8 @@ After Formulas.exe:
 - daemon/dashboard state exposes augmentationTiming
 - share-worker cleanup
 - reset planner foundation
+- daemon-owned sessionStats with no separate state writer
+- daemon startup refreshes stale `/data/*.txt` state every run
 ```
 
 ---
@@ -117,6 +121,7 @@ After Formulas.exe:
 - dashboard reasoning bridge constants
 - bootstrap cheat-sheet flow still needs a live fresh-start test
 - UHM final-leveling H/G/W mix still needs live process-list verification
+- stale checked-in `lib/daemon/daemon-state.txt` should be removed after explicit approval
 ```
 
 ---
@@ -132,6 +137,8 @@ After Formulas.exe:
 /data/darkweb-buyer-complete.txt
 /data/bootstrap-plan.txt
 /data/ui/server-ticker.txt
+/data/ui/daemon-reasoning.txt
+/data/ui/daemon-reasoning-history.txt
 ```
 
 Future:
@@ -196,11 +203,16 @@ UHM/share.js
 service-manager.js
     owns:
         startup
+        shutdown of retired stopWhenBlocked services
         cooldowns
         completion gating
         duplicate prevention
         policy enforcement
 ```
+
+`/tools/daemon-session-service.js` is retired. Session stats are updated inside
+`/lib/daemon/state.js` during `buildGlobalState()` so no helper service writes
+back into `/data/daemon-state.txt`.
 
 ---
 
@@ -258,4 +270,18 @@ Verify bridge constants before relying on daemon reasoning UI:
 ```txt
 OUT_REASONING_FILE
 BITBURNER_REASONING_FILE
+```
+
+## Service Audit Notes
+
+Current service-audit cleanup:
+
+```txt
+- daemon-session-service disabled to avoid daemon-state race writes
+- faction-donation-service imports logPurchase
+- dashboard-command-runner reports failed ns.run launches
+- refresh-augmentation-plans waits for augmentation-data-builder
+- server ticker RAM lookup handles server/serverName/item
+- daemon HUD destroy-stage logic matches destroy-node-service
+- daemon.js performs startup state refresh before cached state/service launch
 ```

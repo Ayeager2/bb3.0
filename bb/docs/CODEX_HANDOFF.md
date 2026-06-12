@@ -30,23 +30,33 @@ Signs that Bitburner is still running old files:
 
 Updated local project files:
 
-- `/tools/build-bootstrap-cheatsheet.js`
-- `/lib/bootstrap/formula-cheatsheet.js`
-- `/bootstrap-daemon.js`
-- `/workers/tiny-worker.js`
-- `/tools/bootstrap-money.js`
+- `/controllers/uhm.js`
+- `/lib/daemon/services.js`
+- `/lib/daemon/state.js`
+- `/lib/daemon/faction-progression.js`
+- `/lib/daemon/progression-buyer.js`
 - `/lib/uhm/modes/exp-sprint.js`
+- `/tools/faction-donation-service.js`
+- `/tools/dashboard-command-runner.js`
+- `/tools/daemon-hud.js`
+- `/tools/refresh-augmentation-plans.js`
+- `/economy/server-purchaser-service.js`
 
 What changed:
 
-- Late-game Formulas.exe can generate a bootstrap cheat sheet for the next fresh start.
-- Bootstrap daemon now writes `/data/bootstrap-plan.txt`.
-- Bootstrap workers can run explicit hack/grow/weaken roles.
-- Bootstrap launch logic repeats a logical H/G/W cycle instead of one oversized one-role process.
-- `/tools/bootstrap-money.js` now uses `/workers/tiny-worker.js`; the old `/workers/bootstrap-worker.js` file does not exist.
+- Daemon session stats now update inside `/lib/daemon/state.js`; `/tools/daemon-session-service.js` is retired/disabled so it cannot race-write `/data/daemon-state.txt`.
+- `daemon.js` now performs the dev state refresh on every startup before reading state or launching services.
+- Service manager can still stop retired services that set `stopWhenBlocked`.
+- World-daemon hacking requirement now comes from the live `w0r1d_d43m0n` server instead of hardcoded `3000`.
+- Progression/darkweb/home upgrade buyers are Bitburner v3 API compatible.
 - UHM EXP sprint no longer makes leveling hack-only.
 - Final leveling/endgame EXP sprint should launch `exp-hack.js`, `exp-grow.js`, and `exp-weaken.js` together.
 - EXP sprint rebalances stale single-role worker walls.
+- Faction donation service now imports `logPurchase`, preventing a success-path crash.
+- Dashboard command runner now reports failed command script launches instead of false success.
+- Augmentation plan refresh waits for the augmentation data builder instead of blindly sleeping one second.
+- Daemon HUD destroy-stage logic matches the actual destroy service: Red Pill + root + required hacking.
+- Augmentation buyer reserve is 1m, not 100m/1b, when policy reserve is disabled.
 
 ## Verification Commands In Bitburner
 
@@ -54,7 +64,6 @@ After syncing the updated project files into the folder Bitburner actually watch
 
 ```txt
 killall
-run /tools/dev-refresh-state.js
 run daemon.js
 ```
 
@@ -77,20 +86,30 @@ Use these to confirm the right in-game files were copied:
 
 ```txt
 grep buildSprintCycle /lib/uhm/modes/exp-sprint.js
-grep bootstrap-plan /bootstrap-daemon.js
-grep BOOTSTRAP_FORMULA_CHEATSHEET /lib/bootstrap/formula-cheatsheet.js
-grep build-bootstrap-cheatsheet /tools/build-bootstrap-cheatsheet.js
+grep daemon-session /lib/daemon/services.js
+grep getWorldDaemonStatus /lib/daemon/faction-progression.js
+grep waitForProcess /tools/refresh-augmentation-plans.js
+grep logPurchase /tools/faction-donation-service.js
+grep DEFAULT_RESERVE_MONEY /tools/augmentation-buyer-service.js
 ```
 
 If any command has no match, that file is still old or copied to the wrong Bitburner path.
 
 ## Next Debug Target
 
-Once the correct folder is synced, if leveling/endgame still collapses into hack-only, inspect:
+Once the correct folder is synced, restart cleanly:
+
+```txt
+killall
+run daemon.js
+```
+
+`daemon.js` performs the same refresh that `/tools/dev-refresh-state.js` used to require manually. Then inspect:
 
 ```txt
 tail /controllers/uhm.js
 ps
+cat /data/daemon-state.txt
 ```
 
 Expected process mix:
@@ -100,3 +119,5 @@ Expected process mix:
 /workers/exp-grow.js
 /workers/exp-weaken.js
 ```
+
+Also verify `/data/daemon-state.txt` has live `sessionStats` without `/tools/daemon-session-service.js` running.

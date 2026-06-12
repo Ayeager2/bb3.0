@@ -1,11 +1,11 @@
-import { homeReserveRam } from "/lib/uhm/config.js";
+import { homeReserveRam, maxExpThreadsPerProcess } from "/lib/uhm/config.js";
 import { safeServerExists, isUsableTarget } from "/lib/uhm/safe.js";
 
 const EXP_HACK = "/workers/exp-hack.js";
 const EXP_GROW = "/workers/exp-grow.js";
 const EXP_WEAKEN = "/workers/exp-weaken.js";
 
-const DEFAULT_MAX_THREADS_PER_PROCESS = 1000;
+const DEFAULT_MAX_THREADS_PER_PROCESS = maxExpThreadsPerProcess;
 const DEFAULT_MAX_PROCESSES_PER_HOST = 5000;
 
 export function runExpSprint(ns, target, hosts, options = {}) {
@@ -34,11 +34,11 @@ export function runExpSprint(ns, target, hosts, options = {}) {
     let threads = 0;
 
     for (const host of hosts) {
-        if (active + launched >= maxProcesses) break;
+        if (active.processes + launched >= maxProcesses) break;
         if (!safeServerExists(ns, host.host)) continue;
 
         const hostActive = countActiveSprintWorkersOnHost(ns, host.host);
-        if (hostActive >= maxProcessesPerHost) continue;
+        if (hostActive.processes >= maxProcessesPerHost) continue;
 
         const maxRam = ns.getServerMaxRam(host.host);
         const usedRam = ns.getServerUsedRam(host.host);
@@ -53,8 +53,8 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             cycle,
             freeRam,
             maxThreadsPerProcess,
-            maxProcessesRemaining: maxProcesses - active - launched,
-            maxProcessesForHost: maxProcessesPerHost - hostActive,
+            maxProcessesRemaining: maxProcesses - active.processes - launched,
+            maxProcessesForHost: maxProcessesPerHost - hostActive.processes,
         });
 
         launched += launchResult.launched;
@@ -62,10 +62,10 @@ export function runExpSprint(ns, target, hosts, options = {}) {
     }
 
     return result(
-        launched > 0 ? "EXP_SPRINT" : active > 0 ? "EXP_RUNNING" : "NO_RAM",
+        launched > 0 ? "EXP_SPRINT" : active.processes > 0 ? "EXP_RUNNING" : "NO_RAM",
         launched,
         threads,
-        active + launched,
+        active.processes + launched,
         {
             engine: "hgw-sprint",
             growRatio: 0,
@@ -74,6 +74,8 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             maxThreadsPerProcess,
             maxProcessesPerHost,
             purpose,
+            activeThreads: active.threads,
+            totalThreads: active.threads + threads,
         }
     );
 }
@@ -202,24 +204,32 @@ function stopStaleSprintWorkers(ns, host, target, cycle) {
 }
 
 function countActiveSprintWorkers(ns, hosts) {
-    let count = 0;
+    let processes = 0;
+    let threads = 0;
 
     for (const host of hosts) {
-        count += countActiveSprintWorkersOnHost(ns, host.host);
+        const hostCount = countActiveSprintWorkersOnHost(ns, host.host);
+        processes += hostCount.processes;
+        threads += hostCount.threads;
     }
 
-    return count;
+    return { processes, threads };
 }
 
 function countActiveSprintWorkersOnHost(ns, host) {
     try {
-        return ns.ps(host).filter(p =>
+        const procs = ns.ps(host).filter(p =>
             sameScript(p.filename, EXP_HACK) ||
             sameScript(p.filename, EXP_GROW) ||
             sameScript(p.filename, EXP_WEAKEN)
-        ).length;
+        );
+
+        return {
+            processes: procs.length,
+            threads: procs.reduce((sum, proc) => sum + (Number(proc.threads) || 0), 0),
+        };
     } catch {
-        return 0;
+        return { processes: 0, threads: 0 };
     }
 }
 

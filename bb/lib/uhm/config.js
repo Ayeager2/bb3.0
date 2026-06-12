@@ -30,6 +30,6 @@ export const homeReserveRam = 64;
 export const maxBatchesPerCycle = 25;
 export const cycleDelayMs = 1000;
 
-export const maxWorkerThreadsPerProcess = 1000;
-export const maxPrepThreadsPerProcess = 1000;
-export const maxExpThreadsPerProcess = 1000;
+export const maxWorkerThreadsPerProcess = 256;
+export const maxPrepThreadsPerProcess = 256;
+export const maxExpThreadsPerProcess = 256;

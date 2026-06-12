@@ -23,7 +23,16 @@
 10. Test Daedalus NeuroFlux donation-unlock loop:
    - before Red Pill, buy Daedalus NeuroFlux until projected favor reaches donation unlock
    - projection should come from formulas.reputation diagnostics
-   - after projected favor is ready, donate for Red Pill rep, buy Red Pill first, then continue post-Red-Pill 3000/destroy-node path
+   - after projected favor is ready, donate for Red Pill rep, buy Red Pill first, then continue post-Red-Pill world-daemon readiness / destroy-node path
+11. Live service-audit verification after next daemon restart:
+   - confirm `run daemon.js` prints startup DEV REFRESH removals before services start
+   - confirm /tools/daemon-session-service.js is not running
+   - confirm /data/daemon-state.txt still updates sessionStats
+   - confirm faction donation no longer crashes on successful donation
+   - confirm dashboard commands report failure if helper scripts cannot start
+   - confirm /tools/refresh-augmentation-plans.js waits for augmentation-data-builder
+12. Remove stale checked-in runtime state after explicit approval:
+   - /lib/daemon/daemon-state.txt appears to contain old joesguns/3000 data
 ```
 
 # NEW TODO - 2026-06-07
@@ -60,7 +69,7 @@ Server purchaser / dashboard ticker:
   - buyer diagnostics include repeatable/favorLoop metadata
   - user decided not to broaden BitRunners NFG after Daedalus join
   - correction: Red Pill remains the first Daedalus purchase priority and masks other Daedalus candidates while unowned
-  - post-Red-Pill logic remains the normal level-to-3000 / destroy world daemon path
+  - post-Red-Pill logic remains the normal level-to-live-world-daemon-requirement / destroy world daemon path
 
 - Pre-Red-Pill Daedalus NeuroFlux donation-unlock loop:
   - Daedalus NeuroFlux can now be selected before Red Pill only while projected Daedalus favor is below donation unlock
@@ -153,6 +162,28 @@ Server purchaser / dashboard ticker:
 - Backdoor progression service now retries rooting continuously:
   - progression servers are rooted before backdoor readiness check
   - fixed stall where unrooted faction servers never became recommended
+
+- Daemon/UHM and daemon-managed service audit:
+  - session stats moved into /lib/daemon/state.js
+  - /tools/daemon-session-service.js disabled/retired to avoid racing /data/daemon-state.txt
+  - service manager can still stop retired services with stopWhenBlocked
+  - world-daemon hacking requirement uses live w0r1d_d43m0n required level
+  - faction-donation-service imports logPurchase
+  - dashboard-command-runner reports ns.run failure instead of false success
+  - refresh-augmentation-plans waits for augmentation-data-builder
+  - server ticker RAM lookup handles server/serverName/item
+  - daemon-hud destroy-stage display no longer requires backdoor when destroy service does not
+  - broad node --check sweep passed for daemon, UHM, services, economy, tools, and workers
+
+- Daemon startup refresh:
+  - daemon.js now calls refreshDaemonState on every startup
+  - manual run /tools/dev-refresh-state.js is no longer required before run daemon.js
+  - startup refresh happens after killing duplicate daemon instances and before reading cached state or launching services
+
+- Augmentation buyer reserve corrected:
+  - daemon-managed /tools/augmentation-buyer-service.js now uses --reserve 1_000_000
+  - the service default fallback reserve is also 1_000_000
+  - this should display as Reserve: 1.000m in the buyer tail
 ```
 
 # CURRENT FORMULAS TRANSITION STATUS
@@ -347,6 +378,6 @@ Before Red Pill:
 
 After Red Pill:
     enter destroy-node / kill-node mode
-    push hacking to 3000
+    push hacking to live w0r1d_d43m0n required hacking level
     hack w0r1d_d43m0n
 ```
