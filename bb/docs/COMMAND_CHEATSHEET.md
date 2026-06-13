@@ -283,15 +283,16 @@ Daemon service:
 What it does:
 
 ```txt
-- studies Computer Science at Rothman University until hacking 100
-- then does Slums/crime work for bootstrap money and physical stats
+- BN1/BN4 only
+- studies Computer Science at Rothman University until hacking 20
+- then goes to Slums and shoplifts for bootstrap money until faction work is ready
 - stops once daemon policy allows faction work or a faction work plan is active
 ```
 
 Useful manual test:
 
 ```txt
-run /tools/fresh-start-life-service.js --study-until-hacking 100 --crime Mug
+run /tools/fresh-start-life-service.js --study-until-hacking 20 --crime Shoplift --bitnodes 1,4
 ```
 
 ---

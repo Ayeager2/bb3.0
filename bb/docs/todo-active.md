@@ -184,6 +184,14 @@ Server purchaser / dashboard ticker:
   - daemon-managed /tools/augmentation-buyer-service.js now uses --reserve 1_000_000
   - the service default fallback reserve is also 1_000_000
   - this should display as Reserve: 1.000m in the buyer tail
+
+- BN1/BN4 fresh-start life bridge corrected:
+  - /tools/fresh-start-life-service.js is the active early Singularity bridge
+  - daemon starts it without pre-blocking on requiresSingularity so the service can self-diagnose
+  - /data/fresh-start-life-state.txt now reports BN gate and Singularity API availability
+  - studies Computer Science at Rothman University until hacking 20
+  - then goes to Slums and runs Shoplift for quick cash until faction handoff is ready
+  - old crime-bootstrap service is retired so it cannot compete with the study/shoplift loop
 ```
 
 # CURRENT FORMULAS TRANSITION STATUS

@@ -3,6 +3,12 @@ const STATE_FILE = "/data/fresh-start-life-state.txt";
 const COMPLETE_FILE = "/data/fresh-start-life-complete.txt";
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 const FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
+const DEFAULT_REFRESH_MS = 15000;
+const DEFAULT_STUDY_UNTIL_HACKING = 20;
+const DEFAULT_CRIME = "Shoplift";
+const DEFAULT_MIN_CRIME_CHANCE = 0;
+const DEFAULT_STOP_MONEY = 10_000_000;
+const DEFAULT_STOP_HOME_RAM = 128;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -10,28 +16,61 @@ export async function main(ns) {
 
     const flags = ns.flags([
         ["refresh", 15000],
-        ["study-until-hacking", 100],
-        ["crime", "Mug"],
-        ["crime-min-chance", 0.45],
+        ["study-until-hacking", 20],
+        ["crime", "Shoplift"],
+        ["crime-min-chance", 0],
         ["stop-money", 10_000_000],
         ["stop-home-ram", 128],
         ["focus", false],
+        ["bitnodes", "1,4"],
     ]);
 
-    const refreshMs = Number(flags.refresh) || 15000;
-    const studyUntilHacking = Number(flags["study-until-hacking"]) || 100;
-    const fallbackCrime = String(flags.crime || "Mug");
-    const minCrimeChance = Number(flags["crime-min-chance"]) || 0.45;
-    const stopMoney = Number(flags["stop-money"]) || 10_000_000;
-    const stopHomeRam = Number(flags["stop-home-ram"]) || 128;
+    const refreshMs = positiveNumber(flags.refresh, DEFAULT_REFRESH_MS);
+    const studyUntilHacking = positiveNumber(flags["study-until-hacking"], DEFAULT_STUDY_UNTIL_HACKING);
+    const fallbackCrime = String(flags.crime || DEFAULT_CRIME);
+    const minCrimeChance = nonNegativeNumber(flags["crime-min-chance"], DEFAULT_MIN_CRIME_CHANCE);
+    const stopMoney = positiveNumber(flags["stop-money"], DEFAULT_STOP_MONEY);
+    const stopHomeRam = positiveNumber(flags["stop-home-ram"], DEFAULT_STOP_HOME_RAM);
     const focus = asBool(flags.focus);
+    const allowedBitNodes = parseBitNodes(flags.bitnodes);
+    const bitNode = getCurrentBitNode(ns);
+    const singularity = getSingularityDiagnostics(ns);
+
+    writeState(ns, {
+        status: "starting",
+        stage: "startup",
+        bitNode,
+        allowedBitNodes: [...allowedBitNodes],
+        singularity,
+        studyUntilHacking,
+        fallbackCrime,
+        minCrimeChance,
+        stopMoney,
+        stopHomeRam,
+        reason: "Fresh-start life service started.",
+    });
 
     if (!hasSingularity(ns)) {
         writeState(ns, {
             status: "unavailable",
+            stage: "singularity-gate",
+            bitNode,
+            allowedBitNodes: [...allowedBitNodes],
+            singularity,
             reason: "Singularity API unavailable.",
         });
         ns.tprint("[FRESH START] Singularity API unavailable.");
+        return;
+    }
+
+    if (!allowedBitNodes.has(bitNode)) {
+        complete(ns, {
+            status: "skipped",
+            stage: "bitnode-gate",
+            bitNode,
+            allowedBitNodes: [...allowedBitNodes],
+            reason: `Fresh-start life service is only enabled for BN${[...allowedBitNodes].join("/BN")}.`,
+        });
         return;
     }
 
@@ -75,6 +114,7 @@ export async function main(ns) {
                 studyUntilHacking,
                 money,
                 homeRam,
+                bitNode,
                 currentWork: summarizeWork(getCurrentWork(ns)),
                 handoff,
                 reason:
@@ -92,6 +132,7 @@ export async function main(ns) {
         writeState(ns, {
             status: "crime",
             stage: "slums",
+            bitNode,
             hacking,
             studyUntilHacking,
             money,
@@ -102,6 +143,7 @@ export async function main(ns) {
             reason: `Doing ${crime.name} until faction handoff is ready.`,
         });
 
+        goToSlums(ns);
         const duration = commitCrime(ns, crime.name, focus);
 
         if (duration <= 0) {
@@ -162,6 +204,9 @@ function startStudy(ns, focus) {
 }
 
 function chooseCrime(ns, fallbackCrime, minChance) {
+    const fallback = getCrimeChoice(ns, fallbackCrime);
+    if (fallback.chance >= minChance) return fallback;
+
     const crimes = [
         "Shoplift",
         "Rob Store",
@@ -180,7 +225,7 @@ function chooseCrime(ns, fallbackCrime, minChance) {
         .filter(choice => choice.chance >= minChance)
         .sort((a, b) => b.score - a.score);
 
-    return choices[0] ?? getCrimeChoice(ns, fallbackCrime);
+    return choices[0] ?? fallback;
 }
 
 function getCrimeChoice(ns, crime) {
@@ -249,11 +294,38 @@ function complete(ns, state) {
 }
 
 function hasSingularity(ns) {
+    const diagnostics = getSingularityDiagnostics(ns);
     return !!(
-        ns.singularity?.universityCourse &&
-        ns.singularity?.commitCrime &&
-        ns.singularity?.getCurrentWork
+        diagnostics.universityCourse &&
+        diagnostics.commitCrime &&
+        diagnostics.getCurrentWork
     );
+}
+
+function getSingularityDiagnostics(ns) {
+    return !!(
+        ns.singularity
+    )
+        ? {
+            hasSingularityObject: true,
+            universityCourse: typeof ns.singularity.universityCourse === "function",
+            commitCrime: typeof ns.singularity.commitCrime === "function",
+            getCrimeStats: typeof ns.singularity.getCrimeStats === "function",
+            getCrimeChance: typeof ns.singularity.getCrimeChance === "function",
+            getCurrentWork: typeof ns.singularity.getCurrentWork === "function",
+            travelToCity: typeof ns.singularity.travelToCity === "function",
+            goToLocation: typeof ns.singularity.goToLocation === "function",
+        }
+        : {
+            hasSingularityObject: false,
+            universityCourse: false,
+            commitCrime: false,
+            getCrimeStats: false,
+            getCrimeChance: false,
+            getCurrentWork: false,
+            travelToCity: false,
+            goToLocation: false,
+        };
 }
 
 function getCurrentWork(ns) {
@@ -301,6 +373,44 @@ function writeJson(ns, file, data) {
 
 function asBool(value) {
     return value === true || value === "true";
+}
+
+function goToSlums(ns) {
+    try {
+        travelToSector12(ns);
+        if (typeof ns.singularity.goToLocation === "function") {
+            ns.singularity.goToLocation("The Slums");
+        }
+    } catch {
+        // Crime APIs work without explicit location focus.
+    }
+}
+
+function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
+    } catch {
+        return 1;
+    }
+}
+
+function parseBitNodes(value) {
+    return new Set(
+        String(value ?? "1,4")
+            .split(",")
+            .map(x => Number(String(x).trim()))
+            .filter(x => Number.isFinite(x) && x > 0)
+    );
+}
+
+function positiveNumber(value, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) && number > 0 ? number : fallback;
+}
+
+function nonNegativeNumber(value, fallback) {
+    const number = Number(value);
+    return Number.isFinite(number) && number >= 0 ? number : fallback;
 }
 
 function formatMoney(ns, value) {

@@ -1,5 +1,7 @@
 // /tools/darknet-scout.js
+const DIAGNOSTIC_VERSION = 'darknet-scout-tail-report-v2';
 const DATA_FILE = '/data/darknet-scout.txt';
+const REPORT_FILE = '/data/darknet-scout-report.txt';
 const SCRIPT = '/tools/darknet-scout.js';
 
 /** @param {NS} ns **/
@@ -18,6 +20,8 @@ export async function main(ns) {
     ['once', true],
     ['child', false],
     ['origin', ''],
+    ['tail', true],
+    ['report', true],
   ]);
 
   const options = {
@@ -32,13 +36,20 @@ export async function main(ns) {
     once: asBool(flags.once),
     child: asBool(flags.child),
     origin: String(flags.origin ?? ''),
+    tail: asBool(flags.tail),
+    report: asBool(flags.report),
   };
+
+  if (options.tail && !options.child) openTail(ns);
 
   while (true) {
     const state = await buildDarknetScoutState(ns, options);
     const outFile = getOutputFile(ns, options);
 
     writeJson(ns, outFile, state);
+    if (options.report && !options.child) {
+      ns.write(REPORT_FILE, buildReport(ns, state, outFile, options), 'w');
+    }
 
     if (options.child) {
       await copyReportHome(ns, outFile);
@@ -59,6 +70,7 @@ async function buildDarknetScoutState(ns, options) {
     return {
       updatedAt: Date.now(),
       updatedAtText: new Date().toLocaleTimeString(),
+      diagnosticVersion: DIAGNOSTIC_VERSION,
       status: 'unavailable',
       start,
       reason: 'ns.dnet API not available. Buy/run DarkscapeNavigator.exe first.',
@@ -77,6 +89,7 @@ async function buildDarknetScoutState(ns, options) {
   return {
     updatedAt: Date.now(),
     updatedAtText: new Date().toLocaleTimeString(),
+    diagnosticVersion: DIAGNOSTIC_VERSION,
     status: 'ready',
     start,
     child: options.child,
@@ -182,8 +195,15 @@ async function inspectTarget(ns, host, depth, options) {
 
   if (record.authenticated && options.doStasis) {
     try {
-      const stasis = await ns.dnet.setStasisLink(true);
-      record.stasisResult = summarizeResult(stasis);
+      if (safeHostname(ns) === host) {
+        const stasis = await ns.dnet.setStasisLink(true);
+        record.stasisResult = summarizeResult(stasis);
+      } else {
+        record.stasisResult = {
+          success: false,
+          message: `Skipped stasis; scout is running on ${safeHostname(ns)}, not ${host}.`,
+        };
+      }
     } catch (error) {
       record.stasisError = String(error);
     }
@@ -191,7 +211,7 @@ async function inspectTarget(ns, host, depth, options) {
 
   ns.print(
     `[DNET] ${host} auth=${record.authenticated} ` +
-      `ram=${record.usedRam}/${record.maxRam} blocked=${record.blockedRam}`,
+    `ram=${record.usedRam}/${record.maxRam} blocked=${record.blockedRam}`,
   );
 
   return record;
@@ -329,6 +349,7 @@ function printSummary(ns, state, file, options) {
   ns.clearLog();
   ns.print('Darknet Scout');
   ns.print('='.repeat(60));
+  ns.print(`Diagnostic: ${DIAGNOSTIC_VERSION}`);
   ns.print(`Status: ${state.status}`);
   ns.print(`Start: ${state.start}`);
   ns.print(`Depth: ${options.maxDepth}`);
@@ -349,10 +370,94 @@ function printSummary(ns, state, file, options) {
   ns.print(`Records: ${state.totals.records}`);
   ns.print(`Authenticated: ${state.totals.authenticated}`);
   ns.print(`Child scouts: ${state.totals.childLaunches}`);
+  ns.print(`Report: ${REPORT_FILE}`);
+  ns.print(`Data: ${file}`);
 
-  //   if (options.once) {
-  //     ns.tprint(`[DNET] Scout complete. Found ${state.totals.records} records. Wrote ${file}`);
-  //   }
+  const best = state.results?.[0];
+  if (best) {
+    ns.print('-'.repeat(60));
+    ns.print(`${best.host}: online=${best.isOnline} auth=${best.authenticated}`);
+    ns.print(`model=${best.details?.modelId ?? 'unknown'} hint=${best.details?.passwordHint ?? 'none'}`);
+    ns.print(`ram=${best.usedRam}/${best.maxRam} blocked=${best.blockedRam}`);
+    if (best.reallocResult?.message) ns.print(`realloc: ${best.reallocResult.message}`);
+    if (best.stasisResult?.message) ns.print(`stasis: ${best.stasisResult.message}`);
+    if (best.stasisError) ns.print(`stasis error: ${best.stasisError}`);
+  }
+
+  if (options.once && !options.child) {
+    ns.tprint(`[DNET] ${DIAGNOSTIC_VERSION} complete. Found ${state.totals.records} records. Report: ${REPORT_FILE}`);
+  }
+}
+
+function buildReport(ns, state, dataFile, options) {
+  const lines = [];
+
+  lines.push('Darknet Scout Report');
+  lines.push('='.repeat(60));
+  lines.push(`Diagnostic: ${state.diagnosticVersion ?? DIAGNOSTIC_VERSION}`);
+  lines.push(`Updated: ${state.updatedAtText ?? new Date(state.updatedAt ?? Date.now()).toLocaleTimeString()}`);
+  lines.push(`Status: ${state.status}`);
+  lines.push(`Start: ${state.start}`);
+  lines.push(`Depth: ${options.maxDepth}`);
+  lines.push(`Data: ${dataFile}`);
+
+  if (state.status !== 'ready') {
+    lines.push('');
+    lines.push(state.reason ?? 'Darknet scout is not ready.');
+    lines.push(`DarkscapeNavigator.exe: ${state.hasNavigator ? 'YES' : 'NO'}`);
+    return lines.join('\n');
+  }
+
+  lines.push('');
+  lines.push('Totals');
+  lines.push('-'.repeat(60));
+  lines.push(`Records: ${state.totals.records}`);
+  lines.push(`Darknet servers: ${state.totals.darknetServers}`);
+  lines.push(`Online: ${state.totals.online}`);
+  lines.push(`Authenticated: ${state.totals.authenticated}`);
+  lines.push(`Errors: ${state.totals.errors}`);
+  lines.push(`Child scouts launched: ${state.totals.childLaunches}`);
+
+  lines.push('');
+  lines.push('Targets');
+  lines.push('-'.repeat(60));
+
+  for (const item of state.results ?? []) {
+    lines.push(`${item.host} depth=${item.depth} online=${item.isOnline} auth=${item.authenticated}`);
+    lines.push(`  model=${item.details?.modelId ?? 'unknown'} hint=${item.details?.passwordHint ?? 'none'}`);
+    lines.push(`  charisma=${item.requiredCharisma ?? 'unknown'} blockedRam=${formatRam(ns, item.blockedRam)} ram=${formatRam(ns, item.usedRam)}/${formatRam(ns, item.maxRam)}`);
+
+    if (item.authResult?.message) lines.push(`  auth: ${item.authResult.message}`);
+    if (item.heartbleed?.message) lines.push(`  heartbleed: ${item.heartbleed.message}`);
+    if (item.reallocResult?.message) lines.push(`  realloc: ${item.reallocResult.message}`);
+    if (item.stasisResult?.message) lines.push(`  stasis: ${item.stasisResult.message}`);
+    if (item.stasisError) lines.push(`  stasis error: ${compactError(item.stasisError)}`);
+
+    for (const log of item.logs ?? []) {
+      lines.push(`  log: ${log}`);
+    }
+  }
+
+  if ((state.launches ?? []).length > 0) {
+    lines.push('');
+    lines.push('Child Scout Launches');
+    lines.push('-'.repeat(60));
+
+    for (const launch of state.launches) {
+      lines.push(`${launch.target} depth=${launch.depth} copied=${launch.copied} pid=${launch.pid} reason=${launch.reason}`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
+function openTail(ns) {
+  try {
+    ns.tail();
+    ns.resizeTail(620, 460);
+  } catch {
+    // Tail controls are UI-only; ignore if unavailable.
+  }
 }
 
 function safeHostname(ns) {
@@ -401,6 +506,18 @@ function isScoutAlreadyRunning(ns, host) {
 
 function asBool(value) {
   return value === true || value === 'true';
+}
+
+function formatRam(ns, value) {
+  try {
+    return ns.format.ram(Number(value) || 0);
+  } catch {
+    return String(value ?? 0);
+  }
+}
+
+function compactError(error) {
+  return String(error ?? '').split('\n')[0];
 }
 
 function sanitizeFilePart(value) {

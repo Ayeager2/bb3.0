@@ -57,6 +57,7 @@ What changed:
 - Augmentation plan refresh waits for the augmentation data builder instead of blindly sleeping one second.
 - Daemon HUD destroy-stage logic matches the actual destroy service: Red Pill + root + required hacking.
 - Augmentation buyer reserve is 1m, not 100m/1b, when policy reserve is disabled.
+- Fresh-start life service is daemon-launched without a daemon Singularity gate; it self-diagnoses BN/Singularity availability in `/data/fresh-start-life-state.txt`.
 
 ## Verification Commands In Bitburner
 
@@ -91,6 +92,7 @@ grep getWorldDaemonStatus /lib/daemon/faction-progression.js
 grep waitForProcess /tools/refresh-augmentation-plans.js
 grep logPurchase /tools/faction-donation-service.js
 grep DEFAULT_RESERVE_MONEY /tools/augmentation-buyer-service.js
+grep getSingularityDiagnostics /tools/fresh-start-life-service.js
 ```
 
 If any command has no match, that file is still old or copied to the wrong Bitburner path.
@@ -121,3 +123,11 @@ Expected process mix:
 ```
 
 Also verify `/data/daemon-state.txt` has live `sessionStats` without `/tools/daemon-session-service.js` running.
+
+For fresh-start BN1/BN4 study/shoplift verification:
+
+```txt
+cat /data/fresh-start-life-state.txt
+```
+
+Expected path: `starting`, then `studying` until hacking 20, then `crime` with `Shoplift` until faction work handoff is ready. If it reports `unavailable`, inspect the embedded Singularity diagnostics.
