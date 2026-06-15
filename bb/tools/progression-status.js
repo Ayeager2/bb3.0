@@ -3,6 +3,8 @@ const FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
 const PURCHASE_STATE_FILE = "/data/purchases-state.txt";
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
+const BACKDOOR_STATE_FILE = "/data/backdoor-service-state.txt";
+const FACTION_JOIN_STATUS_FILE = "/data/faction-join-status.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -13,8 +15,12 @@ export async function main(ns) {
     const work = readJson(ns, FACTION_WORK_PLAN_FILE);
     const donation = readJson(ns, FACTION_DONATION_PLAN_FILE);
     const lastPurchase = readJson(ns, PURCHASE_STATE_FILE);
+    const backdoor = readJson(ns, BACKDOOR_STATE_FILE);
+    const join = readJson(ns, FACTION_JOIN_STATUS_FILE);
 
     const currentWork = getCurrentWork(ns);
+    const factionProgression = daemon.factionProgression ?? {};
+    const victoryPlan = daemon.victoryPlan ?? {};
 
     ns.tprint("Progression Status");
     ns.tprint("=".repeat(70));
@@ -22,6 +28,47 @@ export async function main(ns) {
     ns.tprint(`Mode: ${daemon.mode ?? "unknown"} | Priority: ${daemon.spendingPolicy?.priority ?? "unknown"}`);
     ns.tprint(`Money: ${formatMoney(ns.getPlayer().money)} | Hacking: ${ns.getHackingLevel()}`);
     ns.tprint(`Current Work: ${formatWork(currentWork)}`);
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("BN4 / Faction Progression");
+    ns.tprint(`Stage: ${factionProgression.currentFactionStage ?? "unknown"} | Blocker: ${factionProgression.currentBlocker ?? "unknown"}`);
+    ns.tprint(`Action: ${factionProgression.nextBestAction ?? "unknown"} | Mode Hint: ${factionProgression.recommendedMode ?? "unknown"}`);
+    ns.tprint(`Target Faction: ${factionProgression.targetFaction ?? "none"} | Target Server: ${factionProgression.targetServer ?? "none"}`);
+    ns.tprint(`Reason: ${factionProgression.reason ?? "none"}`);
+    ns.tprint(`Victory: ${victoryPlan.stage ?? "unknown"} | Daedalus: ${yesNo(victoryPlan.hasDaedalus)} | Red Pill: ${yesNo(victoryPlan.hasRedPill)}`);
+
+    if (factionProgression.daedalusRequirements) {
+        const req = factionProgression.daedalusRequirements;
+        ns.tprint(
+            `Daedalus Req: hack ${req.hacking}/${req.hackingRequired} ${yesNo(req.hackingReady)} | ` +
+            `money ${formatMoney(req.money)}/${formatMoney(req.moneyRequired)} ${yesNo(req.moneyReady)} | ` +
+            `augs ${req.augmentCount}/${req.augmentRequired} ${yesNo(req.augmentReady)}`
+        );
+        ns.tprint(
+            `Aug Count Detail: total=${req.augmentCount} | ` +
+            `non-NeuroFlux=${req.augmentCountExcludingNeuroFlux ?? "?"} | ` +
+            `NeuroFlux=${req.neuroFluxCount ?? "?"}`
+        );
+    }
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("Faction Join");
+    printServiceStatus(ns, daemon, "faction-join");
+    ns.tprint(`Allowed: ${yesNo(join.allowJoin)} | Invites: ${(join.invites ?? []).join(", ") || "none"}`);
+    ns.tprint(`Joined: ${(join.joinedFactions ?? ns.getPlayer().factions ?? []).join(", ") || "none"}`);
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("Backdoors");
+    printServiceStatus(ns, daemon, "backdoor-service");
+    ns.tprint(`Next: ${backdoor.nextTarget?.server ?? "none"} | Execute: ${yesNo(backdoor.execute)}`);
+
+    for (const item of backdoor.backdoorState?.progressionServers ?? []) {
+        ns.tprint(
+            `${item.server}: root ${yesNo(item.rooted)} | backdoor ${yesNo(item.backdoored)} | ` +
+            `hack ${item.playerHack}/${item.requiredHack ?? "?"} | ` +
+            `ports ${item.availablePorts ?? "?"}/${item.requiredPorts ?? "?"} | ${item.reason}`
+        );
+    }
 
     ns.tprint("-".repeat(70));
     ns.tprint("Augmentation");
@@ -117,4 +164,23 @@ function formatNumber(value) {
     if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(2) + "m";
     if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(2) + "k";
     return n.toFixed(0);
+}
+
+function yesNo(value) {
+    return value === true ? "YES" : "NO";
+}
+
+function printServiceStatus(ns, daemon, id) {
+    const services = Array.isArray(daemon.services) ? daemon.services : [];
+    const service = services.find(item => item.id === id);
+
+    if (!service) {
+        ns.tprint(`Service ${id}: not present in daemon state`);
+        return;
+    }
+
+    ns.tprint(
+        `Service ${id}: ${service.status ?? "unknown"} | ` +
+        `running ${yesNo(service.running)} | pid ${service.pid ?? 0} | ${service.reason ?? "no reason"}`
+    );
 }

@@ -382,7 +382,7 @@ export const SERVICES = [
         keepAlive: true,
         enabled: true,
         requiresSingularity: true,
-        minHomeRam: 64,
+        minHomeRam: 8,
         policyFlag: "allowFactionJoin",
         stopWhenBlocked: true,
         purpose: "daemon-controlled faction invitation joiner",
@@ -412,7 +412,7 @@ export const SERVICES = [
         keepAlive: true,
         enabled: true,
         requiresSingularity: true,
-        minHomeRam: 64,
+        minHomeRam: 8,
 
         policyFlag: "allowBackdoors",
         stopWhenBlocked: false,

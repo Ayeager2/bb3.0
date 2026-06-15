@@ -708,12 +708,20 @@ cat /data/darkweb-buyer-complete.txt
 
 ```txt
 cat /data/darknet-scout.txt
+cat /data/darknet-scout-report.txt
+cat /data/darknet-child-darkweb.txt
 ```
 
 Manual scan:
 
 ```txt
 run /tools/darknet-scout.js
+```
+
+Manual scan with reallocation/stasis probes:
+
+```txt
+run /tools/darknet-scout.js --realloc true --stasis true
 ```
 
 Continuous service mode:
@@ -731,6 +739,8 @@ What it does:
 - runs heartbleed with peek enabled by default
 - can try authentication with --password
 - can optionally run memory reallocation or stasis when explicitly enabled
+- launches /tools/darknet-child-scout.js from authenticated darknet hosts when it fits in RAM
+- child scouts write /data/darknet-child-<host>.txt back to home
 ```
 
 Useful flags:

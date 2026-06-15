@@ -47,6 +47,8 @@ function buildServerState(ns, entry) {
     const rooted = ns.hasRootAccess(entry.server);
     const backdoored = server.backdoorInstalled === true;
     const hackingEligible = playerHack >= requiredHack;
+    const requiredPorts = safeRequiredPorts(ns, entry.server);
+    const availablePorts = countAvailablePortPrograms(ns);
 
     return {
         server: entry.server,
@@ -57,14 +59,20 @@ function buildServerState(ns, entry) {
         hackingEligible,
         playerHack,
         requiredHack,
+        requiredPorts,
+        availablePorts,
+        portsReady: availablePorts >= requiredPorts,
         recommended: rooted && !backdoored && hackingEligible,
         path: findPath(ns, entry.server),
-        reason: buildReason(rooted, backdoored, hackingEligible),
+        reason: buildReason(rooted, backdoored, hackingEligible, availablePorts, requiredPorts),
     };
 }
 
-function buildReason(rooted, backdoored, hackingEligible) {
+function buildReason(rooted, backdoored, hackingEligible, availablePorts = 0, requiredPorts = 0) {
     if (backdoored) return "already backdoored";
+    if (!rooted && availablePorts < requiredPorts) {
+        return `needs root access; ports ${availablePorts}/${requiredPorts}`;
+    }
     if (!rooted) return "needs root access";
     if (!hackingEligible) return "hacking level too low";
     return "ready for backdoor";
@@ -84,6 +92,32 @@ function safeHackingLevel(ns) {
     } catch {
         return 1;
     }
+}
+
+function safeRequiredPorts(ns, server) {
+    try {
+        return ns.getServerNumPortsRequired(server);
+    } catch {
+        return 0;
+    }
+}
+
+function countAvailablePortPrograms(ns) {
+    const programs = [
+        "BruteSSH.exe",
+        "FTPCrack.exe",
+        "relaySMTP.exe",
+        "HTTPWorm.exe",
+        "SQLInject.exe",
+    ];
+
+    return programs.filter(program => {
+        try {
+            return ns.fileExists(program, "home");
+        } catch {
+            return false;
+        }
+    }).length;
 }
 
 function findPath(ns, target) {

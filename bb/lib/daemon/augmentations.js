@@ -186,6 +186,18 @@ export function buildAugmentationPlan(ns, options = {}) {
         }
     }
 
+    if (candidates.length === 0) {
+        candidates.push(
+            ...buildLiveFallbackCandidates(ns, {
+                strategy,
+                maxPrice,
+                spendable,
+                ownedAugmentations,
+                neuroFluxPolicy,
+            })
+        );
+    }
+
     candidates.sort((a, b) => compareForPurchase(a, b, strategy));
 
     const daedalusNeuroFluxGoal =
@@ -313,6 +325,95 @@ function scoreStrategicValue(name, faction, aug, strategy) {
     if (faction.theme === "company") score += strategy.statWeights.company_rep ?? 0;
 
     return score;
+}
+
+function buildLiveFallbackCandidates(ns, context) {
+    const player = ns.getPlayer();
+    const joinedFactions = player.factions ?? [];
+    const seen = new Set();
+    const fallback = [];
+    const needsDaedalusInviteAugs =
+        !joinedFactions.includes("Daedalus") &&
+        getOwnedAugmentationCountForInvite(ns) < 30;
+
+    for (const faction of joinedFactions) {
+        const names = getFactionAugmentations(ns, faction);
+        const factionRep = safeNumber(() => ns.singularity.getFactionRep(faction), 0);
+
+        for (const name of names) {
+            const neuroFlux = isNeuroFlux(name);
+
+            if (!neuroFlux && seen.has(name)) continue;
+            if (!neuroFlux) seen.add(name);
+
+            if (!neuroFlux && context.ownedAugmentations.has(name)) continue;
+            if (
+                neuroFlux &&
+                !isAllowedNeuroFluxFaction(faction, context.neuroFluxPolicy) &&
+                !needsDaedalusInviteAugs
+            ) {
+                continue;
+            }
+
+            const price = safeNumber(() => ns.singularity.getAugmentationPrice(name), Infinity);
+            const rep = safeNumber(() => ns.singularity.getAugmentationRepReq(name), Infinity);
+
+            if (!Number.isFinite(price) || price <= 0) continue;
+            if (!neuroFlux && price > context.maxPrice * 10) continue;
+
+            const hasRep = factionRep >= rep;
+            const affordable = context.spendable >= price;
+            const stats = safeAugStats(ns, name);
+            const statBreakdown = getStatBreakdown(stats, context.strategy.statWeights);
+            const stagePolicy = getAugmentationStagePolicy({ name, faction });
+            const priorityClass = getAugPriorityClass({ statBreakdown });
+            const tags = neuroFlux ? ["repeatable"] : [];
+            const score =
+                scoreStats(stats, context.strategy.statWeights) +
+                scoreStrategicValue(name, { faction, theme: "live" }, { tags }, context.strategy) +
+                stagePolicy.priority +
+                scoreReadiness({ hasRep, affordable, hasPrereqs: true }) +
+                (
+                    neuroFlux && needsDaedalusInviteAugs
+                        ? 1200
+                        : 0
+                );
+
+            fallback.push({
+                name,
+                faction,
+                theme: "live",
+                price,
+                rep,
+                factionRep,
+                hasRep,
+                affordable,
+                hasPrereqs: true,
+                prereqs: [],
+                stats,
+                statBreakdown,
+                priorityClass,
+                stagePolicy,
+                repeatable: neuroFlux,
+                favorLoop: neuroFlux
+                    ? {
+                        ...(context.neuroFluxPolicy ?? {}),
+                        stage: needsDaedalusInviteAugs
+                            ? "daedalus-invite-augmentation-count"
+                            : context.neuroFluxPolicy?.stage,
+                        reason: needsDaedalusInviteAugs
+                            ? "NeuroFlux is being used as an augmentation-count filler to unlock Daedalus."
+                            : context.neuroFluxPolicy?.reason,
+                    }
+                    : null,
+                tags,
+                score,
+                source: "live-fallback",
+            });
+        }
+    }
+
+    return fallback;
 }
 
 function isNeuroFlux(name) {
@@ -564,6 +665,30 @@ function getCurrentBitNode(ns) {
         return ns.getResetInfo()?.currentNode ?? ns.getPlayer().bitNodeN ?? 1;
     } catch {
         return 1;
+    }
+}
+
+function getFactionAugmentations(ns, faction) {
+    try {
+        return ns.singularity.getAugmentationsFromFaction(faction) ?? [];
+    } catch {
+        return [];
+    }
+}
+
+function getOwnedAugmentationCountForInvite(ns) {
+    try {
+        return ns.singularity.getOwnedAugmentations(true).length;
+    } catch {
+        return 0;
+    }
+}
+
+function safeAugStats(ns, name) {
+    try {
+        return ns.singularity.getAugmentationStats(name) ?? {};
+    } catch {
+        return {};
     }
 }
 

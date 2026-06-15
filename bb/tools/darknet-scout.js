@@ -1,8 +1,8 @@
 // /tools/darknet-scout.js
-const DIAGNOSTIC_VERSION = 'darknet-scout-tail-report-v2';
+const DIAGNOSTIC_VERSION = 'darknet-scout-tail-report-v3';
 const DATA_FILE = '/data/darknet-scout.txt';
 const REPORT_FILE = '/data/darknet-scout-report.txt';
-const SCRIPT = '/tools/darknet-scout.js';
+const CHILD_SCRIPT_NAME = 'darknet-child-scout.js';
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -38,6 +38,8 @@ export async function main(ns) {
     origin: String(flags.origin ?? ''),
     tail: asBool(flags.tail),
     report: asBool(flags.report),
+    script: normalizeScriptPath(ns.getScriptName()),
+    childScript: siblingScriptPath(ns.getScriptName(), CHILD_SCRIPT_NAME),
   };
 
   if (options.tail && !options.child) openTail(ns);
@@ -77,6 +79,7 @@ async function buildDarknetScoutState(ns, options) {
       hasNavigator: ns.fileExists('DarkscapeNavigator.exe', 'home'),
       results: [],
       launches: [],
+      childReports: [],
     };
   }
 
@@ -105,6 +108,9 @@ async function buildDarknetScoutState(ns, options) {
     totals: summarizeResults(results, launches),
     results,
     launches,
+    childReports: launches
+      .filter((launch) => launch.childReport)
+      .map((launch) => launch.childReport),
   };
 }
 
@@ -224,22 +230,28 @@ async function launchChildScout(ns, target, options, depth) {
     copied: false,
     pid: 0,
     reason: '',
+    script: options.childScript,
+    childReport: `/data/darknet-child-${sanitizeFilePart(target)}.txt`,
+    scriptRam: 0,
+    freeRam: 0,
   };
 
   try {
-    launch.copied = await ns.scp(SCRIPT, target, 'home');
+    launch.copied = await ns.scp(options.childScript, target, 'home');
   } catch (error) {
     launch.reason = `copy failed: ${String(error)}`;
     return launch;
   }
 
-  if (isScoutAlreadyRunning(ns, target)) {
+  if (isScoutAlreadyRunning(ns, target, options)) {
     launch.reason = 'child scout already running';
     return launch;
   }
 
   const freeRam = safeMaxRam(ns, target) - safeUsedRam(ns, target);
-  const scriptRam = safeScriptRam(ns, SCRIPT, target);
+  const scriptRam = safeScriptRam(ns, options.childScript, target);
+  launch.freeRam = freeRam;
+  launch.scriptRam = scriptRam;
 
   if (scriptRam <= 0) {
     launch.reason = 'script RAM unavailable on target';
@@ -253,32 +265,14 @@ async function launchChildScout(ns, target, options, depth) {
 
   try {
     launch.pid = ns.exec(
-      SCRIPT,
+      options.childScript,
       target,
       1,
-      '--depth',
-      Math.max(0, options.maxDepth - depth),
-      '--password',
-      options.password,
-      '--auth',
-      options.doAuth,
-      '--realloc',
-      options.doRealloc,
-      '--stasis',
-      options.doStasis,
-      '--peek',
-      options.peek,
-      '--spread',
-      false,
-      '--once',
-      true,
-      '--child',
-      true,
-      '--origin',
       safeHostname(ns),
+      ...(options.doStasis ? ['--stasis'] : []),
     );
 
-    launch.reason = launch.pid > 0 ? 'started child scout' : 'exec returned 0';
+    launch.reason = launch.pid > 0 ? `started child scout; report ${launch.childReport}` : 'exec returned 0';
   } catch (error) {
     launch.reason = `exec failed: ${String(error)}`;
   }
@@ -362,7 +356,6 @@ function printSummary(ns, state, file, options) {
   if (state.status !== 'ready') {
     ns.print(`DarkscapeNavigator.exe: ${state.hasNavigator ? 'YES' : 'NO'}`);
     ns.print(state.reason ?? 'waiting');
-    if (options.once) ns.tprint(`[DNET] ${state.reason ?? 'not ready'}`);
     return;
   }
 
@@ -384,9 +377,6 @@ function printSummary(ns, state, file, options) {
     if (best.stasisError) ns.print(`stasis error: ${best.stasisError}`);
   }
 
-  if (options.once && !options.child) {
-    ns.tprint(`[DNET] ${DIAGNOSTIC_VERSION} complete. Found ${state.totals.records} records. Report: ${REPORT_FILE}`);
-  }
 }
 
 function buildReport(ns, state, dataFile, options) {
@@ -444,7 +434,9 @@ function buildReport(ns, state, dataFile, options) {
     lines.push('-'.repeat(60));
 
     for (const launch of state.launches) {
-      lines.push(`${launch.target} depth=${launch.depth} copied=${launch.copied} pid=${launch.pid} reason=${launch.reason}`);
+      lines.push(`${launch.target} depth=${launch.depth} copied=${launch.copied} pid=${launch.pid}`);
+      lines.push(`  script=${launch.script ?? 'unknown'} report=${launch.childReport ?? 'none'}`);
+      lines.push(`  ram=${formatRam(ns, launch.scriptRam)}/${formatRam(ns, launch.freeRam)} reason=${launch.reason}`);
     }
   }
 
@@ -492,12 +484,16 @@ function safeScriptRam(ns, script, host) {
   }
 }
 
-function isScoutAlreadyRunning(ns, host) {
+function isScoutAlreadyRunning(ns, host, options) {
   try {
+    const script = normalizeScriptPath(options.script);
+    const childScript = normalizeScriptPath(options.childScript);
     return ns
       .ps(host)
       .some(
-        (process) => process.filename === SCRIPT || process.filename === SCRIPT.replace(/^\/+/, ''),
+        (process) =>
+          sameScriptPath(process.filename, script) ||
+          sameScriptPath(process.filename, childScript),
       );
   } catch {
     return false;
@@ -518,6 +514,24 @@ function formatRam(ns, value) {
 
 function compactError(error) {
   return String(error ?? '').split('\n')[0];
+}
+
+function siblingScriptPath(script, siblingName) {
+  const normalized = normalizeScriptPath(script);
+  const slash = normalized.lastIndexOf('/');
+  if (slash < 0) return `/${siblingName}`;
+  return `${normalized.slice(0, slash + 1)}${siblingName}`;
+}
+
+function normalizeScriptPath(script) {
+  const value = String(script ?? '').replace(/\\/g, '/');
+  return value.startsWith('/') ? value : `/${value}`;
+}
+
+function sameScriptPath(left, right) {
+  const normalizedLeft = normalizeScriptPath(left);
+  const normalizedRight = normalizeScriptPath(right);
+  return normalizedLeft === normalizedRight;
 }
 
 function sanitizeFilePart(value) {

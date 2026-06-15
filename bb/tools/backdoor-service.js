@@ -19,20 +19,29 @@ export async function main(ns) {
     ["refresh", 15000],
     ["execute", true],
     ["debug", true],
+    ["target", ""],
+    ["once", false],
   ]);
 
   const refreshMs = Number(flags.refresh) || 15000;
   const execute = flags.execute === true || flags.execute === "true";
   const debug = flags.debug === true || flags.debug === "true";
+  const targetOverride = normalizeTarget(flags.target);
+  const once = flags.once === true || flags.once === "true";
 
   while (true) {
     const rootReport = tryRootProgressionServers(ns, debug);
     const state = buildBackdoorState(ns);
-    const target = state.nextTarget;
+    const target =
+      targetOverride
+        ? getTargetState(state, targetOverride)
+        : state.nextTarget;
 
     writeJson(ns, STATE_FILE, {
       updatedAt: Date.now(),
+      updatedAtText: new Date().toLocaleTimeString(),
       execute,
+      targetOverride,
       rootReport,
       backdoorState: state,
       nextTarget: target,
@@ -42,8 +51,25 @@ export async function main(ns) {
       if (debug) {
         const blocker = getBestBlocker(state);
         ns.print(`[BACKDOOR] No ready target. ${blocker}`);
+        if (once) ns.tprint(`[BACKDOOR] No ready target. ${blocker}`);
       }
 
+      if (once) return;
+      await ns.sleep(refreshMs);
+      continue;
+    }
+
+
+    if (targetOverride && !target.recommended) {
+      const message =
+        `[BACKDOOR] ${target.server} not ready: ${target.reason}. ` +
+        `root=${target.rooted} backdoor=${target.backdoored} ` +
+        `hack=${target.playerHack}/${target.requiredHack}`;
+
+      ns.print(message);
+      ns.tprint(message);
+
+      if (once) return;
       await ns.sleep(refreshMs);
       continue;
     }
@@ -67,8 +93,17 @@ export async function main(ns) {
       ns.tprint("[BACKDOOR] Singularity unavailable; cannot auto-connect/install.");
     }
 
+    if (once) return;
     await ns.sleep(refreshMs);
   }
+}
+
+function getTargetState(state, target) {
+  const servers = Array.isArray(state?.progressionServers)
+    ? state.progressionServers
+    : [];
+
+  return servers.find(item => item.server === target) ?? null;
 }
 
 function getBestBlocker(state) {
@@ -226,6 +261,22 @@ function serverExists(ns, server) {
   } catch {
     return false;
   }
+}
+
+function normalizeTarget(value) {
+  const raw = String(value ?? "").trim();
+  const lower = raw.toLowerCase();
+
+  if (!raw) return "";
+  if (
+    lower === "run4thehills" ||
+    lower === "run4thehi11z" ||
+    lower === "run4theh111z"
+  ) {
+    return "run4theh111z";
+  }
+
+  return raw;
 }
 
 function writeJson(ns, file, data) {

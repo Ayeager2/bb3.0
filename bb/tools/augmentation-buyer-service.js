@@ -121,7 +121,10 @@ export async function main(ns) {
             Math.max(0, ns.getPlayer().money - reserveMoney);
         const bypassMaxPrice =
             goal.repeatable === true &&
-            goal.favorLoop?.stage === "daedalus-neuroflux";
+            (
+                goal.favorLoop?.stage === "daedalus-neuroflux" ||
+                goal.favorLoop?.stage === "daedalus-invite-augmentation-count"
+            );
 
         if (!bypassMaxPrice && livePrice > maxPrice) {
             writeBuyerState(ns, {

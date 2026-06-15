@@ -577,7 +577,8 @@ function hasHackingFormulas(ns) {
 
 function buildDaedalusRequirements(ns) {
   const player = ns.getPlayer();
-  const augmentCount = getOwnedAugmentationCount(ns);
+  const augmentationCounts = getOwnedAugmentationCounts(ns);
+  const augmentCount = augmentationCounts.total;
 
   return {
     hackingRequired: DAEDALUS_HACKING_REQUIREMENT,
@@ -588,6 +589,8 @@ function buildDaedalusRequirements(ns) {
     moneyReady: player.money >= DAEDALUS_MONEY_REQUIREMENT,
     augmentRequired: DAEDALUS_AUGMENT_REQUIREMENT,
     augmentCount,
+    augmentCountExcludingNeuroFlux: augmentationCounts.excludingNeuroFlux,
+    neuroFluxCount: augmentationCounts.neuroFlux,
     augmentReady: augmentCount >= DAEDALUS_AUGMENT_REQUIREMENT,
   };
 }
@@ -663,14 +666,24 @@ function getAugmentationMode(augmentationDecision) {
   return "progression";
 }
 
-function getOwnedAugmentationCount(ns) {
+function getOwnedAugmentationCounts(ns) {
   try {
-    return ns.singularity
-      .getOwnedAugmentations(true)
-      .filter(name => name !== "NeuroFlux Governor")
-      .length;
+    const augmentations =
+      ns.singularity.getOwnedAugmentations(true);
+    const neuroFlux =
+      augmentations.filter(name => name === "NeuroFlux Governor").length;
+
+    return {
+      total: augmentations.length,
+      neuroFlux,
+      excludingNeuroFlux: augmentations.length - neuroFlux,
+    };
   } catch {
-    return 0;
+    return {
+      total: 0,
+      neuroFlux: 0,
+      excludingNeuroFlux: 0,
+    };
   }
 }
 
