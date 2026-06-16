@@ -381,7 +381,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
     const augmentationTiming =
         augDecision.augmentationTiming ?? null;
     const allowMoneyModeAugmentPurchase =
-        isMoneyModeAugmentPurchaseAllowed(augDecision);
+        isMoneyModeAugmentPurchaseAllowed(ns, augDecision);
 
     if (
         shouldFinishAugmentationNow(augDecision) &&
@@ -599,10 +599,39 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
     };
 }
 
-function isMoneyModeAugmentPurchaseAllowed(augDecision) {
+function isMoneyModeAugmentPurchaseAllowed(ns, augDecision) {
+    if (augDecision?.shouldBuyAugment !== true) {
+        return false;
+    }
+
+    if (isBitRunnersNeuroFluxLoop(augDecision)) {
+        return true;
+    }
+
+    const stage =
+        augDecision?.stagePolicy?.stage ?? "";
+
+    if (
+        [
+            "side",
+            "sector-12",
+            "cybersec",
+            "nitesec",
+            "black-hand",
+        ].includes(stage)
+    ) {
+        return true;
+    }
+
+    const price =
+        Number(augDecision.price ?? 0);
+    const money =
+        ns.getPlayer().money;
+
     return (
-        augDecision?.shouldBuyAugment === true &&
-        isBitRunnersNeuroFluxLoop(augDecision)
+        Number.isFinite(price) &&
+        price > 0 &&
+        price <= Math.max(25_000_000, money * 0.25)
     );
 }
 

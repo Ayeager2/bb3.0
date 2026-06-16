@@ -224,7 +224,7 @@ This writes:
 Fresh-start bootstrap uses:
 
 ```txt
-run bootstrap-daemon.js
+run startup.js
 cat /data/bootstrap-plan.txt
 ```
 

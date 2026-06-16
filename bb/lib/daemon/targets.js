@@ -196,14 +196,26 @@ export function scoreExpTarget(ns, server, options = {}) {
     const requiredHack = Math.max(1, safeGetRequiredHackingLevel(ns, server));
 
     const weakenTime = Math.max(1, safeGetWeakenTime(ns, server));
+    const hackTime = Math.max(1, safeGetHackTime(ns, server));
+    const growTime = Math.max(1, safeGetGrowTime(ns, server));
     const minSec = Math.max(1, safeGetServerMinSecurityLevel(ns, server));
     const sec = Math.max(minSec, safeGetServerSecurityLevel(ns, server));
     const growth = Math.max(1, safeGetServerGrowth(ns, server));
     const maxMoney = Math.max(1, safeGetServerMaxMoney(ns, server));
     const chance = Math.max(0.01, safeHackAnalyzeChance(ns, server));
+    const expPerAction = estimateHackExp(ns, server);
 
     const timeSeconds = weakenTime / 1000;
-    const securityPenalty = 1 + Math.max(0, sec - minSec) * 0.10;
+    const securityGap = Math.max(0, sec - minSec);
+    const securityPenalty = 1 + securityGap * 0.35;
+    const liveExpPerSecond = estimateLiveExpPerSecond({
+        expPerAction,
+        hackTime,
+        growTime,
+        weakenTime,
+        chance,
+        securityGap,
+    });
 
     const levelRatio = requiredHack / hacking;
     const churnPenalty =
@@ -235,8 +247,7 @@ export function scoreExpTarget(ns, server, options = {}) {
 
     const moneyScale = Math.log10(maxMoney + 1);
     const growthScale = Math.sqrt(growth);
-
-    return (
+    const legacyShape =
         moneyScale *
         growthScale *
         chance *
@@ -246,8 +257,12 @@ export function scoreExpTarget(ns, server, options = {}) {
             purpose === "leveling"
                 ? outgrownPenalty
                 : Math.max(outgrownPenalty, 0.20)
-        )
-    ) / (timePenalty * securityPenalty);
+        );
+
+    return (
+        liveExpPerSecond *
+        legacyShape
+    ) / (Math.max(1, timePenalty) * securityPenalty);
 }
 
 export function isExpTargetInCurrentBand(ns, server, options = {}) {
@@ -350,6 +365,55 @@ export function safeGetRequiredHackingLevel(ns, server) {
     } catch {
         return Number.MAX_SAFE_INTEGER;
     }
+}
+
+function safeGetHackTime(ns, server) {
+    try {
+        return ns.getHackTime(server);
+    } catch {
+        return Number.MAX_SAFE_INTEGER;
+    }
+}
+
+function safeGetGrowTime(ns, server) {
+    try {
+        return ns.getGrowTime(server);
+    } catch {
+        return Number.MAX_SAFE_INTEGER;
+    }
+}
+
+function estimateHackExp(ns, server) {
+    try {
+        if (ns.formulas?.hacking?.hackExp) {
+            return Math.max(0, ns.formulas.hacking.hackExp(ns.getServer(server), ns.getPlayer()));
+        }
+    } catch {
+        // Fall through to the approximation below.
+    }
+
+    const baseDifficulty = Math.max(1, safeGetServerMinSecurityLevel(ns, server));
+    return 3 + baseDifficulty * 0.3;
+}
+
+function estimateLiveExpPerSecond({
+    expPerAction,
+    hackTime,
+    growTime,
+    weakenTime,
+    chance,
+    securityGap,
+}) {
+    const hackExp = expPerAction * Math.max(0.25, chance);
+    const growExp = expPerAction;
+    const weakenExp = expPerAction;
+    const highSecurityPenalty = 1 + Math.max(0, securityGap - 10) * 0.10;
+
+    return (
+        hackExp / Math.max(1, hackTime / 1000) +
+        growExp / Math.max(1, growTime / 1000) +
+        weakenExp / Math.max(1, weakenTime / 1000)
+    ) / highSecurityPenalty;
 }
 
 export function getSecondaryMoneyTarget(

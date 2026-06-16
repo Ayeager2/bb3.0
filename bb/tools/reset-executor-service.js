@@ -6,7 +6,6 @@ import {
 } from "/lib/daemon/reset-planner.js";
 
 const STARTUP_SCRIPT = "/startup.js";
-const NEXT_SCRIPT = "/bootstrap-daemon.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -16,13 +15,13 @@ export async function main(ns) {
         ["refresh", 15000],
         ["execute", false],
         ["force", false],
-        ["next", NEXT_SCRIPT],
+        ["next", STARTUP_SCRIPT],
     ]);
 
     const refreshMs = Number(flags.refresh) || 15000;
     const execute = flags.execute === true;
     const force = flags.force === true;
-    const nextScript = String(flags.next || NEXT_SCRIPT);
+    const nextScript = String(flags.next || STARTUP_SCRIPT);
 
     while (true) {
         const plan = buildResetPlan(ns);
@@ -46,44 +45,12 @@ export async function main(ns) {
             continue;
         }
 
-        ensureStartupScript(ns, nextScript);
-
-        ns.tprint(`[RESET] Installing augmentations. Startup will launch ${nextScript}.`);
+        ns.tprint(`[RESET] Installing augmentations. Startup will run ${nextScript}.`);
         ns.toast(`Installing augmentations -> ${nextScript}`, "warning", 10000);
 
         await ns.sleep(1000);
-
-        ns.singularity.installAugmentations(STARTUP_SCRIPT);
+        ns.singularity.installAugmentations(nextScript);
 
         await ns.sleep(refreshMs);
     }
-}
-
-function ensureStartupScript(ns, nextScript) {
-    const script = `/** @param {NS} ns **/
-export async function main(ns) {
-    ns.disableLog("ALL");
-
-    const nextScript = "${nextScript}";
-
-    await ns.sleep(1000);
-
-    if (!ns.fileExists(nextScript, "home")) {
-        ns.tprint("[STARTUP] Missing startup target: " + nextScript);
-        return;
-    }
-
-    if (!ns.scriptRunning(nextScript, "home")) {
-        const pid = ns.run(nextScript, 1);
-
-        if (pid === 0) {
-            ns.tprint("[STARTUP] Failed to launch " + nextScript + ". Not enough RAM?");
-        } else {
-            ns.tprint("[STARTUP] Launched " + nextScript + " PID=" + pid);
-        }
-    }
-}
-`;
-
-    ns.write(STARTUP_SCRIPT, script, "w");
 }

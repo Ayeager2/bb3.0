@@ -28,12 +28,10 @@ export function getValidTargetOrFallback(
     options = {}
 ) {
     if (mode === "exp") {
-        return target && isUsableTarget(ns, target)
-            ? target
-            : getBestExpTarget(ns, rootedServers, {
-                preferredTarget: options.preferredTarget,
-                purpose: options.expPurpose ?? "background",
-            });
+        return getBestExpTarget(ns, rootedServers, {
+            preferredTarget: target ?? options.preferredTarget,
+            purpose: options.expPurpose ?? "background",
+        });
     }
 
     const formulasUnlocked =

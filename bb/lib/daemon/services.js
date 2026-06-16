@@ -331,7 +331,7 @@ export const SERVICES = [
         keepAlive: true,
         enabled: true,
         requiresSingularity: true,
-        minHomeRam: 128,
+        minHomeRam: 64,
 
         // Do NOT policy-block this service.
         // It must always run so it can create /data/augmentation-plan.txt.

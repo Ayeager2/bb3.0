@@ -77,7 +77,7 @@ cat /data/augmentation-buyer-state.txt
 
 Expected signs the new files are active:
 
-- `cat /data/bootstrap-plan.txt` shows a `cycle` with hack/grow/weaken roles after `run bootstrap-daemon.js`.
+- `cat /data/bootstrap-plan.txt` shows a `cycle` with hack/grow/weaken roles after `run startup.js` selects bootstrap under 64GB home RAM.
 - `tail /controllers/uhm.js` during `run daemon.js --level` reports EXP sprint and process lists show all three EXP worker scripts.
 - `/workers/exp-hack.js`, `/workers/exp-grow.js`, and `/workers/exp-weaken.js` all appear during final leveling.
 

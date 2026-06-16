@@ -249,17 +249,6 @@ function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set(), context = 
 }
 
 function compareForPurchase(a, b) {
-    const aStage = a.stagePolicy?.priority ?? 0;
-    const bStage = b.stagePolicy?.priority ?? 0;
-
-    if (aStage !== bStage) return bStage - aStage;
-
-    if (a.hasRep && !b.hasRep) return -1;
-    if (!a.hasRep && b.hasRep) return 1;
-
-    if (a.hasPrereqs && !b.hasPrereqs) return -1;
-    if (!a.hasPrereqs && b.hasPrereqs) return 1;
-
     const aReady = a.hasRep && a.affordable && a.hasPrereqs;
     const bReady = b.hasRep && b.affordable && b.hasPrereqs;
 
@@ -280,6 +269,17 @@ function compareForPurchase(a, b) {
 
         return a.price - b.price;
     }
+
+    if (a.hasRep && !b.hasRep) return -1;
+    if (!a.hasRep && b.hasRep) return 1;
+
+    if (a.hasPrereqs && !b.hasPrereqs) return -1;
+    if (!a.hasPrereqs && b.hasPrereqs) return 1;
+
+    const aStage = a.stagePolicy?.priority ?? 0;
+    const bStage = b.stagePolicy?.priority ?? 0;
+
+    if (aStage !== bStage) return bStage - aStage;
 
     return b.score - a.score;
 }

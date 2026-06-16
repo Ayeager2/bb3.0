@@ -3,7 +3,7 @@
 ```txt
 1. Verify bootstrap cheat-sheet flow on next fresh start:
    - run /tools/build-bootstrap-cheatsheet.js late-game with Formulas.exe
-   - after reset, run bootstrap-daemon.js
+   - after reset, run startup.js; it should choose bootstrap-daemon.js under 64GB home RAM
    - confirm /data/bootstrap-plan.txt has a mixed H/G/W cycle
 2. Verify UHM leveling/endgame H/G/W sprint under live RAM pressure:
    - forced --level and post-Red-Pill final leveling should not become hack-only

@@ -6,7 +6,7 @@ const EXP_GROW = "/workers/exp-grow.js";
 const EXP_WEAKEN = "/workers/exp-weaken.js";
 
 const DEFAULT_MAX_THREADS_PER_PROCESS = maxExpThreadsPerProcess;
-const DEFAULT_MAX_PROCESSES_PER_HOST = 5000;
+const DEFAULT_MAX_PROCESSES_PER_HOST = 7500;
 
 export function runExpSprint(ns, target, hosts, options = {}) {
     const maxProcesses = options.maxProcesses ?? 100000;
@@ -19,7 +19,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
     const purpose = options.purpose ?? "background";
 
     if (!isUsableTarget(ns, target)) {
-        return result("INVALID_TARGET", 0, 0, 0, { target });
+        return result("INVALID_TARGET", 0, 0, 0, { ns, target });
     }
 
     const cycle = buildSprintCycle(ns, target, purpose, maxThreadsPerProcess);
@@ -32,6 +32,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
 
     let launched = 0;
     let threads = 0;
+    const launchedByRole = emptyRoleCounts();
 
     for (const host of hosts) {
         if (active.processes + launched >= maxProcesses) break;
@@ -59,7 +60,10 @@ export function runExpSprint(ns, target, hosts, options = {}) {
 
         launched += launchResult.launched;
         threads += launchResult.threads;
+        addRoleCounts(launchedByRole, launchResult.byRole);
     }
+
+    const totalByRole = mergeRoleCounts(active.byRole, launchedByRole);
 
     return result(
         launched > 0 ? "EXP_SPRINT" : active.processes > 0 ? "EXP_RUNNING" : "NO_RAM",
@@ -67,6 +71,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
         threads,
         active.processes + launched,
         {
+            ns,
             engine: "hgw-sprint",
             growRatio: 0,
             target,
@@ -76,6 +81,10 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             purpose,
             activeThreads: active.threads,
             totalThreads: active.threads + threads,
+            activeByRole: active.byRole,
+            launchedByRole,
+            totalByRole,
+            cycle: summarizeCycle(cycle),
         }
     );
 }
@@ -90,7 +99,10 @@ function buildSprintCycle(ns, target, purpose = "background", maxThreadsPerProce
     const hackPercent = Math.max(0.0001, ns.hackAnalyze(target));
     const weakenPerThread = Math.max(0.0001, ns.weakenAnalyze(1));
     const stealFraction = chooseStealFraction(purpose, moneyRatio, securityGap);
-    const hackThreads = clampThreads(Math.floor(stealFraction / hackPercent), maxThreadsPerProcess);
+    const repairMode = shouldRepairExpTarget(moneyRatio, securityGap);
+    const hackThreads = repairMode
+        ? 0
+        : clampThreads(Math.floor(stealFraction / hackPercent), maxThreadsPerProcess);
     const growMultiplier = Math.max(1.02, 1 / Math.max(0.05, 1 - (hackThreads * hackPercent)));
     const repairGrowThreads = clampThreads(Math.ceil(safeGrowthAnalyze(ns, target, growMultiplier)), maxThreadsPerProcess);
     const prepGrowThreads = moneyRatio < 0.85
@@ -106,13 +118,17 @@ function buildSprintCycle(ns, target, purpose = "background", maxThreadsPerProce
         { script: EXP_HACK, role: "hack", threads: hackThreads },
         { script: EXP_GROW, role: "grow", threads: growThreads },
         { script: EXP_WEAKEN, role: "weaken", threads: weakenThreads },
-    ];
+    ].filter(item => item.threads > 0);
 }
 
 function chooseStealFraction(purpose, moneyRatio, securityGap) {
     if (securityGap > 10 || moneyRatio < 0.35) return 0.01;
     if (purpose === "leveling") return 0.025;
     return 0.05;
+}
+
+function shouldRepairExpTarget(moneyRatio, securityGap) {
+    return securityGap > 12 || moneyRatio < 0.30;
 }
 
 function safeGrowthAnalyze(ns, target, multiplier) {
@@ -133,12 +149,14 @@ function launchChunks(ns, {
     target,
     cycle,
     freeRam,
+    maxThreadsPerProcess,
     maxProcessesRemaining,
     maxProcessesForHost,
 }) {
     let launched = 0;
     let threads = 0;
     let remainingRam = freeRam;
+    const byRole = emptyRoleCounts();
 
     while (
         remainingRam > 0 &&
@@ -151,7 +169,11 @@ function launchChunks(ns, {
         if (scriptRam <= 0 || remainingRam < scriptRam) break;
 
         const possibleThreads = Math.floor(remainingRam / scriptRam);
-        const threadCount = Math.min(possibleThreads, batch.threads);
+        const threadCount = chooseLogicalThreadCount(
+            possibleThreads,
+            batch.threads,
+            maxThreadsPerProcess
+        );
 
         if (threadCount <= 0) break;
 
@@ -161,17 +183,38 @@ function launchChunks(ns, {
 
         launched++;
         threads += threadCount;
+        byRole[batch.role].processes++;
+        byRole[batch.role].threads += threadCount;
         remainingRam -= threadCount * scriptRam;
     }
 
-    return { launched, threads };
+    return { launched, threads, byRole };
+}
+
+function chooseLogicalThreadCount(possibleThreads, baseThreads, maxThreadsPerProcess) {
+    const unitThreads = Math.max(1, Number(baseThreads) || 1);
+    const processCap = Math.max(unitThreads, Number(maxThreadsPerProcess) || unitThreads);
+    const available = Math.min(possibleThreads, processCap);
+    const units = Math.max(1, Math.floor(available / unitThreads));
+
+    return unitThreads * units;
 }
 
 function stopStaleSprintWorkers(ns, host, target, cycle) {
     const desiredScripts = new Set(cycle.map(item => normalizeScript(item.script)));
-    const procs = ns.ps(host).filter(proc => desiredScripts.has(normalizeScript(proc.filename)));
-    const staleTargetProcs = procs.filter(proc => String(proc.args?.[0] ?? "") !== target);
-    for (const proc of staleTargetProcs) {
+    const expScripts = new Set([
+        normalizeScript(EXP_HACK),
+        normalizeScript(EXP_GROW),
+        normalizeScript(EXP_WEAKEN),
+    ]);
+    const procs = ns.ps(host).filter(proc => expScripts.has(normalizeScript(proc.filename)));
+    const staleProcs = procs.filter(proc => {
+        const script = normalizeScript(proc.filename);
+        const procTarget = String(proc.args?.[0] ?? "");
+        return procTarget !== target || !desiredScripts.has(script);
+    });
+
+    for (const proc of staleProcs) {
         try {
             ns.kill(proc.pid);
         } catch {
@@ -179,7 +222,13 @@ function stopStaleSprintWorkers(ns, host, target, cycle) {
         }
     }
 
-    const currentTargetProcs = procs.filter(proc => String(proc.args?.[0] ?? "") === target);
+    const currentTargetProcs = procs.filter(proc => {
+        const script = normalizeScript(proc.filename);
+        return (
+            String(proc.args?.[0] ?? "") === target &&
+            desiredScripts.has(script)
+        );
+    });
     if (currentTargetProcs.length < 3) return;
 
     const byScript = new Map();
@@ -206,14 +255,16 @@ function stopStaleSprintWorkers(ns, host, target, cycle) {
 function countActiveSprintWorkers(ns, hosts) {
     let processes = 0;
     let threads = 0;
+    const byRole = emptyRoleCounts();
 
     for (const host of hosts) {
         const hostCount = countActiveSprintWorkersOnHost(ns, host.host);
         processes += hostCount.processes;
         threads += hostCount.threads;
+        addRoleCounts(byRole, hostCount.byRole);
     }
 
-    return { processes, threads };
+    return { processes, threads, byRole };
 }
 
 function countActiveSprintWorkersOnHost(ns, host) {
@@ -224,23 +275,92 @@ function countActiveSprintWorkersOnHost(ns, host) {
             sameScript(p.filename, EXP_WEAKEN)
         );
 
+        const byRole = emptyRoleCounts();
+
+        for (const proc of procs) {
+            const role = getProcessRole(proc);
+            byRole[role].processes++;
+            byRole[role].threads += Number(proc.threads) || 0;
+        }
+
         return {
             processes: procs.length,
             threads: procs.reduce((sum, proc) => sum + (Number(proc.threads) || 0), 0),
+            byRole,
         };
     } catch {
-        return { processes: 0, threads: 0 };
+        return { processes: 0, threads: 0, byRole: emptyRoleCounts() };
     }
 }
 
 function result(status, launched, threads, activeProcesses, extra = {}) {
+    const ns = extra.ns;
+    const target = extra.target;
+    const totalByRole = extra.totalByRole ?? {};
+    const expPerAction = ns && target ? estimateHackExp(ns, target) : 0;
+    const expPerSecond = ns && target
+        ? estimateCycleExpPerSecond(ns, target, totalByRole, expPerAction)
+        : 0;
+    const { ns: _ns, ...publicExtra } = extra;
+
     return {
         status,
         launched,
         threads,
         activeProcesses,
-        ...extra,
+        expPerAction,
+        expPerSecond,
+        ...publicExtra,
     };
+}
+
+function estimateHackExp(ns, target) {
+    try {
+        if (ns.formulas?.hacking?.hackExp) {
+            return Math.max(0, ns.formulas.hacking.hackExp(ns.getServer(target), ns.getPlayer()));
+        }
+    } catch {
+        // Fall through to the approximation below.
+    }
+
+    try {
+        return 3 + Math.max(1, ns.getServerMinSecurityLevel(target)) * 0.3;
+    } catch {
+        return 0;
+    }
+}
+
+function estimateCycleExpPerSecond(ns, target, byRole, expPerAction) {
+    if (!expPerAction || !target) return 0;
+
+    const hackThreads = Number(byRole.hack?.threads) || 0;
+    const growThreads = Number(byRole.grow?.threads) || 0;
+    const weakenThreads = Number(byRole.weaken?.threads) || 0;
+    const hackChance = safeHackChance(ns, target);
+
+    return (
+        (hackThreads * expPerAction * Math.max(0.25, hackChance)) / safeSeconds(ns, "hack", target) +
+        (growThreads * expPerAction) / safeSeconds(ns, "grow", target) +
+        (weakenThreads * expPerAction) / safeSeconds(ns, "weaken", target)
+    );
+}
+
+function safeHackChance(ns, target) {
+    try {
+        return Math.max(0.01, ns.hackAnalyzeChance(target));
+    } catch {
+        return 0.25;
+    }
+}
+
+function safeSeconds(ns, type, target) {
+    try {
+        if (type === "hack") return Math.max(1, ns.getHackTime(target) / 1000);
+        if (type === "grow") return Math.max(1, ns.getGrowTime(target) / 1000);
+        return Math.max(1, ns.getWeakenTime(target) / 1000);
+    } catch {
+        return 1;
+    }
 }
 
 function sameScript(a, b) {
@@ -249,4 +369,45 @@ function sameScript(a, b) {
 
 function normalizeScript(path) {
     return String(path ?? "").replace(/^\/+/, "");
+}
+
+function getProcessRole(proc) {
+    const argRole = String(proc.args?.[1] ?? "");
+    if (argRole === "hack" || argRole === "grow" || argRole === "weaken") return argRole;
+
+    const script = normalizeScript(proc.filename);
+    if (sameScript(script, EXP_HACK)) return "hack";
+    if (sameScript(script, EXP_GROW)) return "grow";
+    if (sameScript(script, EXP_WEAKEN)) return "weaken";
+
+    return "unknown";
+}
+
+function summarizeCycle(cycle) {
+    return Object.fromEntries(
+        cycle.map(item => [item.role, item.threads])
+    );
+}
+
+function emptyRoleCounts() {
+    return {
+        hack: { processes: 0, threads: 0 },
+        grow: { processes: 0, threads: 0 },
+        weaken: { processes: 0, threads: 0 },
+        unknown: { processes: 0, threads: 0 },
+    };
+}
+
+function addRoleCounts(target, source = {}) {
+    for (const role of Object.keys(target)) {
+        target[role].processes += Number(source[role]?.processes) || 0;
+        target[role].threads += Number(source[role]?.threads) || 0;
+    }
+}
+
+function mergeRoleCounts(a = {}, b = {}) {
+    const result = emptyRoleCounts();
+    addRoleCounts(result, a);
+    addRoleCounts(result, b);
+    return result;
 }

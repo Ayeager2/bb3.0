@@ -87,9 +87,13 @@ function printActiveResults(ns, c, results, laneSnapshots) {
 
         const statusColor = result.status === "RUNNING" ? c.green : c.yellow;
         const plan = result.plan ?? {};
+        const expRoles = result.expStats?.totalByRole ?? null;
         const weakenThreads =
             (plan.weakenHackThreads ?? 0) +
             (plan.weakenGrowThreads ?? 0);
+        const roleThreadText = expRoles
+            ? `threads H${formatCount(expRoles.hack?.threads)} G${formatCount(expRoles.grow?.threads)} W${formatCount(expRoles.weaken?.threads)}`
+            : `threads H${plan.hackThreads ?? 0} G${plan.growThreads ?? 0} W${weakenThreads}`;
 
         ns.print(
             `  ${compactLaneName(result.lane).padEnd(10)} ` +
@@ -104,7 +108,7 @@ function printActiveResults(ns, c, results, laneSnapshots) {
             `sec +${secDiff.toFixed(2)} | ` +
             `batch ${ns.format.ram(plan.totalRam ?? 0)} | ` +
             `math ${plan.mathSource ?? "?"} | ` +
-            `threads H${plan.hackThreads ?? 0} G${plan.growThreads ?? 0} W${weakenThreads} | ` +
+            `${roleThreadText} | ` +
             `ram ${ns.format.ram(laneRam.freeRam)}/${ns.format.ram(laneRam.maxRam)}`
         );
     }
@@ -128,14 +132,23 @@ function printRuntimeLine(ns, c, runtimeStats) {
     );
 
     if (runtimeStats.expOverdrive?.active) {
+        const roles = runtimeStats.expOverdrive.totalByRole ?? {};
+        const totalThreads = runtimeStats.expOverdrive.totalThreads ?? runtimeStats.expOverdrive.threads ?? 0;
+        const growThreads = Number(roles.grow?.threads) || 0;
+        const growShare = totalThreads > 0 ? growThreads / totalThreads : 0;
+
         ns.print(
             `  EXP ${runtimeStats.expOverdrive.target} | ` +
             `${runtimeStats.expOverdrive.purpose ?? "background"} | ` +
             `${runtimeStats.expOverdrive.status} | ` +
             `workers ${runtimeStats.expOverdrive.activeProcesses}/` +
             `${runtimeStats.expOverdrive.maxProcesses} | ` +
-            `threads ${runtimeStats.expOverdrive.totalThreads ?? runtimeStats.expOverdrive.threads ?? 0} | ` +
-            `grow ${(runtimeStats.expOverdrive.growRatio * 100).toFixed(0)}%`
+            `threads ${formatCount(totalThreads)} | ` +
+            `H${formatCount(roles.hack?.threads)} ` +
+            `G${formatCount(roles.grow?.threads)} ` +
+            `W${formatCount(roles.weaken?.threads)} | ` +
+            `grow ${pct(growShare)} | ` +
+            `xp/s ${formatCount(runtimeStats.expOverdrive.expPerSecond)}`
         );
     }
 
@@ -209,6 +222,16 @@ function compactLaneName(name) {
 
 function pct(value) {
     return `${((value ?? 0) * 100).toFixed(0)}%`;
+}
+
+function formatCount(value) {
+    const n = Number(value) || 0;
+
+    if (Math.abs(n) >= 1_000_000_000) return `${(n / 1_000_000_000).toFixed(2)}b`;
+    if (Math.abs(n) >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}m`;
+    if (Math.abs(n) >= 1_000) return `${(n / 1_000).toFixed(2)}k`;
+
+    return String(Math.floor(n));
 }
 
 function formatTargetSource(item) {

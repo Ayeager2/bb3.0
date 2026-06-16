@@ -242,7 +242,7 @@ run /tools/build-bootstrap-cheatsheet.js
 Then after the fresh start:
 
 ```txt
-run bootstrap-daemon.js
+run startup.js
 ```
 
 Check the bootstrap plan:

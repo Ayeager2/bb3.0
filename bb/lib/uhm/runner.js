@@ -27,7 +27,7 @@ export function runLane(ns, lane, runtimeStats) {
       purpose: lane.expPurpose ?? 'background',
       maxProcesses: leveling ? 100000 : 10000,
       maxThreadsPerProcess: maxWorkerThreadsPerProcess,
-      maxProcessesPerHost: leveling ? 5000 : 1000,
+      maxProcessesPerHost: leveling ? 7500 : 1000,
     });
 
     runtimeStats.expOverdrive = {
@@ -41,6 +41,12 @@ export function runLane(ns, lane, runtimeStats) {
       activeProcesses: result.activeProcesses ?? 0,
       activeThreads: result.activeThreads ?? 0,
       totalThreads: result.totalThreads ?? result.threads ?? 0,
+      activeByRole: result.activeByRole ?? null,
+      launchedByRole: result.launchedByRole ?? null,
+      totalByRole: result.totalByRole ?? null,
+      cycle: result.cycle ?? null,
+      expPerAction: result.expPerAction ?? 0,
+      expPerSecond: result.expPerSecond ?? 0,
       maxProcesses: result.maxProcesses ?? 0,
       maxThreadsPerProcess: result.maxThreadsPerProcess ?? 0,
       growRatio: Number.isFinite(result.growRatio) ? result.growRatio : 0,
@@ -56,6 +62,16 @@ export function runLane(ns, lane, runtimeStats) {
       status: result.status,
       launched: result.launched,
       threads: result.threads,
+      expStats: {
+        activeProcesses: result.activeProcesses ?? 0,
+        activeThreads: result.activeThreads ?? 0,
+        totalThreads: result.totalThreads ?? result.threads ?? 0,
+        totalByRole: result.totalByRole ?? null,
+        launchedByRole: result.launchedByRole ?? null,
+        cycle: result.cycle ?? null,
+        expPerAction: result.expPerAction ?? 0,
+        expPerSecond: result.expPerSecond ?? 0,
+      },
       plan: null,
     };
   }
