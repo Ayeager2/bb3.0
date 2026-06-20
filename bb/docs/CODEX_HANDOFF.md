@@ -2,7 +2,17 @@
 
 ## Current Focus
 
-Bitburner daemon automation for BN4 is being tuned around:
+Bitburner daemon automation has moved from BN4 victory cleanup into BN9 Hacknet support.
+
+BN9 current focus:
+
+- bootstrap Hacknet growth before full daemon starts
+- Hacknet server/node purchasing and upgrades
+- hash spending policy
+- BitNode-aware service capability gates
+- preventing unavailable cloud/purchased-server logic from running in BN9
+
+Older BN4 automation remains relevant for:
 
 - money mode
 - exp / leveling mode
@@ -30,6 +40,12 @@ Signs that Bitburner is still running old files:
 
 Updated local project files:
 
+- `/lib/daemon/bitnode-capabilities.js`
+- `/lib/daemon/hacknet.js`
+- `/economy/hacknet-buyer-service.js`
+- `/economy/hacknet-hash-spender-service.js`
+- `/tools/hacknet-status.js`
+- `/bootstrap-daemon.js`
 - `/controllers/uhm.js`
 - `/lib/daemon/services.js`
 - `/lib/daemon/state.js`
@@ -44,6 +60,18 @@ Updated local project files:
 
 What changed:
 
+- BN9 Hacknet support added:
+  - bootstrap starts Hacknet buyer/hash spender when current BitNode is 9
+  - buyer can run without daemon-state in BN9 or with `--force true`
+  - hash spender defaults to `auto` and uses `/lib/daemon/hacknet-hash-policy.js`
+  - auto policy sells during bootstrap, improves studying only while actively studying, reduces/increases current money target when daemon-state is available, and falls back to selling hashes
+  - `/data/hacknet-state.txt` and `/data/hacknet-hash-spender-state.txt` record live state
+  - `/tools/hacknet-status.js` prints Hacknet status
+- BitNode capability layer added:
+  - BN9 marks cloud/purchased servers unavailable
+  - BN9 marks Hacknet/hash spending as the primary economy path
+  - daemon spending policy should set `allowServerPurchases=false`, `allowHacknet=true`, `hacknetPrimary=true`
+  - cloud fleet reports blocked with the BN9 reason instead of trying cloud APIs
 - Daemon session stats now update inside `/lib/daemon/state.js`; `/tools/daemon-session-service.js` is retired/disabled so it cannot race-write `/data/daemon-state.txt`.
 - `daemon.js` now performs the dev state refresh on every startup before reading state or launching services.
 - Service manager can still stop retired services that set `stopWhenBlocked`.
@@ -60,6 +88,23 @@ What changed:
 - Fresh-start life service is daemon-launched without a daemon Singularity gate; it self-diagnoses BN/Singularity availability in `/data/fresh-start-life-state.txt`.
 
 ## Verification Commands In Bitburner
+
+For BN9 fresh bootstrap:
+
+```txt
+killall
+run startup.js
+run /tools/hacknet-status.js
+cat /data/hacknet-state.txt
+cat /data/hacknet-hash-spender-state.txt
+```
+
+Expected BN9 bootstrap signs:
+
+- Hacknet buyer is not blocked by missing daemon-state.
+- `Allowed: YES` appears in `/tools/hacknet-status.js`.
+- Hash spender says either `waiting-hashes` or `spent`.
+- Cloud/server purchaser is not required during bootstrap.
 
 After syncing the updated project files into the folder Bitburner actually watches, run:
 

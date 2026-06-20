@@ -1,5 +1,6 @@
 import { CONFIG } from "/lib/daemon/config.js";
 import { STATE_FILE } from "/lib/daemon/config.js";
+import { chooseHacknetHashUpgrade } from "/lib/daemon/hacknet-hash-policy.js";
 
 const HASH_SPENDER_STATE_FILE = "/data/hacknet-hash-spender-state.txt";
 
@@ -11,7 +12,8 @@ export async function main(ns) {
         CONFIG.sellHashes ?? {};
     const flags = ns.flags([
         ["refresh", 5000],
-        ["upgrade", defaults.upgradeName ?? "Sell for Money"],
+        ["upgrade", "auto"],
+        ["target", ""],
         ["reserve", defaults.reserveHashes ?? 0],
         ["min", defaults.minHashesToSpend ?? 4],
         ["max-spends", defaults.maxSpendsPerCycle ?? 25],
@@ -22,7 +24,9 @@ export async function main(ns) {
     const refreshMs =
         Number(flags.refresh) || 5000;
     const upgradeName =
-        String(flags.upgrade || "Sell for Money");
+        String(flags.upgrade || "auto");
+    const manualTarget =
+        String(flags.target || "");
     const reserveHashes =
         Number(flags.reserve) || 0;
     const minHashesToSpend =
@@ -43,10 +47,17 @@ export async function main(ns) {
             policy.allowHacknet === true ||
             force === true ||
             isHacknetBitNode(ns);
+        const hashPolicy =
+            chooseHacknetHashUpgrade(ns, {
+                daemonState,
+                manualUpgrade: upgradeName,
+                manualTarget,
+            });
         const result =
             allow
                 ? spendHashes(ns, {
-                    upgradeName,
+                    upgradeName: hashPolicy.upgradeName,
+                    target: hashPolicy.target,
                     reserveHashes,
                     minHashesToSpend,
                     maxSpendsPerCycle,
@@ -64,7 +75,9 @@ export async function main(ns) {
             allowed: allow,
             status: result.status,
             message: result.message,
-            upgradeName,
+            upgradeName: hashPolicy.upgradeName,
+            target: hashPolicy.target,
+            hashPolicy,
             reserveHashes,
             minHashesToSpend,
             maxSpendsPerCycle,
@@ -100,7 +113,7 @@ function spendHashes(ns, options) {
             acted: false,
             spends: 0,
             status: "blocked",
-            message: `${options.upgradeName} hash cost is unavailable.`,
+            message: `${describeUpgrade(options)} hash cost is unavailable.`,
         };
     }
 
@@ -109,7 +122,7 @@ function spendHashes(ns, options) {
             acted: false,
             spends: 0,
             status: "waiting-hashes",
-            message: `Need ${ns.format.number(cost)} hashes for ${options.upgradeName}.`,
+            message: `Need ${ns.format.number(cost)} hashes for ${describeUpgrade(options)}.`,
         };
     }
 
@@ -125,7 +138,7 @@ function spendHashes(ns, options) {
             break;
         }
 
-        if (!safeSpendHashes(ns, options.upgradeName)) {
+        if (!safeSpendHashes(ns, options.upgradeName, options.target)) {
             break;
         }
 
@@ -138,21 +151,31 @@ function spendHashes(ns, options) {
         status: spends > 0 ? "spent" : "failed",
         message:
             spends > 0
-                ? `Spent hashes on ${options.upgradeName} x${spends}.`
-                : `Unable to spend hashes on ${options.upgradeName}.`,
+                ? `Spent hashes on ${describeUpgrade(options)} x${spends}.`
+                : `Unable to spend hashes on ${describeUpgrade(options)}.`,
     };
 }
 
-function safeSpendHashes(ns, upgradeName) {
+function safeSpendHashes(ns, upgradeName, target = null) {
     try {
+        if (target) {
+            return ns.hacknet.spendHashes(upgradeName, target);
+        }
+
         return ns.hacknet.spendHashes(upgradeName);
     } catch {
         try {
-            return ns.hacknet.spendHashes(upgradeName, "", 1);
+            return ns.hacknet.spendHashes(upgradeName, target ?? "", 1);
         } catch {
             return false;
         }
     }
+}
+
+function describeUpgrade(options) {
+    return options.target
+        ? `${options.upgradeName} on ${options.target}`
+        : options.upgradeName;
 }
 
 function safeHashCost(ns, upgradeName) {

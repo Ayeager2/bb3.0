@@ -260,6 +260,97 @@ Expected signs:
 - process list is not a wall of one oversized hack/grow/weaken process
 ```
 
+BN9 special behavior:
+
+```txt
+If current BitNode is 9:
+    bootstrap-daemon also tries to start:
+        /economy/hacknet-buyer-service.js
+        /economy/hacknet-hash-spender-service.js
+
+Those services use --force during bootstrap so they do not need /data/daemon-state.txt.
+```
+
+---
+
+## BN9 Hacknet Status
+
+```txt
+run /tools/hacknet-status.js
+```
+
+Shows:
+
+```txt
+- Hacknet buyer status
+- hash spender status
+- node count and target caps
+- total production
+- current hashes and hash capacity
+- next Hacknet action and affordability
+- per-node level/RAM/core/production
+```
+
+Raw files:
+
+```txt
+cat /data/hacknet-state.txt
+cat /data/hacknet-hash-spender-state.txt
+```
+
+Manual services:
+
+```txt
+run /economy/hacknet-buyer-service.js --force true --reserve 0
+run /economy/hacknet-hash-spender-service.js --force true --upgrade "Sell for Money"
+```
+
+Current BN9 hash strategy:
+
+```txt
+Early bootstrap:
+    Sell for Money
+
+Reason:
+    BN9 cannot buy cloud/purchased servers, and normal hacking income is weak.
+    Hashes are the replacement economy engine.
+```
+
+Planned smarter hash strategy:
+
+```txt
+Implemented first pass:
+money blocker:
+    Sell for Money
+
+active studying:
+    Improve Studying
+
+leveling but not studying:
+    Sell for Money
+
+money target prep blocker:
+    Reduce Minimum Security
+    Increase Maximum Money
+
+fallback:
+    Sell for Money
+```
+
+BN9 daemon policy should show:
+
+```txt
+"allowServerPurchases": false
+"allowHacknet": true
+"hacknetPrimary": true
+```
+
+Cloud fleet should report:
+
+```txt
+BN9 Hacktocracy does not allow additional cloud/purchased servers.
+```
+
 ---
 
 ## Fresh Start Life Bridge
@@ -803,6 +894,14 @@ Extra timing info appears as:
 }
 ```
 
+BN9 exception:
+
+```txt
+Cloud/purchased servers are unavailable in BN9.
+The daemon should not run /economy/server-purchaser-service.js in BN9.
+Hacknet servers replace the cloud buildout path.
+```
+
 ---
 
 ## Server Ticker
@@ -1010,6 +1109,8 @@ Main execution engine. Runs hack/grow/weaken/EXP/share lanes.
 
 ```txt
 /economy/server-purchaser-service.js
+/economy/hacknet-buyer-service.js
+/economy/hacknet-hash-spender-service.js
 /economy/home-ram-buyer-service.js
 /economy/home-core-buyer-service.js
 /economy/darkweb-buyer-service.js
@@ -1023,6 +1124,8 @@ What they do:
 
 ```txt
 - buy/upgrade cloud servers
+- buy/upgrade Hacknet nodes/servers in BN9 and supporting nodes
+- spend Hacknet hashes, currently on Sell for Money
 - buy home RAM
 - buy home CPU cores
 - buy TOR/programs

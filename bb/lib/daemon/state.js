@@ -106,6 +106,8 @@ export function buildGlobalState(ns, decision, capabilities) {
         bn4VictoryPlan: getBn4VictoryPlan(ns),
         resetPlan,
         capabilities,
+        bitNodeCapabilities:
+            capabilities?.bitNode ?? null,
         formulasUnlocked:
             ns.fileExists("Formulas.exe", "home") &&
             !!ns.formulas?.hacking,

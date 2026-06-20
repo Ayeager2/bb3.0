@@ -7,6 +7,8 @@ import {
 
 const FULL_DAEMON = "daemon.js";
 const TINY_WORKER = "/workers/tiny-worker.js";
+const HACKNET_BUYER = "/economy/hacknet-buyer-service.js";
+const HACKNET_HASH_SPENDER = "/economy/hacknet-hash-spender-service.js";
 const TARGET_FILE = "/data/bootstrap-target.txt";
 const PLAN_FILE = "/data/bootstrap-plan.txt";
 
@@ -40,6 +42,7 @@ export async function main(ns) {
     const rootedServers = rootAvailableServers(ns, allServers);
 
     buyEarlyUpgrades(ns);
+    startBn9HacknetServices(ns);
 
     const target = chooseBestTarget(ns, rootedServers);
     const plan = buildBootstrapPlan(ns, target);
@@ -69,6 +72,60 @@ function shouldStartFullDaemon(ns) {
     freeHomeRam >= daemonRam &&
     ns.getPlayer().money >= CONFIG.minMoneyForFullDaemon
   );
+}
+
+function startBn9HacknetServices(ns) {
+  if (!isHacknetBitNode(ns)) return;
+
+  startBootstrapService(ns, HACKNET_BUYER, [
+    "--refresh", 3000,
+    "--nodes", 20,
+    "--level", 200,
+    "--ram", 64,
+    "--cores", 16,
+    "--reserve", 0,
+    "--force", true,
+    "--debug", true,
+    "--toast", false,
+    "--terminal", false,
+  ]);
+
+  startBootstrapService(ns, HACKNET_HASH_SPENDER, [
+    "--refresh", 3000,
+    "--upgrade", "auto",
+    "--reserve", 0,
+    "--min", 4,
+    "--force", true,
+    "--debug", true,
+  ]);
+}
+
+function startBootstrapService(ns, script, args = []) {
+  if (!ns.fileExists(script, "home")) return;
+  if (isScriptRunning(ns, script)) return;
+
+  const neededRam = ns.getScriptRam(script, "home");
+  const freeRam = getFreeRam(ns, "home", CONFIG.homeReserveRam);
+
+  if (!Number.isFinite(neededRam) || neededRam <= 0) return;
+  if (freeRam < neededRam) return;
+
+  ns.exec(script, "home", 1, ...args);
+}
+
+function isScriptRunning(ns, script) {
+  const normalized = normalizeScript(script);
+
+  return ns.ps("home")
+    .some(proc => normalizeScript(proc.filename) === normalized);
+}
+
+function isHacknetBitNode(ns) {
+  try {
+    return ns.getResetInfo()?.currentNode === 9;
+  } catch {
+    return false;
+  }
 }
 
 function scanAll(ns) {

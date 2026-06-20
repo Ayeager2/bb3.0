@@ -24,6 +24,7 @@ import { getSecondaryMoneyTarget } from "/lib/daemon/targets.js";
 import { buildFactionProgressionState } from "/lib/daemon/faction-progression.js";
 import { getWorldDaemonStatus } from "/lib/daemon/progression.js";
 import { getCloudFleetStatus } from "/lib/daemon/cloud-fleet.js";
+import { getBitNodeCapabilities } from "/lib/daemon/bitnode-capabilities.js";
 
 const EARLY_MONEY_UNTIL_HACKING = 1000;
 const EARLY_HOME_RAM_TARGET = 256;
@@ -91,27 +92,13 @@ export function getCurrentBitNode(ns) {
 
 export function getBitNodeRoadmap(ns) {
     const bitNode = getCurrentBitNode(ns);
-
-    const roadmaps = {
-        1: "standard-growth",
-        2: "crime-gang",
-        3: "corporation",
-        4: "singularity",
-        5: "intelligence",
-        6: "bladeburner",
-        7: "bladeburner-singularity",
-        8: "stock-market",
-        9: "hacknet",
-        10: "sleeves",
-        11: "company",
-        12: "challenge-repeat",
-        13: "stanek",
-        14: "go",
-    };
+    const bitNodeCapabilities =
+        getBitNodeCapabilities(ns);
 
     return {
         bitNode,
-        roadmap: roadmaps[bitNode] ?? "unknown",
+        roadmap: bitNodeCapabilities.roadmap,
+        capabilities: bitNodeCapabilities,
     };
 }
 
@@ -351,8 +338,10 @@ export function choosePriority(ns, mode) {
 
 export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}) {
     const augDecision = getAugmentationDecision(ns);
+    const bitNodeCapabilities =
+        getBitNodeCapabilities(ns);
     const roadmap =
-        getBitNodeRoadmap(ns).roadmap;
+        bitNodeCapabilities.roadmap;
     const manualModeOrPriority =
         !!overrides?.mode ||
         !!overrides?.priority;
@@ -391,7 +380,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             priority: "income",
             reserveMoney: 0,
 
-            allowServerPurchases: true,
+            allowServerPurchases: bitNodeCapabilities.cloud.allowed === true,
             allowStockTrading: false,
             allowHacknet: true,
             allowHomeRam: true,
@@ -406,7 +395,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowIntTravel: false,
 
             hacknetPrimary: true,
-            hacknetReason: "BN9 Hacktocracy: prioritize Hacknet server growth and hash spending.",
+            hacknetReason: bitNodeCapabilities.hacknet.reason,
+            bitNodeCapabilities,
         };
     }
 
@@ -844,12 +834,19 @@ export function hasAllPortOpeners(ns) {
 }
 
 export function detectCapabilities(ns) {
+    const bitNodeCapabilities =
+        getBitNodeCapabilities(ns);
+
     return {
         singularity: hasSingularityAccess(ns),
         sleeves: hasSleevesAccess(ns),
         corporations: hasCorporationAccess(ns),
         gangs: hasGangAccess(ns),
         bladeburner: hasBladeburnerAccess(ns),
+        bitNode: bitNodeCapabilities,
+        cloudServers: bitNodeCapabilities.cloud.allowed === true,
+        hacknet: bitNodeCapabilities.hacknet.allowed === true,
+        hacknetHashes: bitNodeCapabilities.hacknet.hashes === true,
     };
 }
 

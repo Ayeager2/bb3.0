@@ -33,6 +33,20 @@
    - confirm /tools/refresh-augmentation-plans.js waits for augmentation-data-builder
 12. Remove stale checked-in runtime state after explicit approval:
    - /lib/daemon/daemon-state.txt appears to contain old joesguns/3000 data
+13. BN9 Hacknet hash policy:
+   - first pass implemented in /lib/daemon/hacknet-hash-policy.js
+   - verify live choices in BN9:
+       no daemon-state / bootstrap -> Sell for Money
+       active study -> Improve Studying
+       leveling but not studying -> Sell for Money
+       money target with high security -> Reduce Minimum Security
+       clean money target -> Increase Maximum Money
+       fallback -> Sell for Money
+   - tune thresholds after observing /data/hacknet-hash-spender-state.txt
+14. BN9 BitNode capability verification:
+   - cloud/purchased servers must stay disabled in BN9
+   - Hacknet buyer and hash spender should start during bootstrap before daemon-state exists
+   - once full daemon starts, daemon-state should show allowServerPurchases=false, allowHacknet=true, hacknetPrimary=true
 ```
 
 # NEW TODO - 2026-06-07
@@ -60,6 +74,16 @@ Server purchaser / dashboard ticker:
 # COMPLETED RECENTLY
 
 ```txt
+- BN9 Hacknet bootstrap/daemon first pass:
+  - /lib/daemon/hacknet.js created shared Hacknet planning/action logic
+  - /economy/hacknet-buyer-service.js buys nodes/upgrades with daemon policy or BN9/force override
+  - /economy/hacknet-hash-spender-service.js spends hashes, currently defaulting to Sell for Money
+  - /tools/hacknet-status.js reports buyer/hash state, next action, production, hashes, and node stats
+  - bootstrap-daemon.js starts Hacknet buyer/hash spender in BN9 before full daemon is available
+  - /lib/daemon/bitnode-capabilities.js added BitNode-aware service capability rules
+  - BN9 disables cloud/purchased server logic and enables Hacknet/hash spending
+  - server-purchaser service now stops when blocked by policy
+
 - Pre-Red-Pill BitRunners NeuroFlux favor-loop first pass:
   - BitRunners NeuroFlux has a dedicated augmentation stage policy
   - augmentation planner allows NeuroFlux only for joined BitRunners before Red Pill

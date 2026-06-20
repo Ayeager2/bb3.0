@@ -256,6 +256,7 @@ export const SERVICES = [
         // Do not block it during bootstrap anymore
         disabledPhases: [],
 
+        stopWhenBlocked: true,
         purpose: "early purchased server scaling",
     },
     {
@@ -480,7 +481,7 @@ export const SERVICES = [
         threads: 1,
         args: [
             "--refresh", 5000,
-            "--upgrade", "Sell for Money",
+            "--upgrade", "auto",
             "--reserve", 0,
             "--min", 4,
             "--max-spends", 25,

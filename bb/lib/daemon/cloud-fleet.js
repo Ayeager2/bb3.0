@@ -1,6 +1,38 @@
 // /lib/daemon/cloud-fleet.js
+import { getBitNodeCapabilities } from "/lib/daemon/bitnode-capabilities.js";
 
 export function getCloudFleetStatus(ns) {
+    const bitNodeCapabilities =
+        getBitNodeCapabilities(ns);
+
+    if (bitNodeCapabilities.cloud.allowed !== true) {
+        return {
+            available: false,
+            maxed: true,
+            countMaxed: true,
+            ramMaxed: true,
+            ownedCount: 0,
+            serverLimit: bitNodeCapabilities.cloud.limit ?? 0,
+            maxRam: bitNodeCapabilities.cloud.maxRam ?? 0,
+            minRam: 0,
+            maxedCount: 0,
+            totalRam: 0,
+            nextAction: {
+                type: "none",
+                server: null,
+                ram: 0,
+                cost: 0,
+                reason: bitNodeCapabilities.cloud.reason,
+            },
+            nextPurchaseCost: 0,
+            nextUpgradeCost: 0,
+            nextUpgradeRam: 0,
+            nextActionAffordable: false,
+            reason: bitNodeCapabilities.cloud.reason,
+            bitNodeBlocked: true,
+        };
+    }
+
     if (!ns.cloud) {
         return {
             available: false,

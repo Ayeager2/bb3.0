@@ -25,6 +25,13 @@ export async function main(ns) {
     ns.tprint(`Service: ${serviceState.status ?? "unknown"} | Allowed: ${yesNo(serviceState.allowed)}`);
     ns.tprint(`Message: ${serviceState.message ?? "none"}`);
     ns.tprint(`Hash Spender: ${hashSpender.status ?? "unknown"} | ${hashSpender.message ?? "none"}`);
+    if (hashSpender.hashPolicy) {
+        ns.tprint(
+            `Hash Policy: ${hashSpender.hashPolicy.upgradeName ?? "unknown"}` +
+            `${hashSpender.hashPolicy.target ? ` -> ${hashSpender.hashPolicy.target}` : ""}`
+        );
+        ns.tprint(`Hash Reason: ${hashSpender.hashPolicy.reason ?? "none"}`);
+    }
     ns.tprint(`Nodes: ${live.nodeCount}/${live.targetNodes} | Max Nodes: ${live.maxNodes}`);
     ns.tprint(`Targets: level ${live.targetLevel} | RAM ${live.targetRam}GB | cores ${live.targetCores}`);
     ns.tprint(`Production: ${formatMoney(ns, live.totalProduction)} / sec`);
@@ -33,6 +40,7 @@ export async function main(ns) {
 
     if (live.hashes.available) {
         ns.tprint(`Hashes: ${formatNumber(ns, live.hashes.hashes)} / ${formatNumber(ns, live.hashes.capacity)}`);
+    }
 
     ns.tprint("-".repeat(70));
 
