@@ -5,6 +5,13 @@ const AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
 import { getAugmentationStagePolicy } from "/lib/daemon/augmentation-stage-policy.js";
 
 const DEFAULT_MAX_PRICE = 1_000_000_000_000; // 1t
+const PRE_DAEDALUS_AUGMENTATION_FRONTIER = [
+    "side",
+    "cybersec",
+    "nitesec",
+    "black-hand",
+    "bitrunners",
+];
 
 const BITNODE_STRATEGIES = {
     4: {
@@ -95,7 +102,7 @@ export function buildAugmentationPlan(ns, options = {}) {
 
     const money = ns.getPlayer().money;
     const spendable = Math.max(0, money - reserveMoney);
-    const candidates = [];
+    let candidates = [];
     const ownedAugmentations = getOwnedAugmentationSet(ns);
     const neuroFluxPolicy = getNeuroFluxPolicy(ns);
 
@@ -198,6 +205,12 @@ export function buildAugmentationPlan(ns, options = {}) {
         );
     }
 
+    const progressionFrontier =
+        selectProgressionFrontier(ns, candidates);
+
+    candidates =
+        progressionFrontier.candidates;
+
     candidates.sort((a, b) => compareForPurchase(a, b, strategy));
 
     const daedalusNeuroFluxGoal =
@@ -219,12 +232,74 @@ export function buildAugmentationPlan(ns, options = {}) {
         reserveMoney,
         spendable,
         maxPrice,
+        progressionFrontier: {
+            stage: progressionFrontier.stage,
+            reason: progressionFrontier.reason,
+            candidateCount: candidates.length,
+        },
         ready: !!nextGoal && nextGoal.hasRep && nextGoal.affordable && nextGoal.hasPrereqs,
         nextGoal,
         blockedReason: getBlockedReason(nextGoal),
         neuroFluxPolicy,
         candidates: candidates.slice(0, 25),
     });
+}
+
+function selectProgressionFrontier(ns, candidates) {
+    if (!candidates.length) {
+        return {
+            stage: null,
+            reason: "No candidates available.",
+            candidates,
+        };
+    }
+
+    const player = ns.getPlayer();
+    const joinedFactions =
+        new Set(player.factions ?? []);
+
+    if (
+        joinedFactions.has("Daedalus") ||
+        hasAugmentation(ns, "The Red Pill")
+    ) {
+        return {
+            stage: "daedalus-or-later",
+            reason: "Daedalus/Red Pill stage can use global augmentation priority.",
+            candidates,
+        };
+    }
+
+    const nonRepeatable =
+        candidates.filter(candidate => candidate.repeatable !== true);
+
+    for (const stage of PRE_DAEDALUS_AUGMENTATION_FRONTIER) {
+        const stageCandidates =
+            nonRepeatable.filter(candidate =>
+                candidate.stagePolicy?.stage === stage &&
+                candidate.hasPrereqs === true &&
+                (
+                    stage !== "side" ||
+                    (
+                        candidate.hasRep === true &&
+                        candidate.affordable === true
+                    )
+                )
+            );
+
+        if (stageCandidates.length > 0) {
+            return {
+                stage,
+                reason: `Pre-Daedalus frontier is holding at ${stage} until its non-repeatable augmentations are bought or queued.`,
+                candidates: stageCandidates,
+            };
+        }
+    }
+
+    return {
+        stage: "global",
+        reason: "No earlier non-repeatable pre-Daedalus augmentation frontier remains.",
+        candidates,
+    };
 }
 
 function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set(), context = {}) {
@@ -763,6 +838,14 @@ function getOwnedAugmentationSet(ns) {
         return new Set(ns.singularity.getOwnedAugmentations(true));
     } catch {
         return new Set();
+    }
+}
+
+function hasAugmentation(ns, name) {
+    try {
+        return ns.singularity.getOwnedAugmentations(true).includes(name);
+    } catch {
+        return false;
     }
 }
 

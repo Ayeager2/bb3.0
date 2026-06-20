@@ -191,6 +191,7 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
 
     if (roadmap === "stock-market") return "money";
     if (roadmap === "corporation") return "money";
+    if (roadmap === "hacknet") return "money";
     if (roadmap === "bladeburner") return "exp";
     if (roadmap === "crime-gang") return "progression";
 
@@ -350,6 +351,8 @@ export function choosePriority(ns, mode) {
 
 export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}) {
     const augDecision = getAugmentationDecision(ns);
+    const roadmap =
+        getBitNodeRoadmap(ns).roadmap;
     const manualModeOrPriority =
         !!overrides?.mode ||
         !!overrides?.priority;
@@ -382,6 +385,30 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         augDecision.augmentationTiming ?? null;
     const allowMoneyModeAugmentPurchase =
         isMoneyModeAugmentPurchaseAllowed(ns, augDecision);
+
+    if (roadmap === "hacknet") {
+        return {
+            priority: "income",
+            reserveMoney: 0,
+
+            allowServerPurchases: true,
+            allowStockTrading: false,
+            allowHacknet: true,
+            allowHomeRam: true,
+            allowExePurchases: true,
+
+            allowAugmentPurchases: false,
+            allowFactionWork: false,
+            allowFactionDonation: false,
+            allowFactionJoin: capabilities.singularity === true,
+            allowBackdoors: capabilities.singularity === true,
+            allowReset: false,
+            allowIntTravel: false,
+
+            hacknetPrimary: true,
+            hacknetReason: "BN9 Hacktocracy: prioritize Hacknet server growth and hash spending.",
+        };
+    }
 
     if (
         shouldFinishAugmentationNow(augDecision) &&
