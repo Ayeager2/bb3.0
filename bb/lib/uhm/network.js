@@ -36,6 +36,69 @@ export function getAllExecutionServers(ns) {
     return sanitizeServerSet(ns, rootedServers);
 }
 
+export function filterExecutionServers(ns, servers, daemonState = {}) {
+    const clean = new Set();
+
+    for (const server of servers) {
+        if (isExecutionHostBlocked(ns, server, daemonState)) continue;
+        clean.add(server);
+    }
+
+    return clean;
+}
+
+export function cleanupBlockedExecutionHosts(ns, servers, daemonState = {}) {
+    let killed = 0;
+
+    for (const server of servers) {
+        if (!isExecutionHostBlocked(ns, server, daemonState)) continue;
+        if (!safeServerExists(ns, server)) continue;
+
+        try {
+            for (const proc of ns.ps(server)) {
+                if (!isUhmWorkerScript(proc.filename)) continue;
+                if (ns.kill(proc.pid)) killed++;
+            }
+        } catch {
+            // Host may disappear while UHM is rescanning.
+        }
+    }
+
+    return killed;
+}
+
+function isExecutionHostBlocked(ns, server, daemonState = {}) {
+    if (server === "home") return false;
+    if (!isHacknetServer(ns, server)) return false;
+
+    const allowedByPolicy =
+        daemonState?.spendingPolicy?.allowHacknetExecution === true ||
+        daemonState?.bitNodeCapabilities?.hacknet?.useAsExecutionHosts === true;
+
+    return !allowedByPolicy;
+}
+
+function isHacknetServer(ns, server) {
+    if (String(server).startsWith("hacknet-server-")) return true;
+
+    try {
+        const count = ns.hacknet?.numNodes?.() ?? 0;
+        for (let i = 0; i < count; i++) {
+            const name = ns.hacknet.getNodeStats(i)?.name;
+            if (name === server) return true;
+        }
+    } catch {
+        return false;
+    }
+
+    return false;
+}
+
+function isUhmWorkerScript(filename) {
+    const script = String(filename ?? "");
+    return script.startsWith("/workers/") || script.startsWith("workers/");
+}
+
 export async function copyScriptsToServers(ns, servers, copiedServers, runtimeStats) {
     for (const server of servers) {
         if (server === "home") continue;

@@ -107,6 +107,7 @@ function getHacknetCapability(ns, bitNode) {
         allowed: true,
         hashes: bitNode === 9 || hasHacknetHashes(ns),
         primary: bitNode === 9,
+        useAsExecutionHosts: bitNode !== 9,
         reason:
             bitNode === 9
                 ? "BN9 Hacktocracy: Hacknet servers and hashes are the primary economy path."

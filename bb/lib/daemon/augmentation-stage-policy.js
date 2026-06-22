@@ -1,4 +1,5 @@
 const FACTION_STAGE_BY_FACTION = {
+    Netburners: "netburners",
     CyberSec: "cybersec",
     NiteSec: "nitesec",
     "The Black Hand": "black-hand",
@@ -7,6 +8,7 @@ const FACTION_STAGE_BY_FACTION = {
 };
 
 const STAGE_PRIORITY = {
+    netburners: 950,
     "red-pill": 1000,
     daedalus: 900,
     bitrunners: 800,
@@ -57,6 +59,17 @@ export function getAugmentationStagePolicy(goal = {}) {
             factionWork: "background-until-close",
             moneyWork: "money-primary",
             reason: "BitRunners NeuroFlux can be used as a pre-Red-Pill favor and augmentation-count accelerator.",
+        });
+    }
+
+    if (faction === "Netburners") {
+        return makePolicy("netburners", {
+            priority: STAGE_PRIORITY.netburners,
+            urgency: "critical",
+            buyReadiness: "hacknet-first",
+            factionWork: "full",
+            moneyWork: "hacknet-primary",
+            reason: "Netburners provides the dedicated BN9 Hacknet augmentation path.",
         });
     }
 

@@ -1,6 +1,25 @@
 const DEFAULT_MAX_PRICE = 1000000000000;
 
 export const BITNODE_STRATEGIES = {
+    9: {
+        name: "BN9 Hacknet / Hash Economy",
+        maxPrice: DEFAULT_MAX_PRICE,
+        readyBuyOrder: "cheap-first",
+        statWeights: {
+            hacknet: 160,
+            hacking: 45,
+            hacking_exp: 35,
+            faction_rep: 70,
+            money: 50,
+            company_rep: 15,
+            charisma: 15,
+            combat: 5,
+            crime: 5,
+            bladeburner: 0,
+            misc: 5,
+        },
+    },
+
     4: {
         name: "BN4 Singularity / Hacking",
         maxPrice: DEFAULT_MAX_PRICE,

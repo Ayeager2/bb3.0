@@ -33,6 +33,8 @@ export function runExpSprint(ns, target, hosts, options = {}) {
     let launched = 0;
     let threads = 0;
     const launchedByRole = emptyRoleCounts();
+    const roleBalance = mergeRoleCounts(active.byRole, launchedByRole);
+    const targetRoleRatios = getRoleRatios(cycle);
 
     for (const host of hosts) {
         if (active.processes + launched >= maxProcesses) break;
@@ -56,6 +58,8 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             maxThreadsPerProcess,
             maxProcessesRemaining: maxProcesses - active.processes - launched,
             maxProcessesForHost: maxProcessesPerHost - hostActive.processes,
+            roleBalance,
+            targetRoleRatios,
         });
 
         launched += launchResult.launched;
@@ -73,7 +77,7 @@ export function runExpSprint(ns, target, hosts, options = {}) {
         {
             ns,
             engine: "hgw-sprint",
-            growRatio: 0,
+            growRatio: getRoleThreadRatio(totalByRole, "grow"),
             target,
             maxProcesses,
             maxThreadsPerProcess,
@@ -87,6 +91,15 @@ export function runExpSprint(ns, target, hosts, options = {}) {
             cycle: summarizeCycle(cycle),
         }
     );
+}
+
+function getRoleThreadRatio(roleCounts, role) {
+    const total =
+        Object.values(roleCounts ?? {})
+            .reduce((sum, item) => sum + (Number(item?.threads) || 0), 0);
+
+    if (total <= 0) return 0;
+    return (Number(roleCounts?.[role]?.threads) || 0) / total;
 }
 
 function buildSprintCycle(ns, target, purpose = "background", maxThreadsPerProcess = DEFAULT_MAX_THREADS_PER_PROCESS) {
@@ -152,6 +165,8 @@ function launchChunks(ns, {
     maxThreadsPerProcess,
     maxProcessesRemaining,
     maxProcessesForHost,
+    roleBalance,
+    targetRoleRatios,
 }) {
     let launched = 0;
     let threads = 0;
@@ -163,7 +178,7 @@ function launchChunks(ns, {
         launched < maxProcessesRemaining &&
         launched < maxProcessesForHost
     ) {
-        const batch = cycle[launched % cycle.length];
+        const batch = chooseNextBatch(cycle, roleBalance, targetRoleRatios);
         const script = batch.script;
         const scriptRam = ns.getScriptRam(script, host);
         if (scriptRam <= 0 || remainingRam < scriptRam) break;
@@ -185,16 +200,68 @@ function launchChunks(ns, {
         threads += threadCount;
         byRole[batch.role].processes++;
         byRole[batch.role].threads += threadCount;
+        roleBalance[batch.role].processes++;
+        roleBalance[batch.role].threads += threadCount;
         remainingRam -= threadCount * scriptRam;
     }
 
     return { launched, threads, byRole };
 }
 
+function chooseNextBatch(cycle, roleBalance, targetRoleRatios) {
+    if (cycle.length <= 1) return cycle[0];
+
+    const totalThreads =
+        Object.values(roleBalance)
+            .reduce((sum, item) => sum + (Number(item?.threads) || 0), 0);
+
+    return [...cycle].sort((a, b) => {
+        const aDeficit = getRoleDeficit(a.role, totalThreads, roleBalance, targetRoleRatios);
+        const bDeficit = getRoleDeficit(b.role, totalThreads, roleBalance, targetRoleRatios);
+
+        if (bDeficit !== aDeficit) return bDeficit - aDeficit;
+        return (b.threads ?? 0) - (a.threads ?? 0);
+    })[0];
+}
+
+function getRoleDeficit(role, totalThreads, roleBalance, targetRoleRatios) {
+    const current = Number(roleBalance?.[role]?.threads) || 0;
+    const ratio = Number(targetRoleRatios?.[role]) || 0;
+    const desired = Math.max(1, totalThreads * ratio);
+
+    return desired - current;
+}
+
+function getRoleRatios(cycle) {
+    const totals = emptyRoleCounts();
+    let totalThreads = 0;
+
+    for (const item of cycle) {
+        const threads = Math.max(1, Number(item.threads) || 1);
+        totals[item.role].threads += threads;
+        totalThreads += threads;
+    }
+
+    const ratios = {};
+    for (const role of Object.keys(totals)) {
+        ratios[role] =
+            totalThreads > 0
+                ? totals[role].threads / totalThreads
+                : 0;
+    }
+
+    return ratios;
+}
+
 function chooseLogicalThreadCount(possibleThreads, baseThreads, maxThreadsPerProcess) {
     const unitThreads = Math.max(1, Number(baseThreads) || 1);
     const processCap = Math.max(unitThreads, Number(maxThreadsPerProcess) || unitThreads);
     const available = Math.min(possibleThreads, processCap);
+
+    if (available < unitThreads) {
+        return Math.max(0, Math.floor(available));
+    }
+
     const units = Math.max(1, Math.floor(available / unitThreads));
 
     return unitThreads * units;

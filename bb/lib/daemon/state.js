@@ -133,6 +133,10 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
     const world = getWorldDaemonStatus(ns);
     const cloudFleet = getCloudFleetStatus(ns);
     const cloudTiming = buildCloudEconomyTiming(ns, decision, cloudFleet);
+    const roadmap =
+        decision.bitNodePlan?.roadmap ??
+        decision.spendingPolicy?.bitNodeCapabilities?.roadmap ??
+        "";
 
     let primary = 0.60;
     let secondary = 0.30;
@@ -180,6 +184,15 @@ export function buildAdaptiveMultiTargetPolicy(ns, decision) {
             victoryPlan.hasRedPill
                 ? `Post-Red-Pill EXP sprint: hacking ${hacking}/${world.requiredHack}.`
                 : `EXP bottleneck active: hacking ${hacking}; all lanes assigned to EXP.`;
+    } else if (
+        roadmap === "hacknet" &&
+        (priority === "progression" || priority === "faction")
+    ) {
+        primary = 0.20;
+        secondary = 0.10;
+        exp = 0.70;
+
+        reason = "BN9 progression pivot: faction work leads, Hacknet keeps compounding, and UHM gives most RAM to hacking growth.";
     } else if (mode === "prep") {
         primary = 0.70;
         secondary = 0.20;

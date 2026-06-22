@@ -3,6 +3,7 @@ const FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
 const PURCHASE_STATE_FILE = "/data/purchases-state.txt";
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
+const UHM_STATE_FILE = "/data/uhm-state.txt";
 const BACKDOOR_STATE_FILE = "/data/backdoor-service-state.txt";
 const FACTION_JOIN_STATUS_FILE = "/data/faction-join-status.txt";
 
@@ -15,6 +16,7 @@ export async function main(ns) {
     const work = readJson(ns, FACTION_WORK_PLAN_FILE);
     const donation = readJson(ns, FACTION_DONATION_PLAN_FILE);
     const lastPurchase = readJson(ns, PURCHASE_STATE_FILE);
+    const uhm = readJson(ns, UHM_STATE_FILE);
     const backdoor = readJson(ns, BACKDOOR_STATE_FILE);
     const join = readJson(ns, FACTION_JOIN_STATUS_FILE);
 
@@ -28,6 +30,15 @@ export async function main(ns) {
     ns.tprint(`Mode: ${daemon.mode ?? "unknown"} | Priority: ${daemon.spendingPolicy?.priority ?? "unknown"}`);
     ns.tprint(`Money: ${formatMoney(ns.getPlayer().money)} | Hacking: ${ns.getHackingLevel()}`);
     ns.tprint(`Current Work: ${formatWork(currentWork)}`);
+    ns.tprint(
+        `Policy: join ${yesNo(daemon.spendingPolicy?.allowFactionJoin)} | ` +
+        `work ${yesNo(daemon.spendingPolicy?.allowFactionWork)} | ` +
+        `augs ${yesNo(daemon.spendingPolicy?.allowAugmentPurchases)}`
+    );
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("UHM / Hacking Engine");
+    printUhmStatus(ns, uhm);
 
     ns.tprint("-".repeat(70));
     ns.tprint("BN4 / Faction Progression");
@@ -170,6 +181,48 @@ function yesNo(value) {
     return value === true ? "YES" : "NO";
 }
 
+function printUhmStatus(ns, uhm) {
+    if (!uhm?.updatedAt) {
+        ns.tprint("No UHM telemetry yet. Tail /controllers/uhm.js or wait for its next 5s draw.");
+        return;
+    }
+
+    const ageSeconds =
+        Math.max(0, Math.round((Date.now() - uhm.updatedAt) / 1000));
+    const exp = uhm.exp ?? {};
+    const roles = exp.totalByRole ?? exp.activeByRole ?? {};
+
+    ns.tprint(
+        `Mode: ${uhm.mode ?? "unknown"} | Priority: ${uhm.priority ?? "unknown"} | ` +
+        `Phase: ${uhm.phase ?? "unknown"} | Age: ${ageSeconds}s`
+    );
+    ns.tprint(
+        `EXP: ${exp.active ? "ON" : "OFF"} | ${exp.status ?? "unknown"} | ` +
+        `Target: ${exp.target ?? "none"} | Workers: ${formatNumber(exp.workers)} | ` +
+        `Threads: ${formatNumber(exp.threads)} | XP/s: ${formatNumber(exp.expPerSecond)}`
+    );
+    ns.tprint(
+        `Roles: H ${formatNumber(roleThreads(roles, "hack"))} | ` +
+        `G ${formatNumber(roleThreads(roles, "grow"))} | ` +
+        `W ${formatNumber(roleThreads(roles, "weaken"))} | ` +
+        `Grow ${formatPercent(exp.growRatio ?? 0)}`
+    );
+
+    for (const lane of uhm.lanes ?? []) {
+        ns.tprint(
+            `${lane.name}: ${lane.mode} ${lane.target ?? "none"} | ` +
+            `${lane.status ?? "idle"} | hosts ${lane.hosts ?? 0} | ` +
+            `free ${formatRam(lane.ram?.freeRam ?? lane.ram?.free)} / ${formatRam(lane.ram?.maxRam ?? lane.ram?.total)}`
+        );
+    }
+}
+
+function roleThreads(roles, role) {
+    const value = roles?.[role];
+    if (typeof value === "number") return value;
+    return Number(value?.threads) || 0;
+}
+
 function printServiceStatus(ns, daemon, id) {
     const services = Array.isArray(daemon.services) ? daemon.services : [];
     const service = services.find(item => item.id === id);
@@ -183,4 +236,31 @@ function printServiceStatus(ns, daemon, id) {
         `Service ${id}: ${service.status ?? "unknown"} | ` +
         `running ${yesNo(service.running)} | pid ${service.pid ?? 0} | ${service.reason ?? "no reason"}`
     );
+}
+
+function formatPercent(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return "0%";
+    return `${(n * 100).toFixed(0)}%`;
+}
+
+function formatRam(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return "0.00GB";
+    try {
+        return nsFormatRam(n);
+    } catch {
+        return `${n.toFixed(2)}GB`;
+    }
+}
+
+function nsFormatRam(value) {
+    const units = ["GB", "TB", "PB", "EB"];
+    let n = Number(value);
+    let unit = 0;
+    while (Math.abs(n) >= 1024 && unit < units.length - 1) {
+        n /= 1024;
+        unit++;
+    }
+    return `${n.toFixed(2)}${units[unit]}`;
 }

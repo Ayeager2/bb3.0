@@ -47,6 +47,7 @@
    - cloud/purchased servers must stay disabled in BN9
    - Hacknet buyer and hash spender should start during bootstrap before daemon-state exists
    - once full daemon starts, daemon-state should show allowServerPurchases=false, allowHacknet=true, hacknetPrimary=true
+   - UHM should not use Hacknet server RAM as worker RAM in BN9; Hacknet servers should keep producing hashes
 ```
 
 # NEW TODO - 2026-06-07
@@ -76,13 +77,32 @@ Server purchaser / dashboard ticker:
 ```txt
 - BN9 Hacknet bootstrap/daemon first pass:
   - /lib/daemon/hacknet.js created shared Hacknet planning/action logic
+  - Hacknet buyer now uses ROI/payback scoring instead of cheapest-first
+  - production ROI assumes $2m per Sell for Money and live hash cost
+  - cache upgrades now use capacity/buffer policy instead of ROI:
+      target cache 8, target buffer 120 minutes of current hash production
+  - default max payback gate is 3600 seconds; low-return Hacknet actions are skipped so home RAM/cores can compete for money
+  - /tools/hacknet-status.js reports the best ROI-blocked candidate when nothing beats the gate
   - /economy/hacknet-buyer-service.js buys nodes/upgrades with daemon policy or BN9/force override
+  - Hacknet buyer has no min-money daemon gate; it should run ready even before the next purchase is affordable
+  - Hacknet hash spender is gated on the buyer being live
   - /economy/hacknet-hash-spender-service.js spends hashes, currently defaulting to Sell for Money
   - /tools/hacknet-status.js reports buyer/hash state, next action, production, hashes, and node stats
   - bootstrap-daemon.js starts Hacknet buyer/hash spender in BN9 before full daemon is available
   - /lib/daemon/bitnode-capabilities.js added BitNode-aware service capability rules
   - BN9 disables cloud/purchased server logic and enables Hacknet/hash spending
-  - server-purchaser service now stops when blocked by policy
+  - UHM now filters Hacknet servers out of execution hosts unless daemon policy explicitly allows Hacknet execution
+  - UHM cleans old /workers scripts off blocked Hacknet hosts so hash production can recover after policy changes
+  - bootstrap-daemon now also filters Hacknet servers out of tiny-worker execution in BN9
+  - bootstrap-daemon cleans stale /workers/tiny-worker.js processes off Hacknet servers in BN9
+  - stock trader is daemon-eligible when TIX API exists; useful as a mid-game BN9 side engine, not a bootstrap engine
+  - server-purchaser service now has the allowServerPurchases policy gate and stops when blocked by policy
+  - Netburners is now the BN9-first faction path:
+      faction profile priority 1000
+      observer computes Hacknet readiness correctly
+      join service sorts BN9 invites by priority
+      augmentation planner strongly weights Hacknet stats and Netburners stage policy
+      daemon policy allows faction work / augmentation buying in BN9 when Singularity is available
 
 - Pre-Red-Pill BitRunners NeuroFlux favor-loop first pass:
   - BitRunners NeuroFlux has a dedicated augmentation stage policy

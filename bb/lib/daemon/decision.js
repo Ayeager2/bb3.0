@@ -178,7 +178,9 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
 
     if (roadmap === "stock-market") return "money";
     if (roadmap === "corporation") return "money";
-    if (roadmap === "hacknet") return "money";
+    if (roadmap === "hacknet") {
+        return chooseHacknetRoadmapMode(ns, rootedServers);
+    }
     if (roadmap === "bladeburner") return "exp";
     if (roadmap === "crime-gang") return "progression";
 
@@ -261,10 +263,16 @@ export function choosePriority(ns, mode) {
     const augDecision = getAugmentationDecision(ns);
     const resetPlan = buildResetPlan(ns);
     const factionProgression = buildFactionProgressionState(ns);
+    const bitNodeCapabilities =
+        getBitNodeCapabilities(ns);
 
     if (mode === "destroy-node") return "destroy-node";
     if (mode === "reset-prep") return "reset-prep";
     if (resetPlan.ready) return "reset-prep";
+
+    if (bitNodeCapabilities.roadmap === "hacknet") {
+        return chooseHacknetRoadmapPriority(ns, mode, augDecision, factionProgression);
+    }
 
     if (
         shouldBuildEconomyBeforeProgression(ns) &&
@@ -352,6 +360,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
 
     if (
         !manualModeOrPriority &&
+        roadmap !== "hacknet" &&
         shouldBuildEconomyBeforeProgression(ns) &&
         !shouldFinishAugmentationNow(augDecision) &&
         mode !== "destroy-node" &&
@@ -376,18 +385,35 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         isMoneyModeAugmentPurchaseAllowed(ns, augDecision);
 
     if (roadmap === "hacknet") {
+        const hacknetPriority =
+            mode === "exp" || priority === "leveling"
+                ? "leveling"
+                : mode === "progression" || mode === "faction" || priority === "progression" || priority === "faction"
+                    ? "progression"
+                    : "income";
+        const progressionActive =
+            hacknetPriority === "progression";
+        const levelingActive =
+            hacknetPriority === "leveling";
+
         return {
-            priority: "income",
-            reserveMoney: 0,
+            priority: hacknetPriority,
+            reserveMoney:
+                progressionActive || levelingActive
+                    ? CONFIG.minReserveMoney
+                    : 0,
 
             allowServerPurchases: bitNodeCapabilities.cloud.allowed === true,
-            allowStockTrading: false,
+            allowStockTrading: hacknetPriority === "income",
             allowHacknet: true,
+            allowHacknetExecution: false,
             allowHomeRam: true,
             allowExePurchases: true,
 
-            allowAugmentPurchases: false,
-            allowFactionWork: false,
+            allowAugmentPurchases: capabilities.singularity === true,
+            allowFactionWork:
+                capabilities.singularity === true &&
+                progressionActive,
             allowFactionDonation: false,
             allowFactionJoin: capabilities.singularity === true,
             allowBackdoors: capabilities.singularity === true,
@@ -396,6 +422,13 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
 
             hacknetPrimary: true,
             hacknetReason: bitNodeCapabilities.hacknet.reason,
+            factionWorkReason:
+                progressionActive
+                    ? "BN9 progression is active: faction work leads while Hacknet keeps compounding in the background."
+                    : levelingActive
+                        ? "BN9 leveling is active: script EXP leads while Hacknet keeps compounding in the background."
+                        : "BN9 income is active: Hacknet and hashes lead the economy.",
+            hacknetExecutionReason: "BN9 preserves Hacknet server RAM for hash production instead of UHM workers.",
             bitNodeCapabilities,
         };
     }
@@ -672,6 +705,79 @@ function getProgressionModeHint(augDecision) {
     }
 
     return "progression";
+}
+
+function chooseHacknetRoadmapMode(ns, rootedServers) {
+    const augDecision = getAugmentationDecision(ns);
+    const factionProgression = buildFactionProgressionState(ns);
+
+    if (factionProgression.expPolicy?.shouldLevelNow === true) {
+        return "exp";
+    }
+
+    if (shouldFinishAugmentationNow(augDecision)) {
+        return "progression";
+    }
+
+    if (shouldBn9PushProgression(ns, augDecision, factionProgression)) {
+        return "progression";
+    }
+
+    if (shouldBn9LevelForGrowth(ns, augDecision)) {
+        return "exp";
+    }
+
+    const moneyTarget = getBestMoneyTarget(ns, rootedServers);
+    if (moneyTarget && isTargetReasonableForMoney(ns, moneyTarget)) {
+        return "money";
+    }
+
+    return "money";
+}
+
+function chooseHacknetRoadmapPriority(ns, mode, augDecision, factionProgression) {
+    if (mode === "exp" || factionProgression.expPolicy?.shouldLevelNow === true) {
+        return "leveling";
+    }
+
+    if (
+        mode === "progression" ||
+        shouldFinishAugmentationNow(augDecision) ||
+        shouldBn9PushProgression(ns, augDecision, factionProgression)
+    ) {
+        return "progression";
+    }
+
+    return "income";
+}
+
+function shouldBn9PushProgression(ns, augDecision, factionProgression) {
+    if (!augDecision) return false;
+
+    if (
+        augDecision.shouldWorkFaction === true ||
+        augDecision.shouldDonateFaction === true ||
+        augDecision.shouldBuyAugment === true
+    ) {
+        return true;
+    }
+
+    return (
+        factionProgression.currentBlocker !== "none" &&
+        factionProgression.recommendedMode === "progression"
+    );
+}
+
+function shouldBn9LevelForGrowth(ns, augDecision) {
+    const hacking = ns.getHackingLevel();
+    const joined = new Set(ns.getPlayer()?.factions ?? []);
+    const targetFaction = augDecision?.targetFaction ?? "";
+
+    if (!joined.has("Netburners")) return false;
+    if (targetFaction === "Netburners") return false;
+    if (augDecision?.shouldEarnMoney === true) return false;
+
+    return hacking < 1000;
 }
 
 function shouldStartAugmentationPush(ns, augDecision) {

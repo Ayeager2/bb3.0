@@ -269,6 +269,8 @@ If current BitNode is 9:
         /economy/hacknet-hash-spender-service.js
 
 Those services use --force during bootstrap so they do not need /data/daemon-state.txt.
+bootstrap-daemon reserves hacknet-server-* RAM for hash production and should not run /workers/tiny-worker.js there.
+bootstrap prioritizes the Hacknet buyer; hash spender only starts after buyer is running.
 ```
 
 ---
@@ -288,7 +290,44 @@ Shows:
 - total production
 - current hashes and hash capacity
 - next Hacknet action and affordability
+- ROI payback for the next action
+- cache buffer target and capacity gap
+- home RAM/core cost comparison
 - per-node level/RAM/core/production
+```
+
+Expected service shape:
+
+```txt
+If /economy/hacknet-hash-spender-service.js is running, /economy/hacknet-buyer-service.js should also be running.
+The full daemon blocks hash spender until the buyer is live.
+```
+
+## BN9 Faction Priority
+
+```txt
+run /tools/faction-status.js
+cat /data/faction-state.txt
+cat /data/faction-join-status.txt
+```
+
+Expected BN9 behavior:
+
+```txt
+Netburners should outrank the normal hacking spine when it is not joined.
+Daemon policy should show allowFactionJoin=true, allowFactionWork=true, allowAugmentPurchases=true when Singularity is available.
+Faction observer should show Hacknet totals and Netburners blockers:
+  Hacknet levels current/100
+  Hacknet RAM current/8
+  Hacknet cores current/4
+Faction join service should sort invitations by BitNode priority, with Netburners first in BN9.
+```
+
+BN9 augmentation priority:
+
+```txt
+Netburners Hacknet augmentations are high priority.
+Hacknet stats outweigh generic hacking stats in the BN9 augmentation strategy.
 ```
 
 Raw files:
@@ -342,13 +381,89 @@ BN9 daemon policy should show:
 ```txt
 "allowServerPurchases": false
 "allowHacknet": true
+"allowHacknetExecution": false
 "hacknetPrimary": true
+```
+
+UHM should preserve Hacknet servers in BN9:
+
+```txt
+run /controllers/uhm.js
+```
+
+Expected:
+
+```txt
+Hacknet servers such as hacknet-server-0 should not appear in the UHM host pool.
+Existing /workers/... scripts on blocked Hacknet servers should be killed by UHM cleanup.
+Hash production should recover because Hacknet server RAM is not being consumed by hack/grow/weaken workers.
+```
+
+Hacknet buyer ROI:
+
+```txt
+The buyer scores node/level/RAM/core actions by payback time.
+Hash production is converted to money using the current Sell for Money hash cost.
+Default Sell for Money value assumption: $2m.
+Default payback gate: 3600 seconds.
+If no Hacknet action beats the gate, it waits so home RAM/cores can use the money.
+Use --max-payback 0 for an unlimited gate if you want pure Hacknet snowball testing.
+```
+
+Hacknet cache policy:
+
+```txt
+Cache is not ROI-scored because it does not increase hashes/sec.
+Cache is bought when current hash capacity cannot bank the configured buffer of current production.
+Default buffer: 120 minutes.
+Default cache target: 8.
+```
+
+Useful buyer knobs:
+
+```txt
+--sell-value 2000000
+--max-payback 3600
+--max-payback 0
+--hash-buffer-minutes 120
+--cache 8
+```
+
+When the gate blocks buying:
+
+```txt
+run /tools/hacknet-status.js
+```
+
+Look for:
+
+```txt
+Next: ROI blocked
+Best Candidate: ...
+ROI: payback ... vs gate ...
+Hash Gain: ...
+```
+
+Stocks:
+
+```txt
+Stock trading can help BN9 after TIX API access exists.
+The stock trader is daemon-eligible, but service-manager blocks it until TIX is available.
+It is not a bootstrap money source.
 ```
 
 Cloud fleet should report:
 
 ```txt
 BN9 Hacktocracy does not allow additional cloud/purchased servers.
+```
+
+Server purchaser in BN9:
+
+```txt
+/economy/server-purchaser-service.js should not stay running.
+Daemon services may show it as LOCK / allowServerPurchases blocked by policy.
+That is expected and costs no service RAM after the manager kills or refuses it.
 ```
 
 ---

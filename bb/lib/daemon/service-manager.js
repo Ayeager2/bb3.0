@@ -60,6 +60,9 @@ function manageService(ns, service, daemonState) {
     const running = getRunningService(ns, normalized);
 
     if (!gate.allowed) {
+        const killed =
+            running && normalized.stopWhenBlocked === true;
+
         if (running && normalized.stopWhenBlocked === true) {
             ns.kill(running.pid);
         }
@@ -80,8 +83,8 @@ function manageService(ns, service, daemonState) {
             key,
             status: "blocked",
             kind: "locked",
-            running: !!running,
-            pid: running?.pid ?? 0,
+            running: killed ? false : !!running,
+            pid: killed ? 0 : running?.pid ?? 0,
             reason: gate.reason,
         });
     }
@@ -199,6 +202,7 @@ function normalizeService(service) {
         minHomeRam: service.minHomeRam ?? 0,
         phases: service.phases ?? [],
         disabledPhases: service.disabledPhases ?? [],
+        requiresRunningService: service.requiresRunningService ?? null,
 
         stopWhenBlocked: service.stopWhenBlocked ?? false,
         purpose: service.purpose ?? "",
@@ -243,6 +247,13 @@ function getServiceGate(ns, service, daemonState) {
 
     if (service.maxHomeRam > 0 && ns.getServerMaxRam("home") >= service.maxHomeRam) {
         return block(`disabled after ${ns.format.ram(service.maxHomeRam)} home RAM`);
+    }
+
+    if (
+        service.requiresRunningService &&
+        !isScriptRunningOnHost(ns, service.requiresRunningService, service.host)
+    ) {
+        return block(`requires ${service.requiresRunningService} running`);
     }
 
     const phase = daemonState?.phase ?? "unknown";
@@ -440,4 +451,13 @@ function markFailure(key) {
 
 function clearFailure(key) {
     delete FAILURE_CACHE[key];
+}
+
+function isScriptRunningOnHost(ns, script, host = "home") {
+    try {
+        return ns.ps(host)
+            .some(proc => normalizePath(proc.filename) === normalizePath(script));
+    } catch {
+        return false;
+    }
 }

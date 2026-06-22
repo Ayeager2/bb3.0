@@ -40,6 +40,8 @@ export async function main(ns) {
   while (true) {
     const allServers = scanAll(ns);
     const rootedServers = rootAvailableServers(ns, allServers);
+    const executionServers = getBootstrapExecutionServers(ns, rootedServers);
+    cleanupBlockedBootstrapHosts(ns, rootedServers);
 
     buyEarlyUpgrades(ns);
     startBn9HacknetServices(ns);
@@ -49,10 +51,10 @@ export async function main(ns) {
     writeBootstrapTarget(ns, target);
     writeBootstrapPlan(ns, plan);
 
-    await copyBootstrapFiles(ns, rootedServers);
+    await copyBootstrapFiles(ns, executionServers);
 
-    runWorkers(ns, rootedServers, plan);
-    draw(ns, rootedServers, target, plan);
+    runWorkers(ns, executionServers, plan);
+    draw(ns, rootedServers, executionServers, target, plan);
     if (shouldStartFullDaemon(ns)) {
       startFullDaemon(ns, rootedServers);
       return;
@@ -77,18 +79,28 @@ function shouldStartFullDaemon(ns) {
 function startBn9HacknetServices(ns) {
   if (!isHacknetBitNode(ns)) return;
 
-  startBootstrapService(ns, HACKNET_BUYER, [
+  const buyerStarted = startBootstrapService(ns, HACKNET_BUYER, [
     "--refresh", 3000,
     "--nodes", 20,
     "--level", 200,
     "--ram", 64,
     "--cores", 16,
+    "--cache", 8,
     "--reserve", 0,
+    "--max-payback", 21600,
+    "--hash-buffer-minutes", 120,
+    "--sell-value", 2_000_000,
     "--force", true,
     "--debug", true,
     "--toast", false,
     "--terminal", false,
-  ]);
+  ], {
+    priority: true,
+  });
+
+  if (!buyerStarted && !isScriptRunning(ns, HACKNET_BUYER)) {
+    return;
+  }
 
   startBootstrapService(ns, HACKNET_HASH_SPENDER, [
     "--refresh", 3000,
@@ -100,17 +112,39 @@ function startBn9HacknetServices(ns) {
   ]);
 }
 
-function startBootstrapService(ns, script, args = []) {
-  if (!ns.fileExists(script, "home")) return;
-  if (isScriptRunning(ns, script)) return;
+function startBootstrapService(ns, script, args = [], options = {}) {
+  if (!ns.fileExists(script, "home")) return false;
+  if (isScriptRunning(ns, script)) return true;
 
   const neededRam = ns.getScriptRam(script, "home");
+  if (!Number.isFinite(neededRam) || neededRam <= 0) return false;
+
+  if (options.priority === true) {
+    freeBootstrapServiceRam(ns, neededRam);
+  }
+
   const freeRam = getFreeRam(ns, "home", CONFIG.homeReserveRam);
+  if (freeRam < neededRam) return false;
 
-  if (!Number.isFinite(neededRam) || neededRam <= 0) return;
-  if (freeRam < neededRam) return;
+  return ns.exec(script, "home", 1, ...args) !== 0;
+}
 
-  ns.exec(script, "home", 1, ...args);
+function freeBootstrapServiceRam(ns, neededRam) {
+  let freeRam = getFreeRam(ns, "home", CONFIG.homeReserveRam);
+  if (freeRam >= neededRam) return;
+
+  for (const proc of ns.ps("home")) {
+    if (normalizeScript(proc.filename) !== normalizeScript(TINY_WORKER)) continue;
+
+    try {
+      ns.kill(proc.pid);
+    } catch {
+      // Best effort; the next bootstrap cycle can try again.
+    }
+
+    freeRam = getFreeRam(ns, "home", CONFIG.homeReserveRam);
+    if (freeRam >= neededRam) return;
+  }
 }
 
 function isScriptRunning(ns, script) {
@@ -164,6 +198,48 @@ function rootAvailableServers(ns, servers) {
   }
 
   return rooted;
+}
+
+function getBootstrapExecutionServers(ns, rootedServers) {
+  return rootedServers.filter(server => shouldUseBootstrapExecutionHost(ns, server));
+}
+
+function shouldUseBootstrapExecutionHost(ns, server) {
+  if (server === "home") return true;
+  if (!isHacknetBitNode(ns)) return true;
+  return !isHacknetServer(ns, server);
+}
+
+function cleanupBlockedBootstrapHosts(ns, rootedServers) {
+  if (!isHacknetBitNode(ns)) return;
+
+  for (const server of rootedServers) {
+    if (!isHacknetServer(ns, server)) continue;
+
+    try {
+      for (const proc of ns.ps(server)) {
+        if (normalizeScript(proc.filename) !== normalizeScript(TINY_WORKER)) continue;
+        ns.kill(proc.pid);
+      }
+    } catch {
+      // Hacknet hosts can appear/disappear while bootstrap is still scanning.
+    }
+  }
+}
+
+function isHacknetServer(ns, server) {
+  if (String(server).startsWith("hacknet-server-")) return true;
+
+  try {
+    const count = ns.hacknet?.numNodes?.() ?? 0;
+    for (let i = 0; i < count; i++) {
+      if (ns.hacknet.getNodeStats(i)?.name === server) return true;
+    }
+  } catch {
+    return false;
+  }
+
+  return false;
 }
 
 function tryRoot(ns, server) {
@@ -465,7 +541,7 @@ function buyHomeRam(ns) {
   }
 }
 
-function draw(ns, rootedServers, target, plan) {
+function draw(ns, rootedServers, executionServers, target, plan) {
   ns.clearLog();
 
   ns.print("Bootstrap Daemon v2");
@@ -474,6 +550,10 @@ function draw(ns, rootedServers, target, plan) {
   ns.print(`Hacking     : ${ns.getHackingLevel()}`);
   ns.print(`Home RAM    : ${ns.format.ram(ns.getServerMaxRam("home"))}`);
   ns.print(`Rooted      : ${rootedServers.length}`);
+  ns.print(`Workers     : ${executionServers.length}`);
+  if (isHacknetBitNode(ns)) {
+    ns.print("Hacknet RAM : reserved for hash production");
+  }
   ns.print(`Target      : ${target}`);
   ns.print(`Plan        : ${formatCycle(plan.cycle)} | ${formatPercent(plan.moneyRatio)} | sec +${ns.format.number(plan.securityGap)}`);
   ns.print(`Hack odds   : ${formatPercent(plan.chance)} | steal ${formatPercent(plan.desiredStealFraction)}`);

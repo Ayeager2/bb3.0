@@ -17,6 +17,8 @@ import {
 import {
   sanitizeServerSet,
   getAllExecutionServers,
+  filterExecutionServers,
+  cleanupBlockedExecutionHosts,
   copyScriptsToServers,
   readDaemonState,
 } from "/lib/uhm/network.js";
@@ -41,6 +43,8 @@ import {
 import { runShareMode } from "/lib/uhm/modes/share.js";
 
 import { getProgressionPhase } from "/lib/uhm/progression.js";
+
+const UHM_STATE_FILE = "/data/uhm-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -158,6 +162,10 @@ export async function main(ns) {
     }
 
     rootedServers = sanitizeServerSet(ns, rootedServers);
+    runtimeStats.blockedExecutionCleanup =
+      (runtimeStats.blockedExecutionCleanup ?? 0) +
+      cleanupBlockedExecutionHosts(ns, rootedServers, effectiveDaemonState);
+    rootedServers = filterExecutionServers(ns, rootedServers, effectiveDaemonState);
 
     await copyScriptsToServers(ns, rootedServers, copiedServers, runtimeStats);
 
@@ -217,6 +225,16 @@ export async function main(ns) {
     }
 
     if (now - lastDraw > 5000) {
+      writeUhmState(ns, {
+        daemonState: effectiveDaemonState,
+        lanes,
+        results,
+        laneSnapshots,
+        runtimeStats,
+        phase,
+        hosts,
+      });
+
       ns.clearLog();
       printMultiTargetStatus(
         ns,
@@ -229,6 +247,72 @@ export async function main(ns) {
       lastDraw = now;
     }
     await ns.sleep(delayMs);
+  }
+}
+
+function writeUhmState(ns, {
+  daemonState,
+  lanes,
+  results,
+  laneSnapshots,
+  runtimeStats,
+  phase,
+  hosts,
+}) {
+  const exp = runtimeStats.expOverdrive ?? {};
+  const laneStats = lanes.map((lane, index) => {
+    const ram = laneSnapshots[index]?.ram ?? getLaneRamStats(lane);
+    const result = results.find(item => item.lane === lane.name) ?? null;
+
+    return {
+      name: lane.name,
+      mode: lane.mode,
+      target: lane.target,
+      targetSource: lane.targetSource ?? null,
+      expPurpose: lane.expPurpose ?? null,
+      hosts: lane.hosts?.length ?? 0,
+      ram,
+      status: result?.status ?? "idle",
+      launched: result?.launched ?? 0,
+      expStats: result?.expStats ?? null,
+    };
+  });
+
+  const state = {
+    updatedAt: Date.now(),
+    updatedAtText: new Date().toLocaleTimeString(),
+    mode: daemonState?.mode ?? "unknown",
+    priority: daemonState?.spendingPolicy?.priority ?? "unknown",
+    phase: phase?.name ?? daemonState?.phase ?? "unknown",
+    hostCount: hosts.length,
+    exp: {
+      active: exp.active === true,
+      engine: exp.engine ?? null,
+      target: exp.target ?? null,
+      purpose: exp.purpose ?? null,
+      status: exp.status ?? null,
+      workers: exp.activeProcesses ?? exp.launched ?? 0,
+      maxProcesses: exp.maxProcesses ?? 0,
+      threads: exp.totalThreads ?? exp.activeThreads ?? exp.threads ?? 0,
+      activeByRole: exp.activeByRole ?? null,
+      totalByRole: exp.totalByRole ?? null,
+      growRatio: exp.growRatio ?? 0,
+      expPerSecond: exp.expPerSecond ?? 0,
+    },
+    lanes: laneStats,
+    runtime: {
+      batches: runtimeStats.batchesLaunched ?? 0,
+      failed: runtimeStats.failedLaunches ?? 0,
+      prep: runtimeStats.prepRuns ?? 0,
+      scans: runtimeStats.scanRuns ?? 0,
+      copies: runtimeStats.copiedServers ?? 0,
+    },
+  };
+
+  try {
+    ns.write(UHM_STATE_FILE, JSON.stringify(state, null, 2), "w");
+  } catch {
+    // Status telemetry should never stop the controller.
   }
 }
 

@@ -7,13 +7,14 @@ export function buildFactionState(ns, options = {}) {
     const player = ns.getPlayer();
     const joined = new Set(player.factions ?? []);
     const hackingLevel = ns.getHackingLevel();
+    const hacknetTotals = getHacknetTotals(ns);
 
     const profiles = ALL_FACTION_PROFILES
         .filter(profile => !profile?.requirements?.later)
-        .map(profile => buildProfileState(ns, profile, joined, hackingLevel, bitNode));
+        .map(profile => buildProfileState(ns, profile, joined, hackingLevel, bitNode, hacknetTotals));
 
     const spine = profiles
-        .filter(x => x.requirements.backdoor === true || x.theme === "hacking" || x.theme === "endgame")
+        .filter(x => x.requirements.backdoor === true || x.theme === "hacking" || x.theme === "hacknet" || x.theme === "endgame")
         .sort((a, b) => b.priority - a.priority);
 
     const next = profiles
@@ -28,6 +29,7 @@ export function buildFactionState(ns, options = {}) {
         updatedAt: Date.now(),
         singularityEnabled,
         bitNode,
+        hacknetTotals,
         joined: [...joined],
         hackingLevel,
         profiles,
@@ -47,7 +49,7 @@ export function buildFactionState(ns, options = {}) {
     };
 }
 
-function buildProfileState(ns, profile, joined, hackingLevel, bitNode) {
+function buildProfileState(ns, profile, joined, hackingLevel, bitNode, hacknetTotals) {
     const req = profile.requirements ?? {};
     const server = req.server ?? null;
 
@@ -79,6 +81,18 @@ function buildProfileState(ns, profile, joined, hackingLevel, bitNode) {
         req.homeRam == null ||
         ns.getServerMaxRam("home") >= req.homeRam;
 
+    const hacknetLevelsReady =
+        req.hacknetLevels == null ||
+        hacknetTotals.levels >= req.hacknetLevels;
+
+    const hacknetRamReady =
+        req.hacknetRam == null ||
+        hacknetTotals.ram >= req.hacknetRam;
+
+    const hacknetCoresReady =
+        req.hacknetCores == null ||
+        hacknetTotals.cores >= req.hacknetCores;
+
     const backdoorReady =
         req.backdoor !== true ||
         backdoored;
@@ -97,6 +111,10 @@ function buildProfileState(ns, profile, joined, hackingLevel, bitNode) {
         cityReady,
         augReady,
         homeRamReady,
+        hacknetLevelsReady,
+        hacknetRamReady,
+        hacknetCoresReady,
+        hacknetTotals,
     });
 
     return {
@@ -117,6 +135,10 @@ function buildProfileState(ns, profile, joined, hackingLevel, bitNode) {
         cityReady,
         augReady,
         homeRamReady,
+        hacknetLevelsReady,
+        hacknetRamReady,
+        hacknetCoresReady,
+        hacknetTotals,
 
         joined: joinedFaction,
         ready: blockers.length === 0 && !joinedFaction,
@@ -190,6 +212,13 @@ function buildNextGoal(goal, singularityEnabled) {
 function getBlockers(state) {
     const req = state.req;
     const blockers = [];
+    const hacknetTotals = state.hacknetTotals ?? {
+        levels: 0,
+        ram: 0,
+        cores: 0,
+        maxRam: 0,
+        maxCores: 0,
+    };
 
     if (req.server && !state.exists) blockers.push(`discover ${req.server}`);
     if (req.server && !state.rooted) blockers.push(`root ${req.server}`);
@@ -205,9 +234,9 @@ function getBlockers(state) {
     if (req.companyRole) blockers.push(`company role ${req.companyRole}`);
     if (req.karma != null) blockers.push(`karma ${req.karma}`);
     if (req.kills != null) blockers.push(`${req.kills} kills`);
-    if (req.hacknetLevels != null) blockers.push(`Hacknet levels ${req.hacknetLevels}`);
-    if (req.hacknetRam != null) blockers.push(`Hacknet RAM ${req.hacknetRam}`);
-    if (req.hacknetCores != null) blockers.push(`Hacknet cores ${req.hacknetCores}`);
+    if (!state.hacknetLevelsReady) blockers.push(`Hacknet levels ${hacknetTotals.levels}/${req.hacknetLevels}`);
+    if (!state.hacknetRamReady) blockers.push(`Hacknet RAM ${hacknetTotals.ram}/${req.hacknetRam}`);
+    if (!state.hacknetCoresReady) blockers.push(`Hacknet cores ${hacknetTotals.cores}/${req.hacknetCores}`);
 
     return blockers;
 }
@@ -219,6 +248,12 @@ function getPriority(profile, bitNode) {
 }
 
 function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? 0;
+    } catch {
+        // Fall back below.
+    }
+
     try {
         return ns.getPlayer().bitNodeN ?? 0;
     } catch {
@@ -291,4 +326,46 @@ function formatMoney(value) {
     if (value >= 1_000) return "$" + (value / 1_000).toFixed(2) + "k";
 
     return "$" + value.toFixed(0);
+}
+
+function getHacknetTotals(ns) {
+    try {
+        const count = ns.hacknet?.numNodes?.() ?? 0;
+        let levels = 0;
+        let ram = 0;
+        let cores = 0;
+        let maxRam = 0;
+        let maxCores = 0;
+        let production = 0;
+
+        for (let i = 0; i < count; i++) {
+            const node = ns.hacknet.getNodeStats(i);
+            levels += Number(node.level) || 0;
+            ram += Number(node.ram) || 0;
+            cores += Number(node.cores) || 0;
+            maxRam = Math.max(maxRam, Number(node.ram) || 0);
+            maxCores = Math.max(maxCores, Number(node.cores) || 0);
+            production += Number(node.production) || 0;
+        }
+
+        return {
+            count,
+            levels,
+            ram,
+            cores,
+            maxRam,
+            maxCores,
+            production,
+        };
+    } catch {
+        return {
+            count: 0,
+            levels: 0,
+            ram: 0,
+            cores: 0,
+            maxRam: 0,
+            maxCores: 0,
+            production: 0,
+        };
+    }
 }

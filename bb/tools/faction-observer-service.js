@@ -44,6 +44,15 @@ export async function main(ns) {
         ns.print(`Singularity: ${singularityEnabled ? "ON" : "OFF"}`);
         ns.print(`Auto Backdoor: ${autoBackdoor ? "ON" : "OFF"}`);
         ns.print(`Joined: ${combinedState.joined.join(", ") || "none"}`);
+        if (combinedState.bitNode === 9) {
+            const h = combinedState.hacknetTotals ?? {};
+            ns.print(
+                `Hacknet: nodes ${h.count ?? 0} | ` +
+                `levels ${h.levels ?? 0} | ` +
+                `RAM ${h.ram ?? 0} | ` +
+                `cores ${h.cores ?? 0}`
+            );
+        }
         ns.print("-".repeat(60));
         ns.print(`Next: ${combinedState.nextGoal.message}`);
 

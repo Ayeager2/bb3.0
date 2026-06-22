@@ -57,13 +57,13 @@ export const EARLY_FACTION_PROFILES = [
         repeatableValue: false,
     }),
 
-    profile("Netburners", "hacking", { 4: 80, 2: 20, default: 55 }, {
+    profile("Netburners", "hacknet", { 9: 1000, 4: 80, 2: 20, default: 55 }, {
         hacking: 80,
         hacknetLevels: 100,
         hacknetRam: 8,
         hacknetCores: 4,
     }, {
-        augmentationFocus: ["hacking", "hacknet", "early-rep"],
+        augmentationFocus: ["hacknet", "hacking", "early-rep"],
         recommendedRepTarget: 1_000_000,
         repeatableValue: false,
     }),

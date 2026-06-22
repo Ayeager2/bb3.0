@@ -14,7 +14,11 @@ export async function main(ns) {
         ["level", 200],
         ["ram", 64],
         ["cores", 16],
+        ["cache", 8],
         ["reserve", 0],
+        ["max-payback", 3600],
+        ["hash-buffer-minutes", 120],
+        ["sell-value", 2_000_000],
         ["use-policy-reserve", false],
         ["force", false],
         ["debug", true],
@@ -32,8 +36,16 @@ export async function main(ns) {
         Number(flags.ram) || 64;
     const targetCores =
         Number(flags.cores) || 16;
+    const targetCache =
+        Number(flags.cache) || 8;
     const fallbackReserve =
         Number(flags.reserve) || 0;
+    const maxPaybackSeconds =
+        getMaxPaybackSeconds(flags["max-payback"]);
+    const hashBufferSeconds =
+        (Number(flags["hash-buffer-minutes"]) || 120) * 60;
+    const sellForMoneyValue =
+        Number(flags["sell-value"]) || 2_000_000;
     const usePolicyReserve =
         flags["use-policy-reserve"] === true;
     const force =
@@ -81,7 +93,11 @@ export async function main(ns) {
                 targetLevel,
                 targetRam,
                 targetCores,
+                targetCache,
                 reserveMoney,
+                maxPaybackSeconds,
+                hashBufferSeconds,
+                sellForMoneyValue,
             });
 
         const state = {
@@ -106,10 +122,26 @@ export async function main(ns) {
             ns.print(`Nodes: ${state.nodeCount}/${state.targetNodes}`);
             ns.print(`Production: ${ns.format.number(state.totalProduction)} / sec`);
             ns.print(`Spendable: ${ns.format.number(state.spendable)}`);
+            ns.print(`ROI gate: ${ns.format.number(state.roi?.maxPaybackSeconds ?? maxPaybackSeconds)}s`);
+            ns.print(`Hash sell value: $${ns.format.number(state.roi?.sellForMoneyValue ?? sellForMoneyValue)}`);
+            ns.print(
+                `Cache buffer: ${formatDuration(state.cachePolicy?.hashBufferSeconds ?? hashBufferSeconds)} | ` +
+                `${ns.format.number(state.hashes?.capacity ?? 0)} cap`
+            );
 
             if (state.nextAction) {
                 ns.print(`Next: ${state.nextAction.label}`);
                 ns.print(`Cost: ${ns.format.number(state.nextAction.cost)}`);
+                if (state.nextAction.type === "cache") {
+                    ns.print(`Reason: bank ${formatDuration(state.cachePolicy?.hashBufferSeconds ?? hashBufferSeconds)} of hashes`);
+                } else {
+                    ns.print(`Payback: ${formatDuration(state.nextAction.paybackSeconds)}`);
+                }
+            } else if (state.roi?.bestCandidate) {
+                ns.print(`Best blocked: ${state.roi.bestCandidate.label}`);
+                ns.print(`Cost: ${ns.format.number(state.roi.bestCandidate.cost)}`);
+                ns.print(`Payback: ${formatDuration(state.roi.bestCandidate.paybackSeconds)}`);
+                ns.print(`Gain: ${ns.format.number(state.roi.bestCandidate.productionGain ?? 0)} hashes/s`);
             }
         }
 
@@ -138,6 +170,25 @@ export async function main(ns) {
 
         await ns.sleep(refreshMs);
     }
+}
+
+function formatDuration(seconds) {
+    const n =
+        Math.max(0, Number(seconds) || 0);
+
+    if (!Number.isFinite(n)) return "unlimited";
+
+    if (n >= 3600) return `${(n / 3600).toFixed(1)}h`;
+    if (n >= 60) return `${(n / 60).toFixed(1)}m`;
+
+    return `${n.toFixed(0)}s`;
+}
+
+function getMaxPaybackSeconds(value) {
+    const n = Number(value);
+    if (n === 0) return Number.POSITIVE_INFINITY;
+    if (Number.isFinite(n) && n > 0) return n;
+    return 3600;
 }
 
 function isHacknetBitNode(ns) {
