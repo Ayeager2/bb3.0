@@ -33,7 +33,8 @@ export async function main(ns) {
     ns.tprint(
         `Policy: join ${yesNo(daemon.spendingPolicy?.allowFactionJoin)} | ` +
         `work ${yesNo(daemon.spendingPolicy?.allowFactionWork)} | ` +
-        `augs ${yesNo(daemon.spendingPolicy?.allowAugmentPurchases)}`
+        `augs ${yesNo(daemon.spendingPolicy?.allowAugmentPurchases)} | ` +
+        `stocks ${yesNo(daemon.spendingPolicy?.allowStockTrading)}`
     );
 
     ns.tprint("-".repeat(70));
@@ -67,6 +68,11 @@ export async function main(ns) {
     printServiceStatus(ns, daemon, "faction-join");
     ns.tprint(`Allowed: ${yesNo(join.allowJoin)} | Invites: ${(join.invites ?? []).join(", ") || "none"}`);
     ns.tprint(`Joined: ${(join.joinedFactions ?? ns.getPlayer().factions ?? []).join(", ") || "none"}`);
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("Market");
+    ns.tprint(`WSE: ${yesNo(hasWseAccount(ns))} | TIX API: ${yesNo(hasTixApi(ns))} | 4S: ${yesNo(has4SData(ns))}`);
+    printServiceStatus(ns, daemon, "stock-trader");
 
     ns.tprint("-".repeat(70));
     ns.tprint("Backdoors");
@@ -179,6 +185,40 @@ function formatNumber(value) {
 
 function yesNo(value) {
     return value === true ? "YES" : "NO";
+}
+
+function hasTixApi(ns) {
+    try {
+        return ns.stock.hasTixApiAccess();
+    } catch {
+        try {
+            ns.stock.getPosition("ECP");
+            return true;
+        } catch {
+            return false;
+        }
+    }
+}
+
+function hasWseAccount(ns) {
+    try {
+        return ns.stock.hasWseAccount();
+    } catch {
+        return false;
+    }
+}
+
+function has4SData(ns) {
+    try {
+        return ns.stock.has4SDataTixApi();
+    } catch {
+        try {
+            ns.stock.getForecast("ECP");
+            return true;
+        } catch {
+            return false;
+        }
+    }
 }
 
 function printUhmStatus(ns, uhm) {

@@ -31,6 +31,10 @@ export async function main(ns) {
 
     maxRows: 16,
     maxRecentActions: 8,
+    wsePurchaseMoney: 200_000_000,
+    tixPurchaseMoney: 5_000_000_000,
+    fourSPurchaseMoneyAfterTix: 5_000_000_000,
+    fourSTixPurchaseMoney: 25_000_000_000,
   };
 
   const priceHistory = new Map();
@@ -56,6 +60,7 @@ export async function main(ns) {
     losers: 0,
     rows: [],
     recentActions: [],
+    marketAccess: {},
     lastAction: "Starting daemon-controlled stock trader...",
   };
 
@@ -86,8 +91,41 @@ export async function main(ns) {
       ? spendingPolicy.reserveMoney
       : CONFIG.fallbackReserveMoney;
 
-    const symbols = ns.stock.getSymbols();
     const money = ns.getPlayer().money;
+    const marketAccess = buyMarketAccess(ns, CONFIG, state, {
+      daemonAllowed,
+      resetPrep,
+      reserveMoney,
+    });
+    access = marketAccess.access;
+
+    if (!access.hasTix) {
+      state.cycles++;
+      state.mode = getModeName(access);
+      state.daemonPriority = daemonPriority;
+      state.daemonAllowed = daemonAllowed;
+      state.daemonReserve = reserveMoney;
+      state.resetPrep = resetPrep;
+      state.money = ns.getPlayer().money;
+      state.portfolioValue = 0;
+      state.totalWealth = state.money;
+      state.maxStockInvestment = 0;
+      state.remainingStockBudget = 0;
+      state.buyBudget = 0;
+      state.totalProfit = 0;
+      state.holdings = 0;
+      state.winners = 0;
+      state.losers = 0;
+      state.rows = [];
+      state.marketAccess = marketAccess;
+
+      drawDashboard(ns, CONFIG, state);
+
+      await ns.sleep(CONFIG.refreshMs);
+      continue;
+    }
+
+    const symbols = ns.stock.getSymbols();
 
     let portfolioValue = 0;
     let totalProfit = 0;
@@ -215,9 +253,7 @@ export async function main(ns) {
               });
             }
           } else if (!hasPosition && forecast >= CONFIG.buyForecast && buyBudget > CONFIG.commission) {
-            const moneyBefore = ns.getPlayer().money;
-
-            const bought = buyStock(
+            const buyResult = buyStock(
               ns,
               sym,
               ask,
@@ -227,20 +263,18 @@ export async function main(ns) {
               CONFIG.commission
             );
 
-            const moneyAfter = ns.getPlayer().money;
-
-            if (bought > 0) {
+            if (buyResult.shares > 0) {
               action = "BOUGHT 4S";
 
               logPurchase(ns, {
                 source: "stock-trader",
                 type: "stock-buy",
-                item: `${sym} x${bought}`,
-                cost: moneyBefore - moneyAfter,
-                moneyBefore,
-                moneyAfter,
+                item: `${sym} x${buyResult.shares}`,
+                cost: buyResult.cost,
+                moneyBefore: buyResult.moneyBefore,
+                moneyAfter: buyResult.moneyAfter,
                 message:
-                  `[STOCK] Bought ${bought} ${sym}.`,
+                  `[STOCK] Bought ${buyResult.shares} ${sym}.`,
               });
             }
           }
@@ -268,9 +302,7 @@ export async function main(ns) {
               });
             }
           } else if (!hasPosition && trend >= CONFIG.buyTrendPercent && buyBudget > CONFIG.commission) {
-            const moneyBefore = ns.getPlayer().money;
-
-            const bought = buyStock(
+            const buyResult = buyStock(
               ns,
               sym,
               ask,
@@ -280,19 +312,17 @@ export async function main(ns) {
               CONFIG.commission
             );
 
-            const moneyAfter = ns.getPlayer().money;
-
-            if (bought > 0) {
+            if (buyResult.shares > 0) {
               action = "BOUGHT TREND";
 
               logPurchase(ns, {
                 source: "stock-trader",
                 type: "stock-buy",
-                item: `${sym} x${bought}`,
-                cost: moneyBefore - moneyAfter,
-                moneyBefore,
-                moneyAfter,
-                message: `[STOCK] Bought ${bought} ${sym} using trend mode.`,
+                item: `${sym} x${buyResult.shares}`,
+                cost: buyResult.cost,
+                moneyBefore: buyResult.moneyBefore,
+                moneyAfter: buyResult.moneyAfter,
+                message: `[STOCK] Bought ${buyResult.shares} ${sym} using trend mode.`,
               });
             }
           }
@@ -338,6 +368,7 @@ export async function main(ns) {
     state.winners = winners;
     state.losers = losers;
     state.rows = rows;
+    state.marketAccess = marketAccess;
 
     drawDashboard(ns, CONFIG, state);
 
@@ -351,6 +382,164 @@ function shouldSellWhilePaused(access, forecast, trend, CONFIG) {
   }
 
   return trend <= CONFIG.sellTrendPercent;
+}
+
+function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveMoney }) {
+  const accessBefore = getAccess(ns);
+  const costs = getMarketAccessCosts(ns, CONFIG);
+  const money = ns.getPlayer().money;
+  const spendable = Math.max(0, money - reserveMoney);
+  const result = {
+    access: accessBefore,
+    money,
+    spendable,
+    next: null,
+    lastPurchase: null,
+    blockedReason: null,
+  };
+
+  if (!daemonAllowed) {
+    result.blockedReason = "daemon policy has stock trading disabled";
+    return result;
+  }
+
+  if (resetPrep) {
+    result.blockedReason = "reset-prep blocks new market access purchases";
+    return result;
+  }
+
+  const ladder = [
+    {
+      key: "wse",
+      label: "WSE account",
+      owned: accessBefore.hasWse,
+      threshold: costs.wse,
+      buy: () => safePurchase(ns, "purchaseWseAccount"),
+    },
+    {
+      key: "tix",
+      label: "TIX API",
+      owned: accessBefore.hasTix,
+      threshold: costs.tix,
+      buy: () => safePurchase(ns, "purchaseTixApi"),
+    },
+    {
+      key: "fourS",
+      label: "4S Market Data",
+      owned: accessBefore.has4SData,
+      threshold: costs.fourS,
+      requires: () => getAccess(ns).hasTix,
+      buy: () => safePurchase(ns, "purchase4SMarketData"),
+    },
+    {
+      key: "fourSTix",
+      label: "4S Market Data TIX API",
+      owned: accessBefore.has4S,
+      threshold: costs.fourSTix,
+      requires: () => getAccess(ns).hasTix,
+      buy: () => safePurchase(ns, "purchase4SMarketDataTixApi"),
+    },
+  ];
+
+  for (const step of ladder) {
+    if (step.owned) continue;
+
+    result.next = {
+      key: step.key,
+      label: step.label,
+      threshold: step.threshold,
+      money,
+      spendable,
+      ready: money >= step.threshold,
+    };
+
+    if (step.requires && step.requires() !== true) {
+      result.blockedReason = `${step.label} requires an earlier market unlock.`;
+      return result;
+    }
+
+    if (money < step.threshold) {
+      result.blockedReason = `Need ${formatMoney(step.threshold)} cash for ${step.label}.`;
+      return result;
+    }
+
+    const moneyBefore = ns.getPlayer().money;
+    const purchased = step.buy();
+    const moneyAfter = ns.getPlayer().money;
+    const accessAfter = getAccess(ns);
+    const ownedAfter = ownsMarketAccess(accessAfter, step.key);
+
+    if (purchased && ownedAfter) {
+      result.lastPurchase = {
+        key: step.key,
+        label: step.label,
+        moneyBefore,
+        moneyAfter,
+      };
+      result.blockedReason = null;
+
+      logTrade(state, `BOUGHT ${step.label}`);
+      logPurchase(ns, {
+        source: "stock-trader",
+        type: "stock-access",
+        item: step.label,
+        cost: moneyBefore - moneyAfter,
+        moneyBefore,
+        moneyAfter,
+        message: `[STOCK] Purchased ${step.label}.`,
+      });
+
+      result.access = accessAfter;
+      return result;
+    }
+
+    result.blockedReason =
+      purchased
+        ? `${step.label} purchase returned success, but access is still not detected.`
+        : `${step.label} purchase failed.`;
+    result.access = accessAfter;
+    return result;
+  }
+
+  result.access = getAccess(ns);
+  result.blockedReason = "All configured market access purchases are complete.";
+  return result;
+}
+
+function getMarketAccessCosts(ns, CONFIG) {
+  try {
+    const constants = ns.stock.getConstants();
+
+    return {
+      wse: constants.WseAccountCost ?? CONFIG.wsePurchaseMoney,
+      tix: constants.TixApiCost ?? CONFIG.tixPurchaseMoney,
+      fourS: constants.MarketData4SCost ?? CONFIG.fourSPurchaseMoneyAfterTix,
+      fourSTix: constants.MarketDataTixApi4SCost ?? CONFIG.fourSTixPurchaseMoney,
+    };
+  } catch {
+    return {
+      wse: CONFIG.wsePurchaseMoney,
+      tix: CONFIG.tixPurchaseMoney,
+      fourS: CONFIG.fourSPurchaseMoneyAfterTix,
+      fourSTix: CONFIG.fourSTixPurchaseMoney,
+    };
+  }
+}
+
+function safePurchase(ns, method) {
+  try {
+    return ns.stock?.[method]?.() === true;
+  } catch {
+    return false;
+  }
+}
+
+function ownsMarketAccess(access, key) {
+  if (key === "wse") return access.hasWse === true;
+  if (key === "tix") return access.hasTix === true;
+  if (key === "fourS") return access.has4SData === true;
+  if (key === "fourSTix") return access.has4S === true;
+  return false;
 }
 
 function readDaemonState(ns) {
@@ -402,6 +591,8 @@ function drawDashboard(ns, CONFIG, state) {
         ? `${c.green}Trading allowed by daemon spending policy.${c.reset}`
         : `${c.yellow}Trading paused: no new buys; weak positions may be sold.${c.reset}`,
   ], c.cyan);
+
+  printAccordionSection(ns, "Market Access", true, getMarketAccessLines(state, c), c.cyan);
 
   printAccordionSection(ns, "Account", true, [
     `${badge(c, "CASH", "$" + formatNum(state.money), c.green)} ${badge(c, "PORT", "$" + formatNum(state.portfolioValue), c.cyan)}`,
@@ -467,6 +658,33 @@ function drawDashboard(ns, CONFIG, state) {
   printAccordionSection(ns, "Recent Trades", true, recentLines, c.cyan);
 }
 
+function getMarketAccessLines(state, c) {
+  const access = state.marketAccess?.access ?? {};
+  const next = state.marketAccess?.next ?? null;
+  const blocked = state.marketAccess?.blockedReason ?? null;
+
+  const lines = [
+    `${badge(c, "WSE", access.hasWse ? "YES" : "NO", access.hasWse ? c.green : c.yellow)} ` +
+    `${badge(c, "TIX", access.hasTix ? "YES" : "NO", access.hasTix ? c.green : c.yellow)} ` +
+    `${badge(c, "4S UI", access.has4SData ? "YES" : "NO", access.has4SData ? c.green : c.yellow)} ` +
+    `${badge(c, "4S API", access.has4S ? "YES" : "NO", access.has4S ? c.green : c.yellow)}`,
+  ];
+
+  if (next) {
+    lines.push(
+      `${c.white}Next unlock:${c.reset} ${next.label} | ` +
+      `${c.white}Need:${c.reset} $${formatNum(next.threshold)} | ` +
+      `${c.white}Cash:${c.reset} $${formatNum(next.money)}`
+    );
+  }
+
+  if (blocked) {
+    lines.push(`${c.gray}${blocked}${c.reset}`);
+  }
+
+  return lines;
+}
+
 function printTitleBox(ns, title, lines, c) {
   const width = 86;
   const innerWidth = width - 4;
@@ -525,6 +743,10 @@ function formatNum(value) {
   return n.toFixed(0);
 }
 
+function formatMoney(value) {
+  return "$" + formatNum(value);
+}
+
 function shorten(value, maxLength) {
   const text = String(value ?? "");
 
@@ -539,24 +761,46 @@ function stripAnsi(value) {
 }
 
 function getAccess(ns) {
+  let hasWse = false;
   let hasTix = false;
+  let has4SData = false;
   let has4S = false;
 
   try {
-    ns.stock.getPosition("ECP");
-    hasTix = true;
+    hasWse = ns.stock.hasWseAccount();
   } catch {
-    hasTix = false;
+    hasWse = false;
   }
 
   try {
-    ns.stock.getForecast("ECP");
-    has4S = true;
+    hasTix = ns.stock.hasTixApiAccess();
   } catch {
-    has4S = false;
+    try {
+      ns.stock.getPosition("ECP");
+      hasTix = true;
+    } catch {
+      hasTix = false;
+    }
   }
 
-  return { hasTix, has4S };
+  try {
+    has4SData = ns.stock.has4SData();
+  } catch {
+    has4SData = false;
+  }
+
+  try {
+    has4S = ns.stock.has4SDataTixApi();
+  } catch {
+    try {
+      ns.stock.getForecast("ECP");
+      has4S = true;
+    } catch {
+      has4S = false;
+    }
+  }
+
+  return { hasWse, hasTix, has4SData, has4S };
 }
 
 function getModeName(access) {
@@ -591,10 +835,30 @@ function buyStock(ns, sym, ask, maxShares, buyBudget, maxSpendPercent, commissio
   const budget = buyBudget * maxSpendPercent;
   const sharesToBuy = Math.min(maxShares, Math.floor((budget - commission) / ask));
 
-  if (sharesToBuy <= 0) return 0;
+  if (sharesToBuy <= 0) {
+    return {
+      shares: 0,
+      cost: 0,
+      moneyBefore: ns.getPlayer().money,
+      moneyAfter: ns.getPlayer().money,
+    };
+  }
 
+  const [sharesBefore] = ns.stock.getPosition(sym);
+  const moneyBefore = ns.getPlayer().money;
   ns.stock.buyStock(sym, sharesToBuy);
-  return sharesToBuy;
+  const moneyAfter = ns.getPlayer().money;
+  const [sharesAfter] = ns.stock.getPosition(sym);
+  const sharesBought = Math.max(0, sharesAfter - sharesBefore);
+
+  return {
+    shares: sharesBought,
+    cost: sharesBought > 0
+      ? sharesBought * ask + commission
+      : 0,
+    moneyBefore,
+    moneyAfter,
+  };
 }
 
 function colors() {

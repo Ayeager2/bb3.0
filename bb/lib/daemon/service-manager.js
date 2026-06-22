@@ -374,7 +374,7 @@ function writeJson(ns, file, data) {
 
 function hasTixApi(ns) {
     try {
-        return ns.stock.hasTIXAPIAccess();
+        return ns.stock.hasTixApiAccess();
     } catch {
         return false;
     }

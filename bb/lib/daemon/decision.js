@@ -404,7 +404,9 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
                     : 0,
 
             allowServerPurchases: bitNodeCapabilities.cloud.allowed === true,
-            allowStockTrading: hacknetPriority === "income",
+            allowStockTrading:
+                hacknetPriority === "income" ||
+                shouldBn9AllowSideStockTrading(ns),
             allowHacknet: true,
             allowHacknetExecution: false,
             allowHomeRam: true,
@@ -778,6 +780,19 @@ function shouldBn9LevelForGrowth(ns, augDecision) {
     if (augDecision?.shouldEarnMoney === true) return false;
 
     return hacking < 1000;
+}
+
+function shouldBn9AllowSideStockTrading(ns) {
+    const money =
+        Number(ns.getPlayer()?.money) || 0;
+
+    if (money < 200_000_000) return false;
+
+    try {
+        return typeof ns.stock !== "undefined";
+    } catch {
+        return false;
+    }
 }
 
 function shouldStartAugmentationPush(ns, augDecision) {

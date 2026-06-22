@@ -30,6 +30,10 @@ export function chooseHacknetHashUpgrade(ns, options = {}) {
         daemonState.spendingPolicy?.priority ?? "bootstrap";
     const factionProgression =
         daemonState.factionProgression ?? {};
+    const factionWork =
+        readJson(ns, "/data/faction-work-plan.txt");
+    const factionDonation =
+        readJson(ns, "/data/faction-donation-plan.txt");
     const expPolicy =
         factionProgression.expPolicy ?? {};
     const hasDaemonState =
@@ -41,6 +45,15 @@ export function chooseHacknetHashUpgrade(ns, options = {}) {
             target: null,
             source: "current-work",
             reason: "Player is currently studying; hashes improve study gains.",
+        };
+    }
+
+    if (shouldFuelFactionProgression(priority, mode, factionWork, factionDonation, factionProgression)) {
+        return {
+            upgradeName: SELL_FOR_MONEY,
+            target: null,
+            source: "faction-fuel",
+            reason: getFactionFuelReason(factionWork, factionDonation, factionProgression),
         };
     }
 
@@ -86,6 +99,35 @@ export function chooseHacknetHashUpgrade(ns, options = {}) {
         source: "default",
         reason: "No higher-value hash target is ready; sell hashes for money to feed BN9 growth.",
     };
+}
+
+function shouldFuelFactionProgression(priority, mode, factionWork, factionDonation, factionProgression) {
+    const progressionPriority =
+        priority === "progression" ||
+        priority === "faction" ||
+        mode === "progression" ||
+        mode === "faction";
+
+    if (!progressionPriority) return false;
+
+    return (
+        factionWork?.active === true ||
+        factionDonation?.active === true ||
+        factionProgression?.progressionAction?.type === "reputation" ||
+        factionProgression?.progressionAction?.type === "donation"
+    );
+}
+
+function getFactionFuelReason(factionWork, factionDonation, factionProgression) {
+    if (factionDonation?.active === true) {
+        return `Faction donation is the current bottleneck for ${factionDonation.targetFaction ?? "the target faction"}; sell hashes for cash.`;
+    }
+
+    if (factionWork?.active === true) {
+        return `Faction reputation is the current bottleneck for ${factionWork.targetFaction ?? "the target faction"}; sell hashes for money while faction work/share earns rep.`;
+    }
+
+    return `Faction progression action is ${factionProgression?.progressionAction?.type ?? "active"}; sell hashes for money instead of spending them on server prep.`;
 }
 
 function normalizeManualUpgrade(value) {

@@ -33,8 +33,8 @@ export const SERVICES = [
         keepAlive: true,
         enabled: true,
         requiresSingularity: false,
-        requiresTixApi: true,
         policyFlag: "allowStockTrading",
+        purpose: "market access buyer and daemon-controlled stock trader",
     },
     {
         id: "bootstrap-money",
