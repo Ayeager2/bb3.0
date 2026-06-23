@@ -241,3 +241,18 @@ function readText(ns, file) {
         return "";
     }
 }
+
+function readJson(ns, file) {
+    try {
+        if (!ns.fileExists(file, "home")) return {};
+
+        const raw =
+            ns.read(file);
+
+        if (!raw.trim()) return {};
+
+        return JSON.parse(raw);
+    } catch {
+        return {};
+    }
+}

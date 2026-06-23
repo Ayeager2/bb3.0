@@ -16,7 +16,7 @@ export async function main(ns) {
         ["cores", 16],
         ["cache", 8],
         ["reserve", 0],
-        ["max-payback", 3600],
+        ["max-payback", 43200],
         ["hash-buffer-minutes", 120],
         ["sell-value", 2_000_000],
         ["use-policy-reserve", false],
@@ -188,7 +188,7 @@ function getMaxPaybackSeconds(value) {
     const n = Number(value);
     if (n === 0) return Number.POSITIVE_INFINITY;
     if (Number.isFinite(n) && n > 0) return n;
-    return 3600;
+    return 43200;
 }
 
 function isHacknetBitNode(ns) {

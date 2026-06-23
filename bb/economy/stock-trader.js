@@ -414,14 +414,12 @@ function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveM
       label: "WSE account",
       owned: accessBefore.hasWse,
       threshold: costs.wse,
-      buy: () => safePurchase(ns, "purchaseWseAccount"),
     },
     {
       key: "tix",
       label: "TIX API",
       owned: accessBefore.hasTix,
       threshold: costs.tix,
-      buy: () => safePurchase(ns, "purchaseTixApi"),
     },
     {
       key: "fourS",
@@ -429,7 +427,6 @@ function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveM
       owned: accessBefore.has4SData,
       threshold: costs.fourS,
       requires: () => getAccess(ns).hasTix,
-      buy: () => safePurchase(ns, "purchase4SMarketData"),
     },
     {
       key: "fourSTix",
@@ -437,7 +434,6 @@ function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveM
       owned: accessBefore.has4S,
       threshold: costs.fourSTix,
       requires: () => getAccess(ns).hasTix,
-      buy: () => safePurchase(ns, "purchase4SMarketDataTixApi"),
     },
   ];
 
@@ -464,7 +460,7 @@ function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveM
     }
 
     const moneyBefore = ns.getPlayer().money;
-    const purchased = step.buy();
+    const purchased = purchaseMarketAccess(ns, step.key);
     const moneyAfter = ns.getPlayer().money;
     const accessAfter = getAccess(ns);
     const ownedAfter = ownsMarketAccess(accessAfter, step.key);
@@ -526,9 +522,13 @@ function getMarketAccessCosts(ns, CONFIG) {
   }
 }
 
-function safePurchase(ns, method) {
+function purchaseMarketAccess(ns, key) {
   try {
-    return ns.stock?.[method]?.() === true;
+    if (key === "wse") return ns.stock.purchaseWseAccount();
+    if (key === "tix") return ns.stock.purchaseTixApi();
+    if (key === "fourS") return ns.stock.purchase4SMarketData();
+    if (key === "fourSTix") return ns.stock.purchase4SMarketDataTixApi();
+    return false;
   } catch {
     return false;
   }

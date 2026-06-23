@@ -56,6 +56,6 @@ export const CONFIG = {
         upgradeName: "Sell for Money",
         reserveHashes: 0,
         minHashesToSpend: 4,
-        maxSpendsPerCycle: 25,
+        maxSpendsPerCycle: 500,
     },
 };
