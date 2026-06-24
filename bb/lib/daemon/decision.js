@@ -973,20 +973,93 @@ export function detectCapabilities(ns) {
 }
 
 function getOwnedSourceFiles(ns) {
+    const candidates = [];
+
     try {
-        return (ns.getOwnedSourceFiles?.() ?? [])
-            .map(sourceFile => ({
-                n: Number(sourceFile.n ?? sourceFile.number ?? sourceFile.bitNode ?? 0),
-                lvl: Number(sourceFile.lvl ?? sourceFile.level ?? 0),
-            }))
-            .filter(sourceFile =>
-                Number.isFinite(sourceFile.n) &&
-                sourceFile.n > 0 &&
-                Number.isFinite(sourceFile.lvl)
-            );
+        candidates.push(ns.getOwnedSourceFiles?.());
     } catch {
-        return [];
+        // Some APIs can be unavailable before the right Source-File is active.
     }
+
+    try {
+        candidates.push(ns.singularity?.getOwnedSourceFiles?.());
+    } catch {
+        // Singularity may not be available in every BitNode/startup phase.
+    }
+
+    try {
+        const resetInfo = ns.getResetInfo?.();
+        candidates.push(
+            resetInfo?.ownedSF,
+            resetInfo?.ownedSourceFiles,
+            resetInfo?.sourceFiles
+        );
+    } catch {
+        // Reset info shape differs across Bitburner versions.
+    }
+
+    for (const candidate of candidates) {
+        const sourceFiles = normalizeOwnedSourceFiles(candidate);
+        if (sourceFiles.length > 0) return sourceFiles;
+    }
+
+    return [];
+}
+
+function normalizeOwnedSourceFiles(rawSourceFiles) {
+    if (!rawSourceFiles) return [];
+
+    const entries = Array.isArray(rawSourceFiles)
+        ? rawSourceFiles
+        : Object.entries(rawSourceFiles).map(([key, value]) => {
+            if (value && typeof value === "object") return { n: key, ...value };
+            return { n: key, lvl: value };
+        });
+
+    return entries
+        .map(normalizeSourceFileEntry)
+        .filter(isValidSourceFile)
+        .sort((a, b) => a.n - b.n);
+}
+
+function normalizeSourceFileEntry(sourceFile) {
+    if (Array.isArray(sourceFile)) {
+        return {
+            n: Number(sourceFile[0]),
+            lvl: Number(sourceFile[1]),
+        };
+    }
+
+    return {
+        n: Number(
+            sourceFile?.n ??
+            sourceFile?.number ??
+            sourceFile?.bitNode ??
+            sourceFile?.bitnode ??
+            sourceFile?.sourceFile ??
+            sourceFile?.sourceFileNumber ??
+            sourceFile?.id ??
+            0
+        ),
+        lvl: Number(
+            sourceFile?.lvl ??
+            sourceFile?.level ??
+            sourceFile?.levelOwned ??
+            sourceFile?.sfLevel ??
+            sourceFile?.sourceFileLevel ??
+            sourceFile?.value ??
+            0
+        ),
+    };
+}
+
+function isValidSourceFile(sourceFile) {
+    return (
+        Number.isFinite(sourceFile.n) &&
+        sourceFile.n > 0 &&
+        Number.isFinite(sourceFile.lvl) &&
+        sourceFile.lvl > 0
+    );
 }
 
 export function hasSingularityAccess(ns) {

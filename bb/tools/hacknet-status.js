@@ -29,12 +29,25 @@ export async function main(ns) {
     ns.tprint(`Service: ${serviceState.status ?? "unknown"} | Allowed: ${yesNo(serviceState.allowed)}`);
     ns.tprint(`Message: ${serviceState.message ?? "none"}`);
     ns.tprint(`Hash Spender: ${hashSpender.status ?? "unknown"} | ${hashSpender.message ?? "none"}`);
+    if (serviceState.purchaseCount) {
+        ns.tprint(`Buyer Last Cycle: ${formatNumber(ns, serviceState.purchaseCount)} purchase(s)`);
+    }
     if (hashSpender.hashPolicy) {
         ns.tprint(
             `Hash Policy: ${hashSpender.hashPolicy.upgradeName ?? "unknown"}` +
             `${hashSpender.hashPolicy.target ? ` -> ${hashSpender.hashPolicy.target}` : ""}`
         );
+        ns.tprint(`Hash Source: ${hashSpender.hashPolicy.source ?? "unknown"} | Phase: ${hashSpender.hashPolicy.phase ?? "unknown"}`);
+        if (hashSpender.hashPolicy.fallbackUpgradeName) {
+            ns.tprint(`Hash Fallback: ${hashSpender.hashPolicy.fallbackUpgradeName}`);
+        }
         ns.tprint(`Hash Reason: ${hashSpender.hashPolicy.reason ?? "none"}`);
+        if (hashSpender.primarySpends || hashSpender.fallbackSpends) {
+            ns.tprint(
+                `Hash Last Cycle: primary ${formatNumber(ns, hashSpender.primarySpends ?? 0)} | ` +
+                `fallback ${formatNumber(ns, hashSpender.fallbackSpends ?? 0)}`
+            );
+        }
     }
     ns.tprint(`Nodes: ${live.nodeCount}/${live.targetNodes} | Max Nodes: ${live.maxNodes}`);
     ns.tprint(`Targets: level ${live.targetLevel} | RAM ${live.targetRam}GB | cores ${live.targetCores} | cache ${live.targetCache}`);
@@ -48,6 +61,10 @@ export async function main(ns) {
     ns.tprint(
         `Hash Value: $${formatNumber(ns, live.roi?.sellForMoneyValue ?? 0)} per Sell for Money | ` +
         `$${formatNumber(ns, live.roi?.hashMoneyValue ?? 0)}/hash`
+    );
+    ns.tprint(
+        `Buyer Strategy: ${live.roi?.strategy ?? "unknown"} | ` +
+        `Gate: ${formatDuration(live.roi?.maxPaybackSeconds ?? 0)}`
     );
     ns.tprint(
         `Cache Buffer: ${formatDuration(live.cachePolicy?.hashBufferSeconds ?? 0)} target | ` +

@@ -59,8 +59,20 @@ export default function TargetIntelView({ state }) {
             </section>
 
             <div className="target-progress-stack">
-                <ProgressBar value={target.moneyPercent} />
-                <ProgressBar value={target.prepNeed} />
+                <LabeledProgress
+                    label="Money Fill"
+                    value={target.moneyPercent}
+                    display={formatPercent(target.moneyPercent)}
+                    detail="How much money is currently on the target."
+                    tone="good"
+                />
+                <LabeledProgress
+                    label="Prep Debt"
+                    value={normalizePrepNeed(target.prepNeed)}
+                    display={formatPercent(target.prepNeed)}
+                    detail="Money missing plus security above minimum. Lower is better."
+                    tone="bad"
+                />
             </div>
 
             <section className="target-stability-panel">
@@ -87,7 +99,13 @@ export default function TargetIntelView({ state }) {
                         tone={analysis.blockedSwap || stability.blockedSwap ? "red" : "green"}
                     />
                 </div>
-                <ProgressBar value={holdRatio} />
+                <LabeledProgress
+                    label="Hold Timer"
+                    value={holdRatio}
+                    display={formatPercent(holdRatio)}
+                    detail="How long this target has been held before rotation is allowed."
+                    tone="neutral"
+                />
                 <div className="target-stability-note">
                     {formatStabilityNote(stability, analysis)}
                 </div>
@@ -112,6 +130,19 @@ export default function TargetIntelView({ state }) {
                 </section>
             )}
 
+        </div>
+    );
+}
+
+function LabeledProgress({ label, value, display, detail, tone = "neutral" }) {
+    return (
+        <div className={`target-meter target-meter-${tone}`} title={`${label}: ${display}. ${detail}`}>
+            <div className="target-meter-head">
+                <span>{label}</span>
+                <b>{display}</b>
+            </div>
+            <ProgressBar value={value} />
+            <small>{detail}</small>
         </div>
     );
 }
@@ -216,6 +247,12 @@ function getHoldRatio(stability = {}) {
     }
 
     return Math.min(1, Math.max(0, ageMs / minHoldMs));
+}
+
+function normalizePrepNeed(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return 0;
+    return Math.min(1, Math.max(0, n));
 }
 
 function formatStabilityNote(stability = {}, analysis = {}) {

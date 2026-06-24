@@ -8,7 +8,8 @@ import {
     FiTrash2,
     FiZap,
     FiHelpCircle,
-    FiDollarSign
+    FiDollarSign,
+    FiShoppingCart
 } from "react-icons/fi";
 
 import { sendDashboardCommand } from "../../api/dashboardApi.js";
@@ -102,6 +103,17 @@ const COMMANDS = [
         keywords: ["bn9", "hacknet", "hash", "stock", "stocks", "trades", "economy"],
         run: ctx => {
             ctx.openInspector("bn9");
+            ctx.close();
+        },
+    },
+    {
+        id: "open-buyer-log",
+        label: "Open inspector: Buyer Log",
+        hint: "Purchase ledger and spending mix",
+        icon: <FiShoppingCart />,
+        keywords: ["buyer", "buy", "purchase", "ledger", "spend", "spending", "log", "stats"],
+        run: ctx => {
+            ctx.openInspector("buyer");
             ctx.close();
         },
     },

@@ -48,6 +48,8 @@ export async function main(ns) {
     daemonAllowed: true,
     daemonReserve: CONFIG.fallbackReserveMoney,
     resetPrep: false,
+    status: "starting",
+    statusMessage: "Starting daemon-controlled stock trader...",
 
     money: 0,
     portfolioValue: 0,
@@ -107,6 +109,13 @@ export async function main(ns) {
       state.daemonAllowed = daemonAllowed;
       state.daemonReserve = reserveMoney;
       state.resetPrep = resetPrep;
+      state.status = getStockStatus(access, {
+        daemonAllowed,
+        resetPrep,
+        buyBudget: 0,
+        holdings: 0,
+      });
+      state.statusMessage = getStockStatusMessage(state.status, marketAccess);
       state.money = ns.getPlayer().money;
       state.portfolioValue = 0;
       state.totalWealth = state.money;
@@ -119,6 +128,7 @@ export async function main(ns) {
       state.losers = 0;
       state.rows = [];
       state.marketAccess = marketAccess;
+      state.lastAction = getDisplayAction(state);
 
       writeStockTraderState(ns, state);
       drawDashboard(ns, CONFIG, state);
@@ -359,6 +369,13 @@ export async function main(ns) {
     state.daemonAllowed = daemonAllowed;
     state.daemonReserve = reserveMoney;
     state.resetPrep = resetPrep;
+    state.status = getStockStatus(access, {
+      daemonAllowed,
+      resetPrep,
+      buyBudget,
+      holdings,
+    });
+    state.statusMessage = getStockStatusMessage(state.status, marketAccess);
     state.money = money;
     state.portfolioValue = portfolioValue;
     state.totalWealth = totalWealth;
@@ -371,6 +388,7 @@ export async function main(ns) {
     state.losers = losers;
     state.rows = rows;
     state.marketAccess = marketAccess;
+    state.lastAction = getDisplayAction(state);
 
     writeStockTraderState(ns, state);
     drawDashboard(ns, CONFIG, state);
@@ -385,6 +403,37 @@ function shouldSellWhilePaused(access, forecast, trend, CONFIG) {
   }
 
   return trend <= CONFIG.sellTrendPercent;
+}
+
+function getStockStatus(access, { daemonAllowed, resetPrep, buyBudget, holdings }) {
+  if (resetPrep) return "reset-prep";
+  if (!daemonAllowed) return "policy-paused";
+  if (!access?.hasTix) return "waiting-market-access";
+  if (Number(holdings) > 0) return "tracking-positions";
+  if ((Number(buyBudget) || 0) <= 0) return "waiting-budget";
+  if (access?.has4S) return "scanning-4s";
+  return "scanning-trend";
+}
+
+function getStockStatusMessage(status, marketAccess = {}) {
+  if (status === "reset-prep") return "Reset prep active: selling positions and blocking new buys.";
+  if (status === "policy-paused") return "Trading paused by daemon policy; telemetry remains online.";
+  if (status === "waiting-market-access") {
+    return marketAccess.blockedReason ?? "Waiting for WSE/TIX/4S market access.";
+  }
+  if (status === "tracking-positions") return "Tracking open positions and sell signals.";
+  if (status === "waiting-budget") return "Waiting for stock budget above daemon reserve.";
+  if (status === "scanning-4s") return "Scanning 4S forecasts for buy signals.";
+  if (status === "scanning-trend") return "Scanning price trends for buy signals.";
+  return "Stock trader telemetry online.";
+}
+
+function getDisplayAction(state) {
+  const recent =
+    state.recentActions?.[0] ?? "";
+
+  if (recent) return recent.replace(/^\[[^\]]+\]\s*/, "");
+  return state.statusMessage ?? state.lastAction ?? "Stock trader telemetry online.";
 }
 
 function buyMarketAccess(ns, CONFIG, state, { daemonAllowed, resetPrep, reserveMoney }) {

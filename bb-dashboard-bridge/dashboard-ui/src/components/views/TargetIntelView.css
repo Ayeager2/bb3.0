@@ -106,6 +106,56 @@
     gap: 6px;
 }
 
+.target-meter {
+    display: grid;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 7px;
+    padding: 7px 8px;
+    background: rgba(2, 6, 23, 0.54);
+}
+
+.target-meter .progress-bar {
+    margin: 0;
+}
+
+.target-meter-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.target-meter-head span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+}
+
+.target-meter-head b {
+    color: var(--text);
+    font-size: 12px;
+}
+
+.target-meter small {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.target-meter-good .progress-bar>div {
+    background: linear-gradient(90deg, var(--yellow), var(--cyan), var(--green));
+}
+
+.target-meter-bad .progress-bar>div {
+    background: linear-gradient(90deg, var(--green), var(--yellow), var(--red));
+}
+
+.target-meter-neutral .progress-bar>div {
+    background: linear-gradient(90deg, var(--purple), var(--cyan));
+}
+
 .target-stability-panel {
     display: grid;
     gap: 8px;

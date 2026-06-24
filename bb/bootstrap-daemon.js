@@ -87,9 +87,10 @@ function startBn9HacknetServices(ns) {
     "--cores", 16,
     "--cache", 8,
     "--reserve", 0,
-    "--max-payback", 21600,
+    "--max-payback", 0,
     "--hash-buffer-minutes", 120,
     "--sell-value", 2_000_000,
+    "--max-purchases", 50,
     "--force", true,
     "--debug", true,
     "--toast", false,
@@ -107,9 +108,12 @@ function startBn9HacknetServices(ns) {
     "--upgrade", "auto",
     "--reserve", 0,
     "--min", 4,
+    "--max-spends", 500,
     "--force", true,
     "--debug", true,
-  ]);
+  ], {
+    priority: true,
+  });
 }
 
 function startBootstrapService(ns, script, args = [], options = {}) {

@@ -75,7 +75,7 @@ function buildDashboardState(ns, daemonState) {
         daemonState?.currentTarget ??
         null;
 
-    const capabilities = normalizeCapabilities(daemonState?.capabilities ?? {});
+    const capabilities = normalizeCapabilities(ns, daemonState?.capabilities ?? {});
 
     const targetStats = daemonState?.targetStats ?? {};
     const readiness = daemonState?.bn4Readiness ?? {};
@@ -349,7 +349,9 @@ function resolveTheme({ bitNodeNumber, phase, mode, priority, capabilities }) {
     };
 }
 
-function normalizeCapabilities(caps) {
+function normalizeCapabilities(ns, caps) {
+    const sourceFiles = normalizeSourceFiles(caps?.sourceFiles);
+
     return {
         singularity: bool(caps?.singularity),
         stocks: bool(caps?.stocks ?? caps?.stock),
@@ -359,24 +361,100 @@ function normalizeCapabilities(caps) {
         sleeves: bool(caps?.sleeves),
         hacknet: bool(caps?.hacknet ?? true),
         stanek: bool(caps?.stanek),
-        sourceFiles: normalizeSourceFiles(caps?.sourceFiles),
+        sourceFiles: sourceFiles.length > 0
+            ? sourceFiles
+            : getOwnedSourceFiles(ns),
     };
 }
 
 function normalizeSourceFiles(sourceFiles) {
-    if (!Array.isArray(sourceFiles)) return [];
+    if (!sourceFiles) return [];
 
-    return sourceFiles
-        .map(sourceFile => ({
-            n: Number(sourceFile.n ?? sourceFile.number ?? sourceFile.bitNode ?? 0),
-            lvl: Number(sourceFile.lvl ?? sourceFile.level ?? 0),
-        }))
-        .filter(sourceFile =>
-            Number.isFinite(sourceFile.n) &&
-            sourceFile.n > 0 &&
-            Number.isFinite(sourceFile.lvl)
-        )
+    const entries = Array.isArray(sourceFiles)
+        ? sourceFiles
+        : Object.entries(sourceFiles).map(([key, value]) => {
+            if (value && typeof value === "object") return { n: key, ...value };
+            return { n: key, lvl: value };
+        });
+
+    return entries
+        .map(normalizeSourceFileEntry)
+        .filter(isValidSourceFile)
         .sort((a, b) => a.n - b.n);
+}
+
+function getOwnedSourceFiles(ns) {
+    const candidates = [];
+
+    try {
+        candidates.push(ns.getOwnedSourceFiles?.());
+    } catch {
+        // Not available in every runtime/capability state.
+    }
+
+    try {
+        candidates.push(ns.singularity?.getOwnedSourceFiles?.());
+    } catch {
+        // Singularity is optional outside the Source-File 4 path.
+    }
+
+    try {
+        const resetInfo = ns.getResetInfo?.();
+        candidates.push(
+            resetInfo?.ownedSF,
+            resetInfo?.ownedSourceFiles,
+            resetInfo?.sourceFiles
+        );
+    } catch {
+        // Reset info source-file fields vary by Bitburner version.
+    }
+
+    for (const candidate of candidates) {
+        const sourceFiles = normalizeSourceFiles(candidate);
+        if (sourceFiles.length > 0) return sourceFiles;
+    }
+
+    return [];
+}
+
+function normalizeSourceFileEntry(sourceFile) {
+    if (Array.isArray(sourceFile)) {
+        return {
+            n: Number(sourceFile[0]),
+            lvl: Number(sourceFile[1]),
+        };
+    }
+
+    return {
+        n: Number(
+            sourceFile?.n ??
+            sourceFile?.number ??
+            sourceFile?.bitNode ??
+            sourceFile?.bitnode ??
+            sourceFile?.sourceFile ??
+            sourceFile?.sourceFileNumber ??
+            sourceFile?.id ??
+            0
+        ),
+        lvl: Number(
+            sourceFile?.lvl ??
+            sourceFile?.level ??
+            sourceFile?.levelOwned ??
+            sourceFile?.sfLevel ??
+            sourceFile?.sourceFileLevel ??
+            sourceFile?.value ??
+            0
+        ),
+    };
+}
+
+function isValidSourceFile(sourceFile) {
+    return (
+        Number.isFinite(sourceFile.n) &&
+        sourceFile.n > 0 &&
+        Number.isFinite(sourceFile.lvl) &&
+        sourceFile.lvl > 0
+    );
 }
 
 function normalizePhaseFromMode(mode) {

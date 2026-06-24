@@ -27,6 +27,8 @@ const BITBURNER_HACKNET_FILE = "/data/hacknet-state.txt";
 const OUT_HACKNET_FILE = path.join(OUT_DIR, "hacknet-state.json");
 const BITBURNER_HASH_SPENDER_FILE = "/data/hacknet-hash-spender-state.txt";
 const OUT_HASH_SPENDER_FILE = path.join(OUT_DIR, "hacknet-hash-spender-state.json");
+const BITBURNER_PURCHASE_LOG_FILE = "/data/purchases.log.txt";
+const OUT_PURCHASE_LOG_FILE = path.join(OUT_DIR, "purchase-log.json");
 const BITBURNER_AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 const OUT_AUGMENTATION_STATE_FILE = path.join(OUT_DIR, "augmentation-state.json");
 const BITBURNER_AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
@@ -437,6 +439,12 @@ function normalizeDashboardState(state = {}) {
         stockTrader: readLocalJson(OUT_STOCK_TRADER_FILE, null),
         hacknet: readLocalJson(OUT_HACKNET_FILE, null),
         hashSpender: readLocalJson(OUT_HASH_SPENDER_FILE, null),
+        purchaseLog: readLocalJson(OUT_PURCHASE_LOG_FILE, {
+            entries: [],
+            totals: { spent: 0, count: 0 },
+            byCategory: [],
+            bySource: [],
+        }),
     };
     const augmentationIntel = {
         state: readLocalJson(OUT_AUGMENTATION_STATE_FILE, null),
@@ -565,7 +573,15 @@ async function pollNetworkTopology() {
     } catch {
         fs.writeFileSync(
             OUT_TOPOLOGY_FILE,
-            JSON.stringify({ nodes: [], edges: [] }, null, 2)
+            JSON.stringify({
+                source: "network-topology",
+                status: "unavailable",
+                message: `Could not read ${BITBURNER_TOPOLOGY_FILE}. Is /tools/network-topology-writer.js running?`,
+                updatedAt: Date.now(),
+                bridgeUpdatedAt: Date.now(),
+                nodes: [],
+                edges: [],
+            }, null, 2)
         );
     }
 }
@@ -638,8 +654,140 @@ async function pollJsonFile(bitburnerFile, outFile, fallback) {
     }
 }
 
+async function pollPurchaseLog() {
+    if (!bitburnerSocket) return;
+
+    try {
+        const content = await rpc("getFile", {
+            filename: BITBURNER_PURCHASE_LOG_FILE,
+            server: "home"
+        });
+
+        const parsed =
+            normalizePurchaseLog(content);
+
+        fs.writeFileSync(OUT_PURCHASE_LOG_FILE, JSON.stringify(parsed, null, 2));
+    } catch {
+        fs.writeFileSync(
+            OUT_PURCHASE_LOG_FILE,
+            JSON.stringify({
+                source: "purchase-log",
+                status: "unavailable",
+                message: `Could not read ${BITBURNER_PURCHASE_LOG_FILE}. Purchases will appear after the next buyer logs an action.`,
+                updatedAt: Date.now(),
+                entries: [],
+                totals: { spent: 0, count: 0 },
+                byCategory: [],
+                bySource: [],
+            }, null, 2)
+        );
+    }
+}
+
+function normalizePurchaseLog(content = "") {
+    const entries = String(content)
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => safeParseJson(line))
+        .filter(Boolean)
+        .map(normalizePurchaseEntry)
+        .sort((a, b) => Number(b.time) - Number(a.time));
+    const totals =
+        summarizePurchases(entries);
+
+    return {
+        source: "purchase-log",
+        status: entries.length > 0 ? "ready" : "empty",
+        updatedAt: Date.now(),
+        entries: entries.slice(0, 250),
+        totals,
+        byCategory: groupPurchases(entries, "category"),
+        bySource: groupPurchases(entries, "source"),
+    };
+}
+
+function safeParseJson(line) {
+    try {
+        return JSON.parse(line);
+    } catch {
+        return null;
+    }
+}
+
+function normalizePurchaseEntry(entry = {}) {
+    const cost =
+        Number(entry.cost);
+    const category =
+        entry.category ?? inferPurchaseCategory(entry);
+
+    return {
+        ...entry,
+        category,
+        cost: Number.isFinite(cost) ? cost : 0,
+        purchases: Array.isArray(entry.purchases) ? entry.purchases : [],
+    };
+}
+
+function inferPurchaseCategory(entry = {}) {
+    const source =
+        String(entry.source ?? "").toLowerCase();
+    const type =
+        String(entry.type ?? "").toLowerCase();
+    const item =
+        String(entry.item ?? "").toLowerCase();
+
+    if (source.includes("augment") || type.includes("augment")) return "augmentations";
+    if (source.includes("hacknet") || type.includes("hacknet") || item.includes("hacknet")) return "hacknet";
+    if (source.includes("stock") || type.includes("stock") || type.includes("market")) return "stocks";
+    if (source.includes("darkweb") || type.includes("program") || item.endsWith(".exe")) return "programs";
+    if (source.includes("home") || item.includes("home ram") || item.includes("home core")) return "home";
+    if (source.includes("server") || type.includes("server")) return "servers";
+    if (source.includes("faction") || type.includes("donation")) return "factions";
+
+    return "other";
+}
+
+function summarizePurchases(entries) {
+    const spent =
+        entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
+
+    return {
+        spent,
+        count: entries.length,
+        latestAt: entries[0]?.time ?? null,
+        latestText: entries[0]?.timeText ?? null,
+    };
+}
+
+function groupPurchases(entries, key) {
+    const groups =
+        new Map();
+    const totalSpent =
+        entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
+
+    for (const entry of entries) {
+        const id =
+            String(entry[key] ?? "unknown");
+        const current =
+            groups.get(id) ?? { id, label: id, spent: 0, count: 0 };
+
+        current.spent += Math.max(0, Number(entry.cost) || 0);
+        current.count += 1;
+        groups.set(id, current);
+    }
+
+    return [...groups.values()]
+        .map(group => ({
+            ...group,
+            percent: totalSpent > 0 ? group.spent / totalSpent : 0,
+        }))
+        .sort((a, b) => b.spent - a.spent);
+}
+
 async function pollEconomyTelemetry() {
     await Promise.all([
+        pollPurchaseLog(),
         pollJsonFile(BITBURNER_STOCK_TRADER_FILE, OUT_STOCK_TRADER_FILE, {
             source: "stock-trader",
             status: "unavailable",

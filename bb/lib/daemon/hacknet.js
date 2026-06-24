@@ -76,7 +76,10 @@ export function buildHacknetState(ns, options = {}) {
             nextAction: summarizeAction(actionPlan.cacheCandidate),
         },
         roi: {
-            strategy: "payback-seconds",
+            strategy:
+                getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY
+                    ? "cheapest-affordable-production-first"
+                    : "payback-seconds",
             maxPaybackSeconds:
                 getMaxPaybackSeconds(options.maxPaybackSeconds),
             sellForMoneyValue,
@@ -99,10 +102,106 @@ export function buildHacknetState(ns, options = {}) {
 }
 
 export function runHacknetBuyer(ns, options = {}) {
-    const state =
+    const maxPurchasesPerCycle =
+        Math.max(1, Math.floor(Number(options.maxPurchasesPerCycle) || 1));
+    const purchases = [];
+    let lastState =
         buildHacknetState(ns, options);
+    let lastActionPlan =
+        null;
+
+    while (purchases.length < maxPurchasesPerCycle) {
+        const actionPlan =
+            getHacknetActionPlan(ns, {
+                targetNodes: lastState.targetNodes,
+                targetLevel: lastState.targetLevel,
+                targetRam: lastState.targetRam,
+                targetCores: lastState.targetCores,
+                targetCache: lastState.targetCache,
+                maxPaybackSeconds: options.maxPaybackSeconds,
+                hashBufferSeconds: lastState.cachePolicy?.hashBufferSeconds,
+                sellForMoneyValue: lastState.roi?.sellForMoneyValue,
+                spendable: lastState.spendable,
+                totalProduction: lastState.totalProduction,
+            });
+        const action =
+            actionPlan.nextAction;
+
+        lastActionPlan = actionPlan;
+
+        if (!action) break;
+        if (lastState.spendable < action.cost) break;
+
+        const before = ns.getPlayer().money;
+        const ok = action.run();
+        const after = ns.getPlayer().money;
+        const actualCost =
+            Math.max(0, before - after);
+
+        if (ok !== true) {
+            return {
+                acted: purchases.length > 0,
+                status: purchases.length > 0 ? "purchased" : "failed",
+                type: action.type,
+                index: action.index,
+                item: action.label,
+                cost: purchases.reduce((sum, item) => sum + item.cost, 0),
+                moneyBefore: purchases[0]?.moneyBefore ?? before,
+                moneyAfter: after,
+                purchases,
+                purchaseCount: purchases.length,
+                message:
+                    purchases.length > 0
+                        ? formatPurchaseSummary(ns, purchases)
+                        : `Failed to run ${action.label}.`,
+                action: summarizeAction(action),
+                state:
+                    buildHacknetState(ns, options),
+            };
+        }
+
+        purchases.push({
+            type: action.type,
+            index: action.index,
+            item: action.label,
+            cost:
+                actualCost > 0
+                    ? actualCost
+                    : action.cost,
+            moneyBefore: before,
+            moneyAfter: after,
+            action: summarizeAction(action),
+        });
+
+        lastState =
+            buildHacknetState(ns, options);
+    }
+
+    if (purchases.length > 0) {
+        const afterState =
+            buildHacknetState(ns, options);
+
+        return {
+            acted: true,
+            status: "purchased",
+            type: purchases[purchases.length - 1]?.type ?? "hacknet",
+            index: purchases[purchases.length - 1]?.index,
+            item: purchases[purchases.length - 1]?.item ?? "hacknet upgrade",
+            cost: purchases.reduce((sum, item) => sum + item.cost, 0),
+            moneyBefore: purchases[0]?.moneyBefore,
+            moneyAfter: purchases[purchases.length - 1]?.moneyAfter,
+            purchases,
+            purchaseCount: purchases.length,
+            message: formatPurchaseSummary(ns, purchases),
+            action: purchases[purchases.length - 1]?.action ?? null,
+            state: afterState,
+        };
+    }
+
+    const state =
+        lastState;
     const actionPlan =
-        getHacknetActionPlan(ns, {
+        lastActionPlan ?? getHacknetActionPlan(ns, {
             targetNodes: state.targetNodes,
             targetLevel: state.targetLevel,
             targetRam: state.targetRam,
@@ -131,44 +230,38 @@ export function runHacknetBuyer(ns, options = {}) {
         };
     }
 
-    if (state.spendable < action.cost) {
-        return {
-            acted: false,
-            status: "waiting-money",
-            message:
-                `Need ${formatMoney(ns, action.cost)} for ${action.label}; ` +
-                `spendable ${formatMoney(ns, state.spendable)}.`,
-            action: summarizeAction(action),
-            state,
-        };
+    return {
+        acted: false,
+        status: "waiting-money",
+        message:
+            `Need ${formatMoney(ns, action.cost)} for ${action.label}; ` +
+            `spendable ${formatMoney(ns, state.spendable)}.`,
+        action: summarizeAction(action),
+        state,
+    };
+}
+
+function formatPurchaseSummary(ns, purchases) {
+    const totalCost =
+        purchases.reduce((sum, item) => sum + item.cost, 0);
+    const labels =
+        summarizePurchaseLabels(purchases);
+
+    return `${purchases.length} Hacknet purchase${purchases.length === 1 ? "" : "s"} for ${formatMoney(ns, totalCost)}: ${labels}.`;
+}
+
+function summarizePurchaseLabels(purchases) {
+    const counts =
+        new Map();
+
+    for (const purchase of purchases) {
+        counts.set(purchase.item, (counts.get(purchase.item) ?? 0) + 1);
     }
 
-    const before = ns.getPlayer().money;
-    const ok = action.run();
-    const after = ns.getPlayer().money;
-    const actualCost =
-        Math.max(0, before - after);
-
-    return {
-        acted: ok === true,
-        status: ok === true ? "purchased" : "failed",
-        type: action.type,
-        index: action.index,
-        item: action.label,
-        cost:
-            actualCost > 0
-                ? actualCost
-                : action.cost,
-        moneyBefore: before,
-        moneyAfter: after,
-        message:
-            ok === true
-                ? `${action.label} for ${formatMoney(ns, actualCost || action.cost)}.`
-                : `Failed to run ${action.label}.`,
-        action: summarizeAction(action),
-        state:
-            buildHacknetState(ns, options),
-    };
+    return [...counts.entries()]
+        .slice(0, 4)
+        .map(([label, count]) => count > 1 ? `${label} x${count}` : label)
+        .join("; ");
 }
 
 export function getNextHacknetAction(ns, options = {}) {
@@ -222,7 +315,7 @@ export function getHacknetActionPlan(ns, options = {}) {
 
         if (node.level < targetLevel) {
             const amount =
-                Math.min(5, targetLevel - node.level);
+                1;
 
             actions.push({
                 type: "level",
@@ -281,6 +374,8 @@ export function getHacknetActionPlan(ns, options = {}) {
         });
     const hashMoneyValue =
         getHashMoneyValue(ns, sellForMoneyValue);
+    const unlimitedPayback =
+        maxPaybackSeconds === Number.POSITIVE_INFINITY;
 
     const candidates = actions
         .filter(action =>
@@ -294,13 +389,15 @@ export function getHacknetActionPlan(ns, options = {}) {
     const bestCandidate =
         candidates[0] ?? null;
     const nextAction =
-        candidates
-            .filter(action =>
-                action.paybackSeconds <= maxPaybackSeconds ||
-                nodeCount === 0
-            )[0] ?? null;
+        unlimitedPayback
+            ? getCheapestAffordableAction(candidates, spendable) ?? candidates[0] ?? null
+            : candidates
+                .filter(action =>
+                    action.paybackSeconds <= maxPaybackSeconds ||
+                    nodeCount === 0
+                )[0] ?? null;
     const selectedAction =
-        cacheCandidate?.affordable === true
+        cacheCandidate?.affordable === true && !getCheapestAffordableAction(candidates, spendable)
             ? cacheCandidate
             : nextAction;
 
@@ -312,6 +409,12 @@ export function getHacknetActionPlan(ns, options = {}) {
         candidates: candidates.map(summarizeAction),
         maxPaybackSeconds,
     };
+}
+
+function getCheapestAffordableAction(actions, spendable) {
+    return actions
+        .filter(action => spendable >= action.cost)
+        .sort((a, b) => a.cost - b.cost)[0] ?? null;
 }
 
 function getCacheCandidate(ns, options) {

@@ -54,6 +54,10 @@ export async function main(ns) {
                 manualUpgrade: upgradeName,
                 manualTarget,
             });
+        const effectiveMaxSpendsPerCycle =
+            Number(hashPolicy.maxSpendsPerCycle) > 0
+                ? Number(hashPolicy.maxSpendsPerCycle)
+                : maxSpendsPerCycle;
         const result =
             allow
                 ? spendHashes(ns, {
@@ -61,7 +65,11 @@ export async function main(ns) {
                     target: hashPolicy.target,
                     reserveHashes,
                     minHashesToSpend,
-                    maxSpendsPerCycle,
+                    maxSpendsPerCycle: effectiveMaxSpendsPerCycle,
+                    fallbackUpgradeName: hashPolicy.fallbackUpgradeName,
+                    fallbackTarget: hashPolicy.fallbackTarget,
+                    fallbackMaxSpendsPerCycle:
+                        Math.max(0, maxSpendsPerCycle - effectiveMaxSpendsPerCycle),
                 })
                 : {
                     acted: false,
@@ -85,11 +93,15 @@ export async function main(ns) {
             hashPolicy,
             reserveHashes,
             minHashesToSpend,
-            maxSpendsPerCycle,
+            maxSpendsPerCycle: effectiveMaxSpendsPerCycle,
+            fallbackMaxSpendsPerCycle:
+                Math.max(0, maxSpendsPerCycle - effectiveMaxSpendsPerCycle),
             hashes: safeNumHashes(ns),
             capacity: safeHashCapacity(ns),
             acted: result.acted,
             spends: result.spends,
+            primarySpends: result.primarySpends ?? result.spends,
+            fallbackSpends: result.fallbackSpends ?? 0,
             recentActions,
         };
 
@@ -137,9 +149,60 @@ function spendHashes(ns, options) {
         };
     }
 
+    const primarySpends =
+        spendUpgrade(ns, {
+            upgradeName: options.upgradeName,
+            target: options.target,
+            reserveHashes: options.reserveHashes,
+            maxSpends: options.maxSpendsPerCycle,
+        });
+    const canFallback =
+        options.fallbackUpgradeName &&
+        (
+            options.fallbackUpgradeName !== options.upgradeName ||
+            normalizeTarget(options.fallbackTarget) !== normalizeTarget(options.target)
+        );
+    const fallbackSpends =
+        canFallback
+            ? spendUpgrade(ns, {
+                upgradeName: options.fallbackUpgradeName,
+                target: options.fallbackTarget,
+                reserveHashes: options.reserveHashes,
+                maxSpends: options.fallbackMaxSpendsPerCycle,
+            })
+            : 0;
+    const spends =
+        primarySpends + fallbackSpends;
+    const details = [];
+
+    if (primarySpends > 0) {
+        details.push(`${describeUpgrade(options)} x${primarySpends}`);
+    }
+
+    if (fallbackSpends > 0) {
+        details.push(`${describeUpgrade({
+            upgradeName: options.fallbackUpgradeName,
+            target: options.fallbackTarget,
+        })} x${fallbackSpends}`);
+    }
+
+    return {
+        acted: spends > 0,
+        spends,
+        primarySpends,
+        fallbackSpends,
+        status: spends > 0 ? "spent" : "failed",
+        message:
+            spends > 0
+                ? `Spent hashes on ${details.join("; ")}.`
+                : `Unable to spend hashes on ${describeUpgrade(options)}.`,
+    };
+}
+
+function spendUpgrade(ns, options) {
     let spends = 0;
 
-    while (spends < options.maxSpendsPerCycle) {
+    while (spends < options.maxSpends) {
         const spendable =
             Math.max(0, safeNumHashes(ns) - options.reserveHashes);
         const nextCost =
@@ -156,15 +219,7 @@ function spendHashes(ns, options) {
         spends++;
     }
 
-    return {
-        acted: spends > 0,
-        spends,
-        status: spends > 0 ? "spent" : "failed",
-        message:
-            spends > 0
-                ? `Spent hashes on ${describeUpgrade(options)} x${spends}.`
-                : `Unable to spend hashes on ${describeUpgrade(options)}.`,
-    };
+    return spends;
 }
 
 function safeSpendHashes(ns, upgradeName, target = null) {
@@ -187,6 +242,10 @@ function describeUpgrade(options) {
     return options.target
         ? `${options.upgradeName} on ${options.target}`
         : options.upgradeName;
+}
+
+function normalizeTarget(value) {
+    return String(value ?? "").trim();
 }
 
 function safeHashCost(ns, upgradeName) {

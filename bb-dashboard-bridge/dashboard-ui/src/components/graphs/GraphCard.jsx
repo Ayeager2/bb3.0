@@ -30,6 +30,7 @@ export default function GraphCard({
     onNodeMouseLeave,
     header,
     footer,
+    overlay,
 }) {
     const graphWrapRef = useRef(null);
     const [hoverTooltip, setHoverTooltip] = useState(null);
@@ -109,6 +110,8 @@ export default function GraphCard({
                     node={hoverTooltip?.node?.data?.raw}
                     position={hoverTooltip?.position}
                 />
+
+                {overlay}
             </div>
 
             {footer}

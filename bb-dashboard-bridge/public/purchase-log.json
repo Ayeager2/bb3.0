@@ -1,0 +1,13 @@
+{
+  "source": "purchase-log",
+  "status": "unavailable",
+  "message": "Could not read /data/purchases.log.txt. Purchases will appear after the next buyer logs an action.",
+  "updatedAt": 1782273615336,
+  "entries": [],
+  "totals": {
+    "spent": 0,
+    "count": 0
+  },
+  "byCategory": [],
+  "bySource": []
+}

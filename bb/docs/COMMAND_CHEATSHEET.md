@@ -335,6 +335,7 @@ Raw files:
 ```txt
 cat /data/hacknet-state.txt
 cat /data/hacknet-hash-spender-state.txt
+tail /data/purchases.log.txt
 ```
 
 Manual services:
@@ -347,33 +348,53 @@ run /economy/hacknet-hash-spender-service.js --force true --upgrade "Sell for Mo
 Current BN9 hash strategy:
 
 ```txt
-Early bootstrap:
+active studying:
+    Improve Studying
+
+cash ignition:
+    Sell for Money
+
+Hacknet snowball:
+    Sell for Money while Hacknet buyer is not complete
+    Cash immediately buys affordable Hacknet nodes/levels/RAM/cores/cache
+    Higher Hacknet production creates more hashes
+
+target boost after Hacknet caps are reached:
+    Reduce Minimum Security or Increase Maximum Money on selected money target
+    then Sell for Money with leftover hashes
+
+fallback:
     Sell for Money
 
 Reason:
     BN9 cannot buy cloud/purchased servers, and normal hacking income is weak.
     Hashes are the replacement economy engine.
+    Mugging/shoplifting should only bridge the gap until Hacknet buyer/spender run.
 ```
 
-Planned smarter hash strategy:
+Expected `/tools/hacknet-status.js` signals:
 
 ```txt
-Implemented first pass:
-money blocker:
-    Sell for Money
+Hash Policy: Sell for Money
+Hash Source: bn9-cash-ignition | Phase: cash
 
-active studying:
-    Improve Studying
+or:
 
-leveling but not studying:
-    Sell for Money
+Hash Policy: Sell for Money
+Hash Source: bn9-hacknet-snowball | Phase: cash
 
-money target prep blocker:
-    Reduce Minimum Security
-    Increase Maximum Money
+or, after Hacknet buyer is complete:
 
-fallback:
-    Sell for Money
+Hash Policy: Reduce Minimum Security -> target
+Hash Source: bn9-target-security | Phase: target-boost
+Hash Fallback: Sell for Money
+Hash Last Cycle: primary ... | fallback ...
+
+or:
+
+Hash Policy: Increase Maximum Money -> target
+Hash Source: bn9-target-money | Phase: target-boost
+Hash Fallback: Sell for Money
 ```
 
 BN9 daemon policy should show:
@@ -405,8 +426,10 @@ Hacknet buyer ROI:
 The buyer scores node/level/RAM/core actions by payback time.
 Hash production is converted to money using the current Sell for Money hash cost.
 Default Sell for Money value assumption: $2m.
-Default payback gate: 3600 seconds.
-If no Hacknet action beats the gate, it waits so home RAM/cores can use the money.
+Default payback gate in BN9 service/bootstrap: unlimited.
+If a Hacknet action is affordable and inside the target caps, the buyer should buy it.
+When money is available, the buyer can chain multiple affordable ROI-good actions in one cycle.
+Level upgrades are planned one level at a time so the buyer does not wait for an unaffordable level-by-5 bundle.
 Use --max-payback 0 for an unlimited gate if you want pure Hacknet snowball testing.
 ```
 
@@ -423,10 +446,24 @@ Useful buyer knobs:
 
 ```txt
 --sell-value 2000000
+--max-purchases 50
 --max-payback 3600
 --max-payback 0
 --hash-buffer-minutes 120
 --cache 8
+```
+
+Buyer ledger:
+
+```txt
+Every logPurchase() call appends JSONL to /data/purchases.log.txt.
+The dashboard bridge publishes this as public/purchase-log.json.
+Inspector -> Buyer Log shows:
+    tracked spend
+    purchases
+    latest purchase
+    category spend mix
+    detailed purchase rows
 ```
 
 When the gate blocks buying:

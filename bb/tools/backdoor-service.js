@@ -21,6 +21,8 @@ export async function main(ns) {
     ["debug", true],
     ["target", ""],
     ["once", false],
+    ["toast", false],
+    ["terminal", false],
   ]);
 
   const refreshMs = Number(flags.refresh) || 15000;
@@ -28,9 +30,14 @@ export async function main(ns) {
   const debug = flags.debug === true || flags.debug === "true";
   const targetOverride = normalizeTarget(flags.target);
   const once = flags.once === true || flags.once === "true";
+  const toast = flags.toast === true || flags.toast === "true";
+  const terminal =
+    flags.terminal === true ||
+    flags.terminal === "true" ||
+    once;
 
   while (true) {
-    const rootReport = tryRootProgressionServers(ns, debug);
+    const rootReport = tryRootProgressionServers(ns, debug, terminal);
     const state = buildBackdoorState(ns);
     const target =
       targetOverride
@@ -51,7 +58,7 @@ export async function main(ns) {
       if (debug) {
         const blocker = getBestBlocker(state);
         ns.print(`[BACKDOOR] No ready target. ${blocker}`);
-        if (once) ns.tprint(`[BACKDOOR] No ready target. ${blocker}`);
+        if (terminal) ns.tprint(`[BACKDOOR] No ready target. ${blocker}`);
       }
 
       if (once) return;
@@ -67,30 +74,48 @@ export async function main(ns) {
         `hack=${target.playerHack}/${target.requiredHack}`;
 
       ns.print(message);
-      ns.tprint(message);
+      if (terminal) ns.tprint(message);
 
       if (once) return;
       await ns.sleep(refreshMs);
       continue;
     }
 
-    ns.toast(`Backdoor ready: ${target.server}`, "info", 8000);
-    ns.tprint(`[BACKDOOR] Ready: ${target.server} / ${target.faction}`);
+    notify(ns, `[BACKDOOR] Ready: ${target.server} / ${target.faction}`, {
+      terminal,
+      toast,
+      toastMessage: `Backdoor ready: ${target.server}`,
+      toastType: "info",
+      toastMs: 8000,
+    });
 
     if (execute && hasSingularity(ns)) {
-      const success = await installBackdoor(ns, target.path, target.server);
+      const success = await installBackdoor(ns, target.path, target.server, terminal);
 
       if (success) {
-        ns.toast(`Backdoored ${target.server}`, "success", 10000);
-        ns.tprint(`[BACKDOOR] SUCCESS: ${target.server}`);
+        notify(ns, `[BACKDOOR] SUCCESS: ${target.server}`, {
+          terminal,
+          toast,
+          toastMessage: `Backdoored ${target.server}`,
+          toastType: "success",
+          toastMs: 10000,
+        });
       } else {
-        ns.toast(`Backdoor failed: ${target.server}`, "warning", 10000);
-        ns.tprint(`[BACKDOOR] FAILED: ${target.server}`);
+        notify(ns, `[BACKDOOR] FAILED: ${target.server}`, {
+          terminal,
+          toast,
+          toastMessage: `Backdoor failed: ${target.server}`,
+          toastType: "warning",
+          toastMs: 10000,
+        });
       }
 
       connectHome(ns);
     } else if (!hasSingularity(ns)) {
-      ns.tprint("[BACKDOOR] Singularity unavailable; cannot auto-connect/install.");
+      notify(ns, "[BACKDOOR] Singularity unavailable; cannot auto-connect/install.", {
+        terminal,
+        toast: false,
+      });
     }
 
     if (once) return;
@@ -130,7 +155,7 @@ function hasSingularity(ns) {
   }
 }
 
-async function installBackdoor(ns, path, target) {
+async function installBackdoor(ns, path, target, terminal = false) {
   try {
     if (!Array.isArray(path) || path.length === 0) return false;
 
@@ -139,7 +164,10 @@ async function installBackdoor(ns, path, target) {
     for (const host of path) {
       const ok = ns.singularity.connect(host);
       if (!ok) {
-        ns.tprint(`[BACKDOOR] Failed connect step: ${host}`);
+        notify(ns, `[BACKDOOR] Failed connect step: ${host}`, {
+          terminal,
+          toast: false,
+        });
         return false;
       }
     }
@@ -148,12 +176,15 @@ async function installBackdoor(ns, path, target) {
 
     return ns.getServer(target).backdoorInstalled === true;
   } catch (error) {
-    ns.tprint(`[BACKDOOR] Error: ${String(error)}`);
+    notify(ns, `[BACKDOOR] Error: ${String(error)}`, {
+      terminal,
+      toast: false,
+    });
     return false;
   }
 }
 
-function tryRootProgressionServers(ns, debug = false) {
+function tryRootProgressionServers(ns, debug = false, terminal = false) {
   const report = [];
 
   for (const server of PROGRESSION_SERVERS) {
@@ -205,10 +236,16 @@ function tryRootProgressionServers(ns, debug = false) {
       entry.rootedNow = true;
       entry.rooted = true;
       entry.reason = "rooted now";
-      ns.tprint(`[BACKDOOR] Rooted ${server}`);
+      notify(ns, `[BACKDOOR] Rooted ${server}`, {
+        terminal,
+        toast: false,
+      });
     } catch (error) {
       entry.reason = `nuke failed: ${String(error)}`;
-      ns.tprint(`[BACKDOOR] Failed to root ${server}: ${String(error)}`);
+      notify(ns, `[BACKDOOR] Failed to root ${server}: ${String(error)}`, {
+        terminal,
+        toast: false,
+      });
     }
 
     report.push(entry);
@@ -222,6 +259,22 @@ function tryRootProgressionServers(ns, debug = false) {
   }
 
   return report;
+}
+
+function notify(ns, message, options = {}) {
+  ns.print(message);
+
+  if (options.terminal === true) {
+    ns.tprint(message);
+  }
+
+  if (options.toast === true) {
+    ns.toast(
+      options.toastMessage ?? message,
+      options.toastType ?? "info",
+      options.toastMs ?? 5000
+    );
+  }
 }
 
 function openPorts(ns, server) {

@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1782265153870,
+  "updatedAt": 1782273604936,
   "bitNode": 9,
   "strategy": {
     "name": "BN9 Hacknet / Hash Economy",
@@ -18,9 +18,9 @@
       "bladeburner": 0
     }
   },
-  "money": 6516374.109788341,
+  "money": 280576853.5229786,
   "reserveMoney": 1000000,
-  "spendable": 5516374.109788341,
+  "spendable": 279576853.5229786,
   "maxPrice": 1000000000000,
   "progressionFrontier": {
     "stage": "global",
@@ -34,9 +34,9 @@
     "theme": "hacking",
     "price": 125000000,
     "rep": 37500,
-    "factionRep": 0,
+    "factionRep": 8692.340042948648,
     "hasRep": false,
-    "affordable": false,
+    "affordable": true,
     "hasPrereqs": true,
     "prereqs": [],
     "stats": {
@@ -101,7 +101,7 @@
       "combat",
       "charisma"
     ],
-    "score": 541.5026260927524
+    "score": 841.5026260927524
   },
   "blockedReason": "Need more rep with Tian Di Hui.",
   "neuroFluxPolicy": {
@@ -140,9 +140,9 @@
       "theme": "hacking",
       "price": 125000000,
       "rep": 37500,
-      "factionRep": 0,
+      "factionRep": 8692.340042948648,
       "hasRep": false,
-      "affordable": false,
+      "affordable": true,
       "hasPrereqs": true,
       "prereqs": [],
       "stats": {
@@ -207,7 +207,7 @@
         "combat",
         "charisma"
       ],
-      "score": 541.5026260927524
+      "score": 841.5026260927524
     },
     {
       "name": "Neuroreceptor Management Implant",
@@ -215,7 +215,7 @@
       "theme": "hacking",
       "price": 550000000,
       "rep": 75000,
-      "factionRep": 0,
+      "factionRep": 8692.340042948648,
       "hasRep": false,
       "affordable": false,
       "hasPrereqs": true,
@@ -284,5 +284,5 @@
       "score": 260.4519146938709
     }
   ],
-  "bridgeUpdatedAt": 1782265156340
+  "bridgeUpdatedAt": 1782273615373
 }

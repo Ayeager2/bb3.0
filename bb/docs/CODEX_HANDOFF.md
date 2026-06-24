@@ -67,15 +67,28 @@ What changed:
   - buyer has no daemon min-money gate; it should stay ready even when broke
   - hash spender is gated on the buyer running, so it should not run by itself
   - buyer uses ROI/payback scoring instead of cheapest-first
+  - buyer can now chain multiple affordable ROI-good purchases per cycle:
+    - default service/bootstrap value: `--max-purchases 50`
+    - default service/bootstrap payback gate is unlimited with `--max-payback 0`
+    - purchase toast/log message is one cycle summary instead of one popup per individual buy
+    - purchase log entries include `category`, `details`, and bundled `purchases` for dashboard spend analysis
   - production ROI uses a default `$2m` Sell for Money value assumption and the live hash cost
   - cache upgrades are handled by capacity policy, not ROI:
     - default target cache: 8
     - default hash buffer: 120 minutes of current production
   - low-return Hacknet actions are skipped by the payback gate so home RAM/cores can compete
   - hash spender defaults to `auto` and uses `/lib/daemon/hacknet-hash-policy.js`
-  - auto policy sells during bootstrap, improves studying only while actively studying, reduces/increases current money target when daemon-state is available, and falls back to selling hashes
+  - auto policy is BN9-aware:
+    - active studying uses `Improve Studying`
+    - cash ignition sells hashes until cash/hash production are stable
+    - Hacknet snowball sells hashes while Hacknet buyer is not complete
+    - target boost waits until Hacknet buyer is complete, then spends a small slice on `Reduce Minimum Security` or `Increase Maximum Money`
+    - target boost sells leftover hashes in the same cycle
+    - fallback sells hashes for augments/home/stocks/Hacknet growth
+  - bootstrap starts the hash spender with priority RAM and `--max-spends 500` so banked hashes become cash quickly
   - `/data/hacknet-state.txt` and `/data/hacknet-hash-spender-state.txt` record live state
-  - `/tools/hacknet-status.js` prints Hacknet status
+  - `/tools/hacknet-status.js` prints Hacknet status, hash policy source/phase, fallback action, and last-cycle primary/fallback spend counts
+  - `/data/purchases.log.txt` is the authoritative buyer ledger consumed by the dashboard bridge
 - BitNode capability layer added:
   - BN9 marks cloud/purchased servers unavailable
   - BN9 marks Hacknet/hash spending as the primary economy path
@@ -124,6 +137,7 @@ Expected BN9 bootstrap signs:
 - Hacknet buyer is not blocked by missing daemon-state.
 - `Allowed: YES` appears in `/tools/hacknet-status.js`.
 - Hash spender says either `waiting-hashes` or `spent`.
+- Hash policy should show `bn9-cash-ignition`, `bn9-hacknet-snowball`, `bn9-target-security`, `bn9-target-money`, or a BN9 fallback source.
 - Bootstrap tail says `Hacknet RAM : reserved for hash production`.
 - `hacknet-server-*` hosts should not be running `/workers/tiny-worker.js`.
 - Cloud/server purchaser is not required during bootstrap.

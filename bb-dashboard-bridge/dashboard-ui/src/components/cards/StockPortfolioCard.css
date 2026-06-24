@@ -9,6 +9,43 @@
     gap: 8px;
 }
 
+.stock-status {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 7px;
+    padding: 8px 10px;
+    background: rgba(2, 6, 23, .55);
+}
+
+.stock-status span {
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 3px 7px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.stock-status b {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-status-live span {
+    color: var(--green);
+}
+
+.stock-status-warn span {
+    color: var(--yellow);
+}
+
 .stock-metric {
     min-width: 0;
     padding: 9px;

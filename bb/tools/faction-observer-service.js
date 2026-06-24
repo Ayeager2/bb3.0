@@ -84,6 +84,7 @@ async function buildBackdoorState(ns, options = {}) {
         singularityEnabled,
         autoBackdoor,
         announced: [...announced],
+        announcedEvents: [],
         servers: [],
     };
 
@@ -116,8 +117,13 @@ async function buildBackdoorState(ns, options = {}) {
             const message =
                 `[BACKDOOR] ${item.server} backdoored -> ${item.faction} progression unlocked.`;
 
-            ns.tprint(message);
-            ns.toast(message, "success", 8000);
+            ns.print(message);
+            current.announcedEvents.push({
+                updatedAt: Date.now(),
+                server: item.server,
+                faction: item.faction,
+                message,
+            });
 
             announced.add(item.server);
         }
@@ -162,8 +168,8 @@ async function tryAutoBackdoor(ns, target) {
         try {
             ns.singularity.connect("home");
         } catch (error) {
-    console.error(error);
-}
+            console.error(error);
+        }
 
         return false;
     }

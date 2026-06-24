@@ -8,7 +8,8 @@ import {
     FiServer,
     FiX,
     FiHelpCircle,
-    FiDollarSign
+    FiDollarSign,
+    FiShoppingCart
 } from "react-icons/fi";
 
 import CoreStateView from "../views/CoreStateView.jsx";
@@ -20,6 +21,7 @@ import DebugActionsSettings from "../settings/DebugActionsSettings.jsx";
 import EventFeedView from "../events/EventFeedView.jsx";
 import DaemonReasoningView from "../views/DaemonReasoningView.jsx";
 import BN9EconomyView from "../views/BN9EconomyView.jsx";
+import BuyerLogView from "../views/BuyerLogView.jsx";
 
 import "./RightInspectorDrawer.css";
 
@@ -29,6 +31,7 @@ const TABS = [
     { id: "policy", label: "Policy", icon: <FiSettings /> },
     { id: "services", label: "Services", icon: <FiServer /> },
     { id: "bn9", label: "BN9 Economy", icon: <FiDollarSign /> },
+    { id: "buyer", label: "Buyer Log", icon: <FiShoppingCart /> },
     { id: "events", label: "Events", icon: <FiActivity /> },
     { id: "reasoning", label: "Reasoning", icon: <FiHelpCircle /> },
 ];
@@ -127,6 +130,14 @@ export default function RightInspectorDrawer({
                         <InspectorStack>
                             <InspectorSection title="BN9 Stock / Hash Ledger">
                                 <BN9EconomyView state={state} />
+                            </InspectorSection>
+                        </InspectorStack>
+                    )}
+
+                    {activeTab === "buyer" && (
+                        <InspectorStack>
+                            <InspectorSection title="Buyer Log">
+                                <BuyerLogView state={state} />
                             </InspectorSection>
                         </InspectorStack>
                     )}

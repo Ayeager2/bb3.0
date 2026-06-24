@@ -16,6 +16,11 @@ export default function StockPortfolioCard({
     const heldRows = rows.filter(row => Number(row.shares) > 0);
     const displayRows = (heldRows.length > 0 ? heldRows : rows).slice(0, 10);
     const access = stock?.marketAccess?.access ?? {};
+    const isStale = getAgeSeconds(stock?.updatedAt) > 30;
+    const statusMessage =
+        isStale
+            ? "Stock telemetry is stale; trader may not be running."
+            : stock?.statusMessage ?? stock?.marketAccess?.blockedReason ?? stock?.lastAction ?? "Waiting for stock trader.";
 
     return (
         <Card
@@ -28,6 +33,11 @@ export default function StockPortfolioCard({
             onMoveDown={onMoveDown}
         >
             <div className="stock-card">
+                <div className={`stock-status ${stock?.daemonAllowed === false || isStale ? "stock-status-warn" : "stock-status-live"}`}>
+                    <span>{stock?.status ?? (stock ? "online" : "offline")}</span>
+                    <b>{statusMessage}</b>
+                </div>
+
                 <div className="stock-card-top">
                     <Metric label="Mode" value={stock?.mode ?? "offline"} tone={stock?.daemonAllowed === false ? "warn" : "cyan"} />
                     <Metric label="Portfolio" value={formatMoney(stock?.portfolioValue ?? 0)} tone="green" />
@@ -74,7 +84,7 @@ export default function StockPortfolioCard({
                 </div>
 
                 <div className="stock-footer">
-                    <span>{stock?.lastAction ?? "Waiting for stock trader."}</span>
+                    <span>{stock?.lastAction ?? statusMessage}</span>
                     <b>{formatFreshness(stock?.updatedAt)}</b>
                 </div>
             </div>
@@ -113,10 +123,15 @@ function formatSignedPercent(value) {
 }
 
 function formatFreshness(updatedAt) {
-    const time = Number(updatedAt);
-    if (!Number.isFinite(time) || time <= 0) return "no telemetry";
-    const ageSeconds = Math.max(0, Math.round((Date.now() - time) / 1000));
+    const ageSeconds = getAgeSeconds(updatedAt);
+    if (!Number.isFinite(ageSeconds)) return "no telemetry";
     if (ageSeconds < 60) return `${ageSeconds}s ago`;
     if (ageSeconds < 3600) return `${Math.round(ageSeconds / 60)}m ago`;
     return `${Math.round(ageSeconds / 3600)}h ago`;
+}
+
+function getAgeSeconds(updatedAt) {
+    const time = Number(updatedAt);
+    if (!Number.isFinite(time) || time <= 0) return Number.POSITIVE_INFINITY;
+    return Math.max(0, Math.round((Date.now() - time) / 1000));
 }

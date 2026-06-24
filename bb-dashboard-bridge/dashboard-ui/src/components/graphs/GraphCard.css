@@ -139,6 +139,55 @@
     color: var(--text);
 }
 
+.graph-empty-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    pointer-events: none;
+}
+
+.graph-empty-overlay > div {
+    width: min(420px, 100%);
+    border: 1px solid rgba(250, 204, 21, .28);
+    border-radius: 10px;
+    padding: 14px;
+    background:
+        linear-gradient(135deg, rgba(250, 204, 21, .12), transparent 55%),
+        rgba(2, 6, 23, .92);
+    box-shadow: 0 0 28px rgba(0, 0, 0, .35);
+    pointer-events: auto;
+}
+
+.graph-empty-overlay b {
+    display: block;
+    color: var(--yellow);
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.graph-empty-overlay p {
+    margin: 8px 0 12px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.graph-empty-overlay button {
+    width: 100%;
+    border: 1px solid rgba(0, 229, 255, .35);
+    border-radius: 7px;
+    padding: 8px 10px;
+    background: rgba(0, 229, 255, .08);
+    color: var(--cyan);
+    font-family: inherit;
+    font-weight: 900;
+    cursor: pointer;
+}
+
 .react-flow__node.node-faction-server {
     outline: 1px solid rgba(192, 132, 252, .78);
     outline-offset: 4px;

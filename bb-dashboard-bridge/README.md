@@ -96,6 +96,7 @@ Expected in the UI:
 - Inspector Core shows target intel with candidate telemetry.
 - Inspector Reasoning shows current reasoning and history.
 - Inspector Victory, Policy, and Services combine related diagnostics to avoid stale/repeated data.
+- Inspector Buyer Log reads the Bitburner purchase ledger and shows spend mix plus detailed purchase rows.
 - Services shows running, policy-blocked, completed, and failed service states.
 - Ctrl+K opens the command palette.
 

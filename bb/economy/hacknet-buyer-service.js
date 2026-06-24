@@ -16,13 +16,14 @@ export async function main(ns) {
         ["cores", 16],
         ["cache", 8],
         ["reserve", 0],
-        ["max-payback", 43200],
+        ["max-payback", 0],
         ["hash-buffer-minutes", 120],
         ["sell-value", 2_000_000],
+        ["max-purchases", 50],
         ["use-policy-reserve", false],
         ["force", false],
         ["debug", true],
-        ["toast", true],
+        ["toast", false],
         ["terminal", false],
     ]);
 
@@ -46,6 +47,8 @@ export async function main(ns) {
         (Number(flags["hash-buffer-minutes"]) || 120) * 60;
     const sellForMoneyValue =
         Number(flags["sell-value"]) || 2_000_000;
+    const maxPurchasesPerCycle =
+        Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
     const usePolicyReserve =
         flags["use-policy-reserve"] === true;
     const force =
@@ -99,6 +102,7 @@ export async function main(ns) {
                 maxPaybackSeconds,
                 hashBufferSeconds,
                 sellForMoneyValue,
+                maxPurchasesPerCycle,
             });
 
         const state = {
@@ -108,6 +112,8 @@ export async function main(ns) {
             status: result.status,
             message: result.message,
             acted: result.acted === true,
+            purchaseCount: result.purchaseCount ?? 0,
+            purchases: result.purchases ?? [],
             mode: daemonState?.mode ?? "unknown",
             priority: policy.priority ?? "unknown",
             recentActions,
@@ -131,6 +137,7 @@ export async function main(ns) {
             ns.print(`Spendable: ${ns.format.number(state.spendable)}`);
             ns.print(`ROI gate: ${ns.format.number(state.roi?.maxPaybackSeconds ?? maxPaybackSeconds)}s`);
             ns.print(`Hash sell value: $${ns.format.number(state.roi?.sellForMoneyValue ?? sellForMoneyValue)}`);
+            ns.print(`Max buys/cycle: ${maxPurchasesPerCycle}`);
             ns.print(
                 `Cache buffer: ${formatDuration(state.cachePolicy?.hashBufferSeconds ?? hashBufferSeconds)} | ` +
                 `${ns.format.number(state.hashes?.capacity ?? 0)} cap`
@@ -172,6 +179,10 @@ export async function main(ns) {
                 moneyBefore: result.moneyBefore,
                 moneyAfter: result.moneyAfter,
                 message,
+                purchases: result.purchases ?? [],
+                details: {
+                    purchaseCount: result.purchaseCount ?? 0,
+                },
             });
         }
 

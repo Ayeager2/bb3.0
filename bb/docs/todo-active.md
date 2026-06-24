@@ -34,13 +34,13 @@
 12. Remove stale checked-in runtime state after explicit approval:
    - /lib/daemon/daemon-state.txt appears to contain old joesguns/3000 data
 13. BN9 Hacknet hash policy:
-   - first pass implemented in /lib/daemon/hacknet-hash-policy.js
+   - BN9 cash/target-boost pass implemented in /lib/daemon/hacknet-hash-policy.js
    - verify live choices in BN9:
-       no daemon-state / bootstrap -> Sell for Money
        active study -> Improve Studying
-       leveling but not studying -> Sell for Money
-       money target with high security -> Reduce Minimum Security
-       clean money target -> Increase Maximum Money
+       low cash -> Sell for Money with source bn9-cash-ignition
+       unstable hash rate/cash -> Sell for Money with source bn9-hash-snowball
+       target with high security -> Reduce Minimum Security plus Sell for Money fallback
+       clean target -> Increase Maximum Money plus Sell for Money fallback
        fallback -> Sell for Money
    - tune thresholds after observing /data/hacknet-hash-spender-state.txt
 14. BN9 BitNode capability verification:
@@ -48,6 +48,15 @@
    - Hacknet buyer and hash spender should start during bootstrap before daemon-state exists
    - once full daemon starts, daemon-state should show allowServerPurchases=false, allowHacknet=true, hacknetPrimary=true
    - UHM should not use Hacknet server RAM as worker RAM in BN9; Hacknet servers should keep producing hashes
+15. Dashboard command/control expansion:
+   - make the dashboard interactive with daemon-managed services, not just telemetry
+   - add explicit safe commands for starting/stopping/toggling selected services through /tools/dashboard-command-runner.js
+   - add per-service option controls where useful, such as refresh interval, force mode, max purchases, reserve, toast/terminal output, and tail behavior
+   - daemon should validate requested commands against an allowlist before running anything
+   - command status should report accepted/running/success/failure in /data/ui/dashboard-command-status.txt
+   - Services inspector should show actionable controls only for registered active services
+   - legacy retired services should stay commented out in /lib/daemon/services.js so they are available for reference but do not clutter the dashboard
+   - buyer log should eventually support drilldowns and charts by category, including Hacknet, augments, home upgrades, stocks, programs, and factions
 ```
 
 # NEW TODO - 2026-06-07
@@ -103,6 +112,12 @@ Server purchaser / dashboard ticker:
       join service sorts BN9 invites by priority
       augmentation planner strongly weights Hacknet stats and Netburners stage policy
       daemon policy allows faction work / augmentation buying in BN9 when Singularity is available
+
+- Dashboard services cleanup:
+  - retired crime-bootstrap service is commented out in /lib/daemon/services.js
+  - retired daemon-session service is commented out in /lib/daemon/services.js
+  - these services no longer appear as disabled/policy-blocked clutter in the Services inspector
+  - the source files remain available if we need to restore or reference the old behavior
 
 - Pre-Red-Pill BitRunners NeuroFlux favor-loop first pass:
   - BitRunners NeuroFlux has a dedicated augmentation stage policy

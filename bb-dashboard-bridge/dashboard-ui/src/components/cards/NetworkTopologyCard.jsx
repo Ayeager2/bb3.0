@@ -28,6 +28,11 @@ export default function NetworkTopologyCard({
     const cardSize = layoutSize ?? (isBn9 ? "three-quarters" : "third");
     const activeTarget = state?.daemon?.target ?? null;
     const worldDaemon = state?.victory?.worldDaemon ?? "w0r1d_d43m0n";
+    const hasTopologyData =
+        Array.isArray(topology?.nodes) && topology.nodes.length > 0;
+    const topologyMessage =
+        topology?.message ??
+        "Topology telemetry has not been published yet.";
     const backdoorQueue = useMemo(() => {
         return [...(topology?.nodes ?? [])]
             .filter(node => node?.needsBackdoor)
@@ -97,6 +102,19 @@ export default function NetworkTopologyCard({
                         refreshing={refreshing}
                         onRefresh={refreshTopology}
                     />
+                ) : null
+            }
+            overlay={
+                !hasTopologyData ? (
+                    <div className="graph-empty-overlay">
+                        <div>
+                            <b>Topology Telemetry Missing</b>
+                            <p>{topologyMessage}</p>
+                            <button onClick={refreshTopology} disabled={refreshing}>
+                                {refreshing ? "Refreshing..." : "Refresh Topology"}
+                            </button>
+                        </div>
+                    </div>
                 ) : null
             }
             footer={
