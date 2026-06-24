@@ -1,20 +1,33 @@
 import { useState, useEffect, useMemo } from "react";
-import { FiSettings } from "react-icons/fi";
+import { FiCpu, FiGitBranch, FiServer, FiSettings, FiTrendingUp, FiZap } from "react-icons/fi";
 
 import NetworkTopologyCard from "../cards/NetworkTopologyCard.jsx";
 import ServerTickerCard from "../cards/ServerTickerCard.jsx";
+import StockPortfolioCard from "../cards/StockPortfolioCard.jsx";
+import HacknetMoneyCard from "../cards/HacknetMoneyCard.jsx";
+import AugmentationTreeCard from "../cards/AugmentationTreeCard.jsx";
 import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
 
 const DEFAULT_CARD_ORDER = [
+    "hacknetMoney",
+    "stockPortfolio",
+    "augmentationTree",
     "networkTopology",
     "serverTicker",
 ];
 
-const CARD_STORAGE_KEY = "bbdash-card-layout-v2";
+const DEFAULT_VISIBLE = {
+    serverTicker: false,
+};
+
+const CARD_STORAGE_KEY = "bbdash-card-layout-v3";
 
 const CARD_REGISTRY = {
-    networkTopology: { title: "Network Topology", component: NetworkTopologyCard },
-    serverTicker: { title: "Server Ticker", component: ServerTickerCard },
+    networkTopology: { title: "Network Topology", component: NetworkTopologyCard, icon: FiGitBranch },
+    serverTicker: { title: "Server Ticker", component: ServerTickerCard, icon: FiServer },
+    stockPortfolio: { title: "Stock Checker", component: StockPortfolioCard, icon: FiTrendingUp },
+    hacknetMoney: { title: "Hacknet Hash Forge", component: HacknetMoneyCard, icon: FiCpu },
+    augmentationTree: { title: "Augmentation Status", component: AugmentationTreeCard, icon: FiZap },
 };
 
 export default function DashboardGrid({
@@ -25,6 +38,14 @@ export default function DashboardGrid({
     onToastSettingsChange,
     workspaceSettings,
     onWorkspaceSettingsChange,
+    fontOffset,
+    onFontOffsetChange,
+    themeAccent,
+    activeAccent,
+    onThemeAccentChange,
+    themeSignal,
+    activeSignal,
+    onThemeSignalChange,
 }) {
     const [layout, setLayout] = useState(() => loadLayout());
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -34,10 +55,21 @@ export default function DashboardGrid({
     }, [layout]);
 
     const orderedCards = useMemo(() => {
+        const isBn9 = Number(state?.bitnode?.number) === 9;
+
         return layout.order
             .filter(id => CARD_REGISTRY[id])
+            .filter(id => !(isBn9 && id === "serverTicker"))
             .filter(id => layout.visible[id] !== false);
-    }, [layout.order, layout.visible]);
+    }, [layout.order, layout.visible, state?.bitnode?.number]);
+
+    const activeCards = useMemo(() => {
+        return orderedCards.filter(id => layout.collapsed[id] !== true);
+    }, [orderedCards, layout.collapsed]);
+
+    const minimizedCards = useMemo(() => {
+        return orderedCards.filter(id => layout.collapsed[id] === true);
+    }, [orderedCards, layout.collapsed]);
 
     function toggleCard(id) {
         setLayout(current => ({
@@ -55,6 +87,16 @@ export default function DashboardGrid({
             visible: {
                 ...current.visible,
                 [id]: current.visible[id] === false,
+            },
+        }));
+    }
+
+    function setCardSize(id, size) {
+        setLayout(current => ({
+            ...current,
+            sizes: {
+                ...(current.sizes ?? {}),
+                [id]: size,
             },
         }));
     }
@@ -100,11 +142,20 @@ export default function DashboardGrid({
                     registry={CARD_REGISTRY}
                     onClose={() => setSettingsOpen(false)}
                     onToggleVisible={toggleVisible}
+                    onSetCardSize={setCardSize}
                     onReset={resetLayout}
                     toastSettings={toastSettings}
                     onToastSettingsChange={onToastSettingsChange}
                     workspaceSettings={workspaceSettings}
                     onWorkspaceSettingsChange={onWorkspaceSettingsChange}
+                    fontOffset={fontOffset}
+                    onFontOffsetChange={onFontOffsetChange}
+                    themeAccent={themeAccent}
+                    activeAccent={activeAccent}
+                    onThemeAccentChange={onThemeAccentChange}
+                    themeSignal={themeSignal}
+                    activeSignal={activeSignal}
+                    onThemeSignalChange={onThemeSignalChange}
                 />
             </>
         );
@@ -113,7 +164,7 @@ export default function DashboardGrid({
     return (
         <>
             <main className="grid">
-                {orderedCards.map(id => {
+                {activeCards.map(id => {
                     const config = CARD_REGISTRY[id];
                     const Component = config.component;
 
@@ -125,6 +176,7 @@ export default function DashboardGrid({
                             events={events}
                             topology={topology}
                             workspaceSettings={workspaceSettings}
+                            layoutSize={layout.sizes?.[id]}
                             collapsed={layout.collapsed[id] === true}
                             onToggle={() => toggleCard(id)}
                             onMoveUp={() => moveCard(id, -1)}
@@ -134,6 +186,12 @@ export default function DashboardGrid({
                 })}
             </main>
 
+            <MinimizedCardDock
+                cards={minimizedCards}
+                registry={CARD_REGISTRY}
+                onRestore={toggleCard}
+            />
+
             <SettingsButton onClick={() => setSettingsOpen(true)} />
 
             <DashboardControlPanel
@@ -142,13 +200,47 @@ export default function DashboardGrid({
                 registry={CARD_REGISTRY}
                 onClose={() => setSettingsOpen(false)}
                 onToggleVisible={toggleVisible}
+                onSetCardSize={setCardSize}
                 onReset={resetLayout}
                 toastSettings={toastSettings}
                 onToastSettingsChange={onToastSettingsChange}
                 workspaceSettings={workspaceSettings}
                 onWorkspaceSettingsChange={onWorkspaceSettingsChange}
+                fontOffset={fontOffset}
+                onFontOffsetChange={onFontOffsetChange}
+                themeAccent={themeAccent}
+                activeAccent={activeAccent}
+                onThemeAccentChange={onThemeAccentChange}
+                themeSignal={themeSignal}
+                activeSignal={activeSignal}
+                onThemeSignalChange={onThemeSignalChange}
             />
         </>
+    );
+}
+
+function MinimizedCardDock({ cards, registry, onRestore }) {
+    if (cards.length === 0) return null;
+
+    return (
+        <aside className="minimized-card-dock" aria-label="Minimized dashboard cards">
+            {cards.map(id => {
+                const config = registry[id];
+                const Icon = config?.icon ?? FiZap;
+
+                return (
+                    <button
+                        key={id}
+                        className="minimized-card-tab"
+                        onClick={() => onRestore(id)}
+                        title={`Restore ${config?.title ?? id}`}
+                    >
+                        <Icon />
+                        <span>{config?.title ?? id}</span>
+                    </button>
+                );
+            })}
+        </aside>
     );
 }
 
@@ -175,8 +267,10 @@ function loadLayout() {
             collapsed: saved.collapsed ?? {},
             visible: {
                 ...Object.fromEntries(DEFAULT_CARD_ORDER.map(id => [id, true])),
+                ...DEFAULT_VISIBLE,
                 ...(saved.visible ?? {}),
             },
+            sizes: saved.sizes ?? {},
         };
     } catch {
         return defaultLayout();
@@ -187,6 +281,10 @@ function defaultLayout() {
     return {
         order: DEFAULT_CARD_ORDER,
         collapsed: {},
-        visible: Object.fromEntries(DEFAULT_CARD_ORDER.map(id => [id, true])),
+        visible: {
+            ...Object.fromEntries(DEFAULT_CARD_ORDER.map(id => [id, true])),
+            ...DEFAULT_VISIBLE,
+        },
+        sizes: {},
     };
 }

@@ -17,10 +17,23 @@ export const SESSION_FILES = [
     "/data/faction-join-state.txt",
 ];
 
+export const AUGMENTATION_FILES = [
+    "/data/augmentation-state.txt",
+    "/data/augmentation-cache.txt",
+    "/data/augmentation-data-builder-complete.txt",
+    "/data/augmentation-plan.txt",
+    "/data/augmentation-buyer-state.txt",
+    "/data/augmentation-events.txt",
+    "/data/faction-work-plan.txt",
+    "/data/faction-donation-plan.txt",
+    "/data/faction-donation-state.txt",
+];
+
 export const DEV_REFRESH_FILES = [
     ...VOLATILE_FILES,
     ...COMPLETION_FILES,
     ...SESSION_FILES,
+    ...AUGMENTATION_FILES,
 ];
 
 /** @param {NS} ns */
@@ -39,6 +52,7 @@ export function refreshDaemonState(ns, options = {}) {
     if (volatile) files.push(...VOLATILE_FILES);
     if (completions) files.push(...COMPLETION_FILES);
     if (sessions) files.push(...SESSION_FILES);
+    files.push(...AUGMENTATION_FILES);
 
     return removeFiles(ns, unique(files), verbose);
 }
@@ -54,6 +68,7 @@ function findDataTextFiles(ns) {
     try {
         return ns
             .ls("home", "/data/")
+            .map(normalizeDataPath)
             .filter(file =>
                 file.startsWith("/data/") &&
                 file.endsWith(".txt")
@@ -61,6 +76,12 @@ function findDataTextFiles(ns) {
     } catch {
         return [];
     }
+}
+
+function normalizeDataPath(file) {
+    const path = String(file ?? "");
+    if (path.startsWith("/")) return path;
+    return `/${path}`;
 }
 
 /** @param {NS} ns */

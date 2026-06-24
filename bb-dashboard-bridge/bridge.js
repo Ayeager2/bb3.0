@@ -21,6 +21,22 @@ const BITBURNER_REASONING_FILE = "/data/ui/daemon-reasoning.txt";
 const OUT_REASONING_FILE = path.join(OUT_DIR, "daemon-reasoning.json");
 const BITBURNER_REASONING_HISTORY_FILE = "/data/ui/daemon-reasoning-history.txt";
 const OUT_REASONING_HISTORY_FILE = path.join(OUT_DIR, "daemon-reasoning-history.json");
+const BITBURNER_STOCK_TRADER_FILE = "/data/stock-trader-state.txt";
+const OUT_STOCK_TRADER_FILE = path.join(OUT_DIR, "stock-trader-state.json");
+const BITBURNER_HACKNET_FILE = "/data/hacknet-state.txt";
+const OUT_HACKNET_FILE = path.join(OUT_DIR, "hacknet-state.json");
+const BITBURNER_HASH_SPENDER_FILE = "/data/hacknet-hash-spender-state.txt";
+const OUT_HASH_SPENDER_FILE = path.join(OUT_DIR, "hacknet-hash-spender-state.json");
+const BITBURNER_AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
+const OUT_AUGMENTATION_STATE_FILE = path.join(OUT_DIR, "augmentation-state.json");
+const BITBURNER_AUGMENTATION_PLAN_FILE = "/data/augmentation-plan.txt";
+const OUT_AUGMENTATION_PLAN_FILE = path.join(OUT_DIR, "augmentation-plan.json");
+const BITBURNER_AUGMENTATION_BUYER_FILE = "/data/augmentation-buyer-state.txt";
+const OUT_AUGMENTATION_BUYER_FILE = path.join(OUT_DIR, "augmentation-buyer-state.json");
+const BITBURNER_FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
+const OUT_FACTION_WORK_PLAN_FILE = path.join(OUT_DIR, "faction-work-plan.json");
+const BITBURNER_FACTION_STATE_FILE = "/data/faction-state.txt";
+const OUT_FACTION_STATE_FILE = path.join(OUT_DIR, "faction-state.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -89,8 +105,11 @@ app.get("/command/status", (_req, res) => {
 
 app.use(express.static(OUT_DIR));
 
-app.get("/state", (_req, res) => {
+app.get("/state", async (_req, res) => {
     try {
+        await pollEconomyTelemetry();
+        await pollDashboardState();
+
         const raw = fs.readFileSync(OUT_FILE, "utf8");
         const parsed = normalizeDashboardState(JSON.parse(raw));
 
@@ -413,8 +432,24 @@ function normalizeDashboardState(state = {}) {
 
     const target = state?.target?.name ?? state?.daemon?.target ?? plan?.target ?? null;
 
+    const economy = {
+        ...(state.economy ?? {}),
+        stockTrader: readLocalJson(OUT_STOCK_TRADER_FILE, null),
+        hacknet: readLocalJson(OUT_HACKNET_FILE, null),
+        hashSpender: readLocalJson(OUT_HASH_SPENDER_FILE, null),
+    };
+    const augmentationIntel = {
+        state: readLocalJson(OUT_AUGMENTATION_STATE_FILE, null),
+        plan: readLocalJson(OUT_AUGMENTATION_PLAN_FILE, null),
+        buyer: readLocalJson(OUT_AUGMENTATION_BUYER_FILE, null),
+        factionWork: readLocalJson(OUT_FACTION_WORK_PLAN_FILE, null),
+        factionState: readLocalJson(OUT_FACTION_STATE_FILE, null),
+    };
+
     return {
         ...state,
+        economy,
+        augmentationIntel,
         strategicTargetPlan: state?.strategicTargetPlan ?? plan,
         targetAnalysis: normalizeTargetAnalysis({
             existing: state?.targetAnalysis,
@@ -434,6 +469,21 @@ function normalizeDashboardState(state = {}) {
             plan,
         }),
     };
+}
+
+function readLocalJson(file, fallback) {
+    try {
+        const parsed = JSON.parse(fs.readFileSync(file, "utf8"));
+        const status = String(parsed?.status ?? "").toLowerCase();
+
+        if (status === "unavailable" || status === "missing") {
+            return fallback;
+        }
+
+        return parsed;
+    } catch {
+        return fallback;
+    }
 }
 
 function normalizeTargetAnalysis({ existing = {}, target, targetReason, targetStability, plan }) {
@@ -564,11 +614,88 @@ async function pollDaemonReasoningHistory() {
     }
 }
 
+async function pollJsonFile(bitburnerFile, outFile, fallback) {
+    if (!bitburnerSocket) return;
+
+    try {
+        const content = await rpc("getFile", {
+            filename: bitburnerFile,
+            server: "home"
+        });
+
+        const parsed = JSON.parse(content || "{}");
+        parsed.bridgeUpdatedAt = Date.now();
+
+        fs.writeFileSync(outFile, JSON.stringify(parsed, null, 2));
+    } catch {
+        fs.writeFileSync(
+            outFile,
+            JSON.stringify({
+                ...fallback,
+                bridgeUpdatedAt: Date.now(),
+            }, null, 2)
+        );
+    }
+}
+
+async function pollEconomyTelemetry() {
+    await Promise.all([
+        pollJsonFile(BITBURNER_STOCK_TRADER_FILE, OUT_STOCK_TRADER_FILE, {
+            source: "stock-trader",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_STOCK_TRADER_FILE}. Is /economy/stock-trader.js running?`,
+            rows: [],
+            recentActions: [],
+        }),
+        pollJsonFile(BITBURNER_HACKNET_FILE, OUT_HACKNET_FILE, {
+            source: "hacknet-buyer",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_HACKNET_FILE}. Is /economy/hacknet-buyer-service.js running?`,
+            nodes: [],
+        }),
+        pollJsonFile(BITBURNER_HASH_SPENDER_FILE, OUT_HASH_SPENDER_FILE, {
+            source: "hacknet-hash-spender",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_HASH_SPENDER_FILE}. Is /economy/hacknet-hash-spender-service.js running?`,
+        }),
+        pollJsonFile(BITBURNER_AUGMENTATION_STATE_FILE, OUT_AUGMENTATION_STATE_FILE, {
+            source: "augmentation-data-builder",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_AUGMENTATION_STATE_FILE}. Is /tools/augmentation-data-builder.js running?`,
+            factions: [],
+            uniqueAugmentations: [],
+        }),
+        pollJsonFile(BITBURNER_AUGMENTATION_PLAN_FILE, OUT_AUGMENTATION_PLAN_FILE, {
+            source: "augmentation-plan",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_AUGMENTATION_PLAN_FILE}. Is /tools/augmentation-buyer-service.js running?`,
+            candidates: [],
+        }),
+        pollJsonFile(BITBURNER_AUGMENTATION_BUYER_FILE, OUT_AUGMENTATION_BUYER_FILE, {
+            source: "augmentation-buyer",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_AUGMENTATION_BUYER_FILE}. Is /tools/augmentation-buyer-service.js running?`,
+        }),
+        pollJsonFile(BITBURNER_FACTION_WORK_PLAN_FILE, OUT_FACTION_WORK_PLAN_FILE, {
+            source: "faction-work-plan",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_FACTION_WORK_PLAN_FILE}. Is /tools/faction-work-service.js running?`,
+        }),
+        pollJsonFile(BITBURNER_FACTION_STATE_FILE, OUT_FACTION_STATE_FILE, {
+            source: "faction-observer",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_FACTION_STATE_FILE}. Is /tools/faction-observer-service.js running?`,
+            profiles: [],
+        }),
+    ]);
+}
+
 setInterval(pollDashboardState, 3000);
 setInterval(pollEventLog, 3000);
 setInterval(pollNetworkTopology, 10000);
 setInterval(pollCommandStatus, 3000);
 setInterval(pollDaemonReasoning, 5000);
 setInterval(pollDaemonReasoningHistory, 5000);
+setInterval(pollEconomyTelemetry, 3000);
 
 console.log(`[REMOTE API] Waiting for Bitburner on ws://localhost:${REMOTE_API_PORT}`);

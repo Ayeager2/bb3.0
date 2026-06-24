@@ -37,6 +37,7 @@ export async function main(ns) {
         flags.force === true;
     const debug =
         flags.debug === true;
+    const recentActions = [];
 
     while (true) {
         const daemonState =
@@ -69,6 +70,10 @@ export async function main(ns) {
                     message: "Daemon policy has Hacknet disabled.",
                 };
 
+        if (result.acted === true) {
+            addRecentAction(recentActions, result.message);
+        }
+
         const state = {
             updatedAt: Date.now(),
             source: "hacknet-hash-spender",
@@ -85,6 +90,7 @@ export async function main(ns) {
             capacity: safeHashCapacity(ns),
             acted: result.acted,
             spends: result.spends,
+            recentActions,
         };
 
         ns.write(HASH_SPENDER_STATE_FILE, JSON.stringify(state, null, 2), "w");
@@ -100,6 +106,11 @@ export async function main(ns) {
 
         await ns.sleep(refreshMs);
     }
+}
+
+function addRecentAction(recentActions, message) {
+    recentActions.unshift(`[${new Date().toLocaleTimeString()}] ${message}`);
+    recentActions.splice(20);
 }
 
 function spendHashes(ns, options) {

@@ -1,0 +1,179 @@
+{
+  "updatedAt": 1782265151519,
+  "nodeCount": 6,
+  "maxNodes": 20,
+  "targetNodes": 20,
+  "targetLevel": 200,
+  "targetRam": 64,
+  "targetCores": 16,
+  "targetCache": 8,
+  "money": 6517789.621504665,
+  "reserveMoney": 0,
+  "spendable": 6517789.621504665,
+  "totalProduction": 0.1891231958638969,
+  "totalProduced": 654.573820786699,
+  "hashes": {
+    "available": true,
+    "hashes": 64.57382078661702,
+    "capacity": 1152,
+    "upgrades": [
+      "Sell for Money",
+      "Sell for Corporation Funds",
+      "Reduce Minimum Security",
+      "Increase Maximum Money",
+      "Improve Studying",
+      "Improve Gym Training",
+      "Exchange for Corporation Research",
+      "Exchange for Bladeburner Rank",
+      "Exchange for Bladeburner SP",
+      "Generate Coding Contract",
+      "Company Favor"
+    ]
+  },
+  "cachePolicy": {
+    "targetCache": 8,
+    "hashBufferSeconds": 7200,
+    "desiredCapacity": 1361.6870102200576,
+    "capacityGap": 209.68701022005757,
+    "nextAction": {
+      "type": "cache",
+      "index": 4,
+      "amount": 1,
+      "label": "upgrade node 4 cache",
+      "cost": 10000000,
+      "productionGain": 0,
+      "moneyPerSecond": 0,
+      "paybackSeconds": null,
+      "roi": null,
+      "capacityPolicy": {
+        "desiredCapacity": 1361.6870102200576,
+        "currentCapacity": 1152,
+        "capacityGap": 209.68701022005757,
+        "bufferSeconds": 7200
+      },
+      "affordable": false
+    }
+  },
+  "roi": {
+    "strategy": "payback-seconds",
+    "maxPaybackSeconds": 43200,
+    "sellForMoneyValue": 2000000,
+    "hashMoneyValue": 500000,
+    "homeCompetition": {
+      "ram": {
+        "cost": 501247312020.7211,
+        "current": 8192
+      },
+      "cores": {
+        "cost": 3164062500000,
+        "current": 4
+      }
+    },
+    "bestCandidate": {
+      "type": "ram",
+      "index": 0,
+      "amount": 1,
+      "label": "upgrade node 0 RAM",
+      "cost": 23601774.39517848,
+      "productionGain": 0.2318930447340382,
+      "moneyPerSecond": 115946.5223670191,
+      "paybackSeconds": 203.55741520620185,
+      "roi": 0.00491261887456671,
+      "capacityPolicy": null,
+      "affordable": null
+    },
+    "blockedByPayback": false
+  },
+  "complete": false,
+  "nextAction": {
+    "type": "ram",
+    "index": 0,
+    "amount": 1,
+    "label": "upgrade node 0 RAM",
+    "cost": 23601774.39517848,
+    "productionGain": 0.2318930447340382,
+    "moneyPerSecond": 115946.5223670191,
+    "paybackSeconds": 203.55741520620185,
+    "roi": 0.00491261887456671,
+    "capacityPolicy": null,
+    "affordable": null
+  },
+  "canAffordNext": false,
+  "nodes": [
+    {
+      "index": 0,
+      "name": "hacknet-server-0",
+      "level": 16,
+      "ram": 32,
+      "cores": 3,
+      "cache": 3,
+      "production": 0.11555896151231827,
+      "totalProduction": 398.2304184805063,
+      "timeOnline": 4722.399999997944
+    },
+    {
+      "index": 1,
+      "name": "hacknet-server-1",
+      "level": 6,
+      "ram": 1,
+      "cores": 1,
+      "cache": 3,
+      "production": 0.02206927030547359,
+      "totalProduction": 88.0203420440091,
+      "timeOnline": 4717.199999997949
+    },
+    {
+      "index": 2,
+      "name": "hacknet-server-2",
+      "level": 6,
+      "ram": 1,
+      "cores": 1,
+      "cache": 3,
+      "production": 0.02206927030547359,
+      "totalProduction": 85.21386650349393,
+      "timeOnline": 4712.1999999979535
+    },
+    {
+      "index": 3,
+      "name": "hacknet-server-3",
+      "level": 6,
+      "ram": 1,
+      "cores": 1,
+      "cache": 3,
+      "production": 0.02206927030547359,
+      "totalProduction": 79.007987693589,
+      "timeOnline": 3675.9999999988772
+    },
+    {
+      "index": 4,
+      "name": "hacknet-server-4",
+      "level": 1,
+      "ram": 1,
+      "cores": 1,
+      "cache": 1,
+      "production": 0.0036782117175789314,
+      "totalProduction": 2.0509708537221027,
+      "timeOnline": 557.5999999999898
+    },
+    {
+      "index": 5,
+      "name": "hacknet-server-5",
+      "level": 1,
+      "ram": 1,
+      "cores": 1,
+      "cache": 1,
+      "production": 0.0036782117175789314,
+      "totalProduction": 2.050235211378587,
+      "timeOnline": 557.3999999999897
+    }
+  ],
+  "source": "hacknet-buyer",
+  "allowed": true,
+  "status": "waiting-money",
+  "message": "Need $23.602m for upgrade node 0 RAM; spendable $6.518m.",
+  "acted": false,
+  "mode": "exp",
+  "priority": "leveling",
+  "recentActions": [],
+  "bridgeUpdatedAt": 1782265156300
+}

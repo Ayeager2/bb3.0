@@ -1,0 +1,26 @@
+{
+  "updatedAt": 1782265151520,
+  "source": "hacknet-hash-spender",
+  "allowed": true,
+  "status": "waiting-hashes",
+  "message": "Need 100.000 hashes for Improve Studying.",
+  "upgradeName": "Improve Studying",
+  "target": null,
+  "hashPolicy": {
+    "upgradeName": "Improve Studying",
+    "target": null,
+    "source": "current-work",
+    "reason": "Player is currently studying; hashes improve study gains."
+  },
+  "reserveHashes": 0,
+  "minHashesToSpend": 4,
+  "maxSpendsPerCycle": 500,
+  "hashes": 64.57382078661702,
+  "capacity": 1152,
+  "acted": false,
+  "spends": 0,
+  "recentActions": [
+    "[9:33:30 PM] Spent hashes on Improve Studying x1."
+  ],
+  "bridgeUpdatedAt": 1782265156302
+}

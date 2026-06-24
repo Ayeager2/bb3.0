@@ -82,6 +82,7 @@ function buildAugmentationData(ns) {
     for (const profile of ALL_FACTION_PROFILES) {
         const faction = profile.faction;
         const factionRep = safeFactionRep(ns, faction);
+        const factionFavor = safeFactionFavor(ns, faction);
         const augmentationNames = safeAugmentationsFromFaction(ns, faction);
 
         const augmentations = [];
@@ -117,6 +118,8 @@ function buildAugmentationData(ns) {
             priorityByBitNode: profile.priorityByBitNode ?? {},
             requirements: profile.requirements ?? {},
             rep: factionRep,
+            favor: factionFavor,
+            favorToDonate: safeFavorToDonate(ns),
             augmentations,
         });
     }
@@ -225,6 +228,22 @@ function safeFactionRep(ns, faction) {
         return ns.singularity.getFactionRep(faction);
     } catch {
         return 0;
+    }
+}
+
+function safeFactionFavor(ns, faction) {
+    try {
+        return ns.singularity.getFactionFavor(faction);
+    } catch {
+        return 0;
+    }
+}
+
+function safeFavorToDonate(ns) {
+    try {
+        return ns.singularity.getFavorToDonate();
+    } catch {
+        return 150;
     }
 }
 

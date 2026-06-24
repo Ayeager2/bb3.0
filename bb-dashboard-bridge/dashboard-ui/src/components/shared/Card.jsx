@@ -9,7 +9,7 @@ export default function Card({
     onMoveDown,
 }) {
     return (
-        <section className={`card card-${size}`} data-card-id={id}>
+        <section className={`card card-${size} ${collapsed ? "card-collapsed" : ""}`} data-card-id={id}>
             <div className="card-header">
                 <button className="card-toggle" onClick={onToggle}>
                     {collapsed ? "+" : "−"}

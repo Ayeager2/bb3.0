@@ -1,12 +1,12 @@
 [
   {
-    "ts": 1780867947679,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264815802,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Improve Studying.:Need 100.000 hashes for Improve Studying.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
+      "info": 5,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -14,48 +14,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Need 100.000 hashes for Improve Studying.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780866751805,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264810799,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Improve Studying.:Spent hashes on Improve Studying x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 4,
       "success": 1,
-      "warning": 1,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -63,48 +77,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Spent hashes on Improve Studying x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780807648244,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264598628,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Improve Studying.:Need 50.000 hashes for Improve Studying.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
+      "info": 5,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -112,48 +140,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "6/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Need 50.000 hashes for Improve Studying.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780798303754,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264568516,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Improve Studying.:Need 50.000 hashes for Improve Studying.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
+      "info": 5,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -161,48 +203,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Need 50.000 hashes for Improve Studying.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780798190311,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264553475,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is joesguns.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
+      "info": 5,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -210,48 +266,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is joesguns.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780798135318,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264547372,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 4,
       "success": 1,
-      "warning": 1,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -259,48 +329,62 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780784571344,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1782264527278,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
+      "info": 5,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -308,46 +392,123 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is the-hub.",
-        "detail": "Target appears stable enough for current automation.",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264522274,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
         "level": "success"
       },
       {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780784526301,
+    "ts": 1782264507199,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -357,8 +518,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -372,32 +533,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780782643477,
+    "ts": 1782264502166,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -406,8 +581,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -421,31 +596,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780782264256,
+    "ts": 1782264487057,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -455,8 +644,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -470,32 +659,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780778952988,
+    "ts": 1782264482054,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -504,8 +707,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -519,31 +722,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780777397068,
+    "ts": 1782264461940,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -553,8 +770,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -568,32 +785,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780777290188,
+    "ts": 1782264456882,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -602,8 +833,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -617,31 +848,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780777252138,
+    "ts": 1782264441830,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -651,8 +896,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -666,32 +911,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780776240931,
+    "ts": 1782264436779,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -700,8 +959,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -715,31 +974,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780775210312,
+    "ts": 1782264416632,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -749,8 +1022,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -764,32 +1037,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780775105583,
+    "ts": 1782264411619,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -798,8 +1085,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -813,31 +1100,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780774460230,
+    "ts": 1782264396507,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -847,8 +1148,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -862,32 +1163,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780773620811,
+    "ts": 1782264391498,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -896,8 +1211,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -911,31 +1226,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780767037112,
+    "ts": 1782264376348,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -945,8 +1274,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -960,32 +1289,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780765013778,
+    "ts": 1782264371340,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -994,8 +1337,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1009,31 +1352,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780760522822,
+    "ts": 1782264351198,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -1043,8 +1400,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1058,32 +1415,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780757577015,
+    "ts": 1782264346142,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -1092,8 +1463,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1107,31 +1478,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780756801901,
+    "ts": 1782264331068,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -1141,8 +1526,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1156,32 +1541,46 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780756716557,
+    "ts": 1782264326026,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
-      "success": 0,
+      "info": 4,
+      "success": 1,
       "warning": 2,
       "danger": 0,
       "error": 0
@@ -1190,8 +1589,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1205,31 +1604,45 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
         "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
       }
     ]
   },
   {
-    "ts": 1780726909406,
+    "ts": 1782264310971,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:Prioritize EXP only until faction progression requirements are met.|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 0,
       "warning": 2,
       "danger": 0,
@@ -1239,8 +1652,8 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
@@ -1254,22 +1667,1485 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 1/4.",
-        "detail": "Still waiting on: hacking level, money, augmentations.",
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264305891,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
         "level": "warning"
       },
       {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
         "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264285747,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264280734,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264265389,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264260384,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264250318,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264245276,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:success:Hacknet is purchased.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is purchased.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264240264,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264220130,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264215088,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264199429,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264194374,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264179299,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264174261,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264154193,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264149158,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264134046,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264129037,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264108916,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264103881,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264088806,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264083751,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x1.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 4,
+      "success": 1,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Spent hashes on Sell for Money x1.",
+        "level": "success"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782264068680,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.|bn9-hashes:info:Hash policy: Sell for Money.:Need 4.000 hashes for Sell for Money.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:All configured market access purchases are complete.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+    "levels": {
+      "info": 5,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "4/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $23.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Sell for Money.",
+        "detail": "Need 4.000 hashes for Sell for Money.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "All configured market access purchases are complete.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "Next augmentation is Nanofiber Weave.",
+        "detail": "Need more rep with Tian Di Hui. Working Tian Di Hui for Nanofiber Weave.",
+        "level": "warning"
       }
     ]
   }

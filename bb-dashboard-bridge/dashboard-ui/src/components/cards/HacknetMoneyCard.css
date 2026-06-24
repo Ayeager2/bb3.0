@@ -1,0 +1,224 @@
+.hacknet-card {
+    display: grid;
+    gap: 12px;
+}
+
+.hacknet-hero {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    overflow: hidden;
+    padding: 12px;
+    border: 1px solid rgba(0, 255, 156, .2);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(0, 255, 156, .13), transparent 45%),
+        linear-gradient(90deg, rgba(0, 229, 255, .08), rgba(192, 132, 252, .08)),
+        rgba(2, 6, 23, .55);
+}
+
+.hacknet-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 9px,
+        rgba(0, 255, 156, .04) 10px
+    );
+}
+
+.hacknet-hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+.hacknet-kicker,
+.hacknet-message,
+.hacknet-node-count span,
+.hacknet-metric span,
+.hacknet-table th,
+.hacknet-footer {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.hacknet-status {
+    margin-top: 4px;
+    color: var(--green);
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.hacknet-message {
+    margin-top: 6px;
+    line-height: 1.35;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.hacknet-node-count {
+    text-align: right;
+}
+
+.hacknet-node-count b {
+    display: block;
+    color: var(--cyan);
+    font-size: 28px;
+    line-height: 1;
+}
+
+.hacknet-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.hacknet-metric {
+    min-width: 0;
+    padding: 9px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 7px;
+    background: rgba(2, 6, 23, .54);
+}
+
+.hacknet-metric b {
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hacknet-green b {
+    color: var(--green);
+}
+
+.hacknet-yellow b {
+    color: var(--yellow);
+}
+
+.hacknet-cyan b {
+    color: var(--cyan);
+}
+
+.hacknet-purple b {
+    color: var(--purple);
+}
+
+.hacknet-hash-bar {
+    height: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 229, 255, .16);
+    border-radius: 999px;
+    background: rgba(2, 6, 23, .82);
+}
+
+.hacknet-hash-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple));
+    box-shadow: 0 0 15px rgba(0, 255, 156, .28);
+}
+
+.hacknet-spender {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 7px;
+    background: rgba(2, 6, 23, .45);
+}
+
+.hacknet-spender span,
+.hacknet-spender em {
+    color: var(--cyan);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.hacknet-spender b {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hacknet-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 7px;
+}
+
+.hacknet-table {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.hacknet-table th,
+.hacknet-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    text-align: right;
+}
+
+.hacknet-table th:first-child,
+.hacknet-table td:first-child {
+    text-align: left;
+}
+
+.hacknet-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.hacknet-empty {
+    color: var(--muted);
+    text-align: center !important;
+}
+
+.hacknet-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    line-height: 1.4;
+}
+
+.hacknet-footer span {
+    overflow: hidden;
+    color: var(--text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hacknet-footer b {
+    color: var(--green);
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .hacknet-metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hacknet-spender {
+        grid-template-columns: 1fr;
+    }
+}

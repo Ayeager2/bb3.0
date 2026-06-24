@@ -1,0 +1,151 @@
+.stock-card {
+    display: grid;
+    gap: 12px;
+}
+
+.stock-card-top {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.stock-metric {
+    min-width: 0;
+    padding: 9px;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 7px;
+    background: rgba(2, 6, 23, .54);
+}
+
+.stock-metric span,
+.stock-footer,
+.stock-table th {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.stock-metric b {
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-green b {
+    color: var(--green);
+}
+
+.stock-red b {
+    color: var(--red);
+}
+
+.stock-yellow b {
+    color: var(--yellow);
+}
+
+.stock-cyan b {
+    color: var(--cyan);
+}
+
+.stock-warn b {
+    color: var(--yellow);
+}
+
+.stock-access-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.stock-access {
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 6px;
+    padding: 4px 7px;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.stock-access-on {
+    border-color: rgba(0, 255, 156, .35);
+    color: var(--green);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .12);
+}
+
+.stock-access-off {
+    border-color: rgba(250, 204, 21, .24);
+    color: var(--yellow);
+}
+
+.stock-table-wrap {
+    overflow-x: auto;
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 7px;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+    font-size: 11px;
+}
+
+.stock-table th,
+.stock-table td {
+    padding: 7px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    text-align: right;
+}
+
+.stock-table th:first-child,
+.stock-table td:first-child {
+    text-align: left;
+}
+
+.stock-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.stock-win td:last-child {
+    color: var(--green);
+}
+
+.stock-loss td:last-child {
+    color: var(--red);
+}
+
+.stock-empty {
+    color: var(--muted);
+    text-align: center !important;
+}
+
+.stock-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    line-height: 1.4;
+}
+
+.stock-footer span {
+    overflow: hidden;
+    color: var(--text);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-footer b {
+    color: var(--cyan);
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .stock-card-top {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

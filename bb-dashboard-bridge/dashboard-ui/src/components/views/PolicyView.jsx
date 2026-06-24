@@ -6,6 +6,7 @@ export default function PolicyView({ state }) {
     const p = state?.policy ?? {};
     const caps = state?.capabilities ?? {};
     const lanes = state?.lanes ?? {};
+    const sourceFiles = buildSourceFileStatus(caps.sourceFiles);
 
     const spendingFlags = [
         ["Servers", p.allowServerPurchases],
@@ -55,9 +56,29 @@ export default function PolicyView({ state }) {
             <section className="policy-capabilities">
                 <div className="policy-section-title">Capabilities</div>
                 <div className="policy-chip-grid">
-                    {Object.entries(caps).map(([key, value]) => (
+                    {Object.entries(caps).filter(([key]) => key !== "sourceFiles").map(([key, value]) => (
                         <span key={key} className={`policy-chip ${value ? "policy-chip-on" : "policy-chip-off"}`}>
                             {formatCapability(key)}
+                        </span>
+                    ))}
+                </div>
+            </section>
+
+            <section className="policy-source-files">
+                <div className="policy-section-title">Source Files</div>
+                <div className="policy-source-grid">
+                    {sourceFiles.map(sourceFile => (
+                        <span
+                            key={sourceFile.n}
+                            className={[
+                                "source-file-chip",
+                                `source-file-${sourceFile.tone}`,
+                                sourceFile.repeatable ? "source-file-repeatable" : "",
+                            ].filter(Boolean).join(" ")}
+                            title={sourceFile.title}
+                        >
+                            <b>SF{sourceFile.n}</b>
+                            <em>{sourceFile.label}</em>
                         </span>
                     ))}
                 </div>
@@ -97,4 +118,44 @@ function formatCapability(key) {
     return String(key)
         .replace(/([a-z])([A-Z])/g, "$1 $2")
         .replace(/_/g, " ");
+}
+
+function buildSourceFileStatus(sourceFiles = []) {
+    const byNumber = new Map(
+        (Array.isArray(sourceFiles) ? sourceFiles : []).map(sourceFile => [
+            Number(sourceFile.n),
+            Number(sourceFile.lvl),
+        ])
+    );
+
+    return Array.from({ length: 14 }, (_, index) => {
+        const n = index + 1;
+        const lvl = Math.max(0, byNumber.get(n) ?? 0);
+        const repeatable = n === 12;
+        const max = repeatable ? null : 3;
+        const tone = getSourceFileTone({ lvl, max, repeatable });
+        const label = repeatable
+            ? (lvl > 0 ? `L${lvl}` : "none")
+            : `${Math.min(lvl, max)}/${max}`;
+
+        return {
+            n,
+            lvl,
+            max,
+            repeatable,
+            tone,
+            label,
+            title: repeatable
+                ? `Source-File ${n}: repeatable level ${lvl}`
+                : `Source-File ${n}: ${Math.min(lvl, max)} of ${max}`,
+        };
+    });
+}
+
+function getSourceFileTone({ lvl, repeatable }) {
+    if (lvl <= 0) return "empty";
+    if (repeatable) return "rainbow";
+    if (lvl === 1) return "one";
+    if (lvl === 2) return "two";
+    return "max";
 }

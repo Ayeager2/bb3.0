@@ -17,12 +17,15 @@ export default function NetworkTopologyCard({
     onToggle,
     onMoveUp,
     onMoveDown,
+    layoutSize,
     workspaceSettings
 }) {
     const [selectedServerId, setSelectedServerId] = useState(null);
     const [hoveredServerId, setHoveredServerId] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
 
+    const isBn9 = Number(state?.bitnode?.number) === 9;
+    const cardSize = layoutSize ?? (isBn9 ? "three-quarters" : "third");
     const activeTarget = state?.daemon?.target ?? null;
     const worldDaemon = state?.victory?.worldDaemon ?? "w0r1d_d43m0n";
     const backdoorQueue = useMemo(() => {
@@ -76,8 +79,8 @@ export default function NetworkTopologyCard({
             title="Network Topology"
             nodes={nodes}
             edges={edges}
-            size="third"
-            height="calc(100vh - 190px)"
+            size={cardSize}
+            height={isBn9 ? "calc(100vh - 300px)" : "calc(100vh - 190px)"}
             collapsed={collapsed}
             onToggle={onToggle}
             onMoveUp={onMoveUp}
@@ -98,7 +101,7 @@ export default function NetworkTopologyCard({
             }
             footer={
                 <>
-                    {workspaceSettings?.showPathPanel !== false && (
+                    {!isBn9 && workspaceSettings?.showPathPanel !== false && (
                         <PathPanel
                             server={selectedServer}
                             path={selectedPath}
@@ -107,7 +110,7 @@ export default function NetworkTopologyCard({
                         />
                     )}
 
-                    {workspaceSettings?.showWorldPanel !== false && (
+                    {!isBn9 && workspaceSettings?.showWorldPanel !== false && (
                         <WorldDaemonPanel
                             worldDaemon={worldDaemon}
                             server={worldDaemonServer}

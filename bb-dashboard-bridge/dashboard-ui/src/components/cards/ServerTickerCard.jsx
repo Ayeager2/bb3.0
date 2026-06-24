@@ -9,6 +9,7 @@ export default function ServerTickerCard({
     onToggle,
     onMoveUp,
     onMoveDown,
+    layoutSize,
 }) {
     const ticker = state?.servers?.serverTicker ?? null;
     const fleet = ticker?.fleet ?? {};
@@ -19,7 +20,7 @@ export default function ServerTickerCard({
         <Card
             id={id}
             title="Server Ticker"
-            size="third"
+            size={layoutSize ?? "third"}
             collapsed={collapsed}
             onToggle={onToggle}
             onMoveUp={onMoveUp}

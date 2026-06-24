@@ -964,11 +964,29 @@ export function detectCapabilities(ns) {
         corporations: hasCorporationAccess(ns),
         gangs: hasGangAccess(ns),
         bladeburner: hasBladeburnerAccess(ns),
+        sourceFiles: getOwnedSourceFiles(ns),
         bitNode: bitNodeCapabilities,
         cloudServers: bitNodeCapabilities.cloud.allowed === true,
         hacknet: bitNodeCapabilities.hacknet.allowed === true,
         hacknetHashes: bitNodeCapabilities.hacknet.hashes === true,
     };
+}
+
+function getOwnedSourceFiles(ns) {
+    try {
+        return (ns.getOwnedSourceFiles?.() ?? [])
+            .map(sourceFile => ({
+                n: Number(sourceFile.n ?? sourceFile.number ?? sourceFile.bitNode ?? 0),
+                lvl: Number(sourceFile.lvl ?? sourceFile.level ?? 0),
+            }))
+            .filter(sourceFile =>
+                Number.isFinite(sourceFile.n) &&
+                sourceFile.n > 0 &&
+                Number.isFinite(sourceFile.lvl)
+            );
+    } catch {
+        return [];
+    }
 }
 
 export function hasSingularityAccess(ns) {

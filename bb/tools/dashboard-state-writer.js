@@ -336,6 +336,7 @@ function resolveTheme({ bitNodeNumber, phase, mode, priority, capabilities }) {
     if (m.includes("exp") || pr.includes("level")) accent = "exp_blue";
     if (p.includes("faction")) accent = "faction_cyan";
     if (p.includes("singularity") || bitNodeNumber === 4 || capabilities.singularity) accent = "singularity_purple";
+    if (bitNodeNumber === 9) accent = "bn9_hacknet";
     if (p.includes("reset")) {
         accent = "danger_red";
         dangerLevel = "high";
@@ -358,7 +359,24 @@ function normalizeCapabilities(caps) {
         sleeves: bool(caps?.sleeves),
         hacknet: bool(caps?.hacknet ?? true),
         stanek: bool(caps?.stanek),
+        sourceFiles: normalizeSourceFiles(caps?.sourceFiles),
     };
+}
+
+function normalizeSourceFiles(sourceFiles) {
+    if (!Array.isArray(sourceFiles)) return [];
+
+    return sourceFiles
+        .map(sourceFile => ({
+            n: Number(sourceFile.n ?? sourceFile.number ?? sourceFile.bitNode ?? 0),
+            lvl: Number(sourceFile.lvl ?? sourceFile.level ?? 0),
+        }))
+        .filter(sourceFile =>
+            Number.isFinite(sourceFile.n) &&
+            sourceFile.n > 0 &&
+            Number.isFinite(sourceFile.lvl)
+        )
+        .sort((a, b) => a.n - b.n);
 }
 
 function normalizePhaseFromMode(mode) {

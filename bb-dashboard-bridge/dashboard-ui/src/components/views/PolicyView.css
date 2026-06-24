@@ -62,7 +62,8 @@
 
 .policy-flag-group,
 .policy-lanes,
-.policy-capabilities {
+.policy-capabilities,
+.policy-source-files {
     display: grid;
     gap: 8px;
     padding: 10px;
@@ -72,7 +73,8 @@
 }
 
 .policy-flag-grid,
-.policy-chip-grid {
+.policy-chip-grid,
+.policy-source-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
@@ -127,6 +129,103 @@
 
 .policy-adaptive-on {
     color: var(--green);
+}
+
+.source-file-chip {
+    min-width: 64px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 7px;
+    padding: 5px 7px;
+    background: rgba(255, 255, 255, .03);
+    color: var(--muted);
+}
+
+.source-file-chip b {
+    font-size: 11px;
+    line-height: 1;
+}
+
+.source-file-chip em {
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.source-file-empty {
+    opacity: .62;
+}
+
+.source-file-one {
+    border-color: rgba(250, 204, 21, .42);
+    background: rgba(250, 204, 21, .07);
+    color: var(--yellow);
+    box-shadow: 0 0 12px rgba(250, 204, 21, .08);
+}
+
+.source-file-two {
+    border-color: rgba(255, 135, 44, .52);
+    background: rgba(255, 135, 44, .08);
+    color: #ff9f43;
+    box-shadow: 0 0 14px rgba(255, 135, 44, .10);
+}
+
+.source-file-max {
+    border-color: rgba(0, 255, 156, .42);
+    background: rgba(0, 255, 156, .07);
+    color: var(--green);
+    box-shadow: 0 0 14px rgba(0, 255, 156, .12);
+}
+
+.source-file-rainbow {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(255, 255, 255, .28);
+    color: white;
+    background:
+        linear-gradient(90deg,
+            rgba(255, 56, 100, .18),
+            rgba(250, 204, 21, .18),
+            rgba(0, 255, 156, .18),
+            rgba(0, 229, 255, .18),
+            rgba(192, 132, 252, .18)
+        ),
+        rgba(2, 6, 23, .65);
+    box-shadow:
+        0 0 15px rgba(0, 229, 255, .12),
+        0 0 15px rgba(192, 132, 252, .10);
+}
+
+.source-file-rainbow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .18), transparent);
+    transform: translateX(-120%);
+    animation: sourceFileRainbowSweep 3.8s linear infinite;
+}
+
+.source-file-rainbow > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes sourceFileRainbowSweep {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    60%,
+    100% {
+        transform: translateX(120%);
+    }
 }
 
 @media (max-width: 720px) {

@@ -1,5 +1,6 @@
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 const STATE_FILE = "/data/daemon-state.txt";
+const STOCK_TRADER_STATE_FILE = "/data/stock-trader-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -119,6 +120,7 @@ export async function main(ns) {
       state.rows = [];
       state.marketAccess = marketAccess;
 
+      writeStockTraderState(ns, state);
       drawDashboard(ns, CONFIG, state);
 
       await ns.sleep(CONFIG.refreshMs);
@@ -370,6 +372,7 @@ export async function main(ns) {
     state.rows = rows;
     state.marketAccess = marketAccess;
 
+    writeStockTraderState(ns, state);
     drawDashboard(ns, CONFIG, state);
 
     await ns.sleep(CONFIG.refreshMs);
@@ -557,6 +560,20 @@ function logTrade(state, message) {
   state.lastAction = message;
   state.recentActions.unshift(`[${new Date().toLocaleTimeString()}] ${message}`);
   state.recentActions = state.recentActions.slice(0, 20);
+}
+
+function writeStockTraderState(ns, state) {
+  try {
+    ns.write(STOCK_TRADER_STATE_FILE, JSON.stringify({
+      ...state,
+      updatedAt: Date.now(),
+      updatedAtText: new Date().toLocaleTimeString(),
+      rows: (state.rows ?? []).slice(0, 40),
+      recentActions: (state.recentActions ?? []).slice(0, 20),
+    }, null, 2), "w");
+  } catch {
+    // Dashboard telemetry should never interrupt trading.
+  }
 }
 
 function drawDashboard(ns, CONFIG, state) {

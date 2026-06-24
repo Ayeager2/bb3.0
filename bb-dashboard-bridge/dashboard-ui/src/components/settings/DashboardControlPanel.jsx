@@ -27,9 +27,18 @@ export default function DashboardControlPanel({
     onToastSettingsChange,
     onClose,
     onToggleVisible,
+    onSetCardSize,
     onReset,
     workspaceSettings,
     onWorkspaceSettingsChange,
+    fontOffset,
+    onFontOffsetChange,
+    themeAccent,
+    activeAccent,
+    onThemeAccentChange,
+    themeSignal,
+    activeSignal,
+    onThemeSignalChange,
 }) {
     const [activeTab, setActiveTab] = useState("widgets");
 
@@ -67,6 +76,7 @@ export default function DashboardControlPanel({
                         layout={layout}
                         registry={registry}
                         onToggleVisible={onToggleVisible}
+                        onSetCardSize={onSetCardSize}
                     />
                 )}
 
@@ -75,7 +85,16 @@ export default function DashboardControlPanel({
                 )}
 
                 {activeTab === "theme" && (
-                    <ThemeSettings />
+                    <ThemeSettings
+                        fontOffset={fontOffset}
+                        onFontOffsetChange={onFontOffsetChange}
+                        themeAccent={themeAccent}
+                        activeAccent={activeAccent}
+                        onThemeAccentChange={onThemeAccentChange}
+                        themeSignal={themeSignal}
+                        activeSignal={activeSignal}
+                        onThemeSignalChange={onThemeSignalChange}
+                    />
                 )}
 
                 {activeTab === "data" && (

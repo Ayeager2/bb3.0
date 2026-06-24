@@ -1,0 +1,149 @@
+.bn9-view {
+    display: grid;
+    gap: 12px;
+}
+
+.bn9-metrics,
+.bn9-decision-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.bn9-metric,
+.bn9-panel {
+    border: 1px solid rgba(0, 229, 255, .14);
+    border-radius: 8px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .07), transparent 50%),
+        rgba(2, 6, 23, .58);
+}
+
+.bn9-metric {
+    min-width: 0;
+    padding: 9px;
+}
+
+.bn9-metric span,
+.bn9-panel-title,
+.bn9-status-line span,
+.bn9-stock-row span,
+.bn9-stock-row em {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.bn9-metric b {
+    display: block;
+    margin-top: 5px;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bn9-green b {
+    color: var(--green);
+}
+
+.bn9-red b {
+    color: var(--red);
+}
+
+.bn9-cyan b {
+    color: var(--cyan);
+}
+
+.bn9-yellow b {
+    color: var(--yellow);
+}
+
+.bn9-purple b {
+    color: var(--purple);
+}
+
+.bn9-panel {
+    overflow: hidden;
+}
+
+.bn9-panel-title {
+    padding: 9px 10px;
+    border-bottom: 1px solid rgba(0, 229, 255, .11);
+    color: var(--cyan);
+    font-weight: 900;
+}
+
+.bn9-status-line {
+    display: grid;
+    gap: 4px;
+    padding: 9px 10px;
+}
+
+.bn9-status-line span {
+    color: var(--yellow);
+    font-weight: 900;
+}
+
+.bn9-status-line b {
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.bn9-reason {
+    margin: 0 10px 9px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.45;
+}
+
+.bn9-decision-grid {
+    padding: 0 10px 10px;
+}
+
+.bn9-history {
+    display: grid;
+    max-height: 190px;
+    overflow: auto;
+    border-top: 1px solid rgba(255, 255, 255, .07);
+}
+
+.bn9-history-row,
+.bn9-empty {
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.bn9-empty {
+    color: var(--muted);
+}
+
+.bn9-stock-list {
+    display: grid;
+}
+
+.bn9-stock-row {
+    display: grid;
+    grid-template-columns: 56px 1fr 1fr 48px;
+    gap: 8px;
+    align-items: center;
+    padding: 7px 10px;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.bn9-stock-row b {
+    color: var(--cyan);
+    font-size: 12px;
+}
+
+.bn9-stock-row em {
+    color: var(--green);
+    font-style: normal;
+    text-align: right;
+}

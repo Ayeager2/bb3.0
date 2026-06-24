@@ -7,7 +7,8 @@ import {
     FiRefreshCw,
     FiTrash2,
     FiZap,
-    FiHelpCircle
+    FiHelpCircle,
+    FiDollarSign
 } from "react-icons/fi";
 
 import { sendDashboardCommand } from "../../api/dashboardApi.js";
@@ -90,6 +91,17 @@ const COMMANDS = [
         keywords: ["events", "feed", "logs"],
         run: ctx => {
             ctx.openInspector("events");
+            ctx.close();
+        },
+    },
+    {
+        id: "open-bn9",
+        label: "Open inspector: BN9 Economy",
+        hint: "Stock trades, hash spends, Hacknet upgrades",
+        icon: <FiDollarSign />,
+        keywords: ["bn9", "hacknet", "hash", "stock", "stocks", "trades", "economy"],
+        run: ctx => {
+            ctx.openInspector("bn9");
             ctx.close();
         },
     },

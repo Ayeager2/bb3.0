@@ -1,14 +1,15 @@
 .card {
     position: relative;
+    align-self: start;
     background:
-        linear-gradient(135deg, rgba(192, 132, 252, .06), transparent 35%),
+        linear-gradient(135deg, var(--card-accent-wash), transparent 35%),
         var(--panel);
-    border: 1px solid rgba(192, 132, 252, .28);
+    border: 1px solid var(--card-border-soft);
     border-radius: 10px;
     padding: 13px;
     box-shadow:
         0 0 18px rgba(0, 0, 0, .35),
-        0 0 24px rgba(192, 132, 252, .08);
+        0 0 24px var(--card-shadow-accent);
     overflow: hidden;
 }
 
@@ -18,8 +19,7 @@
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
-    background:
-        linear-gradient(90deg, transparent, rgba(0, 229, 255, .08), transparent);
+    background: var(--card-sweep);
     transform: translateX(-100%);
     animation: cardSweep 9s linear infinite;
 }
@@ -39,7 +39,7 @@
 }
 
 .card-half {
-    grid-column: span 1;
+    grid-column: span 6;
 }
 
 .card-full {
@@ -47,15 +47,35 @@
 }
 
 .card-third {
-    grid-column: span 1;
+    grid-column: span 4;
+}
+
+.card-quarter {
+    grid-column: span 3;
+}
+
+.card-three-quarters {
+    grid-column: span 9;
 }
 
 .card-two-thirds {
-    grid-column: span 2;
+    grid-column: span 8;
 }
 
 .card-compact {
-    grid-column: span 1;
+    grid-column: span 3;
+}
+
+@media (max-width: 900px) {
+    .card-half,
+    .card-full,
+    .card-third,
+    .card-quarter,
+    .card-three-quarters,
+    .card-two-thirds,
+    .card-compact {
+        grid-column: 1 / -1;
+    }
 }
 
 .card-title {
@@ -76,7 +96,7 @@
     grid-template-columns: auto 1fr auto;
     gap: 8px;
     align-items: center;
-    border-bottom: 1px solid rgba(0, 229, 255, .18);
+    border-bottom: 1px solid var(--signal-soft);
     padding-bottom: 7px;
     margin-bottom: 10px;
     position: relative;
@@ -93,7 +113,7 @@
 .card-actions button {
     background: rgba(2, 6, 23, .7);
     border: 1px solid rgba(255, 255, 255, .14);
-    color: var(--cyan);
+    color: var(--signal);
     border-radius: 6px;
     cursor: pointer;
     font-family: inherit;
@@ -107,8 +127,8 @@
 
 .card-toggle:hover,
 .card-actions button:hover {
-    border-color: var(--cyan);
-    box-shadow: 0 0 10px rgba(0, 229, 255, .18);
+    border-color: var(--signal);
+    box-shadow: 0 0 10px var(--signal-glow);
 }
 
 .card-body {

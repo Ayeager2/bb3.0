@@ -56,6 +56,7 @@ export async function main(ns) {
         flags.toast === true;
     const terminal =
         flags.terminal === true;
+    const recentActions = [];
 
     while (true) {
         const daemonState =
@@ -109,7 +110,13 @@ export async function main(ns) {
             acted: result.acted === true,
             mode: daemonState?.mode ?? "unknown",
             priority: policy.priority ?? "unknown",
+            recentActions,
         };
+
+        if (result.acted === true) {
+            addRecentAction(recentActions, result.message);
+            state.recentActions = recentActions;
+        }
 
         writeHacknetState(ns, state);
 
@@ -170,6 +177,11 @@ export async function main(ns) {
 
         await ns.sleep(refreshMs);
     }
+}
+
+function addRecentAction(recentActions, message) {
+    recentActions.unshift(`[${new Date().toLocaleTimeString()}] ${message}`);
+    recentActions.splice(20);
 }
 
 function formatDuration(seconds) {
