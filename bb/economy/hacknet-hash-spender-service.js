@@ -55,9 +55,15 @@ export async function main(ns) {
                 manualTarget,
             });
         const effectiveMaxSpendsPerCycle =
-            Number(hashPolicy.maxSpendsPerCycle) > 0
+            hashPolicy.liquidate === true
+                ? 100_000
+                : Number(hashPolicy.maxSpendsPerCycle) > 0
                 ? Number(hashPolicy.maxSpendsPerCycle)
                 : maxSpendsPerCycle;
+        const effectiveFallbackMaxSpendsPerCycle =
+            hashPolicy.liquidate === true
+                ? 0
+                : Math.max(0, maxSpendsPerCycle - effectiveMaxSpendsPerCycle);
         const result =
             allow
                 ? spendHashes(ns, {
@@ -69,7 +75,9 @@ export async function main(ns) {
                     fallbackUpgradeName: hashPolicy.fallbackUpgradeName,
                     fallbackTarget: hashPolicy.fallbackTarget,
                     fallbackMaxSpendsPerCycle:
-                        Math.max(0, maxSpendsPerCycle - effectiveMaxSpendsPerCycle),
+                        effectiveFallbackMaxSpendsPerCycle,
+                    fallbackOnlyAfterPrimary: hashPolicy.fallbackOnlyAfterPrimary === true,
+                    bankHashes: hashPolicy.bankHashes === true,
                 })
                 : {
                     acted: false,
@@ -94,8 +102,10 @@ export async function main(ns) {
             reserveHashes,
             minHashesToSpend,
             maxSpendsPerCycle: effectiveMaxSpendsPerCycle,
-            fallbackMaxSpendsPerCycle:
-                Math.max(0, maxSpendsPerCycle - effectiveMaxSpendsPerCycle),
+            fallbackMaxSpendsPerCycle: effectiveFallbackMaxSpendsPerCycle,
+            fallbackOnlyAfterPrimary: hashPolicy.fallbackOnlyAfterPrimary === true,
+            bankHashes: hashPolicy.bankHashes === true,
+            liquidate: hashPolicy.liquidate === true,
             hashes: safeNumHashes(ns),
             capacity: safeHashCapacity(ns),
             acted: result.acted,
@@ -130,8 +140,18 @@ function spendHashes(ns, options) {
         Math.max(0, safeNumHashes(ns) - options.reserveHashes);
     const cost =
         safeHashCost(ns, options.upgradeName);
+    const canFallback =
+        options.fallbackUpgradeName &&
+        (
+            options.fallbackUpgradeName !== options.upgradeName ||
+            normalizeTarget(options.fallbackTarget) !== normalizeTarget(options.target)
+        );
+    const fallbackOnlyAfterPrimary =
+        options.fallbackOnlyAfterPrimary === true;
+    const shouldBankPrimary =
+        options.bankHashes === true || fallbackOnlyAfterPrimary;
 
-    if (!Number.isFinite(cost) || cost <= 0) {
+    if ((!Number.isFinite(cost) || cost <= 0) && !canFallback) {
         return {
             acted: false,
             spends: 0,
@@ -140,30 +160,30 @@ function spendHashes(ns, options) {
         };
     }
 
-    if (available < Math.max(cost, options.minHashesToSpend)) {
+    if (available < Math.max(cost, options.minHashesToSpend) && (!canFallback || shouldBankPrimary)) {
         return {
             acted: false,
             spends: 0,
             status: "waiting-hashes",
-            message: `Need ${ns.format.number(cost)} hashes for ${describeUpgrade(options)}.`,
+            message:
+                `Banking hashes for ${describeUpgrade(options)}. ` +
+                `Need ${ns.format.number(cost)}; have ${ns.format.number(available)} spendable.`,
         };
     }
 
     const primarySpends =
-        spendUpgrade(ns, {
-            upgradeName: options.upgradeName,
-            target: options.target,
-            reserveHashes: options.reserveHashes,
-            maxSpends: options.maxSpendsPerCycle,
-        });
-    const canFallback =
-        options.fallbackUpgradeName &&
-        (
-            options.fallbackUpgradeName !== options.upgradeName ||
-            normalizeTarget(options.fallbackTarget) !== normalizeTarget(options.target)
-        );
+        Number.isFinite(cost) &&
+        cost > 0 &&
+        available >= Math.max(cost, options.minHashesToSpend)
+            ? spendUpgrade(ns, {
+                upgradeName: options.upgradeName,
+                target: options.target,
+                reserveHashes: options.reserveHashes,
+                maxSpends: options.maxSpendsPerCycle,
+            })
+            : 0;
     const fallbackSpends =
-        canFallback
+        canFallback && (!fallbackOnlyAfterPrimary || primarySpends > 0)
             ? spendUpgrade(ns, {
                 upgradeName: options.fallbackUpgradeName,
                 target: options.fallbackTarget,
@@ -195,8 +215,27 @@ function spendHashes(ns, options) {
         message:
             spends > 0
                 ? `Spent hashes on ${details.join("; ")}.`
-                : `Unable to spend hashes on ${describeUpgrade(options)}.`,
+                : getNoSpendMessage(ns, options, cost, canFallback),
     };
+}
+
+function getNoSpendMessage(ns, options, cost, canFallback) {
+    if (canFallback) {
+        const fallbackCost =
+            safeHashCost(ns, options.fallbackUpgradeName);
+
+        if (Number.isFinite(fallbackCost) && fallbackCost > 0) {
+            return (
+                `Need ${ns.format.number(cost)} hashes for ${describeUpgrade(options)} ` +
+                `or ${ns.format.number(fallbackCost)} for fallback ${describeUpgrade({
+                    upgradeName: options.fallbackUpgradeName,
+                    target: options.fallbackTarget,
+                })}.`
+            );
+        }
+    }
+
+    return `Unable to spend hashes on ${describeUpgrade(options)}.`;
 }
 
 function spendUpgrade(ns, options) {
@@ -212,24 +251,37 @@ function spendUpgrade(ns, options) {
             break;
         }
 
-        if (!safeSpendHashes(ns, options.upgradeName, options.target)) {
+        const count =
+            options.upgradeName === "Sell for Money" && !options.target
+                ? Math.max(1, Math.min(options.maxSpends - spends, Math.floor(spendable / nextCost)))
+                : 1;
+
+        if (!safeSpendHashes(ns, options.upgradeName, options.target, count)) {
             break;
         }
 
-        spends++;
+        spends += count;
     }
 
     return spends;
 }
 
-function safeSpendHashes(ns, upgradeName, target = null) {
+function safeSpendHashes(ns, upgradeName, target = null, count = 1) {
     try {
+        if (count > 1) {
+            return ns.hacknet.spendHashes(upgradeName, target ?? "", count);
+        }
+
         if (target) {
             return ns.hacknet.spendHashes(upgradeName, target);
         }
 
         return ns.hacknet.spendHashes(upgradeName);
     } catch {
+        if (count > 1) {
+            return false;
+        }
+
         try {
             return ns.hacknet.spendHashes(upgradeName, target ?? "", 1);
         } catch {

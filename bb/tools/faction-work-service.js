@@ -4,6 +4,7 @@ import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 
 const LAST_WORK_FILE = "/data/faction-work-last.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
+const FACTION_WORK_SERVICE_STATE_FILE = "/data/faction-work-service-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -23,14 +24,22 @@ export async function main(ns) {
 
         const plan = buildFactionWorkPlan(ns);
         const donationPlan = readJson(ns, FACTION_DONATION_PLAN_FILE);
+        const currentWork = getCurrentWork(ns);
 
-        if (!plan.active && isWorkingForFaction(ns)) {
+        if (!plan.active && isFactionWork(currentWork)) {
             stopCurrentWork(ns);
             clearStaleFactionPlans(ns);
             refreshAugmentationCache(ns);
             const message = `[FACTION WORK] Stopped work. ${plan.reason}`;
             ns.tprint(message);
             ns.toast(message, "success", 8000);
+            writeServiceState(ns, {
+                status: "stopped",
+                allowWork: false,
+                reason: plan.reason,
+                plan,
+                currentWork,
+            });
 
             await ns.sleep(refreshMs);
             continue;
@@ -49,11 +58,19 @@ export async function main(ns) {
 
         if (donationPlan?.ready === true) {
             ns.print("Donation ready; faction work paused.");
+            writeServiceState(ns, {
+                status: "paused-donation-ready",
+                allowWork,
+                reason: "Donation ready; faction work paused.",
+                plan,
+                donationPlan,
+                currentWork,
+            });
             await ns.sleep(refreshMs);
             continue;
         }
 
-        if (!plan.active && isAlreadyWorking(ns, plan.targetFaction)) {
+        if (!plan.active && isAlreadyWorking(currentWork, plan.targetFaction)) {
             stopCurrentWork(ns);
 
             const message =
@@ -61,19 +78,46 @@ export async function main(ns) {
 
             ns.tprint(message);
             ns.toast(message, "success", 8000);
+            writeServiceState(ns, {
+                status: "stopped",
+                allowWork,
+                reason: plan.reason,
+                plan,
+                currentWork,
+            });
 
             await ns.sleep(refreshMs);
             continue;
         }
 
         if (!allowWork || !plan.active || !plan.targetFaction || !plan.workType) {
+            writeServiceState(ns, {
+                status: !allowWork ? "blocked-policy" : "blocked-plan",
+                allowWork,
+                reason: !allowWork
+                    ? "Daemon policy blocks faction work."
+                    : plan.reason ?? "No active faction work plan.",
+                plan,
+                currentWork,
+            });
             await ns.sleep(refreshMs);
             continue;
         }
 
-        if (isAlreadyWorking(ns, plan.targetFaction)) {
+        if (isAlreadyWorking(currentWork, plan.targetFaction, plan.workType)) {
+            writeServiceState(ns, {
+                status: "working",
+                allowWork,
+                reason: `Already working for ${plan.targetFaction}.`,
+                plan,
+                currentWork,
+            });
             await ns.sleep(refreshMs);
             continue;
+        }
+
+        if (isFactionWork(currentWork) && currentWork.factionName !== plan.targetFaction) {
+            stopCurrentWork(ns);
         }
 
         const started = startFactionWork(ns, plan.targetFaction, plan.workType);
@@ -89,8 +133,22 @@ export async function main(ns) {
                 ns.toast(message, "success", 8000);
                 ns.write(LAST_WORK_FILE, message, "w");
             }
+            writeServiceState(ns, {
+                status: "started",
+                allowWork,
+                reason: message,
+                plan,
+                currentWork: getCurrentWork(ns),
+            });
         } else {
             ns.print(`Failed to start ${plan.workType} work for ${plan.targetFaction}.`);
+            writeServiceState(ns, {
+                status: "failed",
+                allowWork,
+                reason: `Failed to start ${plan.workType} work for ${plan.targetFaction}.`,
+                plan,
+                currentWork: getCurrentWork(ns),
+            });
         }
 
         await ns.sleep(refreshMs);
@@ -129,18 +187,17 @@ function getWorkTypeCandidates(workType) {
     return [workType, "hacking", "Hacking Contracts", "field", "Field Work"];
 }
 
-function isAlreadyWorking(ns, faction) {
-    try {
-        const work = ns.singularity.getCurrentWork();
+function isAlreadyWorking(currentWork, faction, workType = null) {
+    if (!isFactionWork(currentWork)) return false;
+    if (currentWork.factionName !== faction) return false;
+    if (!workType) return true;
 
-        return (
-            work &&
-            work.type === "FACTION" &&
-            work.factionName === faction
-        );
-    } catch {
-        return false;
-    }
+    const currentType =
+        normalizeWorkType(currentWork.factionWorkType ?? currentWork.workType ?? currentWork.name);
+    const desiredType =
+        normalizeWorkType(workType);
+
+    return currentType === desiredType || currentType === "unknown";
 }
 
 function readJson(ns, file) {
@@ -179,12 +236,36 @@ function stopCurrentWork(ns) {
     return false;
 }
 
-function isWorkingForFaction(ns) {
+function getCurrentWork(ns) {
     try {
-        const work = ns.singularity.getCurrentWork();
-        return work?.type === "FACTION";
+        return ns.singularity.getCurrentWork() ?? null;
     } catch {
-        return false;
+        return null;
+    }
+}
+
+function isFactionWork(work) {
+    return work?.type === "FACTION";
+}
+
+function normalizeWorkType(value) {
+    const text = String(value ?? "").toLowerCase();
+    if (text.includes("hack")) return "hacking";
+    if (text.includes("field")) return "field";
+    if (text.includes("security")) return "security";
+    return text || "unknown";
+}
+
+function writeServiceState(ns, state) {
+    try {
+        ns.write(FACTION_WORK_SERVICE_STATE_FILE, JSON.stringify({
+            updatedAt: Date.now(),
+            updatedAtText: new Date().toLocaleTimeString(),
+            source: "faction-work-service",
+            ...state,
+        }, null, 2), "w");
+    } catch {
+        // Diagnostics should never break faction work.
     }
 }
 

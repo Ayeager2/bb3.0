@@ -8,6 +8,9 @@ const BN9_TARGET_BOOST_CASH_FLOOR = 100_000_000;
 const BN9_STABLE_HASH_RATE = 1;
 const BN9_SECURITY_BOOST_SPENDS = 5;
 const BN9_MONEY_BOOST_SPENDS = 3;
+const BN9_FACTION_SECURITY_BOOST_SPENDS = 2;
+const BN9_FACTION_MONEY_BOOST_SPENDS = 2;
+const BN9_STUDY_BOOST_SPENDS = 1;
 
 export function chooseHacknetHashUpgrade(ns, options = {}) {
     const manualUpgrade =
@@ -53,8 +56,14 @@ export function chooseHacknetHashUpgrade(ns, options = {}) {
         return {
             upgradeName: IMPROVE_STUDYING,
             target: null,
-            source: "current-work",
-            reason: "Player is currently studying; hashes improve study gains.",
+            source: bitNode === 9 ? "bn9-study-boost" : "current-work",
+            phase: bitNode === 9 ? "study" : "study",
+            bankHashes: true,
+            maxSpendsPerCycle: bitNode === 9 ? BN9_STUDY_BOOST_SPENDS : undefined,
+            reason:
+                bitNode === 9
+                    ? "BN9 hacking-level blocker is being solved by studying; bank hashes for Improve Studying instead of selling."
+                    : "Player is currently studying; hashes improve study gains.",
         };
     }
 
@@ -132,6 +141,69 @@ function chooseBn9HashUpgrade(ns, context) {
     const economy =
         getHashEconomySnapshot(ns);
 
+    if (context.expPolicy?.shouldLevelNow === true) {
+        return {
+            upgradeName: SELL_FOR_MONEY,
+            target: null,
+            source: "bn9-level-gate-waiting-study",
+            phase: "cash",
+            liquidate: true,
+            reason:
+                "BN9 is hacking-level blocked but the player is not studying yet; sell hashes until the life service starts computer science study.",
+            money: economy.money,
+            hashProduction: economy.production,
+            targetLevel: context.expPolicy.targetLevel ?? null,
+        };
+    }
+
+    if (economy.money < BN9_CASH_FLOOR) {
+        return {
+            upgradeName: SELL_FOR_MONEY,
+            target: null,
+            source: "bn9-cash-ignition",
+            phase: "cash",
+            liquidate: true,
+            reason: `BN9 cash is below ${formatMoney(BN9_CASH_FLOOR)}; sell all available hashes to escape crime/bootstrap money.`,
+            money: economy.money,
+            hashProduction: economy.production,
+        };
+    }
+
+    if (isActiveFactionRepPlan(context.factionWork)) {
+        const targetBoost =
+            getBn9TargetBoostChoice(ns, context, economy, {
+                securitySpends: BN9_FACTION_SECURITY_BOOST_SPENDS,
+                moneySpends: BN9_FACTION_MONEY_BOOST_SPENDS,
+                sourcePrefix: "bn9-faction",
+                reasonSuffix:
+                    `Faction work stays active for ${context.factionWork.targetFaction}; boost the hacking target when possible, then sell leftovers for cash.`,
+                extra: {
+                    targetFaction: context.factionWork.targetFaction,
+                    targetAugmentation: context.factionWork.targetAugmentation ?? null,
+                    missingRep: context.factionWork.missingRep ?? null,
+                    shareSupport: true,
+                },
+            });
+
+        if (targetBoost) return targetBoost;
+
+        return {
+            upgradeName: SELL_FOR_MONEY,
+            target: null,
+            source: "bn9-faction-rep-support",
+            phase: "rep-support",
+            liquidate: true,
+            reason:
+                `BN9 faction work is active for ${context.factionWork.targetFaction}; no hash target boost is ready, so hashes sell for cash while UHM share boosts contract rep gain.`,
+            targetFaction: context.factionWork.targetFaction,
+            targetAugmentation: context.factionWork.targetAugmentation ?? null,
+            missingRep: context.factionWork.missingRep ?? null,
+            shareSupport: true,
+            money: economy.money,
+            hashProduction: economy.production,
+        };
+    }
+
     if (shouldFuelFactionProgression(
         context.priority,
         context.mode,
@@ -144,37 +216,8 @@ function chooseBn9HashUpgrade(ns, context) {
             target: null,
             source: "bn9-faction-fuel",
             phase: "cash",
+            liquidate: true,
             reason: getFactionFuelReason(context.factionWork, context.factionDonation, context.factionProgression),
-            money: economy.money,
-            hashProduction: economy.production,
-        };
-    }
-
-    if (shouldFuelHacknetSnowball(context.hacknetState)) {
-        return {
-            upgradeName: SELL_FOR_MONEY,
-            target: null,
-            source: "bn9-hacknet-snowball",
-            phase: "cash",
-            reason:
-                getHacknetSnowballReason(context.hacknetState),
-            hacknetStatus: context.hacknetState?.status ?? "unknown",
-            nextHacknetAction:
-                context.hacknetState?.nextAction?.label ??
-                context.hacknetState?.roi?.bestCandidate?.label ??
-                null,
-            money: economy.money,
-            hashProduction: economy.production,
-        };
-    }
-
-    if (economy.money < BN9_CASH_FLOOR) {
-        return {
-            upgradeName: SELL_FOR_MONEY,
-            target: null,
-            source: "bn9-cash-ignition",
-            phase: "cash",
-            reason: `BN9 cash is below ${formatMoney(BN9_CASH_FLOOR)}; sell hashes aggressively to escape crime/bootstrap money.`,
             money: economy.money,
             hashProduction: economy.production,
         };
@@ -186,6 +229,7 @@ function chooseBn9HashUpgrade(ns, context) {
             target: null,
             source: "bn9-no-target",
             phase: "cash",
+            liquidate: true,
             reason: "BN9 has no useful hash target yet; sell hashes for money.",
             money: economy.money,
             hashProduction: economy.production,
@@ -198,6 +242,7 @@ function chooseBn9HashUpgrade(ns, context) {
             target: null,
             source: "bn9-hash-snowball",
             phase: "cash",
+            liquidate: true,
             reason:
                 `BN9 hash rate/cash is still building; sell hashes until production is at least ` +
                 `${BN9_STABLE_HASH_RATE}/s and cash is above ${formatMoney(BN9_TARGET_BOOST_CASH_FLOOR)}.`,
@@ -207,35 +252,30 @@ function chooseBn9HashUpgrade(ns, context) {
         };
     }
 
-    if (shouldReduceSecurity(ns, context.target)) {
-        return {
-            upgradeName: REDUCE_MIN_SECURITY,
-            target: context.target,
-            fallbackUpgradeName: SELL_FOR_MONEY,
-            fallbackTarget: null,
-            maxSpendsPerCycle: BN9_SECURITY_BOOST_SPENDS,
-            source: "bn9-target-security",
-            phase: "target-boost",
-            reason:
-                `${context.target} is the selected BN9 money target; spend a small hash slice reducing security, then sell leftovers.`,
-            targetStats: getTargetStats(ns, context.target),
-            money: economy.money,
-            hashProduction: economy.production,
-        };
-    }
+    const targetBoost =
+        getBn9TargetBoostChoice(ns, context, economy, {
+            securitySpends: BN9_SECURITY_BOOST_SPENDS,
+            moneySpends: BN9_MONEY_BOOST_SPENDS,
+            sourcePrefix: "bn9",
+            reasonSuffix: "Spend a small hash slice improving the selected hacking target, then sell leftovers.",
+        });
 
-    if (shouldIncreaseMaxMoney(ns, context.target, { mode: "money", spendingPolicy: { priority: "income" } })) {
+    if (targetBoost) return targetBoost;
+
+    if (shouldFuelHacknetSnowball(context.hacknetState)) {
         return {
-            upgradeName: INCREASE_MAX_MONEY,
-            target: context.target,
-            fallbackUpgradeName: SELL_FOR_MONEY,
-            fallbackTarget: null,
-            maxSpendsPerCycle: BN9_MONEY_BOOST_SPENDS,
-            source: "bn9-target-money",
-            phase: "target-boost",
+            upgradeName: SELL_FOR_MONEY,
+            target: null,
+            source: "bn9-hacknet-snowball",
+            phase: "cash",
+            liquidate: true,
             reason:
-                `${context.target} is clean enough; spend a small hash slice increasing max money, then sell leftovers.`,
-            targetStats: getTargetStats(ns, context.target),
+                getHacknetSnowballReason(context.hacknetState),
+            hacknetStatus: context.hacknetState?.status ?? "unknown",
+            nextHacknetAction:
+                context.hacknetState?.nextAction?.label ??
+                context.hacknetState?.roi?.bestCandidate?.label ??
+                null,
             money: economy.money,
             hashProduction: economy.production,
         };
@@ -246,11 +286,54 @@ function chooseBn9HashUpgrade(ns, context) {
         target: null,
         source: context.hasDaemonState ? "bn9-default" : "bn9-bootstrap-default",
         phase: "cash",
+        liquidate: true,
         reason: "BN9 target is already clean enough for now; sell hashes for augments, home upgrades, stocks, and Hacknet compounding.",
         targetCandidate: context.target,
         money: economy.money,
         hashProduction: economy.production,
     };
+}
+
+function getBn9TargetBoostChoice(ns, context, economy, options = {}) {
+    if (!context.target) return null;
+
+    const common = {
+        fallbackUpgradeName: SELL_FOR_MONEY,
+        fallbackTarget: null,
+        fallbackOnlyAfterPrimary: true,
+        bankHashes: true,
+        phase: "target-boost",
+        targetStats: getTargetStats(ns, context.target),
+        money: economy.money,
+        hashProduction: economy.production,
+        ...(options.extra ?? {}),
+    };
+
+    if (shouldReduceSecurity(ns, context.target)) {
+        return {
+            ...common,
+            upgradeName: REDUCE_MIN_SECURITY,
+            target: context.target,
+            maxSpendsPerCycle: options.securitySpends ?? BN9_SECURITY_BOOST_SPENDS,
+            source: `${options.sourcePrefix ?? "bn9"}-target-security`,
+            reason:
+                `${context.target} security is above minimum. ${options.reasonSuffix ?? "Reduce minimum security, then sell leftovers."}`,
+        };
+    }
+
+    if (shouldIncreaseMaxMoney(ns, context.target, { mode: "money", spendingPolicy: { priority: "income" } })) {
+        return {
+            ...common,
+            upgradeName: INCREASE_MAX_MONEY,
+            target: context.target,
+            maxSpendsPerCycle: options.moneySpends ?? BN9_MONEY_BOOST_SPENDS,
+            source: `${options.sourcePrefix ?? "bn9"}-target-money`,
+            reason:
+                `${context.target} is clean enough. ${options.reasonSuffix ?? "Increase max money, then sell leftovers."}`,
+        };
+    }
+
+    return null;
 }
 
 function shouldFuelHacknetSnowball(hacknetState = {}) {
@@ -283,10 +366,18 @@ function shouldFuelFactionProgression(priority, mode, factionWork, factionDonati
     if (!progressionPriority) return false;
 
     return (
-        factionWork?.active === true ||
+        isActiveFactionRepPlan(factionWork) ||
         factionDonation?.active === true ||
         factionProgression?.progressionAction?.type === "reputation" ||
         factionProgression?.progressionAction?.type === "donation"
+    );
+}
+
+function isActiveFactionRepPlan(factionWork) {
+    return (
+        factionWork?.active === true &&
+        !!factionWork.targetFaction &&
+        Number(factionWork.missingRep ?? 0) > 0
     );
 }
 
@@ -321,8 +412,10 @@ function normalizeTarget(value) {
 function chooseHashTarget(ns, daemonState, bootstrapTarget) {
     const candidates = [
         daemonState?.laneTargets?.primary,
-        daemonState?.target,
         daemonState?.targetPlan?.target,
+        daemonState?.target,
+        daemonState?.laneTargets?.exp,
+        daemonState?.laneTargets?.secondary,
         bootstrapTarget,
     ];
 

@@ -299,6 +299,15 @@ function writeUhmState(ns, {
       growRatio: exp.growRatio ?? 0,
       expPerSecond: exp.expPerSecond ?? 0,
     },
+    share: {
+      active: runtimeStats.share?.active === true,
+      launched: runtimeStats.share?.launched ?? 0,
+      threads: runtimeStats.share?.threads ?? 0,
+      bonus: runtimeStats.share?.bonus ?? 1,
+      ratio: runtimeStats.share?.ratio ?? 0,
+      phase: runtimeStats.share?.phase ?? phase?.name ?? null,
+      policy: daemonState?.sharePolicy ?? null,
+    },
     lanes: laneStats,
     runtime: {
       batches: runtimeStats.batchesLaunched ?? 0,

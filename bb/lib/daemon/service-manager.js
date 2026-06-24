@@ -86,6 +86,7 @@ function manageService(ns, service, daemonState) {
             running: killed ? false : !!running,
             pid: killed ? 0 : running?.pid ?? 0,
             reason: gate.reason,
+            gate: gate.diagnostics,
         });
     }
 
@@ -99,6 +100,7 @@ function manageService(ns, service, daemonState) {
             threads: running.threads,
             args: running.args,
             reason: "already running",
+            gate: gate.diagnostics,
         });
     }
 
@@ -161,6 +163,7 @@ function manageService(ns, service, daemonState) {
             running: false,
             pid: 0,
             reason: failureReason,
+            gate: gate.diagnostics,
         });
     }
 
@@ -181,6 +184,7 @@ function manageService(ns, service, daemonState) {
         running: true,
         pid,
         reason: "started by daemon",
+        gate: gate.diagnostics,
     });
 }
 
@@ -214,46 +218,44 @@ function normalizeService(service) {
 }
 
 function getServiceGate(ns, service, daemonState) {
+    const diagnostics = buildGateDiagnostics(ns, service, daemonState);
+
     if (service.enabled !== true) {
-        return block("disabled");
+        return block("disabled", diagnostics);
     }
 
     if (!service.name || !ns.fileExists(service.name, service.host)) {
-        return block("script missing");
+        return block("script missing", diagnostics);
     }
 
     if (
         service.policyFlag &&
         daemonState?.spendingPolicy?.[service.policyFlag] !== true
     ) {
-        return block(`${service.policyFlag} blocked by policy`);
-    }
-
-    if (service.requiresSingularity && daemonState?.capabilities?.singularity !== true) {
-        return block("requires Singularity");
+        return block(`${service.policyFlag} blocked by policy`, diagnostics);
     }
 
     if (service.requiresTixApi && !hasTixApi(ns)) {
-        return block("requires TIX API");
+        return block("requires TIX API", diagnostics);
     }
 
     if (service.minMoney > 0 && ns.getPlayer().money < service.minMoney) {
-        return block(`requires $${ns.format.number(service.minMoney)}`);
+        return block(`requires $${ns.format.number(service.minMoney)}`, diagnostics);
     }
 
     if (service.minHomeRam > 0 && ns.getServerMaxRam("home") < service.minHomeRam) {
-        return block(`requires ${ns.format.ram(service.minHomeRam)} home RAM`);
+        return block(`requires ${ns.format.ram(service.minHomeRam)} home RAM`, diagnostics);
     }
 
     if (service.maxHomeRam > 0 && ns.getServerMaxRam("home") >= service.maxHomeRam) {
-        return block(`disabled after ${ns.format.ram(service.maxHomeRam)} home RAM`);
+        return block(`disabled after ${ns.format.ram(service.maxHomeRam)} home RAM`, diagnostics);
     }
 
     if (
         service.requiresRunningService &&
         !isScriptRunningOnHost(ns, service.requiresRunningService, service.host)
     ) {
-        return block(`requires ${service.requiresRunningService} running`);
+        return block(`requires ${service.requiresRunningService} running`, diagnostics);
     }
 
     const phase = daemonState?.phase ?? "unknown";
@@ -264,25 +266,59 @@ function getServiceGate(ns, service, daemonState) {
         service.phases.length > 0 &&
         !service.phases.some(x => serviceContexts.has(x))
     ) {
-        return block(`phase ${phase} / mode ${mode} not allowed`);
+        return block(`phase ${phase} / mode ${mode} not allowed`, diagnostics);
     }
 
     if (
         service.disabledPhases.some(x => serviceContexts.has(x))
     ) {
-        return block(`disabled during phase ${phase} / mode ${mode}`);
+        return block(`disabled during phase ${phase} / mode ${mode}`, diagnostics);
     }
 
     return {
         allowed: true,
         reason: "allowed",
+        diagnostics,
     };
 }
 
-function block(reason) {
+function block(reason, diagnostics = null) {
     return {
         allowed: false,
         reason,
+        diagnostics,
+    };
+}
+
+function buildGateDiagnostics(ns, service, daemonState) {
+    const host = service.host ?? "home";
+    const scriptRam = safeScriptRam(ns, service);
+    const freeRam = safeFreeRam(ns, host);
+
+    return {
+        homeRam: safeMaxRam(ns, "home"),
+        hostMaxRam: safeMaxRam(ns, host),
+        hostFreeRam: freeRam,
+        scriptRam,
+        neededRam: scriptRam * (service.threads ?? 1),
+        minHomeRam: service.minHomeRam ?? 0,
+        maxHomeRam: service.maxHomeRam ?? 0,
+        policyFlag: service.policyFlag ?? null,
+        policyValue:
+            service.policyFlag
+                ? daemonState?.spendingPolicy?.[service.policyFlag] === true
+                : null,
+        requiresSingularity: service.requiresSingularity === true,
+        singularity: true,
+        singularityGate: "sf4-unlocked",
+        requiresTixApi: service.requiresTixApi === true,
+        tixApi: service.requiresTixApi === true ? hasTixApi(ns) : null,
+        scriptExists:
+            !!service.name &&
+            safeFileExists(ns, service.name, host),
+        phase: daemonState?.phase ?? "unknown",
+        mode: daemonState?.mode ?? "unknown",
+        priority: daemonState?.spendingPolicy?.priority ?? "unknown",
     };
 }
 
@@ -340,6 +376,7 @@ function buildResult(service, extra) {
         running: extra.running,
         pid: extra.pid,
         reason: extra.reason,
+        gate: extra.gate ?? null,
     };
 }
 
@@ -415,6 +452,22 @@ function safeFreeRam(ns, host = "home") {
         return ns.getServerMaxRam(host) - ns.getServerUsedRam(host);
     } catch {
         return 0;
+    }
+}
+
+function safeMaxRam(ns, host = "home") {
+    try {
+        return ns.getServerMaxRam(host);
+    } catch {
+        return 0;
+    }
+}
+
+function safeFileExists(ns, file, host = "home") {
+    try {
+        return ns.fileExists(file, host);
+    } catch {
+        return false;
     }
 }
 

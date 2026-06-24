@@ -6,6 +6,7 @@ const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 const UHM_STATE_FILE = "/data/uhm-state.txt";
 const BACKDOOR_STATE_FILE = "/data/backdoor-service-state.txt";
 const FACTION_JOIN_STATUS_FILE = "/data/faction-join-status.txt";
+const FACTION_WORK_SERVICE_STATE_FILE = "/data/faction-work-service-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -19,6 +20,7 @@ export async function main(ns) {
     const uhm = readJson(ns, UHM_STATE_FILE);
     const backdoor = readJson(ns, BACKDOOR_STATE_FILE);
     const join = readJson(ns, FACTION_JOIN_STATUS_FILE);
+    const factionWorkService = readJson(ns, FACTION_WORK_SERVICE_STATE_FILE);
 
     const currentWork = getCurrentWork(ns);
     const factionProgression = daemon.factionProgression ?? {};
@@ -28,7 +30,7 @@ export async function main(ns) {
     ns.tprint("=".repeat(70));
 
     ns.tprint(`Mode: ${daemon.mode ?? "unknown"} | Priority: ${daemon.spendingPolicy?.priority ?? "unknown"}`);
-    ns.tprint(`Money: ${formatMoney(ns.getPlayer().money)} | Hacking: ${ns.getHackingLevel()}`);
+    ns.tprint(`Money: ${formatMoney(ns.getPlayer().money)} | Hacking: ${ns.getHackingLevel()} | Home RAM: ${formatRam(ns.getServerMaxRam("home"))}`);
     ns.tprint(`Current Work: ${formatWork(currentWork)}`);
     ns.tprint(
         `Policy: join ${yesNo(daemon.spendingPolicy?.allowFactionJoin)} | ` +
@@ -101,6 +103,8 @@ export async function main(ns) {
 
     ns.tprint("-".repeat(70));
     ns.tprint("Faction Work");
+    printServiceStatus(ns, daemon, "faction-work");
+    ns.tprint(`Service State: ${factionWorkService.status ?? "unknown"} | ${factionWorkService.reason ?? "no service state"}`);
     ns.tprint(`Active: ${work?.active ? "YES" : "NO"}`);
     ns.tprint(`Reason: ${work?.reason ?? "none"}`);
 
@@ -248,6 +252,18 @@ function printUhmStatus(ns, uhm) {
         `Grow ${formatPercent(exp.growRatio ?? 0)}`
     );
 
+    if (uhm.share) {
+        ns.tprint(
+            `Share: ${uhm.share.active ? "ON" : "OFF"} | ` +
+            `${formatNumber(uhm.share.threads)}t | ` +
+            `${formatNumber(uhm.share.bonus)}x | ` +
+            `RAM ${formatPercent(uhm.share.ratio ?? 0)}`
+        );
+        if (uhm.share.policy?.reason) {
+            ns.tprint(`Share Reason: ${uhm.share.policy.reason}`);
+        }
+    }
+
     for (const lane of uhm.lanes ?? []) {
         ns.tprint(
             `${lane.name}: ${lane.mode} ${lane.target ?? "none"} | ` +
@@ -276,6 +292,26 @@ function printServiceStatus(ns, daemon, id) {
         `Service ${id}: ${service.status ?? "unknown"} | ` +
         `running ${yesNo(service.running)} | pid ${service.pid ?? 0} | ${service.reason ?? "no reason"}`
     );
+
+    if (service.gate) {
+        const gate = service.gate;
+        ns.tprint(
+            `Gate: home ${formatRam(gate.homeRam)} | ` +
+            `min ${formatRam(gate.minHomeRam)} | max ${formatRam(gate.maxHomeRam)} | ` +
+            `policy ${gate.policyFlag ?? "none"}=${formatGateValue(gate.policyValue)} | ` +
+            `singularity ${yesNo(gate.singularity)} | script ${yesNo(gate.scriptExists)}`
+        );
+        ns.tprint(
+            `RAM Gate: host free ${formatRam(gate.hostFreeRam)} | ` +
+            `script ${formatRam(gate.scriptRam)} | needed ${formatRam(gate.neededRam)} | ` +
+            `mode ${gate.mode ?? "unknown"} | priority ${gate.priority ?? "unknown"}`
+        );
+    }
+}
+
+function formatGateValue(value) {
+    if (value === null || typeof value === "undefined") return "n/a";
+    return yesNo(value);
 }
 
 function formatPercent(value) {

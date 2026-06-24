@@ -38,6 +38,10 @@ export async function main(ns) {
             `${hashSpender.hashPolicy.target ? ` -> ${hashSpender.hashPolicy.target}` : ""}`
         );
         ns.tprint(`Hash Source: ${hashSpender.hashPolicy.source ?? "unknown"} | Phase: ${hashSpender.hashPolicy.phase ?? "unknown"}`);
+        ns.tprint(
+            `Hash Mode: ${hashSpender.liquidate ? "LIQUIDATE" : hashSpender.bankHashes ? "BANK" : "NORMAL"}` +
+            `${hashSpender.fallbackOnlyAfterPrimary ? " | fallback after primary" : ""}`
+        );
         if (hashSpender.hashPolicy.fallbackUpgradeName) {
             ns.tprint(`Hash Fallback: ${hashSpender.hashPolicy.fallbackUpgradeName}`);
         }

@@ -345,6 +345,11 @@ export function choosePriority(ns, mode) {
 }
 
 export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}) {
+    capabilities = {
+        ...capabilities,
+        singularity: true,
+    };
+
     const augDecision = getAugmentationDecision(ns);
     const bitNodeCapabilities =
         getBitNodeCapabilities(ns);
@@ -375,7 +380,6 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         factionProgression.currentFactionStage === "daedalus" &&
         factionProgression.currentBlocker === "daedalus-join";
     const allowBackgroundFactionWork =
-        capabilities.singularity === true &&
         augDecision.augmentationTiming?.allowBackgroundFaction === true;
     const factionWorkUpgradeGateReady =
         isBasicEconomyReadyForFactionWork(ns);
@@ -395,6 +399,12 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             hacknetPriority === "progression";
         const levelingActive =
             hacknetPriority === "leveling";
+        const factionPlanActive =
+            augDecision.shouldWorkFaction === true ||
+            factionProgression.progressionAction?.type === "reputation";
+        const factionWorkActive =
+            progressionActive ||
+            factionPlanActive;
 
         return {
             priority: hacknetPriority,
@@ -412,13 +422,11 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowHomeRam: true,
             allowExePurchases: true,
 
-            allowAugmentPurchases: capabilities.singularity === true,
-            allowFactionWork:
-                capabilities.singularity === true &&
-                progressionActive,
+            allowAugmentPurchases: true,
+            allowFactionWork: factionWorkActive,
             allowFactionDonation: false,
-            allowFactionJoin: capabilities.singularity === true,
-            allowBackdoors: capabilities.singularity === true,
+            allowFactionJoin: true,
+            allowBackdoors: true,
             allowReset: false,
             allowIntTravel: false,
 
@@ -427,6 +435,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             factionWorkReason:
                 progressionActive
                     ? "BN9 progression is active: faction work leads while Hacknet keeps compounding in the background."
+                    : factionPlanActive
+                        ? "BN9 faction work plan is active: contracts can build rep while UHM levels and Hacknet compounds."
                     : levelingActive
                         ? "BN9 leveling is active: script EXP leads while Hacknet keeps compounding in the background."
                         : "BN9 income is active: Hacknet and hashes lead the economy.",
@@ -482,7 +492,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowFactionJoin: false,
             allowBackdoors: false,
 
-            allowReset: capabilities.singularity === true,
+            allowReset: true,
             allowIntTravel: false,
         };
     }
@@ -501,8 +511,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowAugmentPurchases: false,
             allowFactionWork: false,
             allowFactionDonation: false,
-            allowFactionJoin: capabilities.singularity === true,
-            allowBackdoors: capabilities.singularity === true,
+            allowFactionJoin: true,
+            allowBackdoors: true,
             allowReset: false,
             allowIntTravel: false,
         };
@@ -538,8 +548,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
                     )
                     : "No useful faction reputation work is currently planned.",
             allowFactionDonation: false,
-            allowFactionJoin: capabilities.singularity === true,
-            allowBackdoors: capabilities.singularity === true,
+            allowFactionJoin: true,
+            allowBackdoors: true,
             allowReset: false,
             allowIntTravel: false,
         };
@@ -591,20 +601,16 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
             allowFactionDonation:
                 augDecision.shouldDonateFaction === true,
 
-            allowFactionJoin:
-                capabilities.singularity === true,
+            allowFactionJoin: true,
 
-            allowBackdoors:
-                capabilities.singularity === true,
+            allowBackdoors: true,
 
             allowReset:
-                capabilities.singularity === true &&
                 augDecision.shouldBuyAugment !== true &&
                 augDecision.shouldWorkFaction !== true &&
                 augDecision.shouldDonateFaction !== true,
 
-            allowIntTravel:
-                capabilities.singularity === true,
+            allowIntTravel: true,
         };
     }
 
@@ -644,7 +650,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         allowAugmentPurchases: false,
         allowFactionWork: false,
         allowFactionDonation: false,
-        allowFactionJoin: capabilities.singularity === true,
+        allowFactionJoin: true,
         allowBackdoors: true,
         allowReset: false,
         allowIntTravel: false,
@@ -959,7 +965,7 @@ export function detectCapabilities(ns) {
         getBitNodeCapabilities(ns);
 
     return {
-        singularity: hasSingularityAccess(ns),
+        singularity: true,
         sleeves: hasSleevesAccess(ns),
         corporations: hasCorporationAccess(ns),
         gangs: hasGangAccess(ns),
@@ -1062,13 +1068,8 @@ function isValidSourceFile(sourceFile) {
     );
 }
 
-export function hasSingularityAccess(ns) {
-    try {
-        ns.singularity.checkFactionInvitations();
-        return true;
-    } catch {
-        return false;
-    }
+export function hasSingularityAccess() {
+    return true;
 }
 
 export function hasSleevesAccess() {

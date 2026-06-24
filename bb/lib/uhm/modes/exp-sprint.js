@@ -111,6 +111,19 @@ function buildSprintCycle(ns, target, purpose = "background", maxThreadsPerProce
     const securityGap = sec - minSec;
     const hackPercent = Math.max(0.0001, ns.hackAnalyze(target));
     const weakenPerThread = Math.max(0.0001, ns.weakenAnalyze(1));
+
+    if (purpose === "leveling") {
+        return buildLevelingCycle({
+            ns,
+            target,
+            maxThreadsPerProcess,
+            moneyRatio,
+            securityGap,
+            hackPercent,
+            weakenPerThread,
+        });
+    }
+
     const stealFraction = chooseStealFraction(purpose, moneyRatio, securityGap);
     const repairMode = shouldRepairExpTarget(moneyRatio, securityGap);
     const hackThreads = repairMode
@@ -134,10 +147,87 @@ function buildSprintCycle(ns, target, purpose = "background", maxThreadsPerProce
     ].filter(item => item.threads > 0);
 }
 
+function buildLevelingCycle({
+    ns,
+    target,
+    maxThreadsPerProcess,
+    moneyRatio,
+    securityGap,
+    hackPercent,
+    weakenPerThread,
+}) {
+    const baseUnit =
+        getLevelingUnitSize(ns);
+    const targetSecurityDelta =
+        getLevelingSecurityTarget(ns);
+    const shouldHack =
+        moneyRatio >= 0.65 &&
+        securityGap <= targetSecurityDelta * 2;
+    const hackThreads = shouldHack
+        ? clampThreads(Math.floor(0.01 / hackPercent), Math.min(maxThreadsPerProcess, baseUnit))
+        : 0;
+    const growThreads = clampThreads(
+        shouldHack ? baseUnit * 2 : baseUnit * 3,
+        maxThreadsPerProcess
+    );
+    const generatedSecurity =
+        hackThreads * 0.002 +
+        growThreads * 0.004;
+    const repairSecurity =
+        Math.max(0, securityGap - targetSecurityDelta);
+    const weakenThreads = clampThreads(
+        Math.ceil((generatedSecurity + repairSecurity) / weakenPerThread),
+        maxThreadsPerProcess
+    );
+
+    return [
+        { script: EXP_HACK, role: "hack", threads: hackThreads },
+        { script: EXP_GROW, role: "grow", threads: growThreads },
+        { script: EXP_WEAKEN, role: "weaken", threads: weakenThreads },
+    ].filter(item => item.threads > 0);
+}
+
+function getLevelingUnitSize(ns) {
+    const homeRam = safeHomeRam(ns);
+
+    if (homeRam < 128) return 8;
+    if (homeRam < 512) return 16;
+    if (homeRam < 4096) return 32;
+    if (homeRam < 65536) return 64;
+
+    return 128;
+}
+
+function getLevelingSecurityTarget(ns) {
+    const hacking = safeHacking(ns);
+
+    if (hacking < 250) return 25;
+    if (hacking < 750) return 35;
+    if (hacking < 1500) return 45;
+
+    return 60;
+}
+
 function chooseStealFraction(purpose, moneyRatio, securityGap) {
     if (securityGap > 10 || moneyRatio < 0.35) return 0.01;
     if (purpose === "leveling") return 0.025;
     return 0.05;
+}
+
+function safeHomeRam(ns) {
+    try {
+        return ns.getServerMaxRam("home");
+    } catch {
+        return 64;
+    }
+}
+
+function safeHacking(ns) {
+    try {
+        return ns.getHackingLevel();
+    } catch {
+        return 1;
+    }
 }
 
 function shouldRepairExpTarget(moneyRatio, securityGap) {

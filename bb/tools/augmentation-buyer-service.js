@@ -2,6 +2,7 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildAugmentationPlan } from "/lib/daemon/augmentations.js";
 import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
+import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const AUGMENTATION_EVENTS_FILE = "/data/augmentation-events.txt";
 const AUGMENTATION_BUYER_STATE_FILE = "/data/augmentation-buyer-state.txt";
@@ -171,12 +172,18 @@ export async function main(ns) {
             continue;
         }
 
+        const moneyBefore =
+            ns.getPlayer().money;
         const bought =
             safePurchaseAug(ns, goal.faction, goal.name);
+        const moneyAfter =
+            ns.getPlayer().money;
 
         if (bought) {
+            const actualCost =
+                Math.max(0, moneyBefore - moneyAfter);
             const message =
-                `[AUG] Purchased ${goal.name} from ${goal.faction} for ${ns.format.number(livePrice)}.`;
+                `[AUG] Purchased ${goal.name} from ${goal.faction} for ${ns.format.number(actualCost || livePrice)}.`;
 
             ns.tprint(message);
             ns.toast(message, "success", 8000);
@@ -186,6 +193,24 @@ export async function main(ns) {
                 `[${new Date().toLocaleTimeString()}] ${message}\n`,
                 "a"
             );
+
+            logPurchase(ns, {
+                source: "augmentation-buyer",
+                type: "augmentation",
+                category: "augmentations",
+                item: goal.name,
+                cost: actualCost || livePrice,
+                moneyBefore,
+                moneyAfter,
+                message,
+                details: {
+                    faction: goal.faction,
+                    repeatable: goal.repeatable === true,
+                    favorLoop: goal.favorLoop ?? null,
+                    liveRepReq,
+                    liveFactionRep,
+                },
+            });
 
             stopFactionWorkIfRunning(ns);
 

@@ -341,6 +341,8 @@ export function getDecisionReason(ns, decision) {
 function buildSharePolicy(ns, decision) {
     const priority = decision.spendingPolicy?.priority ?? "income";
     const mode = decision.mode ?? "money";
+    const bitNode =
+        getCurrentBitNode(ns);
 
     const money = ns.getPlayer().money;
     const hacking = ns.getHackingLevel();
@@ -348,11 +350,36 @@ function buildSharePolicy(ns, decision) {
 
     const allowFactionWork =
         decision.spendingPolicy?.allowFactionWork === true;
+    const factionWorkPlan =
+        readJson(ns, "/data/faction-work-plan.txt");
+    const activeFactionWork =
+        allowFactionWork &&
+        factionWorkPlan?.active === true &&
+        !!factionWorkPlan.targetFaction;
 
     const earlyGame =
         homeRam < 256 ||
         money < 25_000_000_000 ||
         hacking < 500;
+
+    if (activeFactionWork) {
+        const reserveRamPercent =
+            bitNode === 9
+                ? getBn9FactionSharePercent(ns)
+                : 0.10;
+
+        return {
+            enabled: reserveRamPercent > 0,
+            aggressive: false,
+            reserveRamPercent,
+            targetFaction: factionWorkPlan.targetFaction,
+            targetAugmentation: factionWorkPlan.targetAugmentation ?? null,
+            reason:
+                bitNode === 9
+                    ? `BN9 faction work active for ${factionWorkPlan.targetFaction}; reserve a small non-Hacknet share slice to boost rep while preserving hash production.`
+                    : `Share enabled for active faction work with ${factionWorkPlan.targetFaction}.`,
+        };
+    }
 
     if (mode === "exp" || priority === "leveling") {
         return {
@@ -399,6 +426,36 @@ function buildSharePolicy(ns, decision) {
         reserveRamPercent: 0,
         reason: "Share not useful for current priority.",
     };
+}
+
+function getBn9FactionSharePercent(ns) {
+    const homeRam =
+        ns.getServerMaxRam("home");
+
+    if (homeRam < 128) return 0;
+    if (homeRam < 512) return 0.03;
+    if (homeRam < 2048) return 0.05;
+
+    return 0.08;
+}
+
+function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? 1;
+    } catch {
+        return 1;
+    }
+}
+
+function readJson(ns, file) {
+    try {
+        if (!ns.fileExists(file, "home")) return {};
+        const raw = ns.read(file);
+        if (!raw.trim()) return {};
+        return JSON.parse(raw);
+    } catch {
+        return {};
+    }
 }
 
 export function buildCloudEconomyTiming(ns, decision, cloudFleet) {

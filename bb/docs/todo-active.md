@@ -57,6 +57,16 @@
    - Services inspector should show actionable controls only for registered active services
    - legacy retired services should stay commented out in /lib/daemon/services.js so they are available for reference but do not clutter the dashboard
    - buyer log should eventually support drilldowns and charts by category, including Hacknet, augments, home upgrades, stocks, programs, and factions
+16. Lifetime purchase analytics:
+   - /data/purchases.log.txt remains reset/install scoped and can be cleared during startup refresh
+   - /data/purchase-ledger.txt is the durable lifetime buyer ledger and should not be cleared by dev refresh
+   - all money-spending services should call logPurchase so the durable ledger covers Hacknet, hashes, stocks, home RAM, home cores, programs, augmentations, donations, servers, and future corp/gang spending
+   - Inspector Buyer Log is the readable/raw log view with lifetime vs current-install scope
+   - add a dashboard widget that uses the same ledger for interactive spend analysis:
+       category donut/pie
+       drill into category rows
+       show count, spend, average cost, latest buy, and spend percent
+       later add money-earned comparison so we can study ROI and refine daemon policy
 ```
 
 # NEW TODO - 2026-06-07
@@ -118,6 +128,13 @@ Server purchaser / dashboard ticker:
   - retired daemon-session service is commented out in /lib/daemon/services.js
   - these services no longer appear as disabled/policy-blocked clutter in the Services inspector
   - the source files remain available if we need to restore or reference the old behavior
+
+- Lifetime purchase ledger first pass:
+  - logPurchase now writes reset-scoped /data/purchases.log.txt and durable /data/purchase-ledger.txt
+  - dashboard bridge exposes lifetime and current-install purchase summaries
+  - Buyer Log inspector can switch between Lifetime and Install views
+  - Buyer Log inspector has a compact spend-mix donut using the selected scope
+  - augmentation-buyer now logs successful augmentation purchases into the central ledger
 
 - Pre-Red-Pill BitRunners NeuroFlux favor-loop first pass:
   - BitRunners NeuroFlux has a dedicated augmentation stage policy

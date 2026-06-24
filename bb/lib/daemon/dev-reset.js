@@ -36,6 +36,10 @@ export const DEV_REFRESH_FILES = [
     ...AUGMENTATION_FILES,
 ];
 
+const PRESERVED_DATA_TEXT_FILES = new Set([
+    "/data/purchase-ledger.txt",
+]);
+
 /** @param {NS} ns */
 export function refreshDaemonState(ns, options = {}) {
     const {
@@ -71,7 +75,8 @@ function findDataTextFiles(ns) {
             .map(normalizeDataPath)
             .filter(file =>
                 file.startsWith("/data/") &&
-                file.endsWith(".txt")
+                file.endsWith(".txt") &&
+                !PRESERVED_DATA_TEXT_FILES.has(file)
             );
     } catch {
         return [];

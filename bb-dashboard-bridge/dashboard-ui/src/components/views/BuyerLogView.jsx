@@ -3,25 +3,59 @@ import { formatMoney, formatNumber, formatPercent } from "../../utils/formatters
 import "./BuyerLogView.css";
 
 export default function BuyerLogView({ state }) {
+    const [scope, setScope] = useState("lifetime");
     const log =
         state?.economy?.purchaseLog ?? {};
-    const entries =
+    const lifetimeEntries =
         Array.isArray(log.entries) ? log.entries : [];
+    const sessionEntries =
+        Array.isArray(log.sessionEntries) ? log.sessionEntries : [];
+    const entries =
+        scope === "session" ? sessionEntries : lifetimeEntries;
     const byCategory =
-        Array.isArray(log.byCategory) ? log.byCategory : [];
+        scope === "session"
+            ? (Array.isArray(log.sessionByCategory) ? log.sessionByCategory : [])
+            : (Array.isArray(log.byCategory) ? log.byCategory : []);
     const totals =
+        scope === "session" ? (log.sessionTotals ?? {}) : (log.totals ?? {});
+    const lifetimeTotals =
         log.totals ?? {};
+    const sessionTotals =
+        log.sessionTotals ?? {};
 
     return (
         <div className="buyer-log-view">
+            <div className="buyer-log-scope">
+                <button
+                    type="button"
+                    className={scope === "lifetime" ? "active" : ""}
+                    onClick={() => setScope("lifetime")}
+                >
+                    Lifetime
+                </button>
+                <button
+                    type="button"
+                    className={scope === "session" ? "active" : ""}
+                    onClick={() => setScope("session")}
+                >
+                    Install
+                </button>
+            </div>
+
             <div className="buyer-log-summary">
-                <Metric label="Tracked Spend" value={formatMoney(totals.spent ?? 0)} tone="green" />
+                <Metric label={scope === "session" ? "Install Spend" : "Lifetime Spend"} value={formatMoney(totals.spent ?? 0)} tone="green" />
                 <Metric label="Purchases" value={formatNumber(totals.count ?? entries.length, 0)} tone="cyan" />
                 <Metric label="Latest" value={totals.latestText ?? "none"} tone="yellow" />
             </div>
 
+            <div className="buyer-log-comparison">
+                <span>Lifetime {formatMoney(lifetimeTotals.spent ?? 0)}</span>
+                <span>Install {formatMoney(sessionTotals.spent ?? 0)}</span>
+            </div>
+
             <section className="buyer-log-panel">
                 <div className="buyer-log-panel-title">Spend Mix</div>
+                <SpendDonut categories={byCategory} />
                 <div className="buyer-category-list">
                     {byCategory.length === 0 ? (
                         <div className="buyer-log-empty">No purchase categories yet.</div>
@@ -57,6 +91,38 @@ export default function BuyerLogView({ state }) {
                     ))}
                 </div>
             </section>
+        </div>
+    );
+}
+
+function SpendDonut({ categories = [] }) {
+    const slices =
+        categories
+            .filter(category => Number(category.spent) > 0)
+            .slice(0, 8);
+    const gradient =
+        buildDonutGradient(slices);
+
+    return (
+        <div className="buyer-spend-donut-wrap">
+            <div
+                className="buyer-spend-donut"
+                style={{ background: gradient }}
+                title={slices.map(category => `${labelCategory(category.label)}: ${formatPercent(category.percent ?? 0, 1)}`).join("\n")}
+            >
+                <span>{slices.length}</span>
+                <small>cats</small>
+            </div>
+            <div className="buyer-spend-legend">
+                {slices.length === 0 ? (
+                    <span>No spend mix yet.</span>
+                ) : slices.map((category, index) => (
+                    <span key={category.id}>
+                        <i style={{ background: CATEGORY_COLORS[index % CATEGORY_COLORS.length] }} />
+                        {labelCategory(category.label)}
+                    </span>
+                ))}
+            </div>
         </div>
     );
 }
@@ -140,6 +206,41 @@ function Metric({ label, value, tone = "cyan" }) {
             <b>{value}</b>
         </div>
     );
+}
+
+const CATEGORY_COLORS = [
+    "#00e5ff",
+    "#00ff88",
+    "#ffd000",
+    "#ff9d00",
+    "#bc7cff",
+    "#ff2f6d",
+    "#5ee7ff",
+    "#d6ff4d",
+];
+
+function buildDonutGradient(categories) {
+    if (!categories.length) {
+        return "conic-gradient(rgba(148, 163, 184, .25) 0deg 360deg)";
+    }
+
+    let cursor = 0;
+    const stops = [];
+
+    for (let index = 0; index < categories.length; index += 1) {
+        const category = categories[index];
+        const percent = Math.max(0, Number(category.percent) || 0);
+        const next = Math.min(1, cursor + percent);
+        const color = CATEGORY_COLORS[index % CATEGORY_COLORS.length];
+        stops.push(`${color} ${cursor * 360}deg ${next * 360}deg`);
+        cursor = next;
+    }
+
+    if (cursor < 1) {
+        stops.push(`rgba(148, 163, 184, .16) ${cursor * 360}deg 360deg`);
+    }
+
+    return `conic-gradient(${stops.join(", ")})`;
 }
 
 function labelCategory(value = "other") {

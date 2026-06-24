@@ -28,6 +28,7 @@ const OUT_HACKNET_FILE = path.join(OUT_DIR, "hacknet-state.json");
 const BITBURNER_HASH_SPENDER_FILE = "/data/hacknet-hash-spender-state.txt";
 const OUT_HASH_SPENDER_FILE = path.join(OUT_DIR, "hacknet-hash-spender-state.json");
 const BITBURNER_PURCHASE_LOG_FILE = "/data/purchases.log.txt";
+const BITBURNER_PURCHASE_LEDGER_FILE = "/data/purchase-ledger.txt";
 const OUT_PURCHASE_LOG_FILE = path.join(OUT_DIR, "purchase-log.json");
 const BITBURNER_AUGMENTATION_STATE_FILE = "/data/augmentation-state.txt";
 const OUT_AUGMENTATION_STATE_FILE = path.join(OUT_DIR, "augmentation-state.json");
@@ -658,13 +659,16 @@ async function pollPurchaseLog() {
     if (!bitburnerSocket) return;
 
     try {
-        const content = await rpc("getFile", {
-            filename: BITBURNER_PURCHASE_LOG_FILE,
-            server: "home"
-        });
+        const [sessionContent, ledgerContent] = await Promise.all([
+            readBitburnerFile(BITBURNER_PURCHASE_LOG_FILE),
+            readBitburnerFile(BITBURNER_PURCHASE_LEDGER_FILE),
+        ]);
 
         const parsed =
-            normalizePurchaseLog(content);
+            normalizePurchaseLog({
+                sessionContent,
+                ledgerContent,
+            });
 
         fs.writeFileSync(OUT_PURCHASE_LOG_FILE, JSON.stringify(parsed, null, 2));
     } catch {
@@ -684,8 +688,53 @@ async function pollPurchaseLog() {
     }
 }
 
-function normalizePurchaseLog(content = "") {
-    const entries = String(content)
+async function readBitburnerFile(filename) {
+    try {
+        return await rpc("getFile", {
+            filename,
+            server: "home"
+        });
+    } catch {
+        return "";
+    }
+}
+
+function normalizePurchaseLog({ sessionContent = "", ledgerContent = "" } = {}) {
+    const sessionEntries =
+        parsePurchaseLines(sessionContent);
+    const ledgerEntries =
+        parsePurchaseLines(ledgerContent);
+    const lifetimeEntries =
+        ledgerEntries.length > 0
+            ? mergePurchaseEntries(ledgerEntries, sessionEntries)
+            : sessionEntries;
+    const totals =
+        summarizePurchases(lifetimeEntries);
+    const sessionTotals =
+        summarizePurchases(sessionEntries);
+
+    return {
+        source: "purchase-log",
+        status: lifetimeEntries.length > 0 ? "ready" : "empty",
+        scope: "lifetime",
+        updatedAt: Date.now(),
+        entries: lifetimeEntries.slice(0, 500),
+        sessionEntries: sessionEntries.slice(0, 250),
+        totals,
+        sessionTotals,
+        byCategory: groupPurchases(lifetimeEntries, "category"),
+        sessionByCategory: groupPurchases(sessionEntries, "category"),
+        bySource: groupPurchases(lifetimeEntries, "source"),
+        sessionBySource: groupPurchases(sessionEntries, "source"),
+        files: {
+            session: BITBURNER_PURCHASE_LOG_FILE,
+            lifetime: BITBURNER_PURCHASE_LEDGER_FILE,
+        },
+    };
+}
+
+function parsePurchaseLines(content = "") {
+    return String(content)
         .split(/\r?\n/)
         .map(line => line.trim())
         .filter(Boolean)
@@ -693,18 +742,22 @@ function normalizePurchaseLog(content = "") {
         .filter(Boolean)
         .map(normalizePurchaseEntry)
         .sort((a, b) => Number(b.time) - Number(a.time));
-    const totals =
-        summarizePurchases(entries);
+}
 
-    return {
-        source: "purchase-log",
-        status: entries.length > 0 ? "ready" : "empty",
-        updatedAt: Date.now(),
-        entries: entries.slice(0, 250),
-        totals,
-        byCategory: groupPurchases(entries, "category"),
-        bySource: groupPurchases(entries, "source"),
-    };
+function mergePurchaseEntries(primary = [], secondary = []) {
+    const seen =
+        new Set();
+    const merged = [];
+
+    for (const entry of [...primary, ...secondary]) {
+        const key =
+            entry.id ?? `${entry.time}-${entry.source}-${entry.type}-${entry.item}-${entry.cost}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        merged.push(entry);
+    }
+
+    return merged.sort((a, b) => Number(b.time) - Number(a.time));
 }
 
 function safeParseJson(line) {

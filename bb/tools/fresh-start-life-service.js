@@ -22,7 +22,7 @@ export async function main(ns) {
         ["stop-money", 10_000_000],
         ["stop-home-ram", 128],
         ["focus", false],
-        ["bitnodes", "1,4"],
+        ["bitnodes", "1,4,9"],
     ]);
 
     const refreshMs = positiveNumber(flags.refresh, DEFAULT_REFRESH_MS);
@@ -88,6 +88,52 @@ export async function main(ns) {
             stopMoney,
             stopHomeRam,
         });
+        const bn9Study =
+            getBn9StudyState(daemonState, hacking, bitNode);
+
+        if (bn9Study.active) {
+            const started = startStudy(ns, focus);
+
+            writeState(ns, {
+                status: started ? "studying" : "blocked",
+                stage: "bn9-study",
+                hacking,
+                targetHacking: bn9Study.targetLevel,
+                money,
+                homeRam,
+                bitNode,
+                currentWork: summarizeWork(getCurrentWork(ns)),
+                handoff,
+                bn9Study,
+                reason:
+                    started
+                        ? `BN9 hacking blocker needs ${bn9Study.targetLevel}; studying computer science with hash boost support.`
+                        : "Unable to start Rothman University computer science course for BN9 level gate.",
+            });
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
+        if (bitNode === 9 && (handoff.ready || currentWork?.type === "FACTION")) {
+            writeState(ns, {
+                status: "watching",
+                stage: "bn9-handoff",
+                hacking,
+                money,
+                homeRam,
+                bitNode,
+                currentWork: summarizeWork(currentWork),
+                handoff,
+                reason:
+                    currentWork?.type === "FACTION"
+                        ? "BN9 faction work is active; watching for the next hacking-level blocker."
+                        : "BN9 handoff is ready; watching for the next hacking-level blocker.",
+            });
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
         if (handoff.ready || currentWork?.type === "FACTION") {
             complete(ns, {
@@ -226,6 +272,42 @@ function chooseCrime(ns, fallbackCrime, minChance) {
         .sort((a, b) => b.score - a.score);
 
     return choices[0] ?? fallback;
+}
+
+function getBn9StudyState(daemonState, hacking, bitNode) {
+    if (bitNode !== 9) {
+        return {
+            active: false,
+            reason: "Not BN9.",
+        };
+    }
+
+    const factionProgression =
+        daemonState?.factionProgression ?? {};
+    const expPolicy =
+        factionProgression.expPolicy ?? {};
+    const targetLevel =
+        Number(expPolicy.targetLevel ?? factionProgression.requiredHack ?? 0);
+    const shouldLevel =
+        expPolicy.shouldLevelNow === true ||
+        factionProgression.currentBlocker === "hacking-level";
+    const active =
+        shouldLevel &&
+        Number.isFinite(targetLevel) &&
+        targetLevel > hacking;
+
+    return {
+        active,
+        targetLevel: Number.isFinite(targetLevel) ? targetLevel : null,
+        currentHacking: hacking,
+        blocker: factionProgression.currentBlocker ?? null,
+        targetFaction: factionProgression.targetFaction ?? null,
+        targetServer: factionProgression.targetServer ?? null,
+        reason:
+            active
+                ? `BN9 faction progression is blocked by hacking level ${hacking}/${targetLevel}.`
+                : "No BN9 hacking-level study gate is active.",
+    };
 }
 
 function getCrimeChoice(ns, crime) {
@@ -396,7 +478,7 @@ function getCurrentBitNode(ns) {
 
 function parseBitNodes(value) {
     return new Set(
-        String(value ?? "1,4")
+        String(value ?? "1,4,9")
             .split(",")
             .map(x => Number(String(x).trim()))
             .filter(x => Number.isFinite(x) && x > 0)
