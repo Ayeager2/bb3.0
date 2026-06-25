@@ -106,6 +106,7 @@ export async function main(ns) {
             fallbackOnlyAfterPrimary: hashPolicy.fallbackOnlyAfterPrimary === true,
             bankHashes: hashPolicy.bankHashes === true,
             liquidate: hashPolicy.liquidate === true,
+            targetShaping: hashPolicy.targetShaping === true,
             hashes: safeNumHashes(ns),
             capacity: safeHashCapacity(ns),
             acted: result.acted,

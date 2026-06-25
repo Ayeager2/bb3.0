@@ -11,15 +11,22 @@ export async function main(ns) {
         readJson(ns, HACKNET_STATE_FILE);
     const hashSpender =
         readJson(ns, HASH_SPENDER_STATE_FILE);
+    const serviceStrategy =
+        serviceState.roi?.strategy ?? "";
+    const serviceMaxPayback =
+        serviceState.roi?.unlimitedPayback === true ||
+        serviceStrategy.includes("aggressive")
+            ? 0
+            : serviceState.roi?.maxPaybackSeconds ?? 3600;
     const live =
         buildHacknetState(ns, {
-            targetNodes: serviceState.targetNodes ?? 23,
-            targetLevel: serviceState.targetLevel ?? 200,
-            targetRam: serviceState.targetRam ?? 64,
-            targetCores: serviceState.targetCores ?? 16,
-            targetCache: serviceState.targetCache ?? 8,
+            targetNodes: serviceState.targetNodes ?? 0,
+            targetLevel: serviceState.targetLevel ?? 0,
+            targetRam: serviceState.targetRam ?? 0,
+            targetCores: serviceState.targetCores ?? 0,
+            targetCache: serviceState.targetCache ?? 0,
             reserveMoney: serviceState.reserveMoney ?? 0,
-            maxPaybackSeconds: serviceState.roi?.maxPaybackSeconds ?? 3600,
+            maxPaybackSeconds: serviceMaxPayback,
             hashBufferSeconds: serviceState.cachePolicy?.hashBufferSeconds ?? 7200,
             sellForMoneyValue: serviceState.roi?.sellForMoneyValue ?? 2_000_000,
         });
@@ -39,7 +46,7 @@ export async function main(ns) {
         );
         ns.tprint(`Hash Source: ${hashSpender.hashPolicy.source ?? "unknown"} | Phase: ${hashSpender.hashPolicy.phase ?? "unknown"}`);
         ns.tprint(
-            `Hash Mode: ${hashSpender.liquidate ? "LIQUIDATE" : hashSpender.bankHashes ? "BANK" : "NORMAL"}` +
+            `Hash Mode: ${hashSpender.targetShaping ? "TARGET SHAPING" : hashSpender.liquidate ? "LIQUIDATE" : hashSpender.bankHashes ? "BANK" : "NORMAL"}` +
             `${hashSpender.fallbackOnlyAfterPrimary ? " | fallback after primary" : ""}`
         );
         if (hashSpender.hashPolicy.fallbackUpgradeName) {
@@ -68,7 +75,7 @@ export async function main(ns) {
     );
     ns.tprint(
         `Buyer Strategy: ${live.roi?.strategy ?? "unknown"} | ` +
-        `Gate: ${formatDuration(live.roi?.maxPaybackSeconds ?? 0)}`
+        `Gate: ${live.roi?.unlimitedPayback ? "unlimited" : formatDuration(live.roi?.maxPaybackSeconds ?? 0)}`
     );
     ns.tprint(
         `Cache Buffer: ${formatDuration(live.cachePolicy?.hashBufferSeconds ?? 0)} target | ` +

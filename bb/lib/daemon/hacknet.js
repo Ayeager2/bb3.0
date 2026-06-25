@@ -1,26 +1,23 @@
-const DEFAULT_TARGET_NODES = 23;
-const DEFAULT_TARGET_LEVEL = 200;
-const DEFAULT_TARGET_RAM = 64;
-const DEFAULT_TARGET_CORES = 16;
-const DEFAULT_TARGET_CACHE = 8;
+const DEFAULT_TARGET_NODES = 0;
+const DEFAULT_TARGET_LEVEL = 0;
+const DEFAULT_TARGET_RAM = 0;
+const DEFAULT_TARGET_CORES = 0;
+const DEFAULT_TARGET_CACHE = 0;
 const DEFAULT_MAX_PAYBACK_SECONDS = 60 * 60;
 const DEFAULT_HASH_BUFFER_SECONDS = 2 * 60 * 60;
 const DEFAULT_SELL_FOR_MONEY_VALUE = 2_000_000;
 
 export function buildHacknetState(ns, options = {}) {
     const targetNodes =
-        Math.min(
-            Number(options.targetNodes) || DEFAULT_TARGET_NODES,
-            ns.hacknet.maxNumNodes()
-        );
+        getTargetNodes(ns, options.targetNodes);
     const targetLevel =
-        Number(options.targetLevel) || DEFAULT_TARGET_LEVEL;
+        getTargetLevel(ns, options.targetLevel);
     const targetRam =
-        Number(options.targetRam) || DEFAULT_TARGET_RAM;
+        getTargetRam(ns, options.targetRam);
     const targetCores =
-        Number(options.targetCores) || DEFAULT_TARGET_CORES;
+        getTargetCores(ns, options.targetCores);
     const targetCache =
-        Number(options.targetCache) || DEFAULT_TARGET_CACHE;
+        getTargetCache(ns, options.targetCache);
     const hashBufferSeconds =
         Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
     const sellForMoneyValue =
@@ -78,10 +75,12 @@ export function buildHacknetState(ns, options = {}) {
         roi: {
             strategy:
                 getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY
-                    ? "cheapest-affordable-production-first"
+                    ? "aggressive-cheapest-affordable"
                     : "payback-seconds",
+            unlimitedPayback:
+                getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY,
             maxPaybackSeconds:
-                getMaxPaybackSeconds(options.maxPaybackSeconds),
+                getSerializablePaybackSeconds(options.maxPaybackSeconds),
             sellForMoneyValue,
             hashMoneyValue: getHashMoneyValue(ns, sellForMoneyValue),
             homeCompetition: getHomeUpgradeCompetition(ns),
@@ -139,6 +138,9 @@ export function runHacknetBuyer(ns, options = {}) {
             Math.max(0, before - after);
 
         if (ok !== true) {
+            const failedState =
+                buildHacknetState(ns, options);
+
             return {
                 acted: purchases.length > 0,
                 status: purchases.length > 0 ? "purchased" : "failed",
@@ -155,8 +157,13 @@ export function runHacknetBuyer(ns, options = {}) {
                         ? formatPurchaseSummary(ns, purchases)
                         : `Failed to run ${action.label}.`,
                 action: summarizeAction(action),
-                state:
-                    buildHacknetState(ns, options),
+                state: {
+                    ...failedState,
+                    failedAction: summarizeAction(action),
+                    failedSpendable: lastState.spendable,
+                    failedMoneyBefore: before,
+                    failedMoneyAfter: after,
+                },
             };
         }
 
@@ -270,18 +277,15 @@ export function getNextHacknetAction(ns, options = {}) {
 
 export function getHacknetActionPlan(ns, options = {}) {
     const targetNodes =
-        Math.min(
-            Number(options.targetNodes) || DEFAULT_TARGET_NODES,
-            ns.hacknet.maxNumNodes()
-        );
+        getTargetNodes(ns, options.targetNodes);
     const targetLevel =
-        Number(options.targetLevel) || DEFAULT_TARGET_LEVEL;
+        getTargetLevel(ns, options.targetLevel);
     const targetRam =
-        Number(options.targetRam) || DEFAULT_TARGET_RAM;
+        getTargetRam(ns, options.targetRam);
     const targetCores =
-        Number(options.targetCores) || DEFAULT_TARGET_CORES;
+        getTargetCores(ns, options.targetCores);
     const targetCache =
-        Number(options.targetCache) || DEFAULT_TARGET_CACHE;
+        getTargetCache(ns, options.targetCache);
     const maxPaybackSeconds =
         getMaxPaybackSeconds(options.maxPaybackSeconds);
     const hashBufferSeconds =
@@ -377,29 +381,43 @@ export function getHacknetActionPlan(ns, options = {}) {
     const unlimitedPayback =
         maxPaybackSeconds === Number.POSITIVE_INFINITY;
 
-    const candidates = actions
+    const rawCandidates = actions
         .filter(action =>
             Number.isFinite(action.cost) &&
-            action.cost >= 0 &&
+            action.cost >= 0
+        )
+        .map(action => annotateRoi(action, hashMoneyValue))
+        .sort((a, b) => a.cost - b.cost);
+    const candidates = rawCandidates
+        .filter(action =>
             Number.isFinite(action.productionGain) &&
             action.productionGain > 0
         )
-        .map(action => annotateRoi(action, hashMoneyValue))
         .sort((a, b) => a.paybackSeconds - b.paybackSeconds);
     const bestCandidate =
-        candidates[0] ?? null;
-    const nextAction =
         unlimitedPayback
-            ? getCheapestAffordableAction(candidates, spendable) ?? candidates[0] ?? null
-            : candidates
-                .filter(action =>
-                    action.paybackSeconds <= maxPaybackSeconds ||
-                    nodeCount === 0
-                )[0] ?? null;
+            ? rawCandidates[0] ?? null
+            : candidates[0] ?? null;
+    const affordableAction =
+        getCheapestAffordableAction(rawCandidates, spendable);
+    const nextAction =
+        affordableAction ??
+        (
+            unlimitedPayback
+                ? rawCandidates[0] ?? null
+                : candidates
+                    .filter(action =>
+                        action.paybackSeconds <= maxPaybackSeconds ||
+                        nodeCount === 0
+                    )[0] ?? null
+        );
     const selectedAction =
-        cacheCandidate?.affordable === true && !getCheapestAffordableAction(candidates, spendable)
-            ? cacheCandidate
-            : nextAction;
+        nextAction ??
+        (
+            cacheCandidate?.affordable === true
+                ? cacheCandidate
+                : null
+        );
 
     return {
         nextAction: selectedAction,
@@ -414,7 +432,22 @@ export function getHacknetActionPlan(ns, options = {}) {
 function getCheapestAffordableAction(actions, spendable) {
     return actions
         .filter(action => spendable >= action.cost)
-        .sort((a, b) => a.cost - b.cost)[0] ?? null;
+        .sort((a, b) =>
+            getActionAggressionPriority(a) - getActionAggressionPriority(b) ||
+            b.cost - a.cost
+        )[0] ?? null;
+}
+
+function getActionAggressionPriority(action) {
+    const priorities = {
+        node: 0,
+        ram: 1,
+        core: 2,
+        level: 3,
+        cache: 4,
+    };
+
+    return priorities[action?.type] ?? 9;
 }
 
 function getCacheCandidate(ns, options) {
@@ -473,6 +506,77 @@ function getMaxPaybackSeconds(value) {
     if (n === 0) return Number.POSITIVE_INFINITY;
     if (Number.isFinite(n) && n > 0) return n;
     return DEFAULT_MAX_PAYBACK_SECONDS;
+}
+
+function getSerializablePaybackSeconds(value) {
+    const seconds =
+        getMaxPaybackSeconds(value);
+
+    return Number.isFinite(seconds)
+        ? seconds
+        : null;
+}
+
+function getTargetNodes(ns, value) {
+    const max =
+        ns.hacknet.maxNumNodes();
+    const n =
+        Number(value);
+
+    if (!Number.isFinite(n) || n <= 0) return max;
+
+    return Math.min(n, max);
+}
+
+function getTargetLevel(ns, value) {
+    const n =
+        Number(value);
+
+    if (Number.isFinite(n) && n > 0) return n;
+
+    return getHacknetCap(ns, "MaxLevel", 200);
+}
+
+function getTargetRam(ns, value) {
+    const n =
+        Number(value);
+
+    if (Number.isFinite(n) && n > 0) return n;
+
+    return getHacknetCap(ns, "MaxRam", 8192);
+}
+
+function getTargetCores(ns, value) {
+    const n =
+        Number(value);
+
+    if (Number.isFinite(n) && n > 0) return n;
+
+    return getHacknetCap(ns, "MaxCores", 128);
+}
+
+function getTargetCache(ns, value) {
+    const n =
+        Number(value);
+
+    if (Number.isFinite(n) && n > 0) return n;
+
+    return getHacknetCap(ns, "MaxCache", 15);
+}
+
+function getHacknetCap(ns, key, fallback) {
+    try {
+        const constants =
+            ns.formulas?.hacknetServers?.constants?.();
+        const value =
+            constants?.[key];
+
+        return Number.isFinite(value) && value > 0
+            ? value
+            : fallback;
+    } catch {
+        return fallback;
+    }
 }
 
 function formatDuration(seconds) {

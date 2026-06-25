@@ -5,6 +5,7 @@ import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
 const LAST_WORK_FILE = "/data/faction-work-last.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
 const FACTION_WORK_SERVICE_STATE_FILE = "/data/faction-work-service-state.txt";
+const FRESH_START_LIFE_STATE_FILE = "/data/fresh-start-life-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -24,7 +25,26 @@ export async function main(ns) {
 
         const plan = buildFactionWorkPlan(ns);
         const donationPlan = readJson(ns, FACTION_DONATION_PLAN_FILE);
+        const freshStartState = readJson(ns, FRESH_START_LIFE_STATE_FILE);
         const currentWork = getCurrentWork(ns);
+
+        if (isFreshStartPlayerActionPhase(freshStartState)) {
+            if (isFactionWork(currentWork)) {
+                stopCurrentWork(ns);
+            }
+
+            writeServiceState(ns, {
+                status: "paused-fresh-start",
+                allowWork: false,
+                reason: freshStartState.reason ?? "Fresh-start life service owns the current player action.",
+                plan,
+                freshStartState,
+                currentWork,
+            });
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
         if (!plan.active && isFactionWork(currentWork)) {
             stopCurrentWork(ns);
@@ -246,6 +266,13 @@ function getCurrentWork(ns) {
 
 function isFactionWork(work) {
     return work?.type === "FACTION";
+}
+
+function isFreshStartPlayerActionPhase(state) {
+    return (
+        state?.bitNode === 9 &&
+        state.stage === "bn9-cash-ignition"
+    );
 }
 
 function normalizeWorkType(value) {

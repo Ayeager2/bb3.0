@@ -6,10 +6,7 @@ const INCREASE_MAX_MONEY = "Increase Maximum Money";
 const BN9_CASH_FLOOR = 25_000_000;
 const BN9_TARGET_BOOST_CASH_FLOOR = 100_000_000;
 const BN9_STABLE_HASH_RATE = 1;
-const BN9_SECURITY_BOOST_SPENDS = 5;
-const BN9_MONEY_BOOST_SPENDS = 3;
-const BN9_FACTION_SECURITY_BOOST_SPENDS = 2;
-const BN9_FACTION_MONEY_BOOST_SPENDS = 2;
+const BN9_TARGET_BOOST_SPENDS = 100_000;
 const BN9_STUDY_BOOST_SPENDS = 1;
 
 export function chooseHacknetHashUpgrade(ns, options = {}) {
@@ -170,23 +167,6 @@ function chooseBn9HashUpgrade(ns, context) {
     }
 
     if (isActiveFactionRepPlan(context.factionWork)) {
-        const targetBoost =
-            getBn9TargetBoostChoice(ns, context, economy, {
-                securitySpends: BN9_FACTION_SECURITY_BOOST_SPENDS,
-                moneySpends: BN9_FACTION_MONEY_BOOST_SPENDS,
-                sourcePrefix: "bn9-faction",
-                reasonSuffix:
-                    `Faction work stays active for ${context.factionWork.targetFaction}; boost the hacking target when possible, then sell leftovers for cash.`,
-                extra: {
-                    targetFaction: context.factionWork.targetFaction,
-                    targetAugmentation: context.factionWork.targetAugmentation ?? null,
-                    missingRep: context.factionWork.missingRep ?? null,
-                    shareSupport: true,
-                },
-            });
-
-        if (targetBoost) return targetBoost;
-
         return {
             upgradeName: SELL_FOR_MONEY,
             target: null,
@@ -194,7 +174,7 @@ function chooseBn9HashUpgrade(ns, context) {
             phase: "rep-support",
             liquidate: true,
             reason:
-                `BN9 faction work is active for ${context.factionWork.targetFaction}; no hash target boost is ready, so hashes sell for cash while UHM share boosts contract rep gain.`,
+                `BN9 faction work is active for ${context.factionWork.targetFaction}; sell all hashes for cash so Hacknet buying keeps snowballing while share boosts contract rep gain.`,
             targetFaction: context.factionWork.targetFaction,
             targetAugmentation: context.factionWork.targetAugmentation ?? null,
             missingRep: context.factionWork.missingRep ?? null,
@@ -254,10 +234,8 @@ function chooseBn9HashUpgrade(ns, context) {
 
     const targetBoost =
         getBn9TargetBoostChoice(ns, context, economy, {
-            securitySpends: BN9_SECURITY_BOOST_SPENDS,
-            moneySpends: BN9_MONEY_BOOST_SPENDS,
             sourcePrefix: "bn9",
-            reasonSuffix: "Spend a small hash slice improving the selected hacking target, then sell leftovers.",
+            reasonSuffix: "Spend available hashes shaping the selected hacking target before returning to cash snowballing.",
         });
 
     if (targetBoost) return targetBoost;
@@ -298,10 +276,8 @@ function getBn9TargetBoostChoice(ns, context, economy, options = {}) {
     if (!context.target) return null;
 
     const common = {
-        fallbackUpgradeName: SELL_FOR_MONEY,
-        fallbackTarget: null,
-        fallbackOnlyAfterPrimary: true,
         bankHashes: true,
+        targetShaping: true,
         phase: "target-boost",
         targetStats: getTargetStats(ns, context.target),
         money: economy.money,
@@ -314,10 +290,10 @@ function getBn9TargetBoostChoice(ns, context, economy, options = {}) {
             ...common,
             upgradeName: REDUCE_MIN_SECURITY,
             target: context.target,
-            maxSpendsPerCycle: options.securitySpends ?? BN9_SECURITY_BOOST_SPENDS,
+            maxSpendsPerCycle: BN9_TARGET_BOOST_SPENDS,
             source: `${options.sourcePrefix ?? "bn9"}-target-security`,
             reason:
-                `${context.target} security is above minimum. ${options.reasonSuffix ?? "Reduce minimum security, then sell leftovers."}`,
+                `${context.target} security is above minimum. ${options.reasonSuffix ?? "Spend available hashes reducing minimum security."}`,
         };
     }
 
@@ -326,10 +302,10 @@ function getBn9TargetBoostChoice(ns, context, economy, options = {}) {
             ...common,
             upgradeName: INCREASE_MAX_MONEY,
             target: context.target,
-            maxSpendsPerCycle: options.moneySpends ?? BN9_MONEY_BOOST_SPENDS,
+            maxSpendsPerCycle: BN9_TARGET_BOOST_SPENDS,
             source: `${options.sourcePrefix ?? "bn9"}-target-money`,
             reason:
-                `${context.target} is clean enough. ${options.reasonSuffix ?? "Increase max money, then sell leftovers."}`,
+                `${context.target} is clean enough. ${options.reasonSuffix ?? "Spend available hashes increasing max money."}`,
         };
     }
 

@@ -9,6 +9,8 @@ const DEFAULT_CRIME = "Shoplift";
 const DEFAULT_MIN_CRIME_CHANCE = 0;
 const DEFAULT_STOP_MONEY = 10_000_000;
 const DEFAULT_STOP_HOME_RAM = 128;
+const BN9_STUDY_MONEY_FLOOR = 25_000_000;
+const BN9_STUDY_HASH_RATE_FLOOR = 1;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -35,6 +37,7 @@ export async function main(ns) {
     const allowedBitNodes = parseBitNodes(flags.bitnodes);
     const bitNode = getCurrentBitNode(ns);
     const singularity = getSingularityDiagnostics(ns);
+    let openedSlumsThisRun = false;
 
     writeState(ns, {
         status: "starting",
@@ -90,32 +93,10 @@ export async function main(ns) {
         });
         const bn9Study =
             getBn9StudyState(daemonState, hacking, bitNode);
+        const bn9EconomyReady =
+            getBn9StudyEconomyState(ns, money);
 
-        if (bn9Study.active) {
-            const started = startStudy(ns, focus);
-
-            writeState(ns, {
-                status: started ? "studying" : "blocked",
-                stage: "bn9-study",
-                hacking,
-                targetHacking: bn9Study.targetLevel,
-                money,
-                homeRam,
-                bitNode,
-                currentWork: summarizeWork(getCurrentWork(ns)),
-                handoff,
-                bn9Study,
-                reason:
-                    started
-                        ? `BN9 hacking blocker needs ${bn9Study.targetLevel}; studying computer science with hash boost support.`
-                        : "Unable to start Rothman University computer science course for BN9 level gate.",
-            });
-
-            await ns.sleep(refreshMs);
-            continue;
-        }
-
-        if (bitNode === 9 && (handoff.ready || currentWork?.type === "FACTION")) {
+        if (bitNode === 9 && (handoff.ready || factionPlan?.active === true || currentWork?.type === "FACTION")) {
             writeState(ns, {
                 status: "watching",
                 stage: "bn9-handoff",
@@ -125,10 +106,98 @@ export async function main(ns) {
                 bitNode,
                 currentWork: summarizeWork(currentWork),
                 handoff,
+                factionPlan,
+                bn9Study,
+                bn9EconomyReady,
                 reason:
                     currentWork?.type === "FACTION"
-                        ? "BN9 faction work is active; watching for the next hacking-level blocker."
-                        : "BN9 handoff is ready; watching for the next hacking-level blocker.",
+                        ? "BN9 faction work is active; fresh-start life is standing down."
+                        : factionPlan?.active === true
+                            ? "BN9 faction work plan is active; fresh-start life is standing down so faction work can start."
+                            : "BN9 handoff is ready; fresh-start life is standing down.",
+            });
+
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
+        if (bn9Study.active && !bn9EconomyReady.ready) {
+            const crime =
+                chooseCrime(ns, "Mug", minCrimeChance);
+
+            writeState(ns, {
+                status: "crime",
+                stage: "bn9-cash-ignition",
+                hacking,
+                targetHacking: bn9Study.targetLevel,
+                money,
+                homeRam,
+                bitNode,
+                crime,
+                currentWork: summarizeWork(currentWork),
+                handoff,
+                bn9Study,
+                bn9EconomyReady,
+                reason: `BN9 starts with money ignition before studying; mugging until ${bn9EconomyReady.reason}`,
+            });
+
+            openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
+            const duration = commitCrime(ns, crime.name, false);
+
+            await ns.sleep(duration > 0 ? duration + 100 : refreshMs);
+            continue;
+        }
+
+        if (bn9Study.active) {
+            const started = startStudy(ns, focus);
+            const studyWork =
+                getCurrentWork(ns);
+
+            if (!started || !isStudyingWork(studyWork)) {
+                const crime =
+                    chooseCrime(ns, "Mug", minCrimeChance);
+
+                writeState(ns, {
+                    status: "crime",
+                    stage: "bn9-study-cash",
+                    hacking,
+                    targetHacking: bn9Study.targetLevel,
+                    money,
+                    economyGate: bn9EconomyReady,
+                    homeRam,
+                    bitNode,
+                    crime,
+                    currentWork: summarizeWork(studyWork),
+                    handoff,
+                    bn9Study,
+                    studyAttempt: {
+                        started,
+                        city: safeCity(ns),
+                        work: summarizeWork(studyWork),
+                    },
+                    reason:
+                        "BN9 study gate is active and economy gate is ready, but Rothman study could not start; mugging as fallback while retrying.",
+                });
+
+                openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
+                const duration = commitCrime(ns, crime.name, false);
+
+                await ns.sleep(duration > 0 ? duration + 100 : refreshMs);
+                continue;
+            }
+
+            writeState(ns, {
+                status: "studying",
+                stage: "bn9-study",
+                hacking,
+                targetHacking: bn9Study.targetLevel,
+                money,
+                homeRam,
+                bitNode,
+                currentWork: summarizeWork(studyWork),
+                handoff,
+                bn9Study,
+                reason: `BN9 hacking blocker needs ${bn9Study.targetLevel}; studying computer science with hash boost support.`,
             });
 
             await ns.sleep(refreshMs);
@@ -173,7 +242,11 @@ export async function main(ns) {
             continue;
         }
 
-        const crime = chooseCrime(ns, fallbackCrime, minCrimeChance);
+        const crime = chooseCrime(
+            ns,
+            bitNode === 9 ? "Mug" : fallbackCrime,
+            minCrimeChance
+        );
 
         writeState(ns, {
             status: "crime",
@@ -186,11 +259,14 @@ export async function main(ns) {
             crime,
             currentWork: summarizeWork(currentWork),
             handoff,
-            reason: `Doing ${crime.name} until faction handoff is ready.`,
+            reason:
+                bitNode === 9
+                    ? `BN9 broke phase: mugging until Hacknet/hash cash can carry the economy.`
+                    : `Doing ${crime.name} until faction handoff is ready.`,
         });
 
-        goToSlums(ns);
-        const duration = commitCrime(ns, crime.name, focus);
+        openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
+        const duration = commitCrime(ns, crime.name, bitNode === 9 ? false : focus);
 
         if (duration <= 0) {
             await ns.sleep(refreshMs);
@@ -308,6 +384,47 @@ function getBn9StudyState(daemonState, hacking, bitNode) {
                 ? `BN9 faction progression is blocked by hacking level ${hacking}/${targetLevel}.`
                 : "No BN9 hacking-level study gate is active.",
     };
+}
+
+function getBn9StudyEconomyState(ns, money) {
+    const hashRate =
+        getHashProduction(ns);
+    const cashReady =
+        money >= BN9_STUDY_MONEY_FLOOR;
+    const hashReady =
+        hashRate >= BN9_STUDY_HASH_RATE_FLOOR;
+    const ready =
+        cashReady || hashReady;
+
+    return {
+        ready,
+        money,
+        moneyFloor: BN9_STUDY_MONEY_FLOOR,
+        hashRate,
+        hashRateFloor: BN9_STUDY_HASH_RATE_FLOOR,
+        cashReady,
+        hashReady,
+        reason:
+            ready
+                ? `cash/hash economy is online: ${formatMoney(ns, money)} and ${formatNumber(ns, hashRate)} hashes/s.`
+                : `${formatMoney(ns, BN9_STUDY_MONEY_FLOOR)} cash or ${formatNumber(ns, BN9_STUDY_HASH_RATE_FLOOR)} hashes/s is reached.`,
+    };
+}
+
+function getHashProduction(ns) {
+    try {
+        const count =
+            ns.hacknet.numNodes();
+        let total = 0;
+
+        for (let i = 0; i < count; i++) {
+            total += Number(ns.hacknet.getNodeStats(i)?.production) || 0;
+        }
+
+        return total;
+    } catch {
+        return 0;
+    }
 }
 
 function getCrimeChoice(ns, crime) {
@@ -430,6 +547,27 @@ function summarizeWork(work) {
     };
 }
 
+function isStudyingWork(work) {
+    const type =
+        String(work?.type ?? "").toUpperCase();
+
+    return (
+        type === "CLASS" ||
+        type === "STUDY" ||
+        type === "UNIVERSITY" ||
+        !!work?.classType ||
+        !!work?.universityName
+    );
+}
+
+function safeCity(ns) {
+    try {
+        return ns.getPlayer().city ?? null;
+    } catch {
+        return null;
+    }
+}
+
 function readJson(ns, file) {
     try {
         if (!ns.fileExists(file, "home")) return {};
@@ -468,6 +606,13 @@ function goToSlums(ns) {
     }
 }
 
+function goToSlumsOnce(ns, alreadyOpened) {
+    if (alreadyOpened) return true;
+
+    goToSlums(ns);
+    return true;
+}
+
 function getCurrentBitNode(ns) {
     try {
         return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
@@ -500,5 +645,13 @@ function formatMoney(ns, value) {
         return `$${ns.format.number(value)}`;
     } catch {
         return `$${Number(value).toFixed(0)}`;
+    }
+}
+
+function formatNumber(ns, value) {
+    try {
+        return ns.format.number(value);
+    } catch {
+        return String(Number(value).toFixed(2));
     }
 }

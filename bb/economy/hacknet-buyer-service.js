@@ -10,11 +10,11 @@ export async function main(ns) {
 
     const flags = ns.flags([
         ["refresh", 5000],
-        ["nodes", 23],
-        ["level", 200],
-        ["ram", 64],
-        ["cores", 16],
-        ["cache", 8],
+        ["nodes", 0],
+        ["level", 0],
+        ["ram", 0],
+        ["cores", 0],
+        ["cache", 0],
         ["reserve", 0],
         ["max-payback", 0],
         ["hash-buffer-minutes", 120],
@@ -30,15 +30,15 @@ export async function main(ns) {
     const refreshMs =
         Number(flags.refresh) || 5000;
     const targetNodes =
-        Number(flags.nodes) || 23;
+        Number(flags.nodes) || 0;
     const targetLevel =
-        Number(flags.level) || 200;
+        Number(flags.level) || 0;
     const targetRam =
-        Number(flags.ram) || 64;
+        Number(flags.ram) || 0;
     const targetCores =
-        Number(flags.cores) || 16;
+        Number(flags.cores) || 0;
     const targetCache =
-        Number(flags.cache) || 8;
+        Number(flags.cache) || 0;
     const fallbackReserve =
         Number(flags.reserve) || 0;
     const maxPaybackSeconds =

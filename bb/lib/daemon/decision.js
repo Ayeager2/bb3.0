@@ -408,10 +408,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
 
         return {
             priority: hacknetPriority,
-            reserveMoney:
-                progressionActive || levelingActive
-                    ? CONFIG.minReserveMoney
-                    : 0,
+            reserveMoney: 0,
 
             allowServerPurchases: bitNodeCapabilities.cloud.allowed === true,
             allowStockTrading:
@@ -731,10 +728,6 @@ function chooseHacknetRoadmapMode(ns, rootedServers) {
         return "progression";
     }
 
-    if (shouldBn9LevelForGrowth(ns, augDecision)) {
-        return "exp";
-    }
-
     const moneyTarget = getBestMoneyTarget(ns, rootedServers);
     if (moneyTarget && isTargetReasonableForMoney(ns, moneyTarget)) {
         return "money";
@@ -774,18 +767,6 @@ function shouldBn9PushProgression(ns, augDecision, factionProgression) {
         factionProgression.currentBlocker !== "none" &&
         factionProgression.recommendedMode === "progression"
     );
-}
-
-function shouldBn9LevelForGrowth(ns, augDecision) {
-    const hacking = ns.getHackingLevel();
-    const joined = new Set(ns.getPlayer()?.factions ?? []);
-    const targetFaction = augDecision?.targetFaction ?? "";
-
-    if (!joined.has("Netburners")) return false;
-    if (targetFaction === "Netburners") return false;
-    if (augDecision?.shouldEarnMoney === true) return false;
-
-    return hacking < 1000;
 }
 
 function shouldBn9AllowSideStockTrading(ns) {
