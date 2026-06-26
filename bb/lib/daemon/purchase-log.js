@@ -1,29 +1,16 @@
 //lib/daemon/purchase-log.js
 const PURCHASE_LOG_FILE = "/data/purchases.log.txt";
 const PURCHASE_STATE_FILE = "/data/purchases-state.txt";
-const PURCHASE_LEDGER_FILE = "/data/purchase-ledger.txt";
 
 export function logPurchase(ns, event = {}) {
-    const time =
-        Date.now();
-    const source =
-        event.source ?? "unknown";
-    const type =
-        event.type ?? "purchase";
-    const item =
-        event.item ?? "unknown";
-    const cost =
-        event.cost ?? null;
-
     const entry = {
-        id: event.id ?? `${time}-${source}-${type}-${item}-${cost ?? "unknown"}`,
-        time,
+        time: Date.now(),
         timeText: new Date().toLocaleTimeString(),
-        source,
-        type,
+        source: event.source ?? "unknown",
+        type: event.type ?? "purchase",
         category: event.category ?? getPurchaseCategory(event),
-        item,
-        cost,
+        item: event.item ?? "unknown",
+        cost: event.cost ?? null,
         moneyBefore: event.moneyBefore ?? null,
         moneyAfter: event.moneyAfter ?? ns.getPlayer().money,
         message: event.message ?? "",
@@ -32,7 +19,6 @@ export function logPurchase(ns, event = {}) {
     };
 
     ns.write(PURCHASE_LOG_FILE, JSON.stringify(entry) + "\n", "a");
-    ns.write(PURCHASE_LEDGER_FILE, JSON.stringify(entry) + "\n", "a");
     ns.write(PURCHASE_STATE_FILE, JSON.stringify(entry, null, 2), "w");
 
     return entry;
@@ -56,3 +42,4 @@ function getPurchaseCategory(event) {
 
     return "other";
 }
+

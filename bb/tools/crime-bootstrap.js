@@ -5,12 +5,14 @@ export async function main(ns) {
     const flags = ns.flags([
         ["stop-money", 10_000_000],
         ["stop-home-ram", 64],
-        ["crime", "mug"],
+        ["crime", "Mug"],
+        ["focus", false],
     ]);
 
     const stopMoney = Number(flags["stop-money"]) || 10_000_000;
     const stopHomeRam = Number(flags["stop-home-ram"]) || 64;
-    const crime = String(flags.crime || "mug");
+    const crime = String(flags.crime || "Mug");
+    const focus = flags.focus === true;
 
     while (true) {
         const money = ns.getPlayer().money;
@@ -22,7 +24,7 @@ export async function main(ns) {
         }
 
         try {
-            const wait = ns.singularity.commitCrime(crime);
+            const wait = ns.singularity.commitCrime(crime, focus);
             await ns.sleep(wait + 100);
         } catch {
             ns.tprint("[CRIME BOOTSTRAP] Singularity crime API unavailable.");

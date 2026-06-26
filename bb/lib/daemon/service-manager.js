@@ -206,6 +206,7 @@ function normalizeService(service) {
         minHomeRam: service.minHomeRam ?? 0,
         phases: service.phases ?? [],
         disabledPhases: service.disabledPhases ?? [],
+        bitNodes: service.bitNodes ?? [],
         requiresRunningService: service.requiresRunningService ?? null,
 
         stopWhenBlocked: service.stopWhenBlocked ?? false,
@@ -249,6 +250,13 @@ function getServiceGate(ns, service, daemonState) {
 
     if (service.maxHomeRam > 0 && ns.getServerMaxRam("home") >= service.maxHomeRam) {
         return block(`disabled after ${ns.format.ram(service.maxHomeRam)} home RAM`, diagnostics);
+    }
+
+    if (
+        service.bitNodes.length > 0 &&
+        !service.bitNodes.includes(getCurrentBitNode(ns))
+    ) {
+        return block(`disabled in BN${getCurrentBitNode(ns)}`, diagnostics);
     }
 
     if (
@@ -319,6 +327,8 @@ function buildGateDiagnostics(ns, service, daemonState) {
         phase: daemonState?.phase ?? "unknown",
         mode: daemonState?.mode ?? "unknown",
         priority: daemonState?.spendingPolicy?.priority ?? "unknown",
+        bitNode: getCurrentBitNode(ns),
+        bitNodes: service.bitNodes ?? [],
     };
 }
 
@@ -468,6 +478,14 @@ function safeFileExists(ns, file, host = "home") {
         return ns.fileExists(file, host);
     } catch {
         return false;
+    }
+}
+
+function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
+    } catch {
+        return 1;
     }
 }
 

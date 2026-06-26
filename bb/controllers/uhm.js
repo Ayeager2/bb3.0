@@ -64,7 +64,7 @@ export async function main(ns) {
     ["cycle-delay", 100],
     ["max-batches", 750],
     ["exp-cycle-delay", 25],
-    // EXP sprint saturation is controlled by /lib/uhm/runner.js process caps.
+    // EXP policy allocates more RAM to the normal money HGW batch engine.
     // ["exp-max-batches", 100000],
     ["exp-ram", 1],
   ]);
@@ -112,12 +112,12 @@ export async function main(ns) {
             shareRamPercent: 0,
             reason: forcedExpMode
               ? forcedExpReason
-              : "Endgame EXP overdrive",
+              : "Leveling policy: all RAM assigned to normal money HGW batches.",
           },
 
           protoBatching: {
             ...(daemonState?.protoBatching ?? {}),
-            // EXP mode does not use proto batch count; runner.js fills RAM with capped workers.
+            // EXP policy still uses normal money HGW batches.
             // maxBatchesPerCycle: Number(flags["exp-max-batches"]) || 100000,
             cycleDelayMs: Number(flags["exp-cycle-delay"]) || 25,
           },

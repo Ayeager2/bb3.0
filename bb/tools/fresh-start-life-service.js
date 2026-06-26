@@ -9,8 +9,6 @@ const DEFAULT_CRIME = "Shoplift";
 const DEFAULT_MIN_CRIME_CHANCE = 0;
 const DEFAULT_STOP_MONEY = 10_000_000;
 const DEFAULT_STOP_HOME_RAM = 128;
-const BN9_STUDY_MONEY_FLOOR = 25_000_000;
-const BN9_STUDY_HASH_RATE_FLOOR = 1;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -24,7 +22,7 @@ export async function main(ns) {
         ["stop-money", 10_000_000],
         ["stop-home-ram", 128],
         ["focus", false],
-        ["bitnodes", "1,4,9"],
+        ["bitnodes", "1,4"],
     ]);
 
     const refreshMs = positiveNumber(flags.refresh, DEFAULT_REFRESH_MS);
@@ -37,7 +35,6 @@ export async function main(ns) {
     const allowedBitNodes = parseBitNodes(flags.bitnodes);
     const bitNode = getCurrentBitNode(ns);
     const singularity = getSingularityDiagnostics(ns);
-    let openedSlumsThisRun = false;
 
     writeState(ns, {
         status: "starting",
@@ -77,6 +74,17 @@ export async function main(ns) {
         return;
     }
 
+    if (bitNode === 9) {
+        complete(ns, {
+            status: "skipped",
+            stage: "bn9-disabled",
+            bitNode,
+            allowedBitNodes: [...allowedBitNodes],
+            reason: "BN9 fresh-start crime/study automation is disabled; faction work owns the player action.",
+        });
+        return;
+    }
+
     while (true) {
         const player = ns.getPlayer();
         const hacking = ns.getHackingLevel();
@@ -91,119 +99,6 @@ export async function main(ns) {
             stopMoney,
             stopHomeRam,
         });
-        const bn9Study =
-            getBn9StudyState(daemonState, hacking, bitNode);
-        const bn9EconomyReady =
-            getBn9StudyEconomyState(ns, money);
-
-        if (bitNode === 9 && (handoff.ready || factionPlan?.active === true || currentWork?.type === "FACTION")) {
-            writeState(ns, {
-                status: "watching",
-                stage: "bn9-handoff",
-                hacking,
-                money,
-                homeRam,
-                bitNode,
-                currentWork: summarizeWork(currentWork),
-                handoff,
-                factionPlan,
-                bn9Study,
-                bn9EconomyReady,
-                reason:
-                    currentWork?.type === "FACTION"
-                        ? "BN9 faction work is active; fresh-start life is standing down."
-                        : factionPlan?.active === true
-                            ? "BN9 faction work plan is active; fresh-start life is standing down so faction work can start."
-                            : "BN9 handoff is ready; fresh-start life is standing down.",
-            });
-
-            await ns.sleep(refreshMs);
-            continue;
-        }
-
-        if (bn9Study.active && !bn9EconomyReady.ready) {
-            const crime =
-                chooseCrime(ns, "Mug", minCrimeChance);
-
-            writeState(ns, {
-                status: "crime",
-                stage: "bn9-cash-ignition",
-                hacking,
-                targetHacking: bn9Study.targetLevel,
-                money,
-                homeRam,
-                bitNode,
-                crime,
-                currentWork: summarizeWork(currentWork),
-                handoff,
-                bn9Study,
-                bn9EconomyReady,
-                reason: `BN9 starts with money ignition before studying; mugging until ${bn9EconomyReady.reason}`,
-            });
-
-            openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
-            const duration = commitCrime(ns, crime.name, false);
-
-            await ns.sleep(duration > 0 ? duration + 100 : refreshMs);
-            continue;
-        }
-
-        if (bn9Study.active) {
-            const started = startStudy(ns, focus);
-            const studyWork =
-                getCurrentWork(ns);
-
-            if (!started || !isStudyingWork(studyWork)) {
-                const crime =
-                    chooseCrime(ns, "Mug", minCrimeChance);
-
-                writeState(ns, {
-                    status: "crime",
-                    stage: "bn9-study-cash",
-                    hacking,
-                    targetHacking: bn9Study.targetLevel,
-                    money,
-                    economyGate: bn9EconomyReady,
-                    homeRam,
-                    bitNode,
-                    crime,
-                    currentWork: summarizeWork(studyWork),
-                    handoff,
-                    bn9Study,
-                    studyAttempt: {
-                        started,
-                        city: safeCity(ns),
-                        work: summarizeWork(studyWork),
-                    },
-                    reason:
-                        "BN9 study gate is active and economy gate is ready, but Rothman study could not start; mugging as fallback while retrying.",
-                });
-
-                openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
-                const duration = commitCrime(ns, crime.name, false);
-
-                await ns.sleep(duration > 0 ? duration + 100 : refreshMs);
-                continue;
-            }
-
-            writeState(ns, {
-                status: "studying",
-                stage: "bn9-study",
-                hacking,
-                targetHacking: bn9Study.targetLevel,
-                money,
-                homeRam,
-                bitNode,
-                currentWork: summarizeWork(studyWork),
-                handoff,
-                bn9Study,
-                reason: `BN9 hacking blocker needs ${bn9Study.targetLevel}; studying computer science with hash boost support.`,
-            });
-
-            await ns.sleep(refreshMs);
-            continue;
-        }
-
         if (handoff.ready || currentWork?.type === "FACTION") {
             complete(ns, {
                 status: "complete",
@@ -242,11 +137,7 @@ export async function main(ns) {
             continue;
         }
 
-        const crime = chooseCrime(
-            ns,
-            bitNode === 9 ? "Mug" : fallbackCrime,
-            minCrimeChance
-        );
+        const crime = chooseCrime(ns, fallbackCrime, minCrimeChance);
 
         writeState(ns, {
             status: "crime",
@@ -260,13 +151,11 @@ export async function main(ns) {
             currentWork: summarizeWork(currentWork),
             handoff,
             reason:
-                bitNode === 9
-                    ? `BN9 broke phase: mugging until Hacknet/hash cash can carry the economy.`
-                    : `Doing ${crime.name} until faction handoff is ready.`,
+                `Doing ${crime.name} until faction handoff is ready.`,
         });
 
-        openedSlumsThisRun = goToSlumsOnce(ns, openedSlumsThisRun);
-        const duration = commitCrime(ns, crime.name, bitNode === 9 ? false : focus);
+        goToSlums(ns);
+        const duration = commitCrime(ns, crime.name, focus);
 
         if (duration <= 0) {
             await ns.sleep(refreshMs);
@@ -348,83 +237,6 @@ function chooseCrime(ns, fallbackCrime, minChance) {
         .sort((a, b) => b.score - a.score);
 
     return choices[0] ?? fallback;
-}
-
-function getBn9StudyState(daemonState, hacking, bitNode) {
-    if (bitNode !== 9) {
-        return {
-            active: false,
-            reason: "Not BN9.",
-        };
-    }
-
-    const factionProgression =
-        daemonState?.factionProgression ?? {};
-    const expPolicy =
-        factionProgression.expPolicy ?? {};
-    const targetLevel =
-        Number(expPolicy.targetLevel ?? factionProgression.requiredHack ?? 0);
-    const shouldLevel =
-        expPolicy.shouldLevelNow === true ||
-        factionProgression.currentBlocker === "hacking-level";
-    const active =
-        shouldLevel &&
-        Number.isFinite(targetLevel) &&
-        targetLevel > hacking;
-
-    return {
-        active,
-        targetLevel: Number.isFinite(targetLevel) ? targetLevel : null,
-        currentHacking: hacking,
-        blocker: factionProgression.currentBlocker ?? null,
-        targetFaction: factionProgression.targetFaction ?? null,
-        targetServer: factionProgression.targetServer ?? null,
-        reason:
-            active
-                ? `BN9 faction progression is blocked by hacking level ${hacking}/${targetLevel}.`
-                : "No BN9 hacking-level study gate is active.",
-    };
-}
-
-function getBn9StudyEconomyState(ns, money) {
-    const hashRate =
-        getHashProduction(ns);
-    const cashReady =
-        money >= BN9_STUDY_MONEY_FLOOR;
-    const hashReady =
-        hashRate >= BN9_STUDY_HASH_RATE_FLOOR;
-    const ready =
-        cashReady || hashReady;
-
-    return {
-        ready,
-        money,
-        moneyFloor: BN9_STUDY_MONEY_FLOOR,
-        hashRate,
-        hashRateFloor: BN9_STUDY_HASH_RATE_FLOOR,
-        cashReady,
-        hashReady,
-        reason:
-            ready
-                ? `cash/hash economy is online: ${formatMoney(ns, money)} and ${formatNumber(ns, hashRate)} hashes/s.`
-                : `${formatMoney(ns, BN9_STUDY_MONEY_FLOOR)} cash or ${formatNumber(ns, BN9_STUDY_HASH_RATE_FLOOR)} hashes/s is reached.`,
-    };
-}
-
-function getHashProduction(ns) {
-    try {
-        const count =
-            ns.hacknet.numNodes();
-        let total = 0;
-
-        for (let i = 0; i < count; i++) {
-            total += Number(ns.hacknet.getNodeStats(i)?.production) || 0;
-        }
-
-        return total;
-    } catch {
-        return 0;
-    }
 }
 
 function getCrimeChoice(ns, crime) {
@@ -547,27 +359,6 @@ function summarizeWork(work) {
     };
 }
 
-function isStudyingWork(work) {
-    const type =
-        String(work?.type ?? "").toUpperCase();
-
-    return (
-        type === "CLASS" ||
-        type === "STUDY" ||
-        type === "UNIVERSITY" ||
-        !!work?.classType ||
-        !!work?.universityName
-    );
-}
-
-function safeCity(ns) {
-    try {
-        return ns.getPlayer().city ?? null;
-    } catch {
-        return null;
-    }
-}
-
 function readJson(ns, file) {
     try {
         if (!ns.fileExists(file, "home")) return {};
@@ -606,13 +397,6 @@ function goToSlums(ns) {
     }
 }
 
-function goToSlumsOnce(ns, alreadyOpened) {
-    if (alreadyOpened) return true;
-
-    goToSlums(ns);
-    return true;
-}
-
 function getCurrentBitNode(ns) {
     try {
         return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
@@ -623,7 +407,7 @@ function getCurrentBitNode(ns) {
 
 function parseBitNodes(value) {
     return new Set(
-        String(value ?? "1,4,9")
+        String(value ?? "1,4")
             .split(",")
             .map(x => Number(String(x).trim()))
             .filter(x => Number.isFinite(x) && x > 0)
@@ -645,13 +429,5 @@ function formatMoney(ns, value) {
         return `$${ns.format.number(value)}`;
     } catch {
         return `$${Number(value).toFixed(0)}`;
-    }
-}
-
-function formatNumber(ns, value) {
-    try {
-        return ns.format.number(value);
-    } catch {
-        return String(Number(value).toFixed(2));
     }
 }

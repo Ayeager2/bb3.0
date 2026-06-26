@@ -1,9 +1,51 @@
 [
   {
-    "ts": 1782273499873,
+    "ts": 1782433884443,
     "type": "command",
     "level": "success",
     "message": "Dashboard command runner online.",
+    "data": null
+  },
+  {
+    "ts": 1782437221568,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1782437221569,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
+    "data": null
+  },
+  {
+    "ts": 1782437476367,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1782437476367,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
+    "data": null
+  },
+  {
+    "ts": 1782437478378,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: debugSnapshot",
+    "data": null
+  },
+  {
+    "ts": 1782437478378,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered dashboard state snapshot.",
     "data": null
   }
 ]

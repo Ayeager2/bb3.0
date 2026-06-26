@@ -14,67 +14,11 @@ import {
   maxWorkerThreadsPerProcess,
   weakenScript,
 } from '/lib/uhm/config.js';
-import { runExpSprint } from '/lib/uhm/modes/exp-sprint.js';
 
 export function runLane(ns, lane, runtimeStats) {
   if (!isUsableTarget(ns, lane.target)) return null;
 
   killOversizedUhmWorkers(ns, lane.hosts);
-
-  if (lane.mode === 'exp') {
-    const leveling = lane.expPurpose === 'leveling';
-    const result = runExpSprint(ns, lane.target, lane.hosts, {
-      purpose: lane.expPurpose ?? 'background',
-      maxProcesses: leveling ? 100000 : 10000,
-      maxThreadsPerProcess: maxWorkerThreadsPerProcess,
-      maxProcessesPerHost: leveling ? 7500 : 1000,
-    });
-
-    runtimeStats.expOverdrive = {
-      active: true,
-      engine: result.engine ?? "hack-sprint",
-      target: lane.target,
-      purpose: lane.expPurpose ?? "background",
-      launched: result.launched,
-      threads: result.threads,
-      status: result.status,
-      activeProcesses: result.activeProcesses ?? 0,
-      activeThreads: result.activeThreads ?? 0,
-      totalThreads: result.totalThreads ?? result.threads ?? 0,
-      activeByRole: result.activeByRole ?? null,
-      launchedByRole: result.launchedByRole ?? null,
-      totalByRole: result.totalByRole ?? null,
-      cycle: result.cycle ?? null,
-      expPerAction: result.expPerAction ?? 0,
-      expPerSecond: result.expPerSecond ?? 0,
-      maxProcesses: result.maxProcesses ?? 0,
-      maxThreadsPerProcess: result.maxThreadsPerProcess ?? 0,
-      growRatio: Number.isFinite(result.growRatio) ? result.growRatio : 0,
-    };
-
-    return {
-      lane: lane.name,
-      target: lane.target,
-      mode: lane.mode,
-      expPurpose: lane.expPurpose ?? 'background',
-      targetSource: lane.targetSource ?? 'selected',
-      requestedTarget: lane.requestedTarget ?? null,
-      status: result.status,
-      launched: result.launched,
-      threads: result.threads,
-      expStats: {
-        activeProcesses: result.activeProcesses ?? 0,
-        activeThreads: result.activeThreads ?? 0,
-        totalThreads: result.totalThreads ?? result.threads ?? 0,
-        totalByRole: result.totalByRole ?? null,
-        launchedByRole: result.launchedByRole ?? null,
-        cycle: result.cycle ?? null,
-        expPerAction: result.expPerAction ?? 0,
-        expPerSecond: result.expPerSecond ?? 0,
-      },
-      plan: null,
-    };
-  }
 
   if (lane.mode === 'money' && shouldUseProtoMoney(ns, lane)) {
     const protoThreads = runProtoMoney(ns, lane.target, lane.hosts);

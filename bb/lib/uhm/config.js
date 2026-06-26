@@ -22,7 +22,6 @@ export const scriptsToCopy = [
 ];
 
 export const defaultHackPercent = 0.01;
-export const expHackPercent = 0.02;
 
 export const batchSpacingMs = 250;
 export const rescanIntervalMs = 10000;

@@ -1,15 +1,15 @@
 {
-  "updatedAt": 1782273499869,
+  "updatedAt": 1782433884435,
   "source": "live-singularity-api-cache",
   "note": "Generated once on startup or with --force. Prices should be rechecked before purchase.",
   "player": {
-    "money": 49022717.49745118,
+    "money": 1882942680.248185,
     "city": "Sector-12",
     "factions": [
+      "NiteSec",
       "Sector-12",
       "Slum Snakes",
       "Netburners",
-      "Tian Di Hui",
       "CyberSec"
     ]
   },
@@ -49,17 +49,17 @@
         "later": false,
         "note": null
       },
-      "rep": 2166.909965594365,
-      "favor": 57.22156383318354,
+      "rep": 36827.31724015279,
+      "favor": 67.26327219899498,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "CyberSec",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 2166.909965594365,
-          "hasRep": false,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 36827.31724015279,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -113,10 +113,10 @@
         {
           "name": "BitWire",
           "faction": "CyberSec",
-          "price": 10000000,
+          "price": 470458809.9999999,
           "rep": 3750,
-          "factionRep": 2166.909965594365,
-          "hasRep": false,
+          "factionRep": 36827.31724015279,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -162,9 +162,9 @@
         {
           "name": "Synaptic Enhancement Implant",
           "faction": "CyberSec",
-          "price": 7500000,
+          "price": 352844107.4999999,
           "rep": 2000,
-          "factionRep": 2166.909965594365,
+          "factionRep": 36827.31724015279,
           "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
@@ -211,10 +211,10 @@
         {
           "name": "Cranial Signal Processors - Gen I",
           "faction": "CyberSec",
-          "price": 70000000,
+          "price": 3293211669.999999,
           "rep": 10000,
-          "factionRep": 2166.909965594365,
-          "hasRep": false,
+          "factionRep": 36827.31724015279,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -260,10 +260,10 @@
         {
           "name": "Cranial Signal Processors - Gen II",
           "faction": "CyberSec",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 18750,
-          "factionRep": 2166.909965594365,
-          "hasRep": false,
+          "factionRep": 36827.31724015279,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -311,9 +311,9 @@
         {
           "name": "Neurotrainer I",
           "faction": "CyberSec",
-          "price": 4000000,
+          "price": 188183523.99999994,
           "rep": 1000,
-          "factionRep": 2166.909965594365,
+          "factionRep": 36827.31724015279,
           "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
@@ -365,7 +365,7 @@
       "faction": "NiteSec",
       "theme": "hacking",
       "source": "manual-profile",
-      "joined": false,
+      "joined": true,
       "priorityByBitNode": {
         "2": 40,
         "4": 95,
@@ -393,17 +393,17 @@
         "later": false,
         "note": null
       },
-      "rep": 0,
-      "favor": 4.739347933289664,
+      "rep": 114356.98052283135,
+      "favor": 26.849260393955447,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "NiteSec",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 0,
-          "hasRep": false,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -457,10 +457,10 @@
         {
           "name": "BitWire",
           "faction": "NiteSec",
-          "price": 10000000,
+          "price": 470458809.9999999,
           "rep": 3750,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -506,13 +506,13 @@
         {
           "name": "Artificial Synaptic Potentiation",
           "faction": "NiteSec",
-          "price": 80000000,
+          "price": 3763670479.999999,
           "rep": 6250,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -555,14 +555,14 @@
         {
           "name": "Neural-Retention Enhancement",
           "faction": "NiteSec",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 20000,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -604,14 +604,14 @@
         {
           "name": "DataJack",
           "faction": "NiteSec",
-          "price": 450000000,
+          "price": 21170646449.999992,
           "rep": 112500,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -653,13 +653,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "NiteSec",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -702,10 +702,10 @@
         {
           "name": "Cranial Signal Processors - Gen I",
           "faction": "NiteSec",
-          "price": 70000000,
+          "price": 3293211669.999999,
           "rep": 10000,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -751,10 +751,10 @@
         {
           "name": "Cranial Signal Processors - Gen II",
           "faction": "NiteSec",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 18750,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -802,14 +802,14 @@
         {
           "name": "Cranial Signal Processors - Gen III",
           "faction": "NiteSec",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 50000,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [
             "Cranial Signal Processors - Gen II",
             "Cranial Signal Processors - Gen I"
@@ -854,13 +854,13 @@
         {
           "name": "Neurotrainer II",
           "faction": "NiteSec",
-          "price": 45000000,
+          "price": 2117064644.9999995,
           "rep": 10000,
-          "factionRep": 0,
-          "hasRep": false,
-          "affordableAtBuild": true,
-          "installed": false,
-          "owned": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
+          "affordableAtBuild": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -905,14 +905,14 @@
         {
           "name": "CRTX42-AA Gene Modification",
           "faction": "NiteSec",
-          "price": 225000000,
+          "price": 10585323224.999996,
           "rep": 45000,
-          "factionRep": 0,
-          "hasRep": false,
+          "factionRep": 114356.98052283135,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -992,8 +992,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "The Black Hand",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -1049,13 +1049,13 @@
         {
           "name": "Artificial Synaptic Potentiation",
           "faction": "The Black Hand",
-          "price": 80000000,
+          "price": 3763670479.999999,
           "rep": 6250,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -1098,7 +1098,7 @@
         {
           "name": "Enhanced Myelin Sheathing",
           "faction": "The Black Hand",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 100000,
           "factionRep": 0,
           "hasRep": false,
@@ -1147,14 +1147,14 @@
         {
           "name": "DataJack",
           "faction": "The Black Hand",
-          "price": 450000000,
+          "price": 21170646449.999992,
           "rep": 112500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -1196,13 +1196,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "The Black Hand",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -1245,7 +1245,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "The Black Hand",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -1296,7 +1296,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "The Black Hand",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -1345,14 +1345,14 @@
         {
           "name": "Cranial Signal Processors - Gen III",
           "faction": "The Black Hand",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [
             "Cranial Signal Processors - Gen II",
             "Cranial Signal Processors - Gen I"
@@ -1397,7 +1397,7 @@
         {
           "name": "Cranial Signal Processors - Gen IV",
           "faction": "The Black Hand",
-          "price": 1100000000,
+          "price": 51750469099.999985,
           "rep": 125000,
           "factionRep": 0,
           "hasRep": false,
@@ -1450,7 +1450,7 @@
         {
           "name": "The Black Hand",
           "faction": "The Black Hand",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 100000,
           "factionRep": 0,
           "hasRep": false,
@@ -1500,7 +1500,7 @@
         {
           "name": "Magnetism Amplifier",
           "faction": "The Black Hand",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
@@ -1588,8 +1588,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "BitRunners",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -1645,7 +1645,7 @@
         {
           "name": "Artificial Bio-neural Network Implant",
           "faction": "BitRunners",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 275000,
           "factionRep": 0,
           "hasRep": false,
@@ -1694,7 +1694,7 @@
         {
           "name": "Enhanced Myelin Sheathing",
           "faction": "BitRunners",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 100000,
           "factionRep": 0,
           "hasRep": false,
@@ -1743,14 +1743,14 @@
         {
           "name": "DataJack",
           "faction": "BitRunners",
-          "price": 450000000,
+          "price": 21170646449.999992,
           "rep": 112500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -1792,13 +1792,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "BitRunners",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -1841,7 +1841,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "BitRunners",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -1892,7 +1892,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "BitRunners",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -1944,7 +1944,7 @@
         {
           "name": "Neural Accelerator",
           "faction": "BitRunners",
-          "price": 1750000000,
+          "price": 82330291749.99998,
           "rep": 200000,
           "factionRep": 0,
           "hasRep": false,
@@ -1993,14 +1993,14 @@
         {
           "name": "Cranial Signal Processors - Gen III",
           "faction": "BitRunners",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [
             "Cranial Signal Processors - Gen II",
             "Cranial Signal Processors - Gen I"
@@ -2045,7 +2045,7 @@
         {
           "name": "Cranial Signal Processors - Gen IV",
           "faction": "BitRunners",
-          "price": 1100000000,
+          "price": 51750469099.999985,
           "rep": 125000,
           "factionRep": 0,
           "hasRep": false,
@@ -2098,7 +2098,7 @@
         {
           "name": "Cranial Signal Processors - Gen V",
           "faction": "BitRunners",
-          "price": 2250000000,
+          "price": 105853232249.99997,
           "rep": 250000,
           "factionRep": 0,
           "hasRep": false,
@@ -2152,13 +2152,13 @@
         {
           "name": "Neurotrainer II",
           "faction": "BitRunners",
-          "price": 45000000,
+          "price": 2117064644.9999995,
           "rep": 10000,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
-          "installed": false,
-          "owned": false,
+          "affordableAtBuild": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -2203,7 +2203,7 @@
         {
           "name": "BitRunners Neurolink",
           "faction": "BitRunners",
-          "price": 4375000000,
+          "price": 205825729374.99994,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -2252,7 +2252,7 @@
         {
           "name": "Neural Wit Amplifier",
           "faction": "BitRunners",
-          "price": 10000000,
+          "price": 470458809.9999999,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -2305,7 +2305,7 @@
       "faction": "Tian Di Hui",
       "theme": "hacking",
       "source": "manual-profile",
-      "joined": true,
+      "joined": false,
       "priorityByBitNode": {
         "2": 30,
         "4": 75,
@@ -2333,16 +2333,16 @@
         "later": false,
         "note": null
       },
-      "rep": 8500.703811048992,
-      "favor": 19.37559672480518,
+      "rep": 0,
+      "favor": 57.50766117567365,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "Tian Di Hui",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 8500.703811048992,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
@@ -2397,13 +2397,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "Tian Di Hui",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
-          "factionRep": 8500.703811048992,
+          "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -2447,10 +2447,10 @@
         {
           "name": "Wired Reflexes",
           "faction": "Tian Di Hui",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2496,10 +2496,10 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Tian Di Hui",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -2545,9 +2545,9 @@
         {
           "name": "Neuroreceptor Management Implant",
           "faction": "Tian Di Hui",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 75000,
-          "factionRep": 8500.703811048992,
+          "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
@@ -2594,10 +2594,10 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Tian Di Hui",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2644,10 +2644,10 @@
         {
           "name": "Speech Enhancement",
           "faction": "Tian Di Hui",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2694,10 +2694,10 @@
         {
           "name": "ADR-V1 Pheromone Gene",
           "faction": "Tian Di Hui",
-          "price": 17500000,
+          "price": 823302917.4999998,
           "rep": 3750,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2745,10 +2745,10 @@
         {
           "name": "Social Negotiation Assistant (S.N.A)",
           "faction": "Tian Di Hui",
-          "price": 30000000,
+          "price": 1411376429.9999995,
           "rep": 6250,
-          "factionRep": 8500.703811048992,
-          "hasRep": true,
+          "factionRep": 0,
+          "hasRep": false,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2829,17 +2829,17 @@
         "later": false,
         "note": null
       },
-      "rep": 906.2673605607357,
-      "favor": 51.53138824494698,
+      "rep": 28585.50076235665,
+      "favor": 60.853712975806836,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "Netburners",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2893,10 +2893,10 @@
         {
           "name": "Hacknet Node CPU Architecture Neural-Upload",
           "faction": "Netburners",
-          "price": 11000000,
+          "price": 517504690.9999999,
           "rep": 3750,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2942,10 +2942,10 @@
         {
           "name": "Hacknet Node Cache Architecture Neural-Upload",
           "faction": "Netburners",
-          "price": 5500000,
+          "price": 258752345.49999994,
           "rep": 2500,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -2991,10 +2991,10 @@
         {
           "name": "Hacknet Node NIC Architecture Neural-Upload",
           "faction": "Netburners",
-          "price": 4500000,
+          "price": 211706464.49999994,
           "rep": 1875,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -3040,10 +3040,10 @@
         {
           "name": "Hacknet Node Kernel Direct-Neural Interface",
           "faction": "Netburners",
-          "price": 40000000,
+          "price": 1881835239.9999995,
           "rep": 7500,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -3089,10 +3089,10 @@
         {
           "name": "Hacknet Node Core Direct-Neural Interface",
           "faction": "Netburners",
-          "price": 60000000,
+          "price": 2822752859.999999,
           "rep": 12500,
-          "factionRep": 906.2673605607357,
-          "hasRep": false,
+          "factionRep": 28585.50076235665,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -3169,17 +3169,17 @@
         "later": false,
         "note": null
       },
-      "rep": 2999.7626097024718,
-      "favor": 83.42716140573926,
+      "rep": 54468.81667228014,
+      "favor": 92.9851056264009,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "Sector-12",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -3233,10 +3233,10 @@
         {
           "name": "Augmented Targeting I",
           "faction": "Sector-12",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -3282,11 +3282,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "Sector-12",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
-          "affordableAtBuild": true,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -3333,9 +3333,9 @@
         {
           "name": "Wired Reflexes",
           "faction": "Sector-12",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
-          "factionRep": 2999.7626097024718,
+          "factionRep": 54468.81667228014,
           "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
@@ -3382,10 +3382,10 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Sector-12",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -3431,10 +3431,10 @@
         {
           "name": "Neuralstimulator",
           "faction": "Sector-12",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -3480,10 +3480,10 @@
         {
           "name": "CashRoot Starter Kit",
           "faction": "Sector-12",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 12500,
-          "factionRep": 2999.7626097024718,
-          "hasRep": false,
+          "factionRep": 54468.81667228014,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -3567,8 +3567,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Aevum",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -3624,7 +3624,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "Aevum",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -3673,7 +3673,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Aevum",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -3722,7 +3722,7 @@
         {
           "name": "Synaptic Enhancement Implant",
           "faction": "Aevum",
-          "price": 7500000,
+          "price": 352844107.4999999,
           "rep": 2000,
           "factionRep": 0,
           "hasRep": false,
@@ -3771,7 +3771,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Aevum",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -3820,7 +3820,7 @@
         {
           "name": "PCMatrix",
           "faction": "Aevum",
-          "price": 2000000000,
+          "price": 94091761999.99997,
           "rep": 100000,
           "factionRep": 0,
           "hasRep": false,
@@ -3873,7 +3873,7 @@
         {
           "name": "Neurotrainer I",
           "faction": "Aevum",
-          "price": 4000000,
+          "price": 188183523.99999994,
           "rep": 1000,
           "factionRep": 0,
           "hasRep": false,
@@ -3962,8 +3962,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Volhaven",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -4019,7 +4019,7 @@
         {
           "name": "Combat Rib I",
           "faction": "Volhaven",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -4068,7 +4068,7 @@
         {
           "name": "Combat Rib II",
           "faction": "Volhaven",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -4119,7 +4119,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "Volhaven",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -4168,7 +4168,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Volhaven",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -4217,7 +4217,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Volhaven",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -4266,7 +4266,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Volhaven",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -4316,7 +4316,7 @@
         {
           "name": "DermaForce Particle Barrier",
           "faction": "Volhaven",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
@@ -4404,8 +4404,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Chongqing",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -4461,7 +4461,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Chongqing",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -4510,14 +4510,14 @@
         {
           "name": "DataJack",
           "faction": "Chongqing",
-          "price": 450000000,
+          "price": 21170646449.999992,
           "rep": 112500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -4559,7 +4559,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Chongqing",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -4608,7 +4608,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Chongqing",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -4658,7 +4658,7 @@
         {
           "name": "Neuregen Gene Modification",
           "faction": "Chongqing",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
@@ -4745,8 +4745,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "New Tokyo",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -4802,7 +4802,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "New Tokyo",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -4851,14 +4851,14 @@
         {
           "name": "DataJack",
           "faction": "New Tokyo",
-          "price": 450000000,
+          "price": 21170646449.999992,
           "rep": 112500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
           "installed": false,
-          "owned": false,
-          "queued": false,
+          "owned": true,
+          "queued": true,
           "prereqs": [],
           "stats": {
             "hacking_chance": 1,
@@ -4900,7 +4900,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "New Tokyo",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -4949,7 +4949,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "New Tokyo",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -4999,7 +4999,7 @@
         {
           "name": "NutriGen Implant",
           "faction": "New Tokyo",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 6250,
           "factionRep": 0,
           "hasRep": false,
@@ -5086,8 +5086,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Ishima",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -5143,7 +5143,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "Ishima",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -5192,7 +5192,7 @@
         {
           "name": "Combat Rib I",
           "faction": "Ishima",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -5241,7 +5241,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "Ishima",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -5290,7 +5290,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Ishima",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -5339,7 +5339,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Ishima",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -5388,7 +5388,7 @@
         {
           "name": "INFRARET Enhancement",
           "faction": "Ishima",
-          "price": 30000000,
+          "price": 1411376429.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -5469,17 +5469,17 @@
         "later": false,
         "note": null
       },
-      "rep": 2843.813003162275,
-      "favor": 77.67206855163522,
+      "rep": 51573.645085114505,
+      "favor": 87.43433859869184,
       "favorToDonate": 150,
       "augmentations": [
         {
           "name": "NeuroFlux Governor",
           "faction": "Slum Snakes",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -5533,10 +5533,10 @@
         {
           "name": "Augmented Targeting I",
           "faction": "Slum Snakes",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -5582,10 +5582,10 @@
         {
           "name": "Combat Rib I",
           "faction": "Slum Snakes",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -5631,9 +5631,9 @@
         {
           "name": "Wired Reflexes",
           "faction": "Slum Snakes",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
-          "factionRep": 2843.813003162275,
+          "factionRep": 51573.645085114505,
           "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
@@ -5680,9 +5680,9 @@
         {
           "name": "LuminCloaking-V1 Skin Implant",
           "faction": "Slum Snakes",
-          "price": 5000000,
+          "price": 235229404.99999994,
           "rep": 1500,
-          "factionRep": 2843.813003162275,
+          "factionRep": 51573.645085114505,
           "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
@@ -5731,10 +5731,10 @@
         {
           "name": "LuminCloaking-V2 Skin Implant",
           "faction": "Slum Snakes",
-          "price": 30000000,
+          "price": 1411376429.9999995,
           "rep": 5000,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -5784,10 +5784,10 @@
         {
           "name": "SmartSonar Implant",
           "faction": "Slum Snakes",
-          "price": 75000000,
+          "price": 3528441074.999999,
           "rep": 22500,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": false,
           "installed": true,
           "owned": true,
@@ -5834,10 +5834,10 @@
         {
           "name": "Neural Wit Amplifier",
           "faction": "Slum Snakes",
-          "price": 10000000,
+          "price": 470458809.9999999,
           "rep": 5000,
-          "factionRep": 2843.813003162275,
-          "hasRep": false,
+          "factionRep": 51573.645085114505,
+          "hasRep": true,
           "affordableAtBuild": true,
           "installed": true,
           "owned": true,
@@ -5922,8 +5922,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Tetrads",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -5979,7 +5979,7 @@
         {
           "name": "LuminCloaking-V1 Skin Implant",
           "faction": "Tetrads",
-          "price": 5000000,
+          "price": 235229404.99999994,
           "rep": 1500,
           "factionRep": 0,
           "hasRep": false,
@@ -6030,7 +6030,7 @@
         {
           "name": "LuminCloaking-V2 Skin Implant",
           "faction": "Tetrads",
-          "price": 30000000,
+          "price": 1411376429.9999995,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -6083,11 +6083,11 @@
         {
           "name": "HemoRecirculator",
           "faction": "Tetrads",
-          "price": 45000000,
+          "price": 2117064644.9999995,
           "rep": 10000,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": false,
           "owned": false,
           "queued": false,
@@ -6133,7 +6133,7 @@
         {
           "name": "Power Recirculation Core",
           "faction": "Tetrads",
-          "price": 180000000,
+          "price": 8468258579.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -6184,7 +6184,7 @@
         {
           "name": "Bionic Arms",
           "faction": "Tetrads",
-          "price": 275000000,
+          "price": 12937617274.999996,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -6233,7 +6233,7 @@
         {
           "name": "Glibness Enhancement",
           "faction": "Tetrads",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 40500,
           "factionRep": 0,
           "hasRep": false,
@@ -6321,8 +6321,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Silhouette",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -6378,7 +6378,7 @@
         {
           "name": "Speech Processor Implant",
           "faction": "Silhouette",
-          "price": 50000000,
+          "price": 2352294049.9999995,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -6427,7 +6427,7 @@
         {
           "name": "TITN-41 Gene-Modification Injection",
           "faction": "Silhouette",
-          "price": 190000000,
+          "price": 8938717389.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -6476,7 +6476,7 @@
         {
           "name": "ADR-V2 Pheromone Gene",
           "faction": "Silhouette",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -6568,8 +6568,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Speakers for the Dead",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -6625,7 +6625,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "Speakers for the Dead",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -6675,7 +6675,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "Speakers for the Dead",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -6724,13 +6724,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "Speakers for the Dead",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -6774,7 +6774,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "Speakers for the Dead",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -6823,7 +6823,7 @@
         {
           "name": "Bionic Spine",
           "faction": "Speakers for the Dead",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 45000,
           "factionRep": 0,
           "hasRep": false,
@@ -6872,7 +6872,7 @@
         {
           "name": "Bionic Legs",
           "faction": "Speakers for the Dead",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -6921,7 +6921,7 @@
         {
           "name": "Speech Enhancement",
           "faction": "Speakers for the Dead",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -6971,7 +6971,7 @@
         {
           "name": "The Shadow's Simulacrum",
           "faction": "Speakers for the Dead",
-          "price": 400000000,
+          "price": 18818352399.999996,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
@@ -7021,7 +7021,7 @@
         {
           "name": "Unstable Circadian Modulator",
           "faction": "Speakers for the Dead",
-          "price": 5000000000,
+          "price": 235229404999.99994,
           "rep": 362500,
           "factionRep": 0,
           "hasRep": false,
@@ -7045,13 +7045,13 @@
             "dexterity_exp": 1,
             "agility": 1,
             "agility_exp": 1,
-            "charisma": 1.5,
-            "charisma_exp": 2,
-            "hacknet_node_money": 1,
-            "hacknet_node_purchase_cost": 1,
-            "hacknet_node_ram_cost": 1,
-            "hacknet_node_core_cost": 1,
-            "hacknet_node_level_cost": 1,
+            "charisma": 1,
+            "charisma_exp": 1,
+            "hacknet_node_money": 1.2,
+            "hacknet_node_purchase_cost": 0.85,
+            "hacknet_node_ram_cost": 0.85,
+            "hacknet_node_core_cost": 0.85,
+            "hacknet_node_level_cost": 0.85,
             "company_rep": 1,
             "faction_rep": 1,
             "work_money": 1,
@@ -7064,13 +7064,13 @@
             "bladeburner_success_chance": 1
           },
           "tags": [
-            "charisma"
+            "hacknet"
           ]
         },
         {
           "name": "Graphene BrachiBlades Upgrade",
           "faction": "Speakers for the Dead",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 225000,
           "factionRep": 0,
           "hasRep": false,
@@ -7122,7 +7122,7 @@
         {
           "name": "Eloquence Module",
           "faction": "Speakers for the Dead",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -7173,7 +7173,7 @@
         {
           "name": "Golden Tongue Module",
           "faction": "Speakers for the Dead",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 125000,
           "factionRep": 0,
           "hasRep": false,
@@ -7263,8 +7263,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "The Dark Army",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -7320,7 +7320,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "The Dark Army",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -7369,11 +7369,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "The Dark Army",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -7420,7 +7420,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "The Dark Army",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -7472,7 +7472,7 @@
         {
           "name": "Combat Rib I",
           "faction": "The Dark Army",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -7521,7 +7521,7 @@
         {
           "name": "Combat Rib II",
           "faction": "The Dark Army",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -7572,7 +7572,7 @@
         {
           "name": "Combat Rib III",
           "faction": "The Dark Army",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -7624,13 +7624,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "The Dark Army",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -7674,7 +7674,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "The Dark Army",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -7723,7 +7723,7 @@
         {
           "name": "The Shadow's Simulacrum",
           "faction": "The Dark Army",
-          "price": 400000000,
+          "price": 18818352399.999996,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
@@ -7773,11 +7773,11 @@
         {
           "name": "HemoRecirculator",
           "faction": "The Dark Army",
-          "price": 45000000,
+          "price": 2117064644.9999995,
           "rep": 10000,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": false,
           "owned": false,
           "queued": false,
@@ -7823,7 +7823,7 @@
         {
           "name": "Power Recirculation Core",
           "faction": "The Dark Army",
-          "price": 180000000,
+          "price": 8468258579.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -7874,7 +7874,7 @@
         {
           "name": "Graphene Bionic Arms Upgrade",
           "faction": "The Dark Army",
-          "price": 3750000000,
+          "price": 176422053749.99994,
           "rep": 500000,
           "factionRep": 0,
           "hasRep": false,
@@ -7925,7 +7925,7 @@
         {
           "name": "Magnetism Amplifier",
           "faction": "The Dark Army",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
@@ -7975,7 +7975,7 @@
         {
           "name": "The Illustrated Primer",
           "faction": "The Dark Army",
-          "price": 3375000000,
+          "price": 158779848374.99997,
           "rep": 187500,
           "factionRep": 0,
           "hasRep": false,
@@ -8065,8 +8065,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "The Syndicate",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -8122,7 +8122,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "The Syndicate",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -8171,11 +8171,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "The Syndicate",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -8222,7 +8222,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "The Syndicate",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -8274,7 +8274,7 @@
         {
           "name": "Combat Rib I",
           "faction": "The Syndicate",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -8323,7 +8323,7 @@
         {
           "name": "Combat Rib II",
           "faction": "The Syndicate",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -8374,7 +8374,7 @@
         {
           "name": "Combat Rib III",
           "faction": "The Syndicate",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -8426,13 +8426,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "The Syndicate",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -8476,7 +8476,7 @@
         {
           "name": "NEMEAN Subdermal Weave",
           "faction": "The Syndicate",
-          "price": 3250000000,
+          "price": 152899113249.99997,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -8525,7 +8525,7 @@
         {
           "name": "Wired Reflexes",
           "faction": "The Syndicate",
-          "price": 2500000,
+          "price": 117614702.49999997,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -8574,7 +8574,7 @@
         {
           "name": "Bionic Spine",
           "faction": "The Syndicate",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 45000,
           "factionRep": 0,
           "hasRep": false,
@@ -8623,7 +8623,7 @@
         {
           "name": "Bionic Legs",
           "faction": "The Syndicate",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -8672,7 +8672,7 @@
         {
           "name": "ADR-V1 Pheromone Gene",
           "faction": "The Syndicate",
-          "price": 17500000,
+          "price": 823302917.4999998,
           "rep": 3750,
           "factionRep": 0,
           "hasRep": false,
@@ -8723,7 +8723,7 @@
         {
           "name": "The Shadow's Simulacrum",
           "faction": "The Syndicate",
-          "price": 400000000,
+          "price": 18818352399.999996,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
@@ -8773,11 +8773,11 @@
         {
           "name": "HemoRecirculator",
           "faction": "The Syndicate",
-          "price": 45000000,
+          "price": 2117064644.9999995,
           "rep": 10000,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": false,
           "owned": false,
           "queued": false,
@@ -8823,7 +8823,7 @@
         {
           "name": "Power Recirculation Core",
           "faction": "The Syndicate",
-          "price": 180000000,
+          "price": 8468258579.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -8874,7 +8874,7 @@
         {
           "name": "BrachiBlades",
           "faction": "The Syndicate",
-          "price": 90000000,
+          "price": 4234129289.999999,
           "rep": 12500,
           "factionRep": 0,
           "hasRep": false,
@@ -8924,7 +8924,7 @@
         {
           "name": "The Illustrated Primer",
           "faction": "The Syndicate",
-          "price": 3375000000,
+          "price": 158779848374.99997,
           "rep": 187500,
           "factionRep": 0,
           "hasRep": false,
@@ -9011,8 +9011,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "ECorp",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -9068,7 +9068,7 @@
         {
           "name": "Graphene Bionic Spine Upgrade",
           "faction": "ECorp",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 1625000,
           "factionRep": 0,
           "hasRep": false,
@@ -9119,7 +9119,7 @@
         {
           "name": "Graphene Bionic Legs Upgrade",
           "faction": "ECorp",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -9170,13 +9170,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "ECorp",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -9219,7 +9219,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "ECorp",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -9270,7 +9270,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "ECorp",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -9322,7 +9322,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "ECorp",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -9375,7 +9375,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "ECorp",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -9426,7 +9426,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "ECorp",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -9477,7 +9477,7 @@
         {
           "name": "PC Direct-Neural Interface",
           "faction": "ECorp",
-          "price": 3750000000,
+          "price": 176422053749.99994,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -9527,7 +9527,7 @@
         {
           "name": "PC Direct-Neural Interface Optimization Submodule",
           "faction": "ECorp",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 500000,
           "factionRep": 0,
           "hasRep": false,
@@ -9579,7 +9579,7 @@
         {
           "name": "ECorp HVMind Implant",
           "faction": "ECorp",
-          "price": 5500000000,
+          "price": 258752345499.99994,
           "rep": 1500000,
           "factionRep": 0,
           "hasRep": false,
@@ -9628,7 +9628,7 @@
         {
           "name": "Social Dynamics Processor",
           "faction": "ECorp",
-          "price": 1200000000,
+          "price": 56455057199.999985,
           "rep": 225000,
           "factionRep": 0,
           "hasRep": false,
@@ -9716,8 +9716,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "MegaCorp",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -9773,7 +9773,7 @@
         {
           "name": "Graphene Bionic Legs Upgrade",
           "faction": "MegaCorp",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -9824,13 +9824,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "MegaCorp",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -9873,7 +9873,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "MegaCorp",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -9924,7 +9924,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "MegaCorp",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -9976,7 +9976,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "MegaCorp",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -10029,7 +10029,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "MegaCorp",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -10080,7 +10080,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "MegaCorp",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -10131,7 +10131,7 @@
         {
           "name": "ADR-V1 Pheromone Gene",
           "faction": "MegaCorp",
-          "price": 17500000,
+          "price": 823302917.4999998,
           "rep": 3750,
           "factionRep": 0,
           "hasRep": false,
@@ -10182,7 +10182,7 @@
         {
           "name": "CordiARC Fusion Reactor",
           "faction": "MegaCorp",
-          "price": 5000000000,
+          "price": 235229404999.99994,
           "rep": 1125000,
           "factionRep": 0,
           "hasRep": false,
@@ -10231,7 +10231,7 @@
         {
           "name": "Social Dynamics Processor",
           "faction": "MegaCorp",
-          "price": 1200000000,
+          "price": 56455057199.999985,
           "rep": 225000,
           "factionRep": 0,
           "hasRep": false,
@@ -10319,8 +10319,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Bachman & Associates",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -10376,7 +10376,7 @@
         {
           "name": "Enhanced Social Interaction Implant",
           "faction": "Bachman & Associates",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -10425,7 +10425,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Bachman & Associates",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -10474,7 +10474,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Bachman & Associates",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -10524,7 +10524,7 @@
         {
           "name": "Speech Enhancement",
           "faction": "Bachman & Associates",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -10574,7 +10574,7 @@
         {
           "name": "FocusWire",
           "faction": "Bachman & Associates",
-          "price": 900000000,
+          "price": 42341292899.999985,
           "rep": 75000,
           "factionRep": 0,
           "hasRep": false,
@@ -10627,7 +10627,7 @@
         {
           "name": "ADR-V2 Pheromone Gene",
           "faction": "Bachman & Associates",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -10678,7 +10678,7 @@
         {
           "name": "SmartJaw",
           "faction": "Bachman & Associates",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -10767,8 +10767,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Blade Industries",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -10824,7 +10824,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "Blade Industries",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -10873,11 +10873,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "Blade Industries",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -10924,7 +10924,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "Blade Industries",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -10976,7 +10976,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "Blade Industries",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -11025,7 +11025,7 @@
         {
           "name": "Combat Rib I",
           "faction": "Blade Industries",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -11074,7 +11074,7 @@
         {
           "name": "Combat Rib II",
           "faction": "Blade Industries",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -11125,7 +11125,7 @@
         {
           "name": "Combat Rib III",
           "faction": "Blade Industries",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -11177,13 +11177,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "Blade Industries",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -11227,7 +11227,7 @@
         {
           "name": "Bionic Spine",
           "faction": "Blade Industries",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 45000,
           "factionRep": 0,
           "hasRep": false,
@@ -11276,7 +11276,7 @@
         {
           "name": "Bionic Legs",
           "faction": "Blade Industries",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -11325,13 +11325,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "Blade Industries",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -11374,7 +11374,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "Blade Industries",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -11425,7 +11425,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "Blade Industries",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -11477,7 +11477,7 @@
         {
           "name": "PC Direct-Neural Interface",
           "faction": "Blade Industries",
-          "price": 3750000000,
+          "price": 176422053749.99994,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -11527,7 +11527,7 @@
         {
           "name": "PC Direct-Neural Interface Optimization Submodule",
           "faction": "Blade Industries",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 500000,
           "factionRep": 0,
           "hasRep": false,
@@ -11579,7 +11579,7 @@
         {
           "name": "HyperSight Corneal Implant",
           "faction": "Blade Industries",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -11630,7 +11630,7 @@
         {
           "name": "Neotra",
           "faction": "Blade Industries",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 562500,
           "factionRep": 0,
           "hasRep": false,
@@ -11718,8 +11718,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "NWO",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -11775,7 +11775,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "NWO",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -11825,7 +11825,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "NWO",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -11874,7 +11874,7 @@
         {
           "name": "Enhanced Social Interaction Implant",
           "faction": "NWO",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -11923,13 +11923,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "NWO",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -11972,7 +11972,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "NWO",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -12023,7 +12023,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "NWO",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -12075,7 +12075,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "NWO",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -12128,7 +12128,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "NWO",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -12179,7 +12179,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "NWO",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -12230,7 +12230,7 @@
         {
           "name": "ADR-V1 Pheromone Gene",
           "faction": "NWO",
-          "price": 17500000,
+          "price": 823302917.4999998,
           "rep": 3750,
           "factionRep": 0,
           "hasRep": false,
@@ -12281,7 +12281,7 @@
         {
           "name": "Neurotrainer III",
           "faction": "NWO",
-          "price": 130000000,
+          "price": 6115964529.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -12332,7 +12332,7 @@
         {
           "name": "Power Recirculation Core",
           "faction": "NWO",
-          "price": 180000000,
+          "price": 8468258579.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -12383,7 +12383,7 @@
         {
           "name": "Xanipher",
           "faction": "NWO",
-          "price": 4250000000,
+          "price": 199944994249.99994,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -12434,7 +12434,7 @@
         {
           "name": "Hydroflame Left Arm",
           "faction": "NWO",
-          "price": 2500000000000,
+          "price": 117614702499999.97,
           "rep": 1250000,
           "factionRep": 0,
           "hasRep": false,
@@ -12521,8 +12521,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Clarke Incorporated",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -12578,7 +12578,7 @@
         {
           "name": "Enhanced Social Interaction Implant",
           "faction": "Clarke Incorporated",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -12627,7 +12627,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Clarke Incorporated",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -12676,7 +12676,7 @@
         {
           "name": "Neuronal Densification",
           "faction": "Clarke Incorporated",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 187500,
           "factionRep": 0,
           "hasRep": false,
@@ -12725,7 +12725,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Clarke Incorporated",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -12775,7 +12775,7 @@
         {
           "name": "Speech Enhancement",
           "faction": "Clarke Incorporated",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -12825,7 +12825,7 @@
         {
           "name": "FocusWire",
           "faction": "Clarke Incorporated",
-          "price": 900000000,
+          "price": 42341292899.999985,
           "rep": 75000,
           "factionRep": 0,
           "hasRep": false,
@@ -12878,7 +12878,7 @@
         {
           "name": "ADR-V2 Pheromone Gene",
           "faction": "Clarke Incorporated",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -12929,7 +12929,7 @@
         {
           "name": "nextSENS Gene Modification",
           "faction": "Clarke Incorporated",
-          "price": 1925000000,
+          "price": 90563320924.99997,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -13018,8 +13018,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "OmniTek Incorporated",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -13075,7 +13075,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "OmniTek Incorporated",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -13124,11 +13124,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "OmniTek Incorporated",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -13175,7 +13175,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "OmniTek Incorporated",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -13227,7 +13227,7 @@
         {
           "name": "Combat Rib I",
           "faction": "OmniTek Incorporated",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -13276,7 +13276,7 @@
         {
           "name": "Combat Rib II",
           "faction": "OmniTek Incorporated",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -13327,7 +13327,7 @@
         {
           "name": "Combat Rib III",
           "faction": "OmniTek Incorporated",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -13379,13 +13379,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "OmniTek Incorporated",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -13429,7 +13429,7 @@
         {
           "name": "Bionic Spine",
           "faction": "OmniTek Incorporated",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 45000,
           "factionRep": 0,
           "hasRep": false,
@@ -13478,7 +13478,7 @@
         {
           "name": "Bionic Legs",
           "faction": "OmniTek Incorporated",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -13527,7 +13527,7 @@
         {
           "name": "Enhanced Social Interaction Implant",
           "faction": "OmniTek Incorporated",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -13576,7 +13576,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "OmniTek Incorporated",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -13628,7 +13628,7 @@
         {
           "name": "PC Direct-Neural Interface",
           "faction": "OmniTek Incorporated",
-          "price": 3750000000,
+          "price": 176422053749.99994,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -13678,7 +13678,7 @@
         {
           "name": "OmniTek InfoLoad",
           "faction": "OmniTek Incorporated",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -13727,7 +13727,7 @@
         {
           "name": "Social Dynamics Processor",
           "faction": "OmniTek Incorporated",
-          "price": 1200000000,
+          "price": 56455057199.999985,
           "rep": 225000,
           "factionRep": 0,
           "hasRep": false,
@@ -13815,8 +13815,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Four Sigma",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -13872,7 +13872,7 @@
         {
           "name": "Enhanced Social Interaction Implant",
           "faction": "Four Sigma",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -13921,7 +13921,7 @@
         {
           "name": "Neuralstimulator",
           "faction": "Four Sigma",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 50000,
           "factionRep": 0,
           "hasRep": false,
@@ -13970,7 +13970,7 @@
         {
           "name": "Nuoptimal Nootropic Injector Implant",
           "faction": "Four Sigma",
-          "price": 20000000,
+          "price": 940917619.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -14020,7 +14020,7 @@
         {
           "name": "Speech Enhancement",
           "faction": "Four Sigma",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -14070,7 +14070,7 @@
         {
           "name": "FocusWire",
           "faction": "Four Sigma",
-          "price": 900000000,
+          "price": 42341292899.999985,
           "rep": 75000,
           "factionRep": 0,
           "hasRep": false,
@@ -14123,7 +14123,7 @@
         {
           "name": "PC Direct-Neural Interface",
           "faction": "Four Sigma",
-          "price": 3750000000,
+          "price": 176422053749.99994,
           "rep": 375000,
           "factionRep": 0,
           "hasRep": false,
@@ -14173,7 +14173,7 @@
         {
           "name": "ADR-V1 Pheromone Gene",
           "faction": "Four Sigma",
-          "price": 17500000,
+          "price": 823302917.4999998,
           "rep": 3750,
           "factionRep": 0,
           "hasRep": false,
@@ -14224,7 +14224,7 @@
         {
           "name": "ADR-V2 Pheromone Gene",
           "faction": "Four Sigma",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -14275,7 +14275,7 @@
         {
           "name": "Neurotrainer III",
           "faction": "Four Sigma",
-          "price": 130000000,
+          "price": 6115964529.999998,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -14364,8 +14364,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "KuaiGong International",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -14421,7 +14421,7 @@
         {
           "name": "Augmented Targeting I",
           "faction": "KuaiGong International",
-          "price": 15000000,
+          "price": 705688214.9999998,
           "rep": 5000,
           "factionRep": 0,
           "hasRep": false,
@@ -14470,11 +14470,11 @@
         {
           "name": "Augmented Targeting II",
           "faction": "KuaiGong International",
-          "price": 42500000,
+          "price": 1999449942.4999995,
           "rep": 8750,
           "factionRep": 0,
           "hasRep": false,
-          "affordableAtBuild": true,
+          "affordableAtBuild": false,
           "installed": true,
           "owned": true,
           "queued": false,
@@ -14521,7 +14521,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "KuaiGong International",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -14573,7 +14573,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "KuaiGong International",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -14623,7 +14623,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "KuaiGong International",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -14672,7 +14672,7 @@
         {
           "name": "Combat Rib I",
           "faction": "KuaiGong International",
-          "price": 23750000,
+          "price": 1117339673.7499998,
           "rep": 7500,
           "factionRep": 0,
           "hasRep": false,
@@ -14721,7 +14721,7 @@
         {
           "name": "Combat Rib II",
           "faction": "KuaiGong International",
-          "price": 65000000,
+          "price": 3057982264.999999,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -14772,7 +14772,7 @@
         {
           "name": "Combat Rib III",
           "faction": "KuaiGong International",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -14824,7 +14824,7 @@
         {
           "name": "Bionic Spine",
           "faction": "KuaiGong International",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 45000,
           "factionRep": 0,
           "hasRep": false,
@@ -14873,7 +14873,7 @@
         {
           "name": "Bionic Legs",
           "faction": "KuaiGong International",
-          "price": 375000000,
+          "price": 17642205374.999996,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -14922,7 +14922,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "KuaiGong International",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -14974,7 +14974,7 @@
         {
           "name": "Speech Enhancement",
           "faction": "KuaiGong International",
-          "price": 12500000,
+          "price": 588073512.4999999,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -15024,7 +15024,7 @@
         {
           "name": "FocusWire",
           "faction": "KuaiGong International",
-          "price": 900000000,
+          "price": 42341292899.999985,
           "rep": 75000,
           "factionRep": 0,
           "hasRep": false,
@@ -15077,7 +15077,7 @@
         {
           "name": "HyperSight Corneal Implant",
           "faction": "KuaiGong International",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 150000,
           "factionRep": 0,
           "hasRep": false,
@@ -15128,7 +15128,7 @@
         {
           "name": "Photosynthetic Cells",
           "faction": "KuaiGong International",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 562500,
           "factionRep": 0,
           "hasRep": false,
@@ -15216,8 +15216,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Fulcrum Secret Technologies",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -15273,7 +15273,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "Fulcrum Secret Technologies",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -15323,7 +15323,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "Fulcrum Secret Technologies",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -15372,13 +15372,13 @@
         {
           "name": "Nanofiber Weave",
           "faction": "Fulcrum Secret Technologies",
-          "price": 125000000,
+          "price": 5880735124.999998,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -15422,7 +15422,7 @@
         {
           "name": "NEMEAN Subdermal Weave",
           "faction": "Fulcrum Secret Technologies",
-          "price": 3250000000,
+          "price": 152899113249.99997,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -15471,7 +15471,7 @@
         {
           "name": "Graphene Bone Lacings",
           "faction": "Fulcrum Secret Technologies",
-          "price": 4250000000,
+          "price": 199944994249.99994,
           "rep": 1125000,
           "factionRep": 0,
           "hasRep": false,
@@ -15520,7 +15520,7 @@
         {
           "name": "Graphene Bionic Spine Upgrade",
           "faction": "Fulcrum Secret Technologies",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 1625000,
           "factionRep": 0,
           "hasRep": false,
@@ -15571,7 +15571,7 @@
         {
           "name": "Graphene Bionic Legs Upgrade",
           "faction": "Fulcrum Secret Technologies",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -15622,7 +15622,7 @@
         {
           "name": "Artificial Bio-neural Network Implant",
           "faction": "Fulcrum Secret Technologies",
-          "price": 3000000000,
+          "price": 141137642999.99997,
           "rep": 275000,
           "factionRep": 0,
           "hasRep": false,
@@ -15671,7 +15671,7 @@
         {
           "name": "Enhanced Myelin Sheathing",
           "faction": "Fulcrum Secret Technologies",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 100000,
           "factionRep": 0,
           "hasRep": false,
@@ -15720,13 +15720,13 @@
         {
           "name": "Embedded Netburner Module",
           "faction": "Fulcrum Secret Technologies",
-          "price": 250000000,
+          "price": 11761470249.999996,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": false,
-          "installed": false,
-          "owned": false,
+          "installed": true,
+          "owned": true,
           "queued": false,
           "prereqs": [],
           "stats": {
@@ -15769,7 +15769,7 @@
         {
           "name": "Embedded Netburner Module Core Implant",
           "faction": "Fulcrum Secret Technologies",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 175000,
           "factionRep": 0,
           "hasRep": false,
@@ -15820,7 +15820,7 @@
         {
           "name": "Embedded Netburner Module Core V2 Upgrade",
           "faction": "Fulcrum Secret Technologies",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -15872,7 +15872,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "Fulcrum Secret Technologies",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -15925,7 +15925,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "Fulcrum Secret Technologies",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -15976,7 +15976,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "Fulcrum Secret Technologies",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -16027,7 +16027,7 @@
         {
           "name": "PC Direct-Neural Interface Optimization Submodule",
           "faction": "Fulcrum Secret Technologies",
-          "price": 4500000000,
+          "price": 211706464499.99994,
           "rep": 500000,
           "factionRep": 0,
           "hasRep": false,
@@ -16079,7 +16079,7 @@
         {
           "name": "PC Direct-Neural Interface NeuroNet Injector",
           "faction": "Fulcrum Secret Technologies",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1500000,
           "factionRep": 0,
           "hasRep": false,
@@ -16169,8 +16169,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "The Covenant",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -16226,7 +16226,7 @@
         {
           "name": "Augmented Targeting III",
           "faction": "The Covenant",
-          "price": 115000000,
+          "price": 5410276314.999998,
           "rep": 27500,
           "factionRep": 0,
           "hasRep": false,
@@ -16278,7 +16278,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "The Covenant",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -16328,7 +16328,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "The Covenant",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -16377,7 +16377,7 @@
         {
           "name": "Combat Rib III",
           "faction": "The Covenant",
-          "price": 120000000,
+          "price": 5645505719.999998,
           "rep": 35000,
           "factionRep": 0,
           "hasRep": false,
@@ -16429,7 +16429,7 @@
         {
           "name": "NEMEAN Subdermal Weave",
           "faction": "The Covenant",
-          "price": 3250000000,
+          "price": 152899113249.99997,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -16478,7 +16478,7 @@
         {
           "name": "Graphene Bone Lacings",
           "faction": "The Covenant",
-          "price": 4250000000,
+          "price": 199944994249.99994,
           "rep": 1125000,
           "factionRep": 0,
           "hasRep": false,
@@ -16527,7 +16527,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "The Covenant",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -16580,7 +16580,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "The Covenant",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -16631,7 +16631,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "The Covenant",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -16682,7 +16682,7 @@
         {
           "name": "SPTN-97 Gene Modification",
           "faction": "The Covenant",
-          "price": 4875000000,
+          "price": 229348669874.99994,
           "rep": 1250000,
           "factionRep": 0,
           "hasRep": false,
@@ -16770,8 +16770,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Daedalus",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -16827,7 +16827,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "Daedalus",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -16877,7 +16877,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "Daedalus",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -16926,7 +16926,7 @@
         {
           "name": "NEMEAN Subdermal Weave",
           "faction": "Daedalus",
-          "price": 3250000000,
+          "price": 152899113249.99997,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -16975,7 +16975,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "Daedalus",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -17028,7 +17028,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "Daedalus",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -17079,7 +17079,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "Daedalus",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -17217,8 +17217,8 @@
         {
           "name": "NeuroFlux Governor",
           "faction": "Illuminati",
-          "price": 15271188.719030617,
-          "rep": 10180.792479353744,
+          "price": 1383307420.1533284,
+          "rep": 19602.246300135943,
           "factionRep": 0,
           "hasRep": false,
           "affordableAtBuild": true,
@@ -17274,7 +17274,7 @@
         {
           "name": "Synthetic Heart",
           "faction": "Illuminati",
-          "price": 2875000000,
+          "price": 135256907874.99997,
           "rep": 750000,
           "factionRep": 0,
           "hasRep": false,
@@ -17324,7 +17324,7 @@
         {
           "name": "Synfibril Muscle",
           "faction": "Illuminati",
-          "price": 1125000000,
+          "price": 52926616124.999985,
           "rep": 437500,
           "factionRep": 0,
           "hasRep": false,
@@ -17373,7 +17373,7 @@
         {
           "name": "NEMEAN Subdermal Weave",
           "faction": "Illuminati",
-          "price": 3250000000,
+          "price": 152899113249.99997,
           "rep": 875000,
           "factionRep": 0,
           "hasRep": false,
@@ -17422,7 +17422,7 @@
         {
           "name": "Embedded Netburner Module Core V3 Upgrade",
           "faction": "Illuminati",
-          "price": 7500000000,
+          "price": 352844107499.9999,
           "rep": 1750000,
           "factionRep": 0,
           "hasRep": false,
@@ -17475,7 +17475,7 @@
         {
           "name": "Embedded Netburner Module Analyze Engine",
           "faction": "Illuminati",
-          "price": 6000000000,
+          "price": 282275285999.99994,
           "rep": 625000,
           "factionRep": 0,
           "hasRep": false,
@@ -17526,7 +17526,7 @@
         {
           "name": "Embedded Netburner Module Direct Memory Access Upgrade",
           "faction": "Illuminati",
-          "price": 7000000000,
+          "price": 329321166999.99994,
           "rep": 1000000,
           "factionRep": 0,
           "hasRep": false,
@@ -17577,7 +17577,7 @@
         {
           "name": "QLink",
           "faction": "Illuminati",
-          "price": 25000000000000,
+          "price": 1176147024999999.8,
           "rep": 1875000,
           "factionRep": 0,
           "hasRep": false,
@@ -17663,7 +17663,7 @@
         {
           "name": "Glibness Enhancement",
           "faction": "Bladeburners",
-          "price": 2500000000,
+          "price": 117614702499.99997,
           "rep": 40500,
           "factionRep": 0,
           "hasRep": false,
@@ -17713,7 +17713,7 @@
         {
           "name": "EsperTech Bladeburner Eyewear",
           "faction": "Bladeburners",
-          "price": 165000000,
+          "price": 7762570364.999998,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -17763,7 +17763,7 @@
         {
           "name": "EMS-4 Recombination",
           "faction": "Bladeburners",
-          "price": 275000000,
+          "price": 12937617274.999996,
           "rep": 2500,
           "factionRep": 0,
           "hasRep": false,
@@ -17812,7 +17812,7 @@
         {
           "name": "ORION-MKIV Shoulder",
           "faction": "Bladeburners",
-          "price": 550000000,
+          "price": 25875234549.999992,
           "rep": 6250,
           "factionRep": 0,
           "hasRep": false,
@@ -17862,7 +17862,7 @@
         {
           "name": "Hyperion Plasma Cannon V1",
           "faction": "Bladeburners",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 12500,
           "factionRep": 0,
           "hasRep": false,
@@ -17911,7 +17911,7 @@
         {
           "name": "Hyperion Plasma Cannon V2",
           "faction": "Bladeburners",
-          "price": 5500000000,
+          "price": 258752345499.99994,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -17962,7 +17962,7 @@
         {
           "name": "GOLEM Serum",
           "faction": "Bladeburners",
-          "price": 11000000000,
+          "price": 517504690999.9999,
           "rep": 31250,
           "factionRep": 0,
           "hasRep": false,
@@ -18012,7 +18012,7 @@
         {
           "name": "Vangelis Virus",
           "faction": "Bladeburners",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -18063,7 +18063,7 @@
         {
           "name": "Vangelis Virus 3.0",
           "faction": "Bladeburners",
-          "price": 11000000000,
+          "price": 517504690999.9999,
           "rep": 37500,
           "factionRep": 0,
           "hasRep": false,
@@ -18116,7 +18116,7 @@
         {
           "name": "I.N.T.E.R.L.I.N.K.E.D",
           "faction": "Bladeburners",
-          "price": 5500000000,
+          "price": 258752345499.99994,
           "rep": 25000,
           "factionRep": 0,
           "hasRep": false,
@@ -18166,7 +18166,7 @@
         {
           "name": "Blade's Runners",
           "faction": "Bladeburners",
-          "price": 8250000000,
+          "price": 388128518249.9999,
           "rep": 20000,
           "factionRep": 0,
           "hasRep": false,
@@ -18216,7 +18216,7 @@
         {
           "name": "BLADE-51b Tesla Armor",
           "faction": "Bladeburners",
-          "price": 1375000000,
+          "price": 64688086374.999985,
           "rep": 12500,
           "factionRep": 0,
           "hasRep": false,
@@ -18266,7 +18266,7 @@
         {
           "name": "BLADE-51b Tesla Armor: Power Cells Upgrade",
           "faction": "Bladeburners",
-          "price": 2750000000,
+          "price": 129376172749.99997,
           "rep": 18750,
           "factionRep": 0,
           "hasRep": false,
@@ -18317,7 +18317,7 @@
         {
           "name": "BLADE-51b Tesla Armor: Energy Shielding Upgrade",
           "faction": "Bladeburners",
-          "price": 5500000000,
+          "price": 258752345499.99994,
           "rep": 21250,
           "factionRep": 0,
           "hasRep": false,
@@ -18369,7 +18369,7 @@
         {
           "name": "BLADE-51b Tesla Armor: Unibeam Upgrade",
           "faction": "Bladeburners",
-          "price": 16500000000,
+          "price": 776257036499.9998,
           "rep": 31250,
           "factionRep": 0,
           "hasRep": false,
@@ -18420,7 +18420,7 @@
         {
           "name": "BLADE-51b Tesla Armor: Omnibeam Upgrade",
           "faction": "Bladeburners",
-          "price": 27500000000,
+          "price": 1293761727499.9998,
           "rep": 62500,
           "factionRep": 0,
           "hasRep": false,
@@ -18471,7 +18471,7 @@
         {
           "name": "BLADE-51b Tesla Armor: IPU Upgrade",
           "faction": "Bladeburners",
-          "price": 1100000000,
+          "price": 51750469099.999985,
           "rep": 15000,
           "factionRep": 0,
           "hasRep": false,
@@ -18522,7 +18522,7 @@
         {
           "name": "The Blade's Simulacrum",
           "faction": "Bladeburners",
-          "price": 150000000000,
+          "price": 7056882149999.998,
           "rep": 1250,
           "factionRep": 0,
           "hasRep": false,
@@ -19262,7 +19262,7 @@
         "NWO",
         "Four Sigma"
       ],
-      "price": 17500000,
+      "price": 823302917.4999998,
       "rep": 3750,
       "prereqs": [],
       "stats": {
@@ -19315,7 +19315,7 @@
         "Clarke Incorporated",
         "Four Sigma"
       ],
-      "price": 550000000,
+      "price": 25875234549.999992,
       "rep": 62500,
       "prereqs": [],
       "stats": {
@@ -19366,7 +19366,7 @@
         "BitRunners",
         "Fulcrum Secret Technologies"
       ],
-      "price": 3000000000,
+      "price": 141137642999.99997,
       "rep": 275000,
       "prereqs": [],
       "stats": {
@@ -19415,7 +19415,7 @@
         "NiteSec",
         "The Black Hand"
       ],
-      "price": 80000000,
+      "price": 3763670479.999999,
       "rep": 6250,
       "prereqs": [],
       "stats": {
@@ -19454,8 +19454,8 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
-      "installed": false,
+      "owned": true,
+      "installed": true,
       "queued": false
     },
     {
@@ -19470,7 +19470,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 15000000,
+      "price": 705688214.9999998,
       "rep": 5000,
       "prereqs": [],
       "stats": {
@@ -19523,7 +19523,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 42500000,
+      "price": 1999449942.4999995,
       "rep": 8750,
       "prereqs": [
         "Augmented Targeting I"
@@ -19578,7 +19578,7 @@
         "KuaiGong International",
         "The Covenant"
       ],
-      "price": 115000000,
+      "price": 5410276314.999998,
       "rep": 27500,
       "prereqs": [
         "Augmented Targeting II",
@@ -19629,7 +19629,7 @@
       "factions": [
         "Tetrads"
       ],
-      "price": 275000000,
+      "price": 12937617274.999996,
       "rep": 62500,
       "prereqs": [],
       "stats": {
@@ -19681,7 +19681,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 375000000,
+      "price": 17642205374.999996,
       "rep": 150000,
       "prereqs": [],
       "stats": {
@@ -19733,7 +19733,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 125000000,
+      "price": 5880735124.999998,
       "rep": 45000,
       "prereqs": [],
       "stats": {
@@ -19781,7 +19781,7 @@
       "factions": [
         "BitRunners"
       ],
-      "price": 4375000000,
+      "price": 205825729374.99994,
       "rep": 875000,
       "prereqs": [],
       "stats": {
@@ -19830,7 +19830,7 @@
         "CyberSec",
         "NiteSec"
       ],
-      "price": 10000000,
+      "price": 470458809.9999999,
       "rep": 3750,
       "prereqs": [],
       "stats": {
@@ -19878,7 +19878,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 1375000000,
+      "price": 64688086374.999985,
       "rep": 12500,
       "prereqs": [],
       "stats": {
@@ -19927,7 +19927,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 5500000000,
+      "price": 258752345499.99994,
       "rep": 21250,
       "prereqs": [
         "BLADE-51b Tesla Armor"
@@ -19978,7 +19978,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 1100000000,
+      "price": 51750469099.999985,
       "rep": 15000,
       "prereqs": [
         "BLADE-51b Tesla Armor"
@@ -20028,7 +20028,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 27500000000,
+      "price": 1293761727499.9998,
       "rep": 62500,
       "prereqs": [
         "BLADE-51b Tesla Armor: Unibeam Upgrade"
@@ -20078,7 +20078,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 18750,
       "prereqs": [
         "BLADE-51b Tesla Armor"
@@ -20128,7 +20128,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 16500000000,
+      "price": 776257036499.9998,
       "rep": 31250,
       "prereqs": [
         "BLADE-51b Tesla Armor"
@@ -20178,7 +20178,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 8250000000,
+      "price": 388128518249.9999,
       "rep": 20000,
       "prereqs": [],
       "stats": {
@@ -20227,7 +20227,7 @@
       "factions": [
         "The Syndicate"
       ],
-      "price": 90000000,
+      "price": 4234129289.999999,
       "rep": 12500,
       "prereqs": [],
       "stats": {
@@ -20276,7 +20276,7 @@
       "factions": [
         "Sector-12"
       ],
-      "price": 125000000,
+      "price": 5880735124.999998,
       "rep": 12500,
       "prereqs": [],
       "stats": {
@@ -20331,7 +20331,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 23750000,
+      "price": 1117339673.7499998,
       "rep": 7500,
       "prereqs": [],
       "stats": {
@@ -20384,7 +20384,7 @@
         "OmniTek Incorporated",
         "KuaiGong International"
       ],
-      "price": 65000000,
+      "price": 3057982264.999999,
       "rep": 18750,
       "prereqs": [
         "Combat Rib I"
@@ -20439,7 +20439,7 @@
         "KuaiGong International",
         "The Covenant"
       ],
-      "price": 120000000,
+      "price": 5645505719.999998,
       "rep": 35000,
       "prereqs": [
         "Combat Rib II",
@@ -20490,7 +20490,7 @@
       "factions": [
         "MegaCorp"
       ],
-      "price": 5000000000,
+      "price": 235229404999.99994,
       "rep": 1125000,
       "prereqs": [],
       "stats": {
@@ -20539,7 +20539,7 @@
         "CyberSec",
         "NiteSec"
       ],
-      "price": 70000000,
+      "price": 3293211669.999999,
       "rep": 10000,
       "prereqs": [],
       "stats": {
@@ -20588,7 +20588,7 @@
         "CyberSec",
         "NiteSec"
       ],
-      "price": 125000000,
+      "price": 5880735124.999998,
       "rep": 18750,
       "prereqs": [
         "Cranial Signal Processors - Gen I"
@@ -20640,7 +20640,7 @@
         "The Black Hand",
         "BitRunners"
       ],
-      "price": 550000000,
+      "price": 25875234549.999992,
       "rep": 50000,
       "prereqs": [
         "Cranial Signal Processors - Gen II",
@@ -20682,9 +20682,9 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
+      "owned": true,
       "installed": false,
-      "queued": false
+      "queued": true
     },
     {
       "name": "Cranial Signal Processors - Gen IV",
@@ -20692,7 +20692,7 @@
         "The Black Hand",
         "BitRunners"
       ],
-      "price": 1100000000,
+      "price": 51750469099.999985,
       "rep": 125000,
       "prereqs": [
         "Cranial Signal Processors - Gen III",
@@ -20744,7 +20744,7 @@
       "factions": [
         "BitRunners"
       ],
-      "price": 2250000000,
+      "price": 105853232249.99997,
       "rep": 250000,
       "prereqs": [
         "Cranial Signal Processors - Gen IV",
@@ -20797,7 +20797,7 @@
       "factions": [
         "NiteSec"
       ],
-      "price": 225000000,
+      "price": 10585323224.999996,
       "rep": 45000,
       "prereqs": [],
       "stats": {
@@ -20836,9 +20836,9 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
+      "owned": true,
       "installed": false,
-      "queued": false
+      "queued": true
     },
     {
       "name": "DataJack",
@@ -20849,7 +20849,7 @@
         "Chongqing",
         "New Tokyo"
       ],
-      "price": 450000000,
+      "price": 21170646449.999992,
       "rep": 112500,
       "prereqs": [],
       "stats": {
@@ -20888,16 +20888,16 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
+      "owned": true,
       "installed": false,
-      "queued": false
+      "queued": true
     },
     {
       "name": "DermaForce Particle Barrier",
       "factions": [
         "Volhaven"
       ],
-      "price": 50000000,
+      "price": 2352294049.9999995,
       "rep": 15000,
       "prereqs": [],
       "stats": {
@@ -20946,7 +20946,7 @@
       "factions": [
         "ECorp"
       ],
-      "price": 5500000000,
+      "price": 258752345499.99994,
       "rep": 1500000,
       "prereqs": [],
       "stats": {
@@ -20994,7 +20994,7 @@
       "factions": [
         "Speakers for the Dead"
       ],
-      "price": 250000000,
+      "price": 11761470249.999996,
       "rep": 25000,
       "prereqs": [],
       "stats": {
@@ -21051,7 +21051,7 @@
         "NWO",
         "Fulcrum Secret Technologies"
       ],
-      "price": 250000000,
+      "price": 11761470249.999996,
       "rep": 15000,
       "prereqs": [],
       "stats": {
@@ -21090,8 +21090,8 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
-      "installed": false,
+      "owned": true,
+      "installed": true,
       "queued": false
     },
     {
@@ -21105,7 +21105,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 6000000000,
+      "price": 282275285999.99994,
       "rep": 625000,
       "prereqs": [
         "Embedded Netburner Module"
@@ -21161,7 +21161,7 @@
         "NWO",
         "Fulcrum Secret Technologies"
       ],
-      "price": 2500000000,
+      "price": 117614702499.99997,
       "rep": 175000,
       "prereqs": [
         "Embedded Netburner Module"
@@ -21218,7 +21218,7 @@
         "KuaiGong International",
         "Fulcrum Secret Technologies"
       ],
-      "price": 4500000000,
+      "price": 211706464499.99994,
       "rep": 1000000,
       "prereqs": [
         "Embedded Netburner Module Core Implant",
@@ -21275,7 +21275,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 7500000000,
+      "price": 352844107499.9999,
       "rep": 1750000,
       "prereqs": [
         "Embedded Netburner Module Core V2 Upgrade",
@@ -21333,7 +21333,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 7000000000,
+      "price": 329321166999.99994,
       "rep": 1000000,
       "prereqs": [
         "Embedded Netburner Module"
@@ -21383,7 +21383,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 275000000,
+      "price": 12937617274.999996,
       "rep": 2500,
       "prereqs": [],
       "stats": {
@@ -21433,7 +21433,7 @@
         "BitRunners",
         "Fulcrum Secret Technologies"
       ],
-      "price": 1375000000,
+      "price": 64688086374.999985,
       "rep": 100000,
       "prereqs": [],
       "stats": {
@@ -21485,7 +21485,7 @@
         "OmniTek Incorporated",
         "Four Sigma"
       ],
-      "price": 1375000000,
+      "price": 64688086374.999985,
       "rep": 375000,
       "prereqs": [],
       "stats": {
@@ -21533,7 +21533,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 165000000,
+      "price": 7762570364.999998,
       "rep": 1250,
       "prereqs": [],
       "stats": {
@@ -21585,7 +21585,7 @@
         "Four Sigma",
         "KuaiGong International"
       ],
-      "price": 900000000,
+      "price": 42341292899.999985,
       "rep": 75000,
       "prereqs": [],
       "stats": {
@@ -21638,7 +21638,7 @@
         "Tetrads",
         "Bladeburners"
       ],
-      "price": 2500000000,
+      "price": 117614702499.99997,
       "rep": 40500,
       "prereqs": [],
       "stats": {
@@ -21687,7 +21687,7 @@
       "factions": [
         "Speakers for the Dead"
       ],
-      "price": 125000000,
+      "price": 5880735124.999998,
       "rep": 125000,
       "prereqs": [],
       "stats": {
@@ -21735,7 +21735,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 11000000000,
+      "price": 517504690999.9999,
       "rep": 31250,
       "prereqs": [],
       "stats": {
@@ -21784,7 +21784,7 @@
       "factions": [
         "The Dark Army"
       ],
-      "price": 3750000000,
+      "price": 176422053749.99994,
       "rep": 500000,
       "prereqs": [
         "Bionic Arms"
@@ -21836,7 +21836,7 @@
         "MegaCorp",
         "Fulcrum Secret Technologies"
       ],
-      "price": 4500000000,
+      "price": 211706464499.99994,
       "rep": 750000,
       "prereqs": [
         "Bionic Legs"
@@ -21887,7 +21887,7 @@
         "ECorp",
         "Fulcrum Secret Technologies"
       ],
-      "price": 6000000000,
+      "price": 282275285999.99994,
       "rep": 1625000,
       "prereqs": [
         "Bionic Spine"
@@ -21938,7 +21938,7 @@
         "Fulcrum Secret Technologies",
         "The Covenant"
       ],
-      "price": 4250000000,
+      "price": 199944994249.99994,
       "rep": 1125000,
       "prereqs": [],
       "stats": {
@@ -21986,7 +21986,7 @@
       "factions": [
         "Speakers for the Dead"
       ],
-      "price": 2500000000,
+      "price": 117614702499.99997,
       "rep": 225000,
       "prereqs": [
         "BrachiBlades"
@@ -22037,7 +22037,7 @@
       "factions": [
         "Netburners"
       ],
-      "price": 5500000,
+      "price": 258752345.49999994,
       "rep": 2500,
       "prereqs": [],
       "stats": {
@@ -22085,7 +22085,7 @@
       "factions": [
         "Netburners"
       ],
-      "price": 60000000,
+      "price": 2822752859.999999,
       "rep": 12500,
       "prereqs": [],
       "stats": {
@@ -22133,7 +22133,7 @@
       "factions": [
         "Netburners"
       ],
-      "price": 11000000,
+      "price": 517504690.9999999,
       "rep": 3750,
       "prereqs": [],
       "stats": {
@@ -22181,7 +22181,7 @@
       "factions": [
         "Netburners"
       ],
-      "price": 40000000,
+      "price": 1881835239.9999995,
       "rep": 7500,
       "prereqs": [],
       "stats": {
@@ -22229,7 +22229,7 @@
       "factions": [
         "Netburners"
       ],
-      "price": 4500000,
+      "price": 211706464.49999994,
       "rep": 1875,
       "prereqs": [],
       "stats": {
@@ -22279,7 +22279,7 @@
         "The Dark Army",
         "The Syndicate"
       ],
-      "price": 45000000,
+      "price": 2117064644.9999995,
       "rep": 10000,
       "prereqs": [],
       "stats": {
@@ -22328,7 +22328,7 @@
       "factions": [
         "NWO"
       ],
-      "price": 2500000000000,
+      "price": 117614702499999.97,
       "rep": 1250000,
       "prereqs": [],
       "stats": {
@@ -22376,7 +22376,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 12500,
       "prereqs": [],
       "stats": {
@@ -22424,7 +22424,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 5500000000,
+      "price": 258752345499.99994,
       "rep": 25000,
       "prereqs": [
         "Hyperion Plasma Cannon V1"
@@ -22475,7 +22475,7 @@
         "Blade Industries",
         "KuaiGong International"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 150000,
       "prereqs": [],
       "stats": {
@@ -22525,7 +22525,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 5500000000,
+      "price": 258752345499.99994,
       "rep": 25000,
       "prereqs": [],
       "stats": {
@@ -22574,7 +22574,7 @@
       "factions": [
         "Ishima"
       ],
-      "price": 30000000,
+      "price": 1411376429.9999995,
       "rep": 7500,
       "prereqs": [],
       "stats": {
@@ -22624,7 +22624,7 @@
         "Slum Snakes",
         "Tetrads"
       ],
-      "price": 5000000,
+      "price": 235229404.99999994,
       "rep": 1500,
       "prereqs": [],
       "stats": {
@@ -22675,7 +22675,7 @@
         "Slum Snakes",
         "Tetrads"
       ],
-      "price": 30000000,
+      "price": 1411376429.9999995,
       "rep": 5000,
       "prereqs": [
         "LuminCloaking-V1 Skin Implant"
@@ -22728,7 +22728,7 @@
         "The Black Hand",
         "The Dark Army"
       ],
-      "price": 250000000,
+      "price": 11761470249.999996,
       "rep": 15000,
       "prereqs": [],
       "stats": {
@@ -22783,7 +22783,7 @@
         "OmniTek Incorporated",
         "Fulcrum Secret Technologies"
       ],
-      "price": 125000000,
+      "price": 5880735124.999998,
       "rep": 37500,
       "prereqs": [],
       "stats": {
@@ -22823,8 +22823,8 @@
         "combat",
         "charisma"
       ],
-      "owned": false,
-      "installed": false,
+      "owned": true,
+      "installed": true,
       "queued": false
     },
     {
@@ -22836,7 +22836,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 3250000000,
+      "price": 152899113249.99997,
       "rep": 875000,
       "prereqs": [],
       "stats": {
@@ -22884,7 +22884,7 @@
       "factions": [
         "Blade Industries"
       ],
-      "price": 2875000000,
+      "price": 135256907874.99997,
       "rep": 562500,
       "prereqs": [],
       "stats": {
@@ -22933,7 +22933,7 @@
       "factions": [
         "BitRunners"
       ],
-      "price": 1750000000,
+      "price": 82330291749.99998,
       "rep": 200000,
       "prereqs": [],
       "stats": {
@@ -22982,7 +22982,7 @@
         "BitRunners",
         "Slum Snakes"
       ],
-      "price": 10000000,
+      "price": 470458809.9999999,
       "rep": 5000,
       "prereqs": [],
       "stats": {
@@ -23031,7 +23031,7 @@
       "factions": [
         "NiteSec"
       ],
-      "price": 250000000,
+      "price": 11761470249.999996,
       "rep": 20000,
       "prereqs": [],
       "stats": {
@@ -23070,9 +23070,9 @@
       "tags": [
         "hacking"
       ],
-      "owned": false,
+      "owned": true,
       "installed": false,
-      "queued": false
+      "queued": true
     },
     {
       "name": "Neuralstimulator",
@@ -23088,7 +23088,7 @@
         "Clarke Incorporated",
         "Four Sigma"
       ],
-      "price": 3000000000,
+      "price": 141137642999.99997,
       "rep": 50000,
       "prereqs": [],
       "stats": {
@@ -23136,7 +23136,7 @@
       "factions": [
         "Chongqing"
       ],
-      "price": 375000000,
+      "price": 17642205374.999996,
       "rep": 37500,
       "prereqs": [],
       "stats": {
@@ -23214,8 +23214,8 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 15271188.719030617,
-      "rep": 10180.792479353744,
+      "price": 1383307420.1533284,
+      "rep": 19602.246300135943,
       "prereqs": [],
       "stats": {
         "hacking_chance": 1.01000262,
@@ -23270,7 +23270,7 @@
       "factions": [
         "Clarke Incorporated"
       ],
-      "price": 1375000000,
+      "price": 64688086374.999985,
       "rep": 187500,
       "prereqs": [],
       "stats": {
@@ -23318,7 +23318,7 @@
       "factions": [
         "Tian Di Hui"
       ],
-      "price": 550000000,
+      "price": 25875234549.999992,
       "rep": 75000,
       "prereqs": [],
       "stats": {
@@ -23367,7 +23367,7 @@
         "CyberSec",
         "Aevum"
       ],
-      "price": 4000000,
+      "price": 188183523.99999994,
       "rep": 1000,
       "prereqs": [],
       "stats": {
@@ -23418,7 +23418,7 @@
         "NiteSec",
         "BitRunners"
       ],
-      "price": 45000000,
+      "price": 2117064644.9999995,
       "rep": 10000,
       "prereqs": [],
       "stats": {
@@ -23459,8 +23459,8 @@
         "combat",
         "charisma"
       ],
-      "owned": false,
-      "installed": false,
+      "owned": true,
+      "installed": true,
       "queued": false
     },
     {
@@ -23469,7 +23469,7 @@
         "NWO",
         "Four Sigma"
       ],
-      "price": 130000000,
+      "price": 6115964529.999998,
       "rep": 25000,
       "prereqs": [],
       "stats": {
@@ -23519,7 +23519,7 @@
       "factions": [
         "Clarke Incorporated"
       ],
-      "price": 1925000000,
+      "price": 90563320924.99997,
       "rep": 437500,
       "prereqs": [],
       "stats": {
@@ -23575,7 +23575,7 @@
         "Clarke Incorporated",
         "Four Sigma"
       ],
-      "price": 20000000,
+      "price": 940917619.9999998,
       "rep": 5000,
       "prereqs": [],
       "stats": {
@@ -23624,7 +23624,7 @@
       "factions": [
         "New Tokyo"
       ],
-      "price": 2500000,
+      "price": 117614702.49999997,
       "rep": 6250,
       "prereqs": [],
       "stats": {
@@ -23672,7 +23672,7 @@
       "factions": [
         "OmniTek Incorporated"
       ],
-      "price": 2875000000,
+      "price": 135256907874.99997,
       "rep": 625000,
       "prereqs": [],
       "stats": {
@@ -23720,7 +23720,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 550000000,
+      "price": 25875234549.999992,
       "rep": 6250,
       "prereqs": [],
       "stats": {
@@ -23772,7 +23772,7 @@
         "OmniTek Incorporated",
         "Four Sigma"
       ],
-      "price": 3750000000,
+      "price": 176422053749.99994,
       "rep": 375000,
       "prereqs": [],
       "stats": {
@@ -23821,7 +23821,7 @@
       "factions": [
         "Fulcrum Secret Technologies"
       ],
-      "price": 7500000000,
+      "price": 352844107499.9999,
       "rep": 1500000,
       "prereqs": [
         "PC Direct-Neural Interface"
@@ -23874,7 +23874,7 @@
         "Blade Industries",
         "Fulcrum Secret Technologies"
       ],
-      "price": 4500000000,
+      "price": 211706464499.99994,
       "rep": 500000,
       "prereqs": [
         "PC Direct-Neural Interface"
@@ -23925,7 +23925,7 @@
       "factions": [
         "Aevum"
       ],
-      "price": 2000000000,
+      "price": 94091761999.99997,
       "rep": 100000,
       "prereqs": [],
       "stats": {
@@ -23977,7 +23977,7 @@
       "factions": [
         "KuaiGong International"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 562500,
       "prereqs": [],
       "stats": {
@@ -24029,7 +24029,7 @@
         "The Syndicate",
         "NWO"
       ],
-      "price": 180000000,
+      "price": 8468258579.999998,
       "rep": 25000,
       "prereqs": [],
       "stats": {
@@ -24079,7 +24079,7 @@
       "factions": [
         "Illuminati"
       ],
-      "price": 25000000000000,
+      "price": 1176147024999999.8,
       "rep": 1875000,
       "prereqs": [],
       "stats": {
@@ -24127,7 +24127,7 @@
       "factions": [
         "Bachman & Associates"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 375000,
       "prereqs": [],
       "stats": {
@@ -24177,7 +24177,7 @@
       "factions": [
         "Slum Snakes"
       ],
-      "price": 75000000,
+      "price": 3528441074.999999,
       "rep": 22500,
       "prereqs": [],
       "stats": {
@@ -24660,7 +24660,7 @@
         "MegaCorp",
         "OmniTek Incorporated"
       ],
-      "price": 1200000000,
+      "price": 56455057199.999985,
       "rep": 225000,
       "prereqs": [],
       "stats": {
@@ -24709,7 +24709,7 @@
       "factions": [
         "Tian Di Hui"
       ],
-      "price": 30000000,
+      "price": 1411376429.9999995,
       "rep": 6250,
       "prereqs": [],
       "stats": {
@@ -24765,7 +24765,7 @@
         "Four Sigma",
         "KuaiGong International"
       ],
-      "price": 12500000,
+      "price": 588073512.4999999,
       "rep": 2500,
       "prereqs": [],
       "stats": {
@@ -24821,7 +24821,7 @@
         "Ishima",
         "Silhouette"
       ],
-      "price": 50000000,
+      "price": 2352294049.9999995,
       "rep": 7500,
       "prereqs": [],
       "stats": {
@@ -24869,7 +24869,7 @@
       "factions": [
         "The Covenant"
       ],
-      "price": 4875000000,
+      "price": 229348669874.99994,
       "rep": 1250000,
       "prereqs": [],
       "stats": {
@@ -25082,7 +25082,7 @@
         "CyberSec",
         "Aevum"
       ],
-      "price": 7500000,
+      "price": 352844107.4999999,
       "rep": 2000,
       "prereqs": [],
       "stats": {
@@ -25137,7 +25137,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 1125000000,
+      "price": 52926616124.999985,
       "rep": 437500,
       "prereqs": [],
       "stats": {
@@ -25191,7 +25191,7 @@
         "Daedalus",
         "Illuminati"
       ],
-      "price": 2875000000,
+      "price": 135256907874.99997,
       "rep": 750000,
       "prereqs": [],
       "stats": {
@@ -25240,7 +25240,7 @@
       "factions": [
         "The Black Hand"
       ],
-      "price": 550000000,
+      "price": 25875234549.999992,
       "rep": 100000,
       "prereqs": [],
       "stats": {
@@ -25289,7 +25289,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 150000000000,
+      "price": 7056882149999.998,
       "rep": 1250,
       "prereqs": [],
       "stats": {
@@ -25338,7 +25338,7 @@
         "The Dark Army",
         "The Syndicate"
       ],
-      "price": 3375000000,
+      "price": 158779848374.99997,
       "rep": 187500,
       "prereqs": [],
       "stats": {
@@ -25436,7 +25436,7 @@
         "The Dark Army",
         "The Syndicate"
       ],
-      "price": 400000000,
+      "price": 18818352399.999996,
       "rep": 37500,
       "prereqs": [],
       "stats": {
@@ -25485,7 +25485,7 @@
       "factions": [
         "Silhouette"
       ],
-      "price": 190000000,
+      "price": 8938717389.999998,
       "rep": 25000,
       "prereqs": [],
       "stats": {
@@ -25533,7 +25533,7 @@
       "factions": [
         "Speakers for the Dead"
       ],
-      "price": 5000000000,
+      "price": 235229404999.99994,
       "rep": 362500,
       "prereqs": [],
       "stats": {
@@ -25551,13 +25551,13 @@
         "dexterity_exp": 1,
         "agility": 1,
         "agility_exp": 1,
-        "charisma": 1.5,
-        "charisma_exp": 2,
-        "hacknet_node_money": 1,
-        "hacknet_node_purchase_cost": 1,
-        "hacknet_node_ram_cost": 1,
-        "hacknet_node_core_cost": 1,
-        "hacknet_node_level_cost": 1,
+        "charisma": 1,
+        "charisma_exp": 1,
+        "hacknet_node_money": 1.2,
+        "hacknet_node_purchase_cost": 0.85,
+        "hacknet_node_ram_cost": 0.85,
+        "hacknet_node_core_cost": 0.85,
+        "hacknet_node_level_cost": 0.85,
         "company_rep": 1,
         "faction_rep": 1,
         "work_money": 1,
@@ -25570,7 +25570,7 @@
         "bladeburner_success_chance": 1
       },
       "tags": [
-        "charisma"
+        "hacknet"
       ],
       "owned": false,
       "installed": false,
@@ -25581,7 +25581,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 2750000000,
+      "price": 129376172749.99997,
       "rep": 18750,
       "prereqs": [],
       "stats": {
@@ -25631,7 +25631,7 @@
       "factions": [
         "Bladeburners"
       ],
-      "price": 11000000000,
+      "price": 517504690999.9999,
       "rep": 37500,
       "prereqs": [
         "Vangelis Virus"
@@ -25691,7 +25691,7 @@
         "The Dark Army",
         "The Syndicate"
       ],
-      "price": 2500000,
+      "price": 117614702.49999997,
       "rep": 1250,
       "prereqs": [],
       "stats": {
@@ -25739,7 +25739,7 @@
       "factions": [
         "NWO"
       ],
-      "price": 4250000000,
+      "price": 199944994249.99994,
       "rep": 875000,
       "prereqs": [],
       "stats": {
@@ -25785,5 +25785,5 @@
       "queued": false
     }
   ],
-  "bridgeUpdatedAt": 1782273615350
+  "bridgeUpdatedAt": 1782439441668
 }

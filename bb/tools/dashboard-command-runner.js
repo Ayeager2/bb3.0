@@ -84,6 +84,23 @@ async function handleCommand(ns, command) {
             return;
         }
 
+        if (name === "forceBackdoor") {
+            const target = String(command.target ?? "").trim();
+            if (!target) {
+                fail(ns, command, "Force backdoor command missing target.");
+                return;
+            }
+
+            const pid = ns.run("/tools/backdoor-route.js", 1, "--target", target, "--execute");
+            if (pid === 0) {
+                fail(ns, command, `Failed to start forced backdoor for ${target}.`);
+                return;
+            }
+
+            complete(ns, command, `Forced backdoor route started for ${target}.`, "success");
+            return;
+        }
+
         if (name === "clearEvents") {
             ns.write("/data/ui/event-log.txt", "", "w");
 

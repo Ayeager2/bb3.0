@@ -2,5 +2,5 @@
   "source": "faction-work-plan",
   "status": "unavailable",
   "message": "Could not read /data/faction-work-plan.txt. Is /tools/faction-work-service.js running?",
-  "bridgeUpdatedAt": 1782273615377
+  "bridgeUpdatedAt": 1782439441686
 }

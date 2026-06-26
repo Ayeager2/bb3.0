@@ -51,6 +51,29 @@ export function buildFactionProgressionState(ns) {
   const backdoorState = buildBackdoorState(ns);
   const augmentationDecision = getAugmentationDecision(ns);
   const hasRedPill = hasAugmentation(ns, "The Red Pill");
+  const currentFactionWork = getCurrentFactionWork(ns);
+  const currentWorkStage = getStageByFaction(currentFactionWork?.factionName);
+
+  if (
+    augmentationDecision?.reason === "No augmentation goal found." &&
+    currentWorkStage &&
+    joinedFactions.includes(currentWorkStage.faction)
+  ) {
+    const backdoorInfo = backdoorState.progressionServers.find(
+      x => x.server === currentWorkStage.server
+    );
+
+    return withCalculations(ns, makeState(currentWorkStage, {
+      blocker: "augmentation-refresh",
+      nextAction: "augmentation-progress",
+      recommendedMode: "progression",
+      reason: `${currentWorkStage.faction} work is active; waiting for augmentation plan refresh before advancing the faction ladder.`,
+      backdoorInfo,
+      joined: true,
+      hasRedPill,
+      augmentationDecision,
+    }));
+  }
 
   for (const stage of FACTION_STAGES) {
     const backdoorInfo = backdoorState.progressionServers.find(
@@ -60,14 +83,19 @@ export function buildFactionProgressionState(ns) {
     const joined = joinedFactions.includes(stage.faction);
     const backdoored = backdoorInfo?.backdoored === true;
     const rooted = backdoorInfo?.rooted === true;
-    const hackingEligible = playerHack >= stage.requiredHack;
+    const requiredHack =
+      getStageRequiredHack(stage, backdoorInfo);
+    const hackingEligible = playerHack >= requiredHack;
 
     if (!hackingEligible) {
-      return withCalculations(ns, makeState(stage, {
+      return withCalculations(ns, makeState({
+        ...stage,
+        requiredHack,
+      }, {
         blocker: "hacking-level",
         nextAction: "exp",
         recommendedMode: "exp",
-        reason: `${stage.faction} requires hacking ${stage.requiredHack}; current ${playerHack}.`,
+        reason: `${stage.faction} requires hacking ${requiredHack}; current ${playerHack}.`,
         backdoorInfo,
         joined,
         hasRedPill,
@@ -95,6 +123,19 @@ export function buildFactionProgressionState(ns) {
         backdoorInfo,
         joined,
         hasRedPill,
+      }));
+    }
+
+    const stageAugmentationBlocker =
+      getStageAugmentationBlocker(stage, augmentationDecision);
+
+    if (stageAugmentationBlocker) {
+      return withCalculations(ns, makeState(stage, {
+        ...stageAugmentationBlocker,
+        backdoorInfo,
+        joined,
+        hasRedPill,
+        augmentationDecision,
       }));
     }
   }
@@ -192,8 +233,57 @@ function makeState(stage, data) {
     joined: data.joined,
     hasRedPill: data.hasRedPill,
     backdoorInfo: data.backdoorInfo ?? null,
+    augmentationDecision: data.augmentationDecision ?? null,
     reason: data.reason,
   };
+}
+
+function getStageAugmentationBlocker(stage, augmentationDecision) {
+  if (!augmentationDecision) return null;
+  if (augmentationDecision.targetFaction !== stage.faction) return null;
+  if (augmentationDecision.reason === "No augmentation goal found.") return null;
+
+  if (augmentationDecision.shouldBuyAugment === true) {
+    return {
+      blocker: "augmentation-purchase",
+      nextAction: "buy-augmentation",
+      recommendedMode: "progression",
+      reason: augmentationDecision.reason ??
+        `${stage.faction} has an augmentation ready to buy.`,
+    };
+  }
+
+  if (augmentationDecision.shouldDonateFaction === true) {
+    return {
+      blocker: "donation",
+      nextAction: "faction-donation",
+      recommendedMode: "progression",
+      reason: augmentationDecision.reason ??
+        `${stage.faction} needs donation support before advancing.`,
+    };
+  }
+
+  if (augmentationDecision.shouldWorkFaction === true) {
+    return {
+      blocker: "reputation",
+      nextAction: "faction-work",
+      recommendedMode: "progression",
+      reason: augmentationDecision.reason ??
+        `${stage.faction} still needs reputation for its augmentation plan.`,
+    };
+  }
+
+  if (augmentationDecision.shouldEarnMoney === true) {
+    return {
+      blocker: "money",
+      nextAction: "earn-money",
+      recommendedMode: "money",
+      reason: augmentationDecision.reason ??
+        `${stage.faction} augmentation plan needs more money before advancing.`,
+    };
+  }
+
+  return null;
 }
 
 function withCalculations(ns, state) {
@@ -693,6 +783,31 @@ function getJoinedFactions(ns) {
   } catch {
     return [];
   }
+}
+
+function getCurrentFactionWork(ns) {
+  try {
+    const work = ns.singularity.getCurrentWork();
+    return work?.type === "FACTION" ? work : null;
+  } catch {
+    return null;
+  }
+}
+
+function getStageByFaction(faction) {
+  if (!faction) return null;
+  return FACTION_STAGES.find(stage => stage.faction === faction) ?? null;
+}
+
+function getStageRequiredHack(stage, backdoorInfo) {
+  const liveRequiredHack =
+    Number(backdoorInfo?.requiredHack);
+
+  if (Number.isFinite(liveRequiredHack) && liveRequiredHack > 0) {
+    return liveRequiredHack;
+  }
+
+  return stage.requiredHack;
 }
 
 function hasAugmentation(ns, name) {

@@ -4,7 +4,6 @@ import {
     growScript,
     weakenScript,
     defaultHackPercent,
-    expHackPercent,
     batchSpacingMs,
     maxBatchesPerCycle,
     maxWorkerThreadsPerProcess,
@@ -184,10 +183,6 @@ export function getBatchPlan(ns, target, mode, options = {}) {
     if (!isUsableTarget(ns, target)) return null;
 
     const availableRam = Number(options.availableRam ?? 0);
-
-    if (mode === "exp") {
-        return buildBatchPlan(ns, target, mode, expHackPercent, options);
-    }
 
     if (availableRam <= 0) {
         return buildBatchPlan(ns, target, mode, defaultHackPercent, options);

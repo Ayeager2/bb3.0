@@ -53,6 +53,24 @@ let testMode = false;
 
 app.use(express.json());
 
+function sanitizeCommandText(value) {
+    if (value == null) return null;
+
+    const text = String(value).trim();
+    if (!text) return null;
+
+    return text.slice(0, 128);
+}
+
+function sanitizeCommandArgs(value) {
+    if (!Array.isArray(value)) return [];
+
+    return value
+        .slice(0, 12)
+        .map(item => sanitizeCommandText(item))
+        .filter(Boolean);
+}
+
 app.post("/command", async (req, res) => {
     if (!bitburnerSocket) {
         return res.status(503).json({ ok: false, error: "Bitburner not connected." });
@@ -61,6 +79,7 @@ app.post("/command", async (req, res) => {
     const command = String(req.body?.command ?? "");
     const allowed = new Set([
         "refreshTopology",
+        "forceBackdoor",
         "clearEvents",
         "debugSnapshot",
         "eventTest",
@@ -74,6 +93,8 @@ app.post("/command", async (req, res) => {
         id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
         createdAt: Date.now(),
         command,
+        target: sanitizeCommandText(req.body?.target),
+        args: sanitizeCommandArgs(req.body?.args),
     };
 
     try {

@@ -7,6 +7,8 @@ import {
 
 const FULL_DAEMON = "daemon.js";
 const TINY_WORKER = "/workers/tiny-worker.js";
+const CRIME_BOOTSTRAP = "/tools/crime-bootstrap.js";
+const TINY_HACKNET_BUYER = "/economy/tiny-hacknet-buyer.js";
 const HACKNET_BUYER = "/economy/hacknet-buyer-service.js";
 const HACKNET_HASH_SPENDER = "/economy/hacknet-hash-spender-service.js";
 const TARGET_FILE = "/data/bootstrap-target.txt";
@@ -44,7 +46,8 @@ export async function main(ns) {
     cleanupBlockedBootstrapHosts(ns, rootedServers);
 
     buyEarlyUpgrades(ns);
-    startBn9HacknetServices(ns);
+    startFreshCrimeBootstrap(ns);
+    startBootstrapHacknetServices(ns);
 
     const target = chooseBestTarget(ns, rootedServers);
     const plan = buildBootstrapPlan(ns, target);
@@ -76,32 +79,53 @@ function shouldStartFullDaemon(ns) {
   );
 }
 
-function startBn9HacknetServices(ns) {
-  if (!isHacknetBitNode(ns)) return;
+function startFreshCrimeBootstrap(ns) {
+  if (getCurrentBitNode(ns) !== 2) return;
 
-  const buyerStarted = startBootstrapService(ns, HACKNET_BUYER, [
+  startBootstrapService(ns, CRIME_BOOTSTRAP, [
+    "--crime", "Mug",
+    "--stop-money", 10_000_000,
+    "--stop-home-ram", CONFIG.minHomeRamForFullDaemon,
+    "--focus", false,
+  ], {
+    priority: true,
+    reserveRam: 0,
+  });
+}
+
+function startBootstrapHacknetServices(ns) {
+  const bitNode = getCurrentBitNode(ns);
+  if (bitNode !== 2 && bitNode !== 9) return;
+
+  const isHashNode = bitNode === 9;
+  const buyerScript = isHashNode ? HACKNET_BUYER : TINY_HACKNET_BUYER;
+
+  const buyerStarted = startBootstrapService(ns, buyerScript, [
     "--refresh", 3000,
-    "--nodes", 20,
-    "--level", 200,
-    "--ram", 64,
-    "--cores", 16,
-    "--cache", 8,
+    "--nodes", isHashNode ? 20 : 0,
+    "--level", isHashNode ? 200 : 0,
+    "--ram", isHashNode ? 64 : 0,
+    "--cores", isHashNode ? 16 : 0,
+    "--cache", isHashNode ? 8 : 0,
     "--reserve", 0,
     "--max-payback", 0,
     "--hash-buffer-minutes", 120,
     "--sell-value", 2_000_000,
-    "--max-purchases", 50,
+    "--max-purchases", isHashNode ? 50 : 1000,
     "--force", true,
     "--debug", true,
     "--toast", false,
     "--terminal", false,
   ], {
     priority: true,
+    reserveRam: isHashNode ? CONFIG.homeReserveRam : 0,
   });
 
-  if (!buyerStarted && !isScriptRunning(ns, HACKNET_BUYER)) {
+  if (!buyerStarted && !isScriptRunning(ns, buyerScript)) {
     return;
   }
+
+  if (!isHashNode) return;
 
   startBootstrapService(ns, HACKNET_HASH_SPENDER, [
     "--refresh", 3000,
@@ -127,7 +151,11 @@ function startBootstrapService(ns, script, args = [], options = {}) {
     freeBootstrapServiceRam(ns, neededRam);
   }
 
-  const freeRam = getFreeRam(ns, "home", CONFIG.homeReserveRam);
+  const reserveRam =
+    Number.isFinite(options.reserveRam)
+      ? Math.max(0, Number(options.reserveRam))
+      : CONFIG.homeReserveRam;
+  const freeRam = getFreeRam(ns, "home", reserveRam);
   if (freeRam < neededRam) return false;
 
   return ns.exec(script, "home", 1, ...args) !== 0;
@@ -159,10 +187,14 @@ function isScriptRunning(ns, script) {
 }
 
 function isHacknetBitNode(ns) {
+  return getCurrentBitNode(ns) === 9;
+}
+
+function getCurrentBitNode(ns) {
   try {
-    return ns.getResetInfo()?.currentNode === 9;
+    return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
   } catch {
-    return false;
+    return 1;
   }
 }
 

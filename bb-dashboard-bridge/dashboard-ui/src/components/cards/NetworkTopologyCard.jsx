@@ -78,6 +78,14 @@ export default function NetworkTopologyCard({
         }
     }
 
+    async function forceBackdoor(serverId) {
+        if (!serverId) return;
+
+        await sendDashboardCommand("forceBackdoor", {
+            target: serverId,
+        });
+    }
+
     return (
         <GraphCard
             id={id}
@@ -99,8 +107,10 @@ export default function NetworkTopologyCard({
                         topology={topology}
                         state={state}
                         backdoorQueue={backdoorQueue}
+                        selectedServer={selectedServer}
                         refreshing={refreshing}
                         onRefresh={refreshTopology}
+                        onForceBackdoor={forceBackdoor}
                     />
                 ) : null
             }

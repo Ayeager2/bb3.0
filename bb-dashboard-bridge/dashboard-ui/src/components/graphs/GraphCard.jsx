@@ -34,6 +34,8 @@ export default function GraphCard({
 }) {
     const graphWrapRef = useRef(null);
     const [hoverTooltip, setHoverTooltip] = useState(null);
+    const [flowInstance, setFlowInstance] = useState(null);
+    const [resizeTick, setResizeTick] = useState(0);
 
     const stableNodes = useMemo(() => nodes ?? [], [nodes]);
     const stableEdges = useMemo(() => edges ?? [], [edges]);
@@ -58,6 +60,32 @@ export default function GraphCard({
         setGraphNodes(previous => mergeNodes(previous, stableNodes));
         setGraphEdges(stableEdges);
     }, [stableNodes, stableEdges, setGraphNodes, setGraphEdges]);
+
+    useEffect(() => {
+        const element = graphWrapRef.current;
+        if (!element || typeof ResizeObserver === "undefined") return undefined;
+
+        const observer = new ResizeObserver(() => {
+            setResizeTick(tick => tick + 1);
+        });
+
+        observer.observe(element);
+
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!fitView || !flowInstance || stableNodes.length === 0 || collapsed) return undefined;
+
+        const frame = window.requestAnimationFrame(() => {
+            flowInstance.fitView({
+                padding: 0.25,
+                duration: 180,
+            });
+        });
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [fitView, flowInstance, stableNodes, stableEdges, height, size, collapsed, resizeTick]);
 
     return (
         <Card
@@ -96,6 +124,7 @@ export default function GraphCard({
                         setHoverTooltip(null);
                         onNodeMouseLeave?.(node);
                     }}
+                    onInit={setFlowInstance}
                     fitView={fitView}
                     fitViewOptions={{ padding: 0.25 }}
                     nodesDraggable

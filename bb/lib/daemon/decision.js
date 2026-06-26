@@ -405,6 +405,8 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
         const factionWorkActive =
             progressionActive ||
             factionPlanActive;
+        const allowHacknetExecution =
+            levelingActive;
 
         return {
             priority: hacknetPriority,
@@ -415,7 +417,7 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
                 hacknetPriority === "income" ||
                 shouldBn9AllowSideStockTrading(ns),
             allowHacknet: true,
-            allowHacknetExecution: false,
+            allowHacknetExecution,
             allowHomeRam: true,
             allowExePurchases: true,
 
@@ -437,7 +439,10 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
                     : levelingActive
                         ? "BN9 leveling is active: script EXP leads while Hacknet keeps compounding in the background."
                         : "BN9 income is active: Hacknet and hashes lead the economy.",
-            hacknetExecutionReason: "BN9 preserves Hacknet server RAM for hash production instead of UHM workers.",
+            hacknetExecutionReason:
+                allowHacknetExecution
+                    ? "BN9 hacking-level gate is active: Hacknet server RAM may be borrowed for UHM XP farming."
+                    : "BN9 preserves Hacknet server RAM for hash production outside level gates.",
             bitNodeCapabilities,
         };
     }

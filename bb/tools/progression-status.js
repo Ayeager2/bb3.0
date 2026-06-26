@@ -7,6 +7,7 @@ const UHM_STATE_FILE = "/data/uhm-state.txt";
 const BACKDOOR_STATE_FILE = "/data/backdoor-service-state.txt";
 const FACTION_JOIN_STATUS_FILE = "/data/faction-join-status.txt";
 const FACTION_WORK_SERVICE_STATE_FILE = "/data/faction-work-service-state.txt";
+const BN9_LEVEL_STUDY_STATE_FILE = "/data/bn9-level-study-state.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -21,6 +22,7 @@ export async function main(ns) {
     const backdoor = readJson(ns, BACKDOOR_STATE_FILE);
     const join = readJson(ns, FACTION_JOIN_STATUS_FILE);
     const factionWorkService = readJson(ns, FACTION_WORK_SERVICE_STATE_FILE);
+    const bn9Study = readJson(ns, BN9_LEVEL_STUDY_STATE_FILE);
 
     const currentWork = getCurrentWork(ns);
     const factionProgression = daemon.factionProgression ?? {};
@@ -32,6 +34,9 @@ export async function main(ns) {
     ns.tprint(`Mode: ${daemon.mode ?? "unknown"} | Priority: ${daemon.spendingPolicy?.priority ?? "unknown"}`);
     ns.tprint(`Money: ${formatMoney(ns.getPlayer().money)} | Hacking: ${ns.getHackingLevel()} | Home RAM: ${formatRam(ns.getServerMaxRam("home"))}`);
     ns.tprint(`Current Work: ${formatWork(currentWork)}`);
+    if (bn9Study?.updatedAt) {
+        ns.tprint(`BN9 Study: ${bn9Study.status ?? "unknown"} | ${bn9Study.reason ?? "no reason"}`);
+    }
     ns.tprint(
         `Policy: join ${yesNo(daemon.spendingPolicy?.allowFactionJoin)} | ` +
         `work ${yesNo(daemon.spendingPolicy?.allowFactionWork)} | ` +
@@ -44,7 +49,7 @@ export async function main(ns) {
     printUhmStatus(ns, uhm);
 
     ns.tprint("-".repeat(70));
-    ns.tprint("BN4 / Faction Progression");
+    ns.tprint(`BN${daemon.bitNode ?? ns.getPlayer().bitNodeN ?? "?"} / Faction Progression`);
     ns.tprint(`Stage: ${factionProgression.currentFactionStage ?? "unknown"} | Blocker: ${factionProgression.currentBlocker ?? "unknown"}`);
     ns.tprint(`Action: ${factionProgression.nextBestAction ?? "unknown"} | Mode Hint: ${factionProgression.recommendedMode ?? "unknown"}`);
     ns.tprint(`Target Faction: ${factionProgression.targetFaction ?? "none"} | Target Server: ${factionProgression.targetServer ?? "none"}`);

@@ -1,12 +1,7 @@
 const SELL_FOR_MONEY = "Sell for Money";
 const IMPROVE_STUDYING = "Improve Studying";
-const REDUCE_MIN_SECURITY = "Reduce Minimum Security";
-const INCREASE_MAX_MONEY = "Increase Maximum Money";
 
 const BN9_CASH_FLOOR = 25_000_000;
-const BN9_TARGET_BOOST_CASH_FLOOR = 100_000_000;
-const BN9_STABLE_HASH_RATE = 1;
-const BN9_TARGET_BOOST_SPENDS = 100_000;
 const BN9_STUDY_BOOST_SPENDS = 1;
 
 export function chooseHacknetHashUpgrade(ns, options = {}) {
@@ -108,24 +103,6 @@ export function chooseHacknetHashUpgrade(ns, options = {}) {
         };
     }
 
-    if (target && shouldReduceSecurity(ns, target)) {
-        return {
-            upgradeName: REDUCE_MIN_SECURITY,
-            target,
-            source: "target-prep",
-            reason: `${target} minimum security is still worth reducing for BN9 money/prep.`,
-        };
-    }
-
-    if (target && shouldIncreaseMaxMoney(ns, target, daemonState)) {
-        return {
-            upgradeName: INCREASE_MAX_MONEY,
-            target,
-            source: "target-growth",
-            reason: `${target} is the current money target; increase max money when security is already clean.`,
-        };
-    }
-
     return {
         upgradeName: SELL_FOR_MONEY,
         target: null,
@@ -140,13 +117,14 @@ function chooseBn9HashUpgrade(ns, context) {
 
     if (context.expPolicy?.shouldLevelNow === true) {
         return {
-            upgradeName: SELL_FOR_MONEY,
+            upgradeName: IMPROVE_STUDYING,
             target: null,
-            source: "bn9-level-gate-waiting-study",
-            phase: "cash",
-            liquidate: true,
+            source: "bn9-level-gate-study-boost",
+            phase: "study",
+            bankHashes: true,
+            maxSpendsPerCycle: BN9_STUDY_BOOST_SPENDS,
             reason:
-                "BN9 is hacking-level blocked but the player is not studying yet; sell hashes until the life service starts computer science study.",
+                "BN9 is hacking-level blocked; spend hashes on Improve Studying to accelerate hacking levels.",
             money: economy.money,
             hashProduction: economy.production,
             targetLevel: context.expPolicy.targetLevel ?? null,
@@ -216,30 +194,6 @@ function chooseBn9HashUpgrade(ns, context) {
         };
     }
 
-    if (economy.production < BN9_STABLE_HASH_RATE || economy.money < BN9_TARGET_BOOST_CASH_FLOOR) {
-        return {
-            upgradeName: SELL_FOR_MONEY,
-            target: null,
-            source: "bn9-hash-snowball",
-            phase: "cash",
-            liquidate: true,
-            reason:
-                `BN9 hash rate/cash is still building; sell hashes until production is at least ` +
-                `${BN9_STABLE_HASH_RATE}/s and cash is above ${formatMoney(BN9_TARGET_BOOST_CASH_FLOOR)}.`,
-            targetCandidate: context.target,
-            money: economy.money,
-            hashProduction: economy.production,
-        };
-    }
-
-    const targetBoost =
-        getBn9TargetBoostChoice(ns, context, economy, {
-            sourcePrefix: "bn9",
-            reasonSuffix: "Spend available hashes shaping the selected hacking target before returning to cash snowballing.",
-        });
-
-    if (targetBoost) return targetBoost;
-
     if (shouldFuelHacknetSnowball(context.hacknetState)) {
         return {
             upgradeName: SELL_FOR_MONEY,
@@ -270,46 +224,6 @@ function chooseBn9HashUpgrade(ns, context) {
         money: economy.money,
         hashProduction: economy.production,
     };
-}
-
-function getBn9TargetBoostChoice(ns, context, economy, options = {}) {
-    if (!context.target) return null;
-
-    const common = {
-        bankHashes: true,
-        targetShaping: true,
-        phase: "target-boost",
-        targetStats: getTargetStats(ns, context.target),
-        money: economy.money,
-        hashProduction: economy.production,
-        ...(options.extra ?? {}),
-    };
-
-    if (shouldReduceSecurity(ns, context.target)) {
-        return {
-            ...common,
-            upgradeName: REDUCE_MIN_SECURITY,
-            target: context.target,
-            maxSpendsPerCycle: BN9_TARGET_BOOST_SPENDS,
-            source: `${options.sourcePrefix ?? "bn9"}-target-security`,
-            reason:
-                `${context.target} security is above minimum. ${options.reasonSuffix ?? "Spend available hashes reducing minimum security."}`,
-        };
-    }
-
-    if (shouldIncreaseMaxMoney(ns, context.target, { mode: "money", spendingPolicy: { priority: "income" } })) {
-        return {
-            ...common,
-            upgradeName: INCREASE_MAX_MONEY,
-            target: context.target,
-            maxSpendsPerCycle: BN9_TARGET_BOOST_SPENDS,
-            source: `${options.sourcePrefix ?? "bn9"}-target-money`,
-            reason:
-                `${context.target} is clean enough. ${options.reasonSuffix ?? "Spend available hashes increasing max money."}`,
-        };
-    }
-
-    return null;
 }
 
 function shouldFuelHacknetSnowball(hacknetState = {}) {
@@ -413,46 +327,6 @@ function isUsefulServerTarget(ns, target) {
     }
 }
 
-function shouldReduceSecurity(ns, target) {
-    try {
-        const minSecurity =
-            ns.getServerMinSecurityLevel(target);
-        const currentSecurity =
-            ns.getServerSecurityLevel(target);
-
-        return currentSecurity - minSecurity > 2;
-    } catch {
-        return false;
-    }
-}
-
-function shouldIncreaseMaxMoney(ns, target, daemonState) {
-    try {
-        const mode =
-            daemonState.mode ?? "money";
-        const priority =
-            daemonState.spendingPolicy?.priority ?? "income";
-        const maxMoney =
-            ns.getServerMaxMoney(target);
-        const minSecurity =
-            ns.getServerMinSecurityLevel(target);
-        const currentSecurity =
-            ns.getServerSecurityLevel(target);
-
-        return (
-            maxMoney > 0 &&
-            currentSecurity - minSecurity <= 2 &&
-            (
-                mode === "money" ||
-                priority === "income" ||
-                mode === "bootstrap"
-            )
-        );
-    } catch {
-        return false;
-    }
-}
-
 function getHashEconomySnapshot(ns) {
     return {
         money: safePlayerMoney(ns),
@@ -460,30 +334,6 @@ function getHashEconomySnapshot(ns) {
         hashes: safeNumHashes(ns),
         capacity: safeHashCapacity(ns),
     };
-}
-
-function getTargetStats(ns, target) {
-    try {
-        const maxMoney =
-            ns.getServerMaxMoney(target);
-        const money =
-            ns.getServerMoneyAvailable(target);
-        const minSecurity =
-            ns.getServerMinSecurityLevel(target);
-        const security =
-            ns.getServerSecurityLevel(target);
-
-        return {
-            money,
-            maxMoney,
-            moneyRatio: maxMoney > 0 ? money / maxMoney : 0,
-            security,
-            minSecurity,
-            securityGap: security - minSecurity,
-        };
-    } catch {
-        return null;
-    }
 }
 
 function getTotalHashProduction(ns) {

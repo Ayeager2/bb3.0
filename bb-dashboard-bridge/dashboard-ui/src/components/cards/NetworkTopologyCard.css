@@ -304,7 +304,7 @@
 
 .legend-action-row {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
     gap: 4px;
     margin-top: 3px;
 }
@@ -416,6 +416,15 @@
 
 .legend-action-warn:hover {
     border-color: var(--yellow);
+}
+
+.legend-action-hot {
+    border-color: rgba(255, 56, 100, .42);
+    color: var(--red);
+}
+
+.legend-action-hot:hover {
+    border-color: var(--red);
 }
 
 .legend-action:disabled {

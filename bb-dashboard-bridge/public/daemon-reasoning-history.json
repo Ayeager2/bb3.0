@@ -1,12 +1,12 @@
 [
   {
-    "ts": 1782273605052,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:0 positions held. Portfolio $0. Total P/L $0.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
+    "ts": 1782437649809,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.63b. Total P/L $612.67m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
     "levels": {
-      "info": 4,
+      "info": 5,
       "success": 1,
-      "warning": 2,
+      "warning": 1,
       "danger": 0,
       "error": 0
     },
@@ -21,9 +21,9 @@
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
       },
       {
         "id": "policy",
@@ -35,923 +35,41 @@
       {
         "id": "bn9-hacknet",
         "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.",
         "level": "info"
       },
       {
         "id": "bn9-hashes",
         "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
       },
       {
         "id": "bn9-stocks",
         "title": "Stock Trader",
         "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "0 positions held. Portfolio $0. Total P/L $0.",
+        "detail": "9 positions held. Portfolio $1.63b. Total P/L $612.67m.",
         "level": "info"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273600050,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:0 positions held. Portfolio $0. Total P/L $0.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 4,
-      "success": 1,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "0 positions held. Portfolio $0. Total P/L $0.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273590036,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:0 positions held. Portfolio $0. Total P/L $0.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 4,
-      "success": 1,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "0 positions held. Portfolio $0. Total P/L $0.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273585021,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:0 positions held. Portfolio $0. Total P/L $0.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 4,
-      "success": 1,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "0 positions held. Portfolio $0. Total P/L $0.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273575011,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:0 positions held. Portfolio $0. Total P/L $0.|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 4,
-      "success": 1,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "0 positions held. Portfolio $0. Total P/L $0.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273569994,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273564983,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273554975,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273549974,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273539953,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273534950,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273524932,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273519914,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273514911,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:Next augmentation is Nanofiber Weave.:Need more rep with Tian Di Hui.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
-      },
-      {
-        "id": "bn9-augmentations",
-        "title": "Augmentation Path",
-        "summary": "Next augmentation is Nanofiber Weave.",
-        "detail": "Need more rep with Tian Di Hui.",
-        "level": "warning"
-      }
-    ]
-  },
-  {
-    "ts": 1782273509896,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is joesguns.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x10.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:No augmentation goal published.:No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 3,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in exp mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is joesguns.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hacknet",
-        "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
-        "level": "info"
-      },
-      {
-        "id": "bn9-hashes",
-        "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x10.",
-        "level": "success"
-      },
-      {
-        "id": "bn9-stocks",
-        "title": "Stock Trader",
-        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
       },
       {
         "id": "bn9-augmentations",
         "title": "Augmentation Path",
         "summary": "No augmentation goal published.",
-        "detail": "No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
+        "detail": "No valid augmentation candidate found.",
         "level": "warning"
       }
     ]
   },
   {
-    "ts": 1782273504893,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is joesguns.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x11.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:No augmentation goal published.:No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
+    "ts": 1782437644804,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.63b. Total P/L $612.44m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
     "levels": {
-      "info": 3,
+      "info": 5,
       "success": 1,
-      "warning": 3,
+      "warning": 1,
       "danger": 0,
       "error": 0
     },
@@ -966,113 +84,3067 @@
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is joesguns.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution, cloud servers blocked by BN9.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
         "id": "bn9-hacknet",
         "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
         "level": "info"
       },
       {
         "id": "bn9-hashes",
         "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x11.",
-        "level": "success"
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
       },
       {
         "id": "bn9-stocks",
         "title": "Stock Trader",
         "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
+        "detail": "9 positions held. Portfolio $1.63b. Total P/L $612.44m.",
+        "level": "info"
       },
       {
         "id": "bn9-augmentations",
         "title": "Augmentation Path",
         "summary": "No augmentation goal published.",
-        "detail": "No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
+        "detail": "No valid augmentation candidate found.",
         "level": "warning"
       }
     ]
   },
   {
-    "ts": 1782273499874,
-    "summary": "3 warning item(s) need attention.",
-    "fingerprint": "stale:warning:Dashboard state is stale.:Last dashboard state update was never. Restart /tools/dashboard-state-writer.js or daemon.js if this does not refresh.|mode:info:Daemon is running in unknown mode.:No next action published.|target:success:Current target is unknown.:No target data is available.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, augmentation purchases, reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is roi-blocked.:9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.|bn9-hashes:success:Hash policy: Sell for Money.:Spent hashes on Sell for Money x18.|bn9-stocks:warning:Stock trader is 4S FORECAST AUTO-TRADER.:daemon policy has stock trading disabled|bn9-augmentations:warning:No augmentation goal published.:No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
+    "ts": 1782437639784,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.62b. Total P/L $610.65m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
     "levels": {
-      "info": 3,
-      "success": 2,
-      "warning": 3,
+      "info": 5,
+      "success": 1,
+      "warning": 1,
       "danger": 0,
       "error": 0
     },
     "items": [
       {
-        "id": "stale",
-        "title": "Telemetry Freshness",
-        "summary": "Dashboard state is stale.",
-        "detail": "Last dashboard state update was never. Restart /tools/dashboard-state-writer.js or daemon.js if this does not refresh.",
-        "level": "warning"
-      },
-      {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in unknown mode.",
-        "detail": "No next action published.",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is unknown.",
-        "detail": "No target data is available.",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
         "level": "success"
       },
       {
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, augmentation purchases, reset execution, cloud servers blocked by BN9.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
         "level": "info"
       },
       {
         "id": "bn9-hacknet",
         "title": "BN9 Hacknet",
-        "summary": "Hacknet is roi-blocked.",
-        "detail": "9/20 nodes producing 9 hashes/sec. Next: upgrade node 2 level by 1 for $34.21m.",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.",
         "level": "info"
       },
       {
         "id": "bn9-hashes",
         "title": "Hash Spending",
-        "summary": "Hash policy: Sell for Money.",
-        "detail": "Spent hashes on Sell for Money x18.",
-        "level": "success"
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
       },
       {
         "id": "bn9-stocks",
         "title": "Stock Trader",
         "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-        "detail": "daemon policy has stock trading disabled",
-        "level": "warning"
+        "detail": "9 positions held. Portfolio $1.62b. Total P/L $610.65m.",
+        "level": "info"
       },
       {
         "id": "bn9-augmentations",
         "title": "Augmentation Path",
         "summary": "No augmentation goal published.",
-        "detail": "No augmentation-state.txt found. Run /tools/augmentation-data-builder.js --force",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437634763,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.62b. Total P/L $609.67m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.62b. Total P/L $609.67m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437629760,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.61b. Total P/L $601.63m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.61b. Total P/L $601.63m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437624739,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.61b. Total P/L $601.63m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.61b. Total P/L $601.63m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437619733,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.60b. Total P/L $589.34m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.60b. Total P/L $589.34m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437614725,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.60b. Total P/L $586.56m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.60b. Total P/L $586.56m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437609720,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.59b. Total P/L $576.08m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.59b. Total P/L $576.08m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437604712,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.59b. Total P/L $574.83m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.59b. Total P/L $574.83m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437599702,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $570.84m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $570.84m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437594696,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $570.84m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $570.84m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437589695,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $569.24m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $569.24m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437584680,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $571.73m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $571.73m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437579662,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $571.37m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $571.37m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437574639,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $570.82m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $570.82m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437569627,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $569.31m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $569.31m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437564622,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $569.31m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $569.31m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437559616,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $564.29m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $564.29m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437554612,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.58b. Total P/L $562.99m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.58b. Total P/L $562.99m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437549593,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $560.86m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $560.86m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437544576,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $559.60m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 8 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $559.60m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437539555,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $557.93m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $557.93m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437534538,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $557.93m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $557.93m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437529532,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $554.55m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $554.55m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437524528,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.57b. Total P/L $552.68m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.57b. Total P/L $552.68m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437519520,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.56b. Total P/L $550.96m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.56b. Total P/L $550.96m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437514519,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.56b. Total P/L $547.00m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.56b. Total P/L $547.00m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437509499,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.56b. Total P/L $547.93m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.56b. Total P/L $547.93m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437504482,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.56b. Total P/L $547.93m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.56b. Total P/L $547.93m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437499459,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.56b. Total P/L $543.35m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.56b. Total P/L $543.35m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437494450,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.55b. Total P/L $536.63m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.55b. Total P/L $536.63m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437489425,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.55b. Total P/L $533.12m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.55b. Total P/L $533.12m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437484412,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.54b. Total P/L $530.71m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.54b. Total P/L $530.71m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437479391,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.55b. Total P/L $531.83m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.55b. Total P/L $531.83m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437474374,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 1 hashes/sec. Next: upgrade node 4 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.55b. Total P/L $531.83m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 1 hashes/sec. Next: upgrade node 4 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.55b. Total P/L $531.83m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437469360,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.54b. Total P/L $531.23m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.54b. Total P/L $531.23m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437464343,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.54b. Total P/L $522.13m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.54b. Total P/L $522.13m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437459336,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.53b. Total P/L $521.19m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 9 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.53b. Total P/L $521.19m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437454313,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.53b. Total P/L $517.63m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 6 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.53b. Total P/L $517.63m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437449307,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.53b. Total P/L $515.33m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 3 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.53b. Total P/L $515.33m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437444303,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.53b. Total P/L $515.33m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 1 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.53b. Total P/L $515.33m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437439288,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.52b. Total P/L $507.90m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.52b. Total P/L $507.90m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437434284,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.52b. Total P/L $502.72m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 2 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.52b. Total P/L $502.72m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437429279,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.52b. Total P/L $502.50m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 0 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.52b. Total P/L $502.50m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437424266,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.51b. Total P/L $494.96m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.51b. Total P/L $494.96m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437419249,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.50b. Total P/L $488.71m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.50b. Total P/L $488.71m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437414234,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.50b. Total P/L $488.71m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 4 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.50b. Total P/L $488.71m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437408567,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.50b. Total P/L $484.31m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 5 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.50b. Total P/L $484.31m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
+        "level": "warning"
+      }
+    ]
+  },
+  {
+    "ts": 1782437403520,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.49b. Total P/L $475.86m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+    "levels": {
+      "info": 5,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is avmnite-02h.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hacknet",
+        "title": "BN9 Hacknet",
+        "summary": "Hacknet is waiting-money.",
+        "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 7 RAM for $3.94b.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-hashes",
+        "title": "Hash Spending",
+        "summary": "Hash policy: Improve Studying.",
+        "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-stocks",
+        "title": "Stock Trader",
+        "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
+        "detail": "9 positions held. Portfolio $1.49b. Total P/L $475.86m.",
+        "level": "info"
+      },
+      {
+        "id": "bn9-augmentations",
+        "title": "Augmentation Path",
+        "summary": "No augmentation goal published.",
+        "detail": "No valid augmentation candidate found.",
         "level": "warning"
       }
     ]

@@ -34,13 +34,13 @@ export async function fetchNetworkTopology() {
     return response.json();
 }
 
-export async function sendDashboardCommand(command) {
+export async function sendDashboardCommand(command, payload = {}) {
     const response = await fetch("/command", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ command }),
+        body: JSON.stringify({ command, ...payload }),
     });
 
     const result = await response.json().catch(() => ({}));

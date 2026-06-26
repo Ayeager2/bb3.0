@@ -1,6 +1,9 @@
 import { homeReserveRam, maxExpThreadsPerProcess } from "/lib/uhm/config.js";
 import { safeServerExists, isUsableTarget } from "/lib/uhm/safe.js";
 
+// Inactive rollback engine. Active EXP mode uses the precise HGW batch planner
+// in /lib/uhm/runner.js so leveling avoids giant single-purpose chunks.
+
 const EXP_HACK = "/workers/exp-hack.js";
 const EXP_GROW = "/workers/exp-grow.js";
 const EXP_WEAKEN = "/workers/exp-weaken.js";

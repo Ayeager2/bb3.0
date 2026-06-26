@@ -4,17 +4,23 @@ export default function NetworkTopologyLegend({
     topology,
     state,
     backdoorQueue = [],
+    selectedServer = null,
     refreshing = false,
     onRefresh,
+    onForceBackdoor,
 }) {
     const nodes = topology?.nodes ?? [];
     const activeTarget = state?.daemon?.target ?? "none";
     const nextBackdoor = backdoorQueue[0] ?? null;
+    const commandBackdoor =
+        selectedServer?.needsBackdoor
+            ? selectedServer
+            : nextBackdoor;
     const nextBackdoorHops = Array.isArray(nextBackdoor?.pathFromHome)
         ? Math.max(0, nextBackdoor.pathFromHome.length - 1)
         : null;
-    const nextBackdoorCommand = nextBackdoor
-        ? `${buildConnectCommand(nextBackdoor.pathFromHome ?? [])}; backdoor`
+    const backdoorCommand = commandBackdoor
+        ? `${buildConnectCommand(commandBackdoor.pathFromHome ?? [])}; backdoor`
         : null;
 
     const stats = {
@@ -63,12 +69,20 @@ export default function NetworkTopologyLegend({
                     <div className="legend-row"><span>Hops</span><b>{nextBackdoorHops ?? "n/a"}</b></div>
                 </div>
                 <div className="legend-action-row">
-                    {nextBackdoorCommand && (
+                    {backdoorCommand && (
                         <button
                             className="legend-action legend-action-warn"
-                            onClick={() => navigator.clipboard.writeText(nextBackdoorCommand)}
+                            onClick={() => navigator.clipboard.writeText(backdoorCommand)}
                         >
                             Copy BD
+                        </button>
+                    )}
+                    {commandBackdoor && (
+                        <button
+                            className="legend-action legend-action-hot"
+                            onClick={() => onForceBackdoor?.(commandBackdoor.id)}
+                        >
+                            {selectedServer?.needsBackdoor ? "Force Selected" : "Force BD"}
                         </button>
                     )}
                     <button

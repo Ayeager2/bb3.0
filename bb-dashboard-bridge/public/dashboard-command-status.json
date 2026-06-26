@@ -1,9 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1782273499873,
+  "updatedAt": 1782433884443,
   "running": true,
   "status": "ready",
   "message": "Dashboard command runner heartbeat.",
-  "lastHeartbeatAt": 1782273590566,
-  "bridgeUpdatedAt": 1782273613756
+  "lastHeartbeatAt": 1782437649624,
+  "command": "debugSnapshot",
+  "commandId": "1782437477449-fc15154f67713",
+  "startedAt": 1782437478378,
+  "completedAt": 1782437478378,
+  "bridgeUpdatedAt": 1782439441632
 }

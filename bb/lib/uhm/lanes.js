@@ -37,7 +37,7 @@ export function buildTargetLanes(
     const requestedSecondaryTarget =
         laneTargets.secondary ?? null;
     const requestedExpTarget =
-        laneTargets.exp ?? (mode === "exp" ? daemonState?.target : null) ?? null;
+        laneTargets.exp ?? null;
 
     const formulasUnlocked =
         daemonState?.formulasUnlocked === true &&
@@ -68,14 +68,15 @@ export function buildTargetLanes(
             }
         );
 
-    const expTarget = getValidTargetOrFallback(
+    const tertiaryMoneyTarget = getValidTargetOrFallback(
         ns,
         cleanServers,
         requestedExpTarget,
-        "exp",
+        "money",
         groups.low,
         {
-            expPurpose: "background",
+            laneName: "tertiary",
+            minAffordability: 0.55,
         }
     );
 
@@ -88,24 +89,13 @@ export function buildTargetLanes(
     );
 
     if (mode === "exp") {
-        const expSprintTarget = getValidTargetOrFallback(
-            ns,
-            cleanServers,
-            requestedExpTarget,
-            "exp",
-            hosts,
-            {
-                expPurpose: "leveling",
-            }
-        );
-
         return [
             {
-                name: "ALL / EXP",
-                mode: "exp",
-                target: expSprintTarget ?? "",
-                requestedTarget: requestedExpTarget ?? null,
-                targetSource: getTargetSource(expSprintTarget, requestedExpTarget),
+                name: "ALL / MONEY+EXP",
+                mode: "money",
+                target: moneyTarget ?? "",
+                requestedTarget: requestedPrimaryTarget,
+                targetSource: getTargetSource(moneyTarget, requestedPrimaryTarget),
                 hosts,
                 formulasUnlocked,
                 expPurpose: "leveling",
@@ -130,7 +120,7 @@ export function buildTargetLanes(
                 formulasUnlocked
             },
             {
-                name: "LOW / EXP",
+                name: "LOW / MONEY",
                 mode: "",
                 target: "",
                 hosts: [],
@@ -166,14 +156,13 @@ export function buildTargetLanes(
             formulasUnlocked,
         },
         {
-            name: "LOW / EXP",
-            mode: "exp",
-            target: expTarget ?? "",
+            name: "LOW / MONEY",
+            mode: "money",
+            target: tertiaryMoneyTarget ?? "",
             requestedTarget: requestedExpTarget,
-            targetSource: getTargetSource(expTarget, requestedExpTarget),
+            targetSource: getTargetSource(tertiaryMoneyTarget, requestedExpTarget),
             hosts: groups.low,
             formulasUnlocked,
-            expPurpose: "background",
         },
     ];
 }
