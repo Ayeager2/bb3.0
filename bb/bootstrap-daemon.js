@@ -102,10 +102,10 @@ function startBootstrapHacknetServices(ns) {
 
   const buyerStarted = startBootstrapService(ns, buyerScript, [
     "--refresh", 3000,
-    "--nodes", isHashNode ? 20 : 0,
-    "--level", isHashNode ? 200 : 0,
-    "--ram", isHashNode ? 64 : 0,
-    "--cores", isHashNode ? 16 : 0,
+    "--nodes", isHashNode ? 20 : 5,
+    "--level", 200,
+    "--ram", 64,
+    "--cores", isHashNode ? 16 : 12,
     "--cache", isHashNode ? 8 : 0,
     "--reserve", 0,
     "--max-payback", 0,

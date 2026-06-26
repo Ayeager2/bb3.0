@@ -348,6 +348,15 @@ function buildSharePolicy(ns, decision) {
     const hacking = ns.getHackingLevel();
     const homeRam = ns.getServerMaxRam("home");
 
+    if (bitNode === 2) {
+        return {
+            enabled: false,
+            aggressive: false,
+            reserveRamPercent: 0,
+            reason: "BN2 disables share completely; gang progression owns augmentation progress.",
+        };
+    }
+
     const allowFactionWork =
         decision.spendingPolicy?.allowFactionWork === true;
     const factionWorkPlan =

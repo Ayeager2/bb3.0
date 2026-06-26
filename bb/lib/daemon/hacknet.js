@@ -523,7 +523,11 @@ function getTargetNodes(ns, value) {
     const n =
         Number(value);
 
-    if (!Number.isFinite(n) || n <= 0) return max;
+    if (!Number.isFinite(n) || n <= 0) {
+        return getCurrentBitNode(ns) === 2
+            ? Math.min(5, max)
+            : max;
+    }
 
     return Math.min(n, max);
 }
@@ -541,18 +545,40 @@ function getTargetRam(ns, value) {
     const n =
         Number(value);
 
-    if (Number.isFinite(n) && n > 0) return n;
+    const cap =
+        getHacknetCap(ns, "MaxRam", 8192);
+    const nodeCap =
+        getCurrentBitNode(ns) === 2
+            ? Math.min(64, cap)
+            : cap;
 
-    return getHacknetCap(ns, "MaxRam", 8192);
+    if (Number.isFinite(n) && n > 0) return Math.min(n, nodeCap);
+
+    return nodeCap;
 }
 
 function getTargetCores(ns, value) {
     const n =
         Number(value);
 
-    if (Number.isFinite(n) && n > 0) return n;
+    const cap =
+        getHacknetCap(ns, "MaxCores", 128);
+    const nodeCap =
+        getCurrentBitNode(ns) === 2
+            ? Math.min(12, cap)
+            : cap;
 
-    return getHacknetCap(ns, "MaxCores", 128);
+    if (Number.isFinite(n) && n > 0) return Math.min(n, nodeCap);
+
+    return nodeCap;
+}
+
+function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
+    } catch {
+        return 1;
+    }
 }
 
 function getTargetCache(ns, value) {

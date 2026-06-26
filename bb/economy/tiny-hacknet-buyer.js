@@ -6,10 +6,10 @@ export async function main(ns) {
 
   const flags = ns.flags([
     ["refresh", 3000],
-    ["nodes", 0],
-    ["level", 0],
-    ["ram", 0],
-    ["cores", 0],
+    ["nodes", 5],
+    ["level", 200],
+    ["ram", 64],
+    ["cores", 12],
     ["cache", 0],
     ["reserve", 0],
     ["max-payback", 0],
@@ -23,6 +23,10 @@ export async function main(ns) {
   ]);
 
   const refreshMs = Number(flags.refresh) || 3000;
+  const targetNodes = getPositiveNumber(flags.nodes, 5);
+  const targetLevel = getPositiveNumber(flags.level, 200);
+  const targetRam = getPositiveNumber(flags.ram, 64);
+  const targetCores = Math.min(12, getPositiveNumber(flags.cores, 12));
   const reserve = Number(flags.reserve) || 0;
   const maxPurchases = Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
   const debug = flags.debug === true;
@@ -33,7 +37,13 @@ export async function main(ns) {
     const purchases = [];
 
     while (purchases.length < maxPurchases) {
-      const action = chooseCheapestAction(ns, reserve);
+      const action = chooseNextAction(ns, {
+        reserve,
+        targetNodes,
+        targetLevel,
+        targetRam,
+        targetCores,
+      });
       if (!action) break;
 
       const moneyBefore = ns.getPlayer().money;
@@ -60,7 +70,13 @@ export async function main(ns) {
       if (terminal) ns.tprint(`[TINY HACKNET] ${summary}`);
     }
 
-    const state = buildState(ns, reserve, purchases, recentActions);
+    const state = buildState(ns, {
+      reserve,
+      targetNodes,
+      targetLevel,
+      targetRam,
+      targetCores,
+    }, purchases, recentActions);
     ns.write(STATE_FILE, JSON.stringify(state, null, 2), "w");
 
     if (debug) {
@@ -81,62 +97,103 @@ export async function main(ns) {
   }
 }
 
-function chooseCheapestAction(ns, reserve) {
+function chooseNextAction(ns, options) {
+  return choosePrimerAction(ns, options) ?? chooseCheapestAction(ns, options);
+}
+
+function choosePrimerAction(ns, options) {
+  const spendable = Math.max(0, ns.getPlayer().money - options.reserve);
+  const count = safeNumNodes(ns);
+
+  if (count <= 0) {
+    const action = getPurchaseNodeAction(ns);
+    return action.cost <= spendable ? action : action;
+  }
+
+  const first = safeNodeStats(ns, 0);
+  if (!first) return null;
+
+  const priority = [
+    first.ram < options.targetRam ? getRamAction(ns, 0) : null,
+    first.cores < options.targetCores ? getCoreAction(ns, 0) : null,
+    first.level < options.targetLevel ? getLevelAction(ns, 0) : null,
+  ].filter(Boolean);
+
+  return priority.find(action => action.cost <= spendable) ?? priority[0] ?? null;
+}
+
+function chooseCheapestAction(ns, options) {
+  const reserve = options.reserve ?? 0;
   const spendable = Math.max(0, ns.getPlayer().money - reserve);
-  const candidates = getCandidateActions(ns)
+  const candidates = getCandidateActions(ns, options)
     .filter(action => Number.isFinite(action.cost) && action.cost > 0)
     .sort((a, b) => a.cost - b.cost);
 
   return candidates.find(action => action.cost <= spendable) ?? candidates[0] ?? null;
 }
 
-function getCandidateActions(ns) {
+function getCandidateActions(ns, options) {
   const actions = [];
   const count = safeNumNodes(ns);
-  const maxNodes = safeMaxNodes(ns);
+  const maxNodes = Math.min(safeMaxNodes(ns), options.targetNodes);
 
   if (count < maxNodes) {
-    actions.push({
-      type: "node",
-      label: "purchase hacknet node",
-      cost: safeCost(() => ns.hacknet.getPurchaseNodeCost()),
-      run: () => ns.hacknet.purchaseNode() !== -1,
-    });
+    actions.push(getPurchaseNodeAction(ns));
   }
 
   for (let i = 0; i < count; i++) {
     const stats = safeNodeStats(ns, i);
     if (!stats) continue;
 
-    actions.push({
-      type: "level",
-      index: i,
-      label: `upgrade node ${i} level`,
-      cost: safeCost(() => ns.hacknet.getLevelUpgradeCost(i, 1)),
-      run: () => ns.hacknet.upgradeLevel(i, 1),
-    });
-
-    actions.push({
-      type: "ram",
-      index: i,
-      label: `upgrade node ${i} RAM`,
-      cost: safeCost(() => ns.hacknet.getRamUpgradeCost(i, 1)),
-      run: () => ns.hacknet.upgradeRam(i, 1),
-    });
-
-    actions.push({
-      type: "core",
-      index: i,
-      label: `upgrade node ${i} core`,
-      cost: safeCost(() => ns.hacknet.getCoreUpgradeCost(i, 1)),
-      run: () => ns.hacknet.upgradeCore(i, 1),
-    });
+    if (stats.level < options.targetLevel) actions.push(getLevelAction(ns, i));
+    if (stats.ram < options.targetRam) actions.push(getRamAction(ns, i));
+    if (stats.cores < options.targetCores) actions.push(getCoreAction(ns, i));
   }
 
   return actions;
 }
 
-function buildState(ns, reserve, purchases, recentActions) {
+function getPurchaseNodeAction(ns) {
+  return {
+    type: "node",
+    label: "purchase hacknet node",
+    cost: safeCost(() => ns.hacknet.getPurchaseNodeCost()),
+    run: () => ns.hacknet.purchaseNode() !== -1,
+  };
+}
+
+function getLevelAction(ns, index) {
+  return {
+    type: "level",
+    index,
+    label: `upgrade node ${index} level`,
+    cost: safeCost(() => ns.hacknet.getLevelUpgradeCost(index, 1)),
+    run: () => ns.hacknet.upgradeLevel(index, 1),
+  };
+}
+
+function getRamAction(ns, index) {
+  return {
+    type: "ram",
+    index,
+    label: `upgrade node ${index} RAM`,
+    cost: safeCost(() => ns.hacknet.getRamUpgradeCost(index, 1)),
+    run: () => ns.hacknet.upgradeRam(index, 1),
+  };
+}
+
+function getCoreAction(ns, index) {
+  return {
+    type: "core",
+    index,
+    label: `upgrade node ${index} core`,
+    cost: safeCost(() => ns.hacknet.getCoreUpgradeCost(index, 1)),
+    run: () => ns.hacknet.upgradeCore(index, 1),
+  };
+}
+
+function buildState(ns, options, purchases, recentActions) {
+  const { reserve, targetNodes, targetLevel, targetRam, targetCores } = options;
   const nodes = [];
   const count = safeNumNodes(ns);
 
@@ -155,7 +212,7 @@ function buildState(ns, reserve, purchases, recentActions) {
     });
   }
 
-  const next = chooseCheapestAction(ns, reserve);
+  const next = chooseNextAction(ns, options);
   const spendable = Math.max(0, ns.getPlayer().money - reserve);
   const totalCost = purchases.reduce((sum, item) => sum + item.cost, 0);
 
@@ -177,10 +234,10 @@ function buildState(ns, reserve, purchases, recentActions) {
     spendable,
     nodeCount: nodes.length,
     maxNodes: safeMaxNodes(ns),
-    targetNodes: safeMaxNodes(ns),
-    targetLevel: 0,
-    targetRam: 0,
-    targetCores: 0,
+    targetNodes,
+    targetLevel,
+    targetRam,
+    targetCores,
     targetCache: 0,
     totalProduction: nodes.reduce((sum, node) => sum + (Number(node.production) || 0), 0),
     totalProduced: nodes.reduce((sum, node) => sum + (Number(node.totalProduction) || 0), 0),
@@ -236,4 +293,9 @@ function safeCost(fn) {
   } catch {
     return Number.POSITIVE_INFINITY;
   }
+}
+
+function getPositiveNumber(value, fallback) {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
 }

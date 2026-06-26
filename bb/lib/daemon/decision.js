@@ -182,7 +182,7 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
         return chooseHacknetRoadmapMode(ns, rootedServers);
     }
     if (roadmap === "bladeburner") return "exp";
-    if (roadmap === "crime-gang") return "progression";
+    if (roadmap === "crime-gang") return "exp";
 
     return chooseMode(ns, rootedServers);
 }
@@ -443,6 +443,31 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
                 allowHacknetExecution
                     ? "BN9 hacking-level gate is active: Hacknet server RAM may be borrowed for UHM XP farming."
                     : "BN9 preserves Hacknet server RAM for hash production outside level gates.",
+            bitNodeCapabilities,
+        };
+    }
+
+    if (roadmap === "crime-gang") {
+        return {
+            priority: "leveling",
+            reserveMoney: 0,
+
+            allowServerPurchases: false,
+            allowStockTrading: false,
+            allowHacknet: true,
+            allowHomeRam: true,
+            allowExePurchases: true,
+
+            allowAugmentPurchases: true,
+            allowFactionWork: false,
+            allowFactionDonation: false,
+            allowFactionJoin: false,
+            allowBackdoors: true,
+            allowReset: false,
+            allowIntTravel: false,
+
+            gangPrimary: true,
+            gangReason: "BN2 is gang-led: no faction work/join loop; gang owns augmentation progress while UHM stays on EXP and Hacknet supports early money.",
             bitNodeCapabilities,
         };
     }
