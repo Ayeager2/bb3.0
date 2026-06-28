@@ -25,8 +25,13 @@ export function launchBatchesAggressive(
 ) {
     let launched = 0;
 
-    const batchLimit = options.maxBatchesPerCycle ?? maxBatchesPerCycle;
     const maxActiveProcesses = options.maxActiveProcesses ?? 10000;
+    const configuredBatchLimit = options.maxBatchesPerCycle ?? maxBatchesPerCycle;
+    const ramFillBatchLimit =
+        options.fillAvailableRam === true
+            ? getRamFillBatchLimit(hosts, plan, maxActiveProcesses)
+            : configuredBatchLimit;
+    const batchLimit = Math.max(configuredBatchLimit, ramFillBatchLimit);
 
     if (countActiveWorkerProcesses(ns, hosts) >= maxActiveProcesses) {
         return 0;
@@ -38,10 +43,10 @@ export function launchBatchesAggressive(
         }
 
         const batchOffset = launched * batchSpacingMs * 4;
-        let reservations = reserveFullBatch(ns, hosts, target, plan, batchOffset);
+        let reservations = reserveFullBatch(ns, hosts, target, plan, batchOffset, options);
 
         if (!reservations && plan.mode === "money") {
-            reservations = reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset);
+            reservations = reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset, options);
         }
 
         if (!reservations) break;
@@ -59,24 +64,36 @@ export function launchBatchesAggressive(
     return launched;
 }
 
-export function reserveFullBatch(ns, hosts, target, plan, batchOffset) {
+function getRamFillBatchLimit(hosts, plan, maxActiveProcesses) {
+    const availableRam = hosts.reduce(
+        (sum, host) => sum + Math.max(0, Number(host.freeRam) || 0),
+        0
+    );
+    const batchRam = Math.max(1, Number(plan?.totalRam) || 1);
+    const byRam = Math.ceil(availableRam / batchRam);
+    const byProcesses = Math.max(1, Math.floor((Number(maxActiveProcesses) || 1) / 4));
+
+    return Math.max(1, Math.min(byRam + 4, byProcesses));
+}
+
+export function reserveFullBatch(ns, hosts, target, plan, batchOffset, options = {}) {
     const liveHosts = hosts.filter(x => safeServerExists(ns, x.host));
     const tempHosts = liveHosts.map(x => ({ ...x }));
     const reservations = [];
 
-    const hack = reserveDistributed(ns, tempHosts, hackScript, plan.hackThreads, target, plan.hackDelay + batchOffset);
+    const hack = reserveDistributed(ns, tempHosts, hackScript, plan.hackThreads, target, plan.hackDelay + batchOffset, options);
     if (!hack) return null;
     reservations.push(...hack);
 
-    const weaken1 = reserveDistributed(ns, tempHosts, weakenScript, plan.weakenHackThreads, target, plan.weakenHackDelay + batchOffset);
+    const weaken1 = reserveDistributed(ns, tempHosts, weakenScript, plan.weakenHackThreads, target, plan.weakenHackDelay + batchOffset, options);
     if (!weaken1) return null;
     reservations.push(...weaken1);
 
-    const grow = reserveDistributed(ns, tempHosts, growScript, plan.growThreads, target, plan.growDelay + batchOffset);
+    const grow = reserveDistributed(ns, tempHosts, growScript, plan.growThreads, target, plan.growDelay + batchOffset, options);
     if (!grow) return null;
     reservations.push(...grow);
 
-    const weaken2 = reserveDistributed(ns, tempHosts, weakenScript, plan.weakenGrowThreads, target, plan.weakenGrowDelay + batchOffset);
+    const weaken2 = reserveDistributed(ns, tempHosts, weakenScript, plan.weakenGrowThreads, target, plan.weakenGrowDelay + batchOffset, options);
     if (!weaken2) return null;
     reservations.push(...weaken2);
 
@@ -88,7 +105,7 @@ export function reserveFullBatch(ns, hosts, target, plan, batchOffset) {
     return reservations;
 }
 
-export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset) {
+export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset, options = {}) {
     const liveHosts = hosts.filter(x => safeServerExists(ns, x.host));
     const tempHosts = liveHosts.map(x => ({ ...x }));
     const reservations = [];
@@ -99,7 +116,8 @@ export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset) {
         weakenScript,
         Math.max(1, plan.weakenGrowThreads),
         target,
-        plan.weakenGrowDelay + batchOffset
+        plan.weakenGrowDelay + batchOffset,
+        options
     );
 
     if (weaken2) reservations.push(...weaken2);
@@ -110,7 +128,8 @@ export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset) {
         growScript,
         Math.max(1, plan.growThreads),
         target,
-        plan.growDelay + batchOffset
+        plan.growDelay + batchOffset,
+        options
     );
 
     if (grow) reservations.push(...grow);
@@ -121,7 +140,8 @@ export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset) {
         hackScript,
         Math.max(1, plan.hackThreads),
         target,
-        plan.hackDelay + batchOffset
+        plan.hackDelay + batchOffset,
+        options
     );
 
     if (hack) reservations.push(...hack);
@@ -136,10 +156,12 @@ export function reservePartialMoneyBatch(ns, hosts, target, plan, batchOffset) {
     return reservations;
 }
 
-export function reserveDistributed(ns, hosts, script, threadsNeeded, target, delay) {
+export function reserveDistributed(ns, hosts, script, threadsNeeded, target, delay, options = {}) {
     let remaining = threadsNeeded;
     const scriptRam = ns.getScriptRam(script);
     const reservations = [];
+    const maxThreadsPerProcess =
+        Math.max(1, Math.floor(Number(options.maxThreadsPerProcess) || maxWorkerThreadsPerProcess));
 
     for (const hostInfo of hosts) {
         if (remaining <= 0) break;
@@ -148,7 +170,7 @@ export function reserveDistributed(ns, hosts, script, threadsNeeded, target, del
         while (remaining > 0) {
             const threads = Math.min(
                 remaining,
-                maxWorkerThreadsPerProcess,
+                maxThreadsPerProcess,
                 Math.floor(hostInfo.freeRam / scriptRam)
             );
             if (threads <= 0) break;
@@ -312,15 +334,16 @@ function buildBatchPlan(ns, target, mode, hackPercent, options = {}) {
 
 function countActiveWorkerProcesses(ns, hosts) {
     let count = 0;
+    const workerScripts = new Set([
+        normalizeScript(hackScript),
+        normalizeScript(growScript),
+        normalizeScript(weakenScript),
+    ]);
 
     for (const host of hosts) {
         try {
             for (const proc of ns.ps(host.host)) {
-                if (
-                    proc.filename === hackScript ||
-                    proc.filename === growScript ||
-                    proc.filename === weakenScript
-                ) {
+                if (workerScripts.has(normalizeScript(proc.filename))) {
                     count++;
                 }
             }
@@ -330,6 +353,10 @@ function countActiveWorkerProcesses(ns, hosts) {
     }
 
     return count;
+}
+
+function normalizeScript(path) {
+    return String(path ?? "").replace(/^\/+/, "");
 }
 
 function getBatchTimings(ns, target, options = {}) {

@@ -8,6 +8,8 @@ import {
 const FULL_DAEMON = "daemon.js";
 const TINY_WORKER = "/workers/tiny-worker.js";
 const CRIME_BOOTSTRAP = "/tools/crime-bootstrap.js";
+const BN2_GANG_MANAGER = "/tools/gang-manager-service.js";
+const HOME_RAM_BUYER = "/economy/home-ram-buyer-service.js";
 const TINY_HACKNET_BUYER = "/economy/tiny-hacknet-buyer.js";
 const HACKNET_BUYER = "/economy/hacknet-buyer-service.js";
 const HACKNET_HASH_SPENDER = "/economy/hacknet-hash-spender-service.js";
@@ -46,6 +48,8 @@ export async function main(ns) {
     cleanupBlockedBootstrapHosts(ns, rootedServers);
 
     buyEarlyUpgrades(ns);
+    startBootstrapGangManager(ns);
+    startBootstrapHomeRamBuyer(ns);
     startFreshCrimeBootstrap(ns);
     startBootstrapHacknetServices(ns);
 
@@ -83,10 +87,43 @@ function startFreshCrimeBootstrap(ns) {
   if (getCurrentBitNode(ns) !== 2) return;
 
   startBootstrapService(ns, CRIME_BOOTSTRAP, [
-    "--crime", "Mug",
+    "--crime", "auto",
     "--stop-money", 10_000_000,
     "--stop-home-ram", CONFIG.minHomeRamForFullDaemon,
     "--focus", false,
+  ], {
+    priority: true,
+    reserveRam: 0,
+  });
+}
+
+function startBootstrapGangManager(ns) {
+  if (getCurrentBitNode(ns) !== 2) return;
+
+  startBootstrapService(ns, BN2_GANG_MANAGER, [
+    "--refresh", 2500,
+    "--reserve", 0,
+    "--create", true,
+    "--faction", "Slum Snakes",
+    "--buy-equipment", true,
+    "--ascend", true,
+    "--asc-mult", 10,
+    "--fast-asc-mult", 100,
+    "--debug", true,
+  ], {
+    priority: true,
+    reserveRam: 0,
+  });
+}
+
+function startBootstrapHomeRamBuyer(ns) {
+  if (getCurrentBitNode(ns) !== 2) return;
+
+  startBootstrapService(ns, HOME_RAM_BUYER, [
+    "--refresh", 5000,
+    "--min-money", 1_000_000,
+    "--force", true,
+    "--debug", true,
   ], {
     priority: true,
     reserveRam: 0,

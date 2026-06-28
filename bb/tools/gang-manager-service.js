@@ -38,10 +38,9 @@ const TRAIN_COMBAT_AVG = 650;
 const WANTED_PENALTY_FLOOR = 0.995;
 const TERRITORY_TASK = "Territory Warfare";
 const TERRITORY_MIN_MEMBERS = 8;
-const TERRITORY_BUILD_POWER_UNTIL = 1_000_000;
-const TERRITORY_CLASH_POWER_MIN = 1_000_000;
 const TERRITORY_POWER_LEAD_MULT = 1.2;
-const TERRITORY_MAX_BUILD_RATIO = 0.75;
+const TERRITORY_FORCE_CLASH_POWER_LEAD_MULT = 1.2;
+const TERRITORY_DOMINANT_POWER_LEAD_MULT = 3;
 const TERRITORY_CLASH_WIN_CHANCE = 0.78;
 const TERRITORY_SAFE_WIN_CHANCE = 0.9;
 const MONEY_TASKS = [
@@ -242,7 +241,7 @@ function buyGangEquipment(ns, names, reserve) {
         ? `Waiting for ${nextItem.member} to buy ${nextItem.item}; need ${formatMoney(nextItem.cost)}, spendable ${formatMoney(nextItem.spendable)} after ${formatMoney(reserve)} reserve.`
         : failedItem
           ? `Tried to buy ${failedItem.item} for ${failedItem.member}, but purchaseEquipment returned false. Cost ${formatMoney(failedItem.cost)}, spendable ${formatMoney(failedItem.spendable)}.`
-        : "All affordable configured gang equipment is already owned.",
+          : "All affordable configured gang equipment is already owned.",
     nextItem,
     failedItem,
   };
@@ -327,13 +326,13 @@ function assignGangTasks(ns, names, territory = null) {
         (member.upgrades?.length ?? 0) < 6
       );
 
-    if (vigilantes > 0) {
+    if (territoryNames.has(name)) {
+      task = TERRITORY_TASK;
+    } else if (vigilantes > 0) {
       task = "Vigilante Justice";
       vigilantes--;
     } else if (shouldTrain) {
       task = "Train Combat";
-    } else if (territoryNames.has(name)) {
-      task = TERRITORY_TASK;
     } else {
       task = chooseMoneyTask(combat.average);
     }
@@ -353,6 +352,21 @@ function buildTerritoryPolicy(ns, names) {
   const memberCount = names.length;
   const chance = getTerritoryWinChance(ns, info, otherGangs);
   const lowestWinChance = chance.lowestWinChance;
+  const strongestRivalPower =
+    chance.strongestRivalPower;
+  const targetPower =
+    strongestRivalPower * TERRITORY_POWER_LEAD_MULT;
+  const powerLeadRatio =
+    strongestRivalPower > 0
+      ? power / strongestRivalPower
+      : Number.POSITIVE_INFINITY;
+  const hasOverwhelmingPowerLead =
+    powerLeadRatio >= TERRITORY_FORCE_CLASH_POWER_LEAD_MULT;
+  const hasDominantPowerLead =
+    powerLeadRatio >= TERRITORY_DOMINANT_POWER_LEAD_MULT;
+  const winChanceSafe =
+    lowestWinChance !== null &&
+    lowestWinChance >= TERRITORY_CLASH_WIN_CHANCE;
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
 
@@ -364,31 +378,20 @@ function buildTerritoryPolicy(ns, names) {
     !complete &&
     enoughMembers &&
     (
-      power < TERRITORY_BUILD_POWER_UNTIL ||
+      power < targetPower ||
       lowestWinChance === null ||
       lowestWinChance < TERRITORY_SAFE_WIN_CHANCE
     );
   const safeToClash =
     !complete &&
     enoughMembers &&
-    power >= TERRITORY_CLASH_POWER_MIN &&
-    lowestWinChance !== null &&
-    lowestWinChance >= TERRITORY_CLASH_WIN_CHANCE;
-  const strongestRivalPower =
-    chance.strongestRivalPower;
-  const targetPower =
-    Math.max(
-      TERRITORY_BUILD_POWER_UNTIL,
-      strongestRivalPower * TERRITORY_POWER_LEAD_MULT
+    (
+      winChanceSafe ||
+      hasOverwhelmingPowerLead
     );
   const warriorCount =
-    shouldBuildPower || safeToClash
-      ? getTerritoryWarriorCount(memberCount, {
-        power,
-        targetPower,
-        safeToClash,
-        verySafe: lowestWinChance !== null && lowestWinChance >= TERRITORY_SAFE_WIN_CHANCE,
-      })
+    !complete && enoughMembers
+      ? getTerritoryWarriorCount(memberCount)
       : 0;
   const warriorNames =
     sorted.slice(0, warriorCount);
@@ -414,9 +417,9 @@ function buildTerritoryPolicy(ns, names) {
       : !enoughMembers
         ? `Need ${TERRITORY_MIN_MEMBERS} members before territory warfare.`
         : safeToClash
-          ? `Clash enabled: lowest win chance ${(lowestWinChance * 100).toFixed(1)}%, power ${formatNumber(power)}.`
+          ? `Clash enabled: ${lowestWinChance === null ? `power lead ${formatNumber(powerLeadRatio)}x` : `lowest win chance ${(lowestWinChance * 100).toFixed(1)}%`}, power ${formatNumber(power)}.`
           : shouldBuildPower
-            ? `Building gang power before clashes. Power ${formatNumber(power)} / target ${formatNumber(targetPower)}, lowest win chance ${lowestWinChance === null ? "unknown" : `${(lowestWinChance * 100).toFixed(1)}%`}.`
+            ? `Don/strongest member is building gang power. Power ${formatNumber(power)} / target ${formatNumber(targetPower)}, lowest win chance ${lowestWinChance === null ? "unknown" : `${(lowestWinChance * 100).toFixed(1)}%`}.`
             : "Territory warfare idle.",
     territory,
     power,
@@ -428,32 +431,25 @@ function buildTerritoryPolicy(ns, names) {
     lowestWinChance,
     strongestRivalPower,
     targetPower,
+    powerLeadRatio,
+    hasOverwhelmingPowerLead,
+    hasDominantPowerLead,
+    winChanceSafe,
     winChances: chance.chances,
     thresholds: {
       minMembers: TERRITORY_MIN_MEMBERS,
-      buildPowerUntil: TERRITORY_BUILD_POWER_UNTIL,
-      clashPowerMin: TERRITORY_CLASH_POWER_MIN,
       powerLeadMult: TERRITORY_POWER_LEAD_MULT,
-      maxBuildRatio: TERRITORY_MAX_BUILD_RATIO,
+      forceClashPowerLeadMult: TERRITORY_FORCE_CLASH_POWER_LEAD_MULT,
+      dominantPowerLeadMult: TERRITORY_DOMINANT_POWER_LEAD_MULT,
       clashWinChance: TERRITORY_CLASH_WIN_CHANCE,
       safeWinChance: TERRITORY_SAFE_WIN_CHANCE,
     },
   };
 }
 
-function getTerritoryWarriorCount(memberCount, { power, targetPower, safeToClash, verySafe }) {
+function getTerritoryWarriorCount(memberCount) {
   if (memberCount <= 0) return 0;
-  if (safeToClash && verySafe) return Math.max(2, Math.ceil(memberCount * 0.25));
-  if (safeToClash) return Math.max(3, Math.ceil(memberCount * 0.33));
-
-  const safeTarget =
-    Math.max(1, Number(targetPower) || TERRITORY_BUILD_POWER_UNTIL);
-  const powerRatio =
-    Math.max(0, Math.min(1, (Number(power) || 0) / safeTarget));
-  const buildRatio =
-    Math.max(0.25, Math.min(TERRITORY_MAX_BUILD_RATIO, 1 - powerRatio));
-
-  return Math.max(2, Math.ceil(memberCount * buildRatio));
+  return 1;
 }
 
 function getTerritoryWinChance(ns, info, otherGangs) {

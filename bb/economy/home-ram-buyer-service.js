@@ -8,11 +8,13 @@ export async function main(ns) {
     const flags = ns.flags([
         ["refresh", 10000],
         ["min-money", 1_000_000],
+        ["force", false],
         ["debug", true],
     ]);
 
     const refreshMs = Number(flags.refresh) || 10000;
     const minMoney = Number(flags["min-money"]) || 1_000_000;
+    const force = flags.force === true;
     const debug = flags.debug === true;
 
     while (true) {
@@ -25,14 +27,14 @@ export async function main(ns) {
         if (debug) {
             ns.print(
                 `Home RAM check | ` +
-                `allow=${policy.allowHomeRam === true} | ` +
+                `allow=${force || policy.allowHomeRam === true} | ` +
                 `money=${ns.format.number(money)} | ` +
                 `cost=${Number.isFinite(cost) ? ns.format.number(cost) : "N/A"} | ` +
                 `home=${ns.format.ram(ns.getServerMaxRam("home"))}`
             );
         }
 
-        if (policy.allowHomeRam !== true) {
+        if (!force && policy.allowHomeRam !== true) {
             await ns.sleep(refreshMs);
             continue;
         }

@@ -11,6 +11,9 @@ import {
   expHackScript,
   expWeakenScript,
   growScript,
+  maxLevelingActiveProcesses,
+  maxLevelingBatchesPerCycle,
+  maxLevelingWorkerThreadsPerProcess,
   maxWorkerThreadsPerProcess,
   weakenScript,
 } from '/lib/uhm/config.js';
@@ -21,7 +24,7 @@ export function runLane(ns, lane, runtimeStats) {
   killOversizedUhmWorkers(ns, lane.hosts);
 
   if (lane.mode === 'money' && shouldUseProtoMoney(ns, lane)) {
-    const protoThreads = runProtoMoney(ns, lane.target, lane.hosts);
+    const protoThreads = runProtoMoney(ns, lane.target, lane.hosts, getLaunchOptions(lane));
 
     runtimeStats.protoMoneyThreads = (runtimeStats.protoMoneyThreads ?? 0) + protoThreads;
 
@@ -64,7 +67,7 @@ export function runLane(ns, lane, runtimeStats) {
   }
 
   if (plan.tooLargeForLane) {
-    const protoThreads = runProtoMoney(ns, lane.target, lane.hosts);
+    const protoThreads = runProtoMoney(ns, lane.target, lane.hosts, getLaunchOptions(lane));
 
     runtimeStats.protoMoneyThreads = (runtimeStats.protoMoneyThreads ?? 0) + protoThreads;
 
@@ -80,9 +83,14 @@ export function runLane(ns, lane, runtimeStats) {
     };
   }
 
-  const launched = launchBatchesAggressive(ns, lane.target, lane.hosts, plan, runtimeStats, {
-    maxActiveProcesses: 10000,
-  });
+  const launched = launchBatchesAggressive(
+    ns,
+    lane.target,
+    lane.hosts,
+    plan,
+    runtimeStats,
+    getLaunchOptions(lane),
+  );
 
   if (launched > 0) {
     runtimeStats.batchesLaunched += launched;
@@ -102,7 +110,9 @@ export function runLane(ns, lane, runtimeStats) {
     };
   }
 
-  const protoThreads = lane.mode === 'money' ? runProtoMoney(ns, lane.target, lane.hosts) : 0;
+  const protoThreads = lane.mode === 'money'
+    ? runProtoMoney(ns, lane.target, lane.hosts, getLaunchOptions(lane))
+    : 0;
 
   runtimeStats.protoMoneyThreads = (runtimeStats.protoMoneyThreads ?? 0) + protoThreads;
 
@@ -132,7 +142,23 @@ function getLaneFreeRam(hosts = []) {
   return hosts.reduce((sum, host) => sum + Math.max(0, host.freeRam ?? 0), 0);
 }
 
-function runProtoMoney(ns, target, hosts = []) {
+function getLaunchOptions(lane) {
+  if (lane?.expPurpose === 'leveling') {
+    return {
+      maxBatchesPerCycle: maxLevelingBatchesPerCycle,
+      maxActiveProcesses: maxLevelingActiveProcesses,
+      maxThreadsPerProcess: maxLevelingWorkerThreadsPerProcess,
+      fillAvailableRam: true,
+    };
+  }
+
+  return {
+    maxActiveProcesses: 10000,
+    maxThreadsPerProcess: maxWorkerThreadsPerProcess,
+  };
+}
+
+function runProtoMoney(ns, target, hosts = [], options = {}) {
   const money = ns.getServerMoneyAvailable(target);
   const maxMoney = ns.getServerMaxMoney(target);
   const sec = ns.getServerSecurityLevel(target);
@@ -145,6 +171,7 @@ function runProtoMoney(ns, target, hosts = []) {
       target,
       hosts,
       getNeededWeakenThreads(ns, target, sec - minSec),
+      options,
     );
   }
 
@@ -154,8 +181,8 @@ function runProtoMoney(ns, target, hosts = []) {
     const weakenThreads = getNeededWeakenThreads(ns, target, growSecurity);
 
     return (
-      runTinyDistributed(ns, growScript, target, hosts, growThreads) +
-      runTinyDistributed(ns, weakenScript, target, hosts, weakenThreads)
+      runTinyDistributed(ns, growScript, target, hosts, growThreads, options) +
+      runTinyDistributed(ns, weakenScript, target, hosts, weakenThreads, options)
     );
   }
 
@@ -164,15 +191,17 @@ function runProtoMoney(ns, target, hosts = []) {
   const weakenThreads = getNeededWeakenThreads(ns, target, hackSecurity);
 
   return (
-    runTinyDistributed(ns, hackScript, target, hosts, hackThreads) +
-    runTinyDistributed(ns, weakenScript, target, hosts, weakenThreads)
+    runTinyDistributed(ns, hackScript, target, hosts, hackThreads, options) +
+    runTinyDistributed(ns, weakenScript, target, hosts, weakenThreads, options)
   );
 }
 
-function runTinyDistributed(ns, script, target, hosts = [], maxThreads = Infinity) {
+function runTinyDistributed(ns, script, target, hosts = [], maxThreads = Infinity, options = {}) {
   const scriptRam = ns.getScriptRam(script);
   let launched = 0;
   let remaining = Math.max(0, Math.floor(maxThreads));
+  const maxThreadsPerProcess =
+    Math.max(1, Math.floor(Number(options.maxThreadsPerProcess) || maxWorkerThreadsPerProcess));
 
   if (remaining <= 0) return 0;
 
@@ -185,7 +214,7 @@ function runTinyDistributed(ns, script, target, hosts = [], maxThreads = Infinit
       const freeRam = Math.max(0, host.freeRam ?? 0);
       const threads = Math.min(
         remaining,
-        maxWorkerThreadsPerProcess,
+        maxThreadsPerProcess,
         Math.floor(freeRam / scriptRam),
       );
 

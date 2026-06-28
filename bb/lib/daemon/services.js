@@ -237,7 +237,7 @@ export const SERVICES = [
         keepAlive: true,
         enabled: true,
         requiresSingularity: false,
-        minHomeRam: 64,
+        minHomeRam: 32,
         bitNodes: [2],
         purpose: "BN2 gang recruitment, tasking, equipment, and ascension manager",
     },
