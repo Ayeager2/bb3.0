@@ -1,47 +1,47 @@
 {
   "schemaVersion": 2,
-  "updatedAt": 1782437649809,
+  "updatedAt": 1782525157892,
   "source": "daemon-reasoning-writer",
-  "summary": "1 warning item(s) need attention.",
-  "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is avmnite-02h.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: reset execution, cloud servers blocked by BN9.|bn9-hacknet:info:Hacknet is waiting-money.:11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.|bn9-hashes:info:Hash policy: Improve Studying.:Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.|bn9-stocks:info:Stock trader is 4S FORECAST AUTO-TRADER.:9 positions held. Portfolio $1.63b. Total P/L $612.67m.|bn9-augmentations:warning:No augmentation goal published.:No valid augmentation candidate found.",
+  "summary": "2 warning item(s) need attention.",
+  "fingerprint": "mode:info:Daemon is running in money mode.:faction-join|target:warning:Current target is neo-net.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
   "items": [
     {
       "id": "mode",
       "title": "Current Mode",
-      "summary": "Daemon is running in exp mode.",
-      "detail": "exp",
+      "summary": "Daemon is running in money mode.",
+      "detail": "faction-join",
       "level": "info",
       "data": {
         "phase": "level-hacking",
-        "priority": "leveling",
-        "posture": "HACKING_GROWTH"
+        "priority": "income",
+        "posture": "AGGRESSIVE_INCOME"
       },
-      "ts": 1782437649809
+      "ts": 1782525157892
     },
     {
       "id": "target",
       "title": "Current Target",
-      "summary": "Current target is avmnite-02h.",
-      "detail": "Target money is below ideal level, so grow support may be needed.",
-      "level": "success",
+      "summary": "Current target is neo-net.",
+      "detail": "Target likely needs prep work before it becomes efficient.",
+      "level": "warning",
       "data": {
-        "moneyPercent": 0,
+        "moneyPercent": 0.2,
         "securityDiff": 0,
-        "prepNeed": 0,
-        "weakenTime": 31511.788069573897
+        "prepNeed": 0.8,
+        "weakenTime": 109609.40743045602
       },
-      "ts": 1782437649809
+      "ts": 1782525157892
     },
     {
       "id": "policy",
       "title": "Spending Policy",
       "summary": "Current policy controls what automation is allowed to buy or trigger.",
-      "detail": "Policy currently blocks: reset execution, cloud servers blocked by BN9.",
+      "detail": "Policy currently blocks: stock trading, reset execution.",
       "level": "info",
       "data": {
         "reserveMoney": 0,
-        "allowServerPurchases": false,
-        "allowStockTrading": true,
+        "allowServerPurchases": true,
+        "allowStockTrading": false,
         "allowHacknet": true,
         "allowHomeRam": true,
         "allowExePurchases": true,
@@ -52,782 +52,50 @@
         "allowReset": false,
         "allowIntTravel": false
       },
-      "ts": 1782437649809
+      "ts": 1782525157892
     },
     {
-      "id": "bn9-hacknet",
-      "title": "BN9 Hacknet",
-      "summary": "Hacknet is waiting-money.",
-      "detail": "11/20 nodes producing 0 hashes/sec. Next: upgrade node 10 RAM for $3.94b.",
-      "level": "info",
-      "data": {
-        "updatedAt": 1782437649624,
-        "nodeCount": 11,
-        "maxNodes": 20,
-        "targetNodes": 20,
-        "targetLevel": 200,
-        "targetRam": 8192,
-        "targetCores": 128,
-        "targetCache": 15,
-        "money": 2687984566.8267493,
-        "reserveMoney": 0,
-        "spendable": 2687984566.8267493,
-        "totalProduction": 0.07599232622706335,
-        "totalProduced": 2106124.774780457,
-        "hashes": {
-          "available": true,
-          "hashes": 1664,
-          "capacity": 1664,
-          "upgrades": [
-            "Sell for Money",
-            "Sell for Corporation Funds",
-            "Reduce Minimum Security",
-            "Increase Maximum Money",
-            "Improve Studying",
-            "Improve Gym Training",
-            "Exchange for Corporation Research",
-            "Exchange for Bladeburner Rank",
-            "Exchange for Bladeburner SP",
-            "Generate Coding Contract",
-            "Company Favor"
-          ]
-        },
-        "cachePolicy": {
-          "targetCache": 15,
-          "hashBufferSeconds": 7200,
-          "desiredCapacity": 547.1447488348562,
-          "capacityGap": 0,
-          "nextAction": null
-        },
-        "roi": {
-          "strategy": "payback-seconds",
-          "unlimitedPayback": false,
-          "maxPaybackSeconds": 3600,
-          "sellForMoneyValue": 2000000,
-          "hashMoneyValue": 500000,
-          "homeCompetition": {
-            "ram": {
-              "cost": 5005255158914.113,
-              "current": 32768
-            },
-            "cores": {
-              "cost": 3164062500000,
-              "current": 4
-            }
-          },
-          "bestCandidate": {
-            "type": "ram",
-            "index": 10,
-            "amount": 1,
-            "label": "upgrade node 10 RAM",
-            "cost": 3942460132.78434,
-            "productionGain": 37655180627078.914,
-            "moneyPerSecond": 18827590313539457000,
-            "paybackSeconds": 2.0939801998714643e-10,
-            "roi": 4775594344.499454,
-            "capacityPolicy": null,
-            "affordable": null
-          },
-          "blockedByPayback": false
-        },
-        "complete": false,
-        "nextAction": {
-          "type": "ram",
-          "index": 10,
-          "amount": 1,
-          "label": "upgrade node 10 RAM",
-          "cost": 3942460132.78434,
-          "productionGain": 37655180627078.914,
-          "moneyPerSecond": 18827590313539457000,
-          "paybackSeconds": 2.0939801998714643e-10,
-          "roi": 4775594344.499454,
-          "capacityPolicy": null,
-          "affordable": null
-        },
-        "canAffordNext": false,
-        "nodes": [
-          {
-            "index": 0,
-            "name": "hacknet-server-0",
-            "level": 100,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 3,
-            "production": 0.011648286059761296,
-            "totalProduction": 217649.98684228637,
-            "timeOnline": 95988.79999916519
-          },
-          {
-            "index": 1,
-            "name": "hacknet-server-1",
-            "level": 100,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 4,
-            "production": 0.0016380402271540745,
-            "totalProduction": 215384.21565167737,
-            "timeOnline": 95988.79999916519
-          },
-          {
-            "index": 2,
-            "name": "hacknet-server-2",
-            "level": 100,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 3,
-            "production": 0.00018200446968360214,
-            "totalProduction": 214090.01519575558,
-            "timeOnline": 95988.79999916519
-          },
-          {
-            "index": 3,
-            "name": "hacknet-server-3",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 2,
-            "production": 0.001441475399895358,
-            "totalProduction": 214253.49266813596,
-            "timeOnline": 95203.79999917668
-          },
-          {
-            "index": 4,
-            "name": "hacknet-server-4",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.010811065499215799,
-            "totalProduction": 211535.5134268139,
-            "timeOnline": 94046.99999919362
-          },
-          {
-            "index": 5,
-            "name": "hacknet-server-5",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 2,
-            "production": 0.0048649794746471915,
-            "totalProduction": 210858.38283363893,
-            "timeOnline": 81977.39999937017
-          },
-          {
-            "index": 6,
-            "name": "hacknet-server-6",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.007747930274437907,
-            "totalProduction": 210383.0017782094,
-            "timeOnline": 81977.19999937018
-          },
-          {
-            "index": 7,
-            "name": "hacknet-server-7",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.0055857171745946664,
-            "totalProduction": 209940.96789077896,
-            "timeOnline": 81633.19999937521
-          },
-          {
-            "index": 8,
-            "name": "hacknet-server-8",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.001982028674856066,
-            "totalProduction": 196549.66368942778,
-            "timeOnline": 71104.79999952906
-          },
-          {
-            "index": 9,
-            "name": "hacknet-server-9",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.01117143434918974,
-            "totalProduction": 159832.61443077272,
-            "timeOnline": 54796.99999976558
-          },
-          {
-            "index": 10,
-            "name": "hacknet-server-10",
-            "level": 99,
-            "ram": 1024,
-            "cores": 21,
-            "cache": 1,
-            "production": 0.018919364623627647,
-            "totalProduction": 45646.92037295956,
-            "timeOnline": 18637.00000003248
-          }
-        ],
-        "source": "hacknet-buyer",
-        "allowed": true,
-        "status": "waiting-money",
-        "message": "Need $3.942b for upgrade node 10 RAM; spendable $2.688b.",
-        "acted": false,
-        "purchaseCount": 0,
-        "purchases": [],
-        "mode": "exp",
-        "priority": "leveling",
-        "recentActions": []
-      },
-      "ts": 1782437649809
-    },
-    {
-      "id": "bn9-hashes",
-      "title": "Hash Spending",
-      "summary": "Hash policy: Improve Studying.",
-      "detail": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
-      "level": "info",
-      "data": {
-        "updatedAt": 1782437644804,
-        "source": "hacknet-hash-spender",
-        "allowed": true,
-        "status": "waiting-hashes",
-        "message": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
-        "upgradeName": "Improve Studying",
-        "target": null,
-        "hashPolicy": {
-          "upgradeName": "Improve Studying",
-          "target": null,
-          "source": "bn9-study-boost",
-          "phase": "study",
-          "bankHashes": true,
-          "maxSpendsPerCycle": 1,
-          "reason": "BN9 hacking-level blocker is being solved by studying; bank hashes for Improve Studying instead of selling."
-        },
-        "reserveHashes": 0,
-        "minHashesToSpend": 4,
-        "maxSpendsPerCycle": 1,
-        "fallbackMaxSpendsPerCycle": 499,
-        "fallbackOnlyAfterPrimary": false,
-        "bankHashes": true,
-        "liquidate": false,
-        "targetShaping": false,
-        "hashes": 1664,
-        "capacity": 1664,
-        "acted": false,
-        "spends": 0,
-        "primarySpends": 0,
-        "fallbackSpends": 0,
-        "recentActions": []
-      },
-      "ts": 1782437649809
-    },
-    {
-      "id": "bn9-stocks",
-      "title": "Stock Trader",
-      "summary": "Stock trader is 4S FORECAST AUTO-TRADER.",
-      "detail": "9 positions held. Portfolio $1.63b. Total P/L $612.67m.",
-      "level": "info",
-      "data": {
-        "started": 1782433884426,
-        "cycles": 627,
-        "mode": "4S FORECAST AUTO-TRADER",
-        "daemonPriority": "leveling",
-        "daemonAllowed": true,
-        "daemonReserve": 0,
-        "resetPrep": false,
-        "status": "tracking-positions",
-        "statusMessage": "Tracking open positions and sell signals.",
-        "money": 2687631981.6307473,
-        "portfolioValue": 1625918013.398108,
-        "totalWealth": 4313549995.028855,
-        "maxStockInvestment": 1725419998.0115423,
-        "remainingStockBudget": 99501984.61343431,
-        "buyBudget": 99501984.61343431,
-        "totalProfit": 612670712.6543319,
-        "holdings": 9,
-        "winners": 9,
-        "losers": 0,
-        "rows": [
-          {
-            "sym": "FSIG",
-            "shares": 1783,
-            "price": 315029.9914995236,
-            "trend": 0.08049460406647367,
-            "forecast": 0.8171033471914981,
-            "value": 559451680.9442759,
-            "profit": 475771371.5558475,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "STM",
-            "shares": 5948,
-            "price": 40064.59130811387,
-            "trend": 0.014066378187556013,
-            "forecast": 0.6290025723047945,
-            "value": 236874363.96605736,
-            "profit": 56227116.636597246,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "VITA",
-            "shares": 8774,
-            "price": 25740.06530252872,
-            "trend": 0.021838262381373798,
-            "forecast": 0.6056431828080195,
-            "value": 224488272.9666007,
-            "profit": 43822438.05622688,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "MGCP",
-            "shares": 4196,
-            "price": 22986.705447846172,
-            "trend": 0.01696011113710585,
-            "forecast": 0.757996288370024,
-            "value": 95969954.97886673,
-            "profit": 13801065.991828859,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "ECP",
-            "shares": 3454,
-            "price": 26834.68072039262,
-            "trend": 0.017359592423605772,
-            "forecast": 0.683808324026592,
-            "value": 92501613.23381963,
-            "profit": 10329817.769767508,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "TITN",
-            "shares": 10556,
-            "price": 10903.730142215307,
-            "trend": 0.0213314908967514,
-            "forecast": 0.6086905987716554,
-            "value": 114294076.95355621,
-            "profit": 7041716.678842574,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "OMTK",
-            "shares": 1292,
-            "price": 85247.93389330828,
-            "trend": -0.005587706841581993,
-            "forecast": 0.6044760638418317,
-            "value": 109809909.59838383,
-            "profit": 2568484.680796355,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "BLD",
-            "shares": 6004,
-            "price": 14134.798788601558,
-            "trend": -0.011253754826491727,
-            "forecast": 0.6030468569455683,
-            "value": 84441005.26712993,
-            "profit": 2267824.0826186687,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "GPH",
-            "shares": 2360,
-            "price": 46215.573846575884,
-            "trend": 0.009244008752371713,
-            "forecast": 0.6256061594439118,
-            "value": 108087135.4894178,
-            "profit": 840877.201806277,
-            "action": "",
-            "hasPosition": true
-          },
-          {
-            "sym": "CLRK",
-            "shares": 0,
-            "price": 8603.98970222756,
-            "trend": -0.030193852834704663,
-            "forecast": 0.3910717837419223,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "KGI",
-            "shares": 0,
-            "price": 11685.757555913908,
-            "trend": 0.00011466044291701101,
-            "forecast": 0.5864837135763893,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "FLCM",
-            "shares": 0,
-            "price": 313028.5314724274,
-            "trend": -0.017244927521137494,
-            "forecast": 0.20920018401570428,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "DCOMM",
-            "shares": 0,
-            "price": 7289.386567860644,
-            "trend": 0.02182171513257141,
-            "forecast": 0.5709577781693169,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "HLS",
-            "shares": 0,
-            "price": 6892.92863247606,
-            "trend": -0.023196246991333287,
-            "forecast": 0.3962789630660491,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "ICRS",
-            "shares": 0,
-            "price": 4395.936905120001,
-            "trend": 0.010109625345328223,
-            "forecast": 0.5622300234818799,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "UNV",
-            "shares": 0,
-            "price": 10455.938098666235,
-            "trend": -0.01151547179695333,
-            "forecast": 0.42245916796833816,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "AERO",
-            "shares": 0,
-            "price": 13233.676663661287,
-            "trend": 0.022325383152271838,
-            "forecast": 0.5660426358842007,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "OMN",
-            "shares": 0,
-            "price": 6932.1739420397125,
-            "trend": 0.01294343752475251,
-            "forecast": 0.5511435052882985,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "SLRS",
-            "shares": 0,
-            "price": 101132.18536352397,
-            "trend": -0.013492490081658936,
-            "forecast": 0.42606893660009976,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "NVMD",
-            "shares": 0,
-            "price": 13732.26094527266,
-            "trend": 0.01731924492746795,
-            "forecast": 0.4351498749565224,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "WDS",
-            "shares": 0,
-            "price": 60.19248480596508,
-            "trend": -0.05404085161262217,
-            "forecast": 0.5782649330344418,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "LXO",
-            "shares": 0,
-            "price": 6381.4980267025485,
-            "trend": 0.016618825344152818,
-            "forecast": 0.44495005274893573,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "RHOC",
-            "shares": 0,
-            "price": 4205.643230808353,
-            "trend": -0.012145861738022068,
-            "forecast": 0.4364662857324181,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "APHE",
-            "shares": 0,
-            "price": 445319.6804179834,
-            "trend": 0.021431467192857986,
-            "forecast": 0.4431533060313973,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "SYSC",
-            "shares": 0,
-            "price": 4848.497382865151,
-            "trend": -0.011106253519346155,
-            "forecast": 0.4301446372540184,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "CTK",
-            "shares": 0,
-            "price": 3348.5108334594293,
-            "trend": -0.015661881975177445,
-            "forecast": 0.40450080253737253,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "NTLK",
-            "shares": 0,
-            "price": 79338.21508254397,
-            "trend": -0.050193407536865235,
-            "forecast": 0.5756248504383996,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "OMGA",
-            "shares": 0,
-            "price": 19898.87127323211,
-            "trend": 0.035643588815415406,
-            "forecast": 0.5172675069867807,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "FNS",
-            "shares": 0,
-            "price": 420.958196793802,
-            "trend": -0.03375583890894666,
-            "forecast": 0.4469589040783679,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "JGN",
-            "shares": 0,
-            "price": 6521.844440085126,
-            "trend": -0.02172542449797399,
-            "forecast": 0.558865121021515,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "SGC",
-            "shares": 0,
-            "price": 10784.575292982965,
-            "trend": -0.06404292264459552,
-            "forecast": 0.4826163549028628,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "CTYS",
-            "shares": 0,
-            "price": 4752.48971209129,
-            "trend": -0.07796774068070628,
-            "forecast": 0.4819446794084379,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          },
-          {
-            "sym": "MDYN",
-            "shares": 0,
-            "price": 61630.97458527831,
-            "trend": -0.03406462376477293,
-            "forecast": 0.43957081631047534,
-            "value": 0,
-            "profit": 0,
-            "action": "",
-            "hasPosition": false
-          }
-        ],
-        "recentActions": [
-          "[9:27:00 PM] BOUGHT 4S TITN",
-          "[9:27:00 PM] BOUGHT 4S GPH",
-          "[9:27:00 PM] SOLD PAUSED FLCM",
-          "[9:27:00 PM] BOUGHT 4S OMTK",
-          "[9:19:30 PM] SOLD PAUSED TITN",
-          "[9:19:30 PM] SOLD PAUSED CTK",
-          "[9:19:30 PM] SOLD PAUSED GPH",
-          "[9:19:30 PM] BOUGHT 4S FLCM",
-          "[9:19:30 PM] BOUGHT 4S BLD",
-          "[9:19:30 PM] BOUGHT 4S MGCP",
-          "[9:19:30 PM] BOUGHT 4S ECP",
-          "[9:11:59 PM] BOUGHT 4S TITN",
-          "[9:11:59 PM] BOUGHT 4S CTK",
-          "[9:11:59 PM] BOUGHT 4S VITA",
-          "[9:11:59 PM] SOLD PAUSED HLS",
-          "[9:11:59 PM] BOUGHT 4S STM",
-          "[9:11:59 PM] SOLD PAUSED OMTK",
-          "[9:11:59 PM] SOLD PAUSED BLD",
-          "[9:11:59 PM] SOLD PAUSED MGCP",
-          "[9:04:28 PM] SOLD PAUSED TITN"
-        ],
-        "marketAccess": {
-          "access": {
-            "hasWse": true,
-            "hasTix": true,
-            "has4SData": true,
-            "has4S": true
-          },
-          "money": 2687631981.6307473,
-          "spendable": 2687631981.6307473,
-          "next": null,
-          "lastPurchase": null,
-          "blockedReason": "All configured market access purchases are complete."
-        },
-        "lastAction": "BOUGHT 4S TITN",
-        "updatedAt": 1782437648275,
-        "updatedAtText": "9:34:08 PM"
-      },
-      "ts": 1782437649809
-    },
-    {
-      "id": "bn9-augmentations",
-      "title": "Augmentation Path",
-      "summary": "No augmentation goal published.",
-      "detail": "No valid augmentation candidate found.",
+      "id": "readiness",
+      "title": "BN4 Readiness",
+      "summary": "BN4 readiness is incomplete: 2/4.",
+      "detail": "Still waiting on: hacking level, money.",
       "level": "warning",
       "data": {
-        "augmentationPlan": {
-          "updatedAt": 1782437637464,
-          "bitNode": 9,
-          "strategy": {
-            "name": "BN9 Hacknet / Hash Economy",
-            "maxPrice": 1000000000000,
-            "readyBuyOrder": "cheap-first",
-            "statWeights": {
-              "hacknet": 160,
-              "hacking": 45,
-              "hacking_exp": 35,
-              "faction_rep": 70,
-              "money": 50,
-              "company_rep": 15,
-              "charisma": 15,
-              "combat": 5,
-              "crime": 5,
-              "bladeburner": 0
-            }
-          },
-          "money": 2685164834.5862284,
-          "reserveMoney": 1000000,
-          "spendable": 2684164834.5862284,
-          "maxPrice": 1000000000000,
-          "progressionFrontier": {
-            "stage": null,
-            "reason": "No candidates available.",
-            "candidateCount": 0
-          },
-          "ready": false,
-          "nextGoal": null,
-          "blockedReason": "No valid augmentation candidate found.",
-          "neuroFluxPolicy": {
-            "enabled": false,
-            "stage": "bitrunners-neuroflux",
-            "targetFaction": "BitRunners",
-            "targetAugmentation": "NeuroFlux Governor",
-            "allowDaedalus": false,
-            "favor": 0,
-            "favorToDonate": 150,
-            "favorRemaining": 150,
-            "donationUnlocked": false,
-            "projectedDonationUnlocked": false,
-            "moneyModePreferred": true,
-            "installRequiredForFavor": true,
-            "favorState": {
-              "faction": "BitRunners",
-              "currentFavor": 0,
-              "currentRep": 0,
-              "favorToDonate": 150,
-              "targetFavor": 150,
-              "projectedFavorGain": null,
-              "projectedFavor": 0,
-              "missingProjectedFavor": 150,
-              "requiredRepForFavorTarget": null,
-              "missingRepForFavorTarget": null,
-              "favorReady": false,
-              "formulaSource": "unavailable"
-            },
-            "reason": "BitRunners not joined; NeuroFlux favor loop unavailable."
-          },
-          "candidates": []
-        },
-        "factionWork": {}
+        "targetBitNode": 4,
+        "goal": "Unlock Source-File 4",
+        "ready": false,
+        "readyCount": 2,
+        "totalChecks": 4,
+        "hackingReady": false,
+        "moneyReady": false,
+        "homeRamReady": true,
+        "augReady": true,
+        "hacking": 168,
+        "hackingTarget": 2500,
+        "money": 363400467.4569891,
+        "moneyTarget": 100000000000,
+        "augmentCount": 35,
+        "augmentTarget": 30
       },
-      "ts": 1782437649809
+      "ts": 1782525157892
+    },
+    {
+      "id": "victory",
+      "title": "Victory Plan",
+      "summary": "Current victory stage is level-hacking.",
+      "detail": "Prioritize EXP only until faction progression requirements are met.",
+      "level": "info",
+      "data": {
+        "stage": "level-hacking",
+        "nextAction": "Prioritize EXP only until faction progression requirements are met.",
+        "hackingTarget": 9007199254740991,
+        "hasDaedalus": false,
+        "hasRedPill": false,
+        "worldDaemon": "w0r1d_d43m0n",
+        "canUseWorldDaemon": false
+      },
+      "ts": 1782525157892
     }
   ],
-  "bridgeUpdatedAt": 1782439440443
+  "bridgeUpdatedAt": 1782525158998
 }

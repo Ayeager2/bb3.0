@@ -117,7 +117,7 @@ export const SERVICES = [
         name: "/tools/reset-executor-service.js",
         host: "home",
         threads: 1,
-        args: ["--refresh", 15000, "--execute", "false"],
+        args: ["--refresh", 15000, "--execute", true],
         tail: false,
         type: SERVICE_TYPES.CONDITIONAL,
         keepAlive: true,
@@ -223,7 +223,7 @@ export const SERVICES = [
         threads: 1,
         args: [
             "--refresh", 2500,
-            "--reserve", 1_000_000_000,
+            "--reserve", 0,
             "--create", true,
             "--faction", "Slum Snakes",
             "--buy-equipment", true,
@@ -562,7 +562,7 @@ export const SERVICES = [
         threads: 1,
 
         args: [
-            "--next", 4,
+            "--next", "auto",
             "--script", "daemon.js",
             "--clean", true,
         ],

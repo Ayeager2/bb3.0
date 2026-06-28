@@ -31,14 +31,14 @@ const HIGH_IMPACT_KEYWORDS = [
 ];
 
 export function buildResetPlan(ns, options = {}) {
-    const cfg = { ...DEFAULTS, ...options };
+    const bitNode = getCurrentBitNode(ns);
+    const cfg = { ...DEFAULTS, ...getBitNodeResetDefaults(bitNode), ...options };
 
     const purchased = safeGetOwnedAugmentations(ns, true);
     const installed = safeGetOwnedAugmentations(ns, false);
 
     const pending = getPendingAugmentations(purchased, installed);
     const highImpact = pending.filter(isHighImpactAugmentation);
-    const bitNode = getCurrentBitNode(ns);
     const scoredPending = scorePendingAugmentations(
         pending.map(name => buildPendingAugInfo(ns, name)),
         bitNode
@@ -191,4 +191,19 @@ function countByName(items = []) {
     }
 
     return counts;
+}
+
+function getBitNodeResetDefaults(bitNode) {
+    if (bitNode === 2) {
+        return {
+            minPurchasedAugs: 6,
+            earlyPurchasedAugs: 6,
+            minRunTimeMs: 0,
+            minPendingScore: 0,
+            earlyPendingScore: 0,
+            requireManualArmedFlag: false,
+        };
+    }
+
+    return {};
 }

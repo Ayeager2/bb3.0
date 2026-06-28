@@ -1,28 +1,40 @@
 import { useState, useEffect, useMemo } from "react";
-import { FiCpu, FiGitBranch, FiServer, FiSettings, FiTrendingUp, FiZap } from "react-icons/fi";
+import { FiCpu, FiGitBranch, FiServer, FiSettings, FiTrendingUp, FiUsers, FiZap } from "react-icons/fi";
 
 import NetworkTopologyCard from "../cards/NetworkTopologyCard.jsx";
 import ServerTickerCard from "../cards/ServerTickerCard.jsx";
 import StockPortfolioCard from "../cards/StockPortfolioCard.jsx";
 import HacknetMoneyCard from "../cards/HacknetMoneyCard.jsx";
 import AugmentationTreeCard from "../cards/AugmentationTreeCard.jsx";
+import GangCard from "../cards/GangCard.jsx";
 import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
 
 const DEFAULT_CARD_ORDER = [
+    "gang",
     "hacknetMoney",
+    "serverTicker",
+    "augmentationTree",
     "stockPortfolio",
+    "networkTopology",
+];
+
+const BN2_CARD_ORDER = [
+    "gang",
+    "serverTicker",
+    "hacknetMoney",
     "augmentationTree",
     "networkTopology",
-    "serverTicker",
 ];
 
 const DEFAULT_VISIBLE = {
     serverTicker: false,
+    gang: false,
 };
 
-const CARD_STORAGE_KEY = "bbdash-card-layout-v3";
+const CARD_STORAGE_KEY = "bbdash-card-layout-v4";
 
 const CARD_REGISTRY = {
+    gang: { title: "Gang Command", component: GangCard, icon: FiUsers },
     networkTopology: { title: "Network Topology", component: NetworkTopologyCard, icon: FiGitBranch },
     serverTicker: { title: "Server Ticker", component: ServerTickerCard, icon: FiServer },
     stockPortfolio: { title: "Stock Checker", component: StockPortfolioCard, icon: FiTrendingUp },
@@ -55,12 +67,22 @@ export default function DashboardGrid({
     }, [layout]);
 
     const orderedCards = useMemo(() => {
+        const bitNode = Number(state?.bitnode?.number);
+        const isBn2 = bitNode === 2;
         const isBn9 = Number(state?.bitnode?.number) === 9;
+        const order =
+            isBn2
+                ? [
+                    ...BN2_CARD_ORDER,
+                    ...layout.order.filter(id => !BN2_CARD_ORDER.includes(id)),
+                ]
+                : layout.order;
 
-        return layout.order
+        return order
             .filter(id => CARD_REGISTRY[id])
+            .filter(id => !(isBn2 && id === "stockPortfolio"))
             .filter(id => !(isBn9 && id === "serverTicker"))
-            .filter(id => layout.visible[id] !== false);
+            .filter(id => isAutoVisible(id, bitNode, layout.visible));
     }, [layout.order, layout.visible, state?.bitnode?.number]);
 
     const activeCards = useMemo(() => {
@@ -287,4 +309,18 @@ function defaultLayout() {
         },
         sizes: {},
     };
+}
+
+function isAutoVisible(id, bitNode, visible = {}) {
+    if (bitNode === 2) {
+        if (id === "gang") return true;
+        if (id === "serverTicker") return true;
+        if (id === "stockPortfolio") return false;
+    }
+
+    if (visible[id] === false) return false;
+
+    if (id === "gang" && bitNode !== 2) return visible[id] === true;
+
+    return true;
 }

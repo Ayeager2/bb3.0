@@ -1,0 +1,264 @@
+{
+  "updatedAt": 1782525160398,
+  "updatedAtText": "9:52:40 PM",
+  "source": "gang-manager-service",
+  "status": "running",
+  "message": "Gang manager active.",
+  "inGang": true,
+  "gang": "Slum Snakes",
+  "memberCount": 12,
+  "recruited": 0,
+  "boughtEquipment": 0,
+  "equipmentBuyer": {
+    "bought": 0,
+    "status": "waiting-money",
+    "message": "Waiting for Jimmy to buy BitWire; need $4.22b, spendable $355.29m after $0 reserve.",
+    "nextItem": {
+      "member": "Jimmy",
+      "item": "BitWire",
+      "type": "Augmentation",
+      "cost": 4221214520.35324,
+      "spendable": 355289360.0399203,
+      "reserve": 0
+    },
+    "failedItem": null
+  },
+  "ascended": 0,
+  "assignments": [
+    {
+      "name": "Lou",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Bob",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Erie",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Frank",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Jimmy",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Don",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Lu",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Jane",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Jannine",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Gollum",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Vincent Vega",
+      "task": "Traffick Illegal Arms"
+    },
+    {
+      "name": "Saruman",
+      "task": "Traffick Illegal Arms"
+    }
+  ],
+  "respect": 258774.46160522898,
+  "wantedLevel": 485.25918364498574,
+  "wantedPenalty": 0.9981282893379333,
+  "money": 355289360.0399203,
+  "members": [
+    {
+      "name": "Don",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 22402.30172116102,
+      "str": 13637,
+      "def": 14714,
+      "dex": 5669,
+      "agi": 551,
+      "hack": 2429,
+      "strAsc": 24.137817506255967,
+      "defAsc": 24.874380207878023,
+      "dexAsc": 25.287210829644323,
+      "agiAsc": 9.548662842019995,
+      "hackAsc": 11.417484053296276
+    },
+    {
+      "name": "Frank",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 26686.78339654288,
+      "str": 13861,
+      "def": 14990,
+      "dex": 5799,
+      "agi": 587,
+      "hack": 2497,
+      "strAsc": 23.850304156325,
+      "defAsc": 24.652370355684216,
+      "dexAsc": 25.1118622238477,
+      "agiAsc": 9.551106372607178,
+      "hackAsc": 11.318626733195822
+    },
+    {
+      "name": "Jimmy",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 25484.098716489832,
+      "str": 13806,
+      "def": 15042,
+      "dex": 5325,
+      "agi": 561,
+      "hack": 1989,
+      "strAsc": 23.855543765081674,
+      "defAsc": 24.791464766612332,
+      "dexAsc": 23.448208115632962,
+      "agiAsc": 9.86960910432594,
+      "hackAsc": 9.880150355059543
+    },
+    {
+      "name": "Jannine",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 3030.2559716395835,
+      "str": 9786,
+      "def": 10853,
+      "dex": 3175,
+      "agi": 620,
+      "hack": 777,
+      "strAsc": 24.71090612251297,
+      "defAsc": 25.69089960628479,
+      "dexAsc": 21.37234790635449,
+      "agiAsc": 9.736602963626396,
+      "hackAsc": 7.552078154669141
+    },
+    {
+      "name": "Bob",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 29848.19006693265,
+      "str": 14513,
+      "def": 15776,
+      "dex": 5132,
+      "agi": 506,
+      "hack": 1593,
+      "strAsc": 24.327616464058533,
+      "defAsc": 25.252394184322835,
+      "dexAsc": 22.237260556276148,
+      "agiAsc": 10.220342665688731,
+      "hackAsc": 8.056200582173599
+    },
+    {
+      "name": "Jane",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 3621.1497671422485,
+      "str": 10422,
+      "def": 11802,
+      "dex": 3568,
+      "agi": 597,
+      "hack": 905,
+      "strAsc": 25.512774757039573,
+      "defAsc": 26.839672484225147,
+      "dexAsc": 22.79034699580563,
+      "agiAsc": 11.793677369143564,
+      "hackAsc": 7.952907579027114
+    },
+    {
+      "name": "Lou",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 42648.99168438861,
+      "str": 15127,
+      "def": 16763,
+      "dex": 5140,
+      "agi": 653,
+      "hack": 1342,
+      "strAsc": 23.964207545496134,
+      "defAsc": 25.30583935846877,
+      "dexAsc": 21.09651527219888,
+      "agiAsc": 11.777471867045335,
+      "hackAsc": 6.567892900267336
+    },
+    {
+      "name": "Erie",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 23818.788992386922,
+      "str": 14335,
+      "def": 15834,
+      "dex": 4970,
+      "agi": 609,
+      "hack": 1416,
+      "strAsc": 24.881538030086876,
+      "defAsc": 26.15297751312138,
+      "dexAsc": 22.394113611311862,
+      "agiAsc": 11.827063743189475,
+      "hackAsc": 7.6672563578515085
+    },
+    {
+      "name": "Lu",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 24308.23262581541,
+      "str": 12450,
+      "def": 13813,
+      "dex": 4080,
+      "agi": 519,
+      "hack": 1418,
+      "strAsc": 21.637330332958506,
+      "defAsc": 22.839837140888413,
+      "dexAsc": 18.626659942990518,
+      "agiAsc": 8.377034645738833,
+      "hackAsc": 7.484888783336791
+    },
+    {
+      "name": "Gollum",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 19549.823098741654,
+      "str": 7778,
+      "def": 8713,
+      "dex": 2384,
+      "agi": 359,
+      "hack": 975,
+      "strAsc": 14.136262669748238,
+      "defAsc": 15.03967887648006,
+      "dexAsc": 11.569908576001472,
+      "agiAsc": 4.491327027901435,
+      "hackAsc": 5.3802880336207535
+    },
+    {
+      "name": "Vincent Vega",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 18731.358982023114,
+      "str": 7715,
+      "def": 8635,
+      "dex": 2375,
+      "agi": 381,
+      "hack": 966,
+      "strAsc": 14.106118525304796,
+      "defAsc": 14.995955794372435,
+      "dexAsc": 11.594205933249663,
+      "agiAsc": 4.52058590345928,
+      "hackAsc": 5.3794885822042255
+    },
+    {
+      "name": "Saruman",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 18643.486581955764,
+      "str": 7684,
+      "def": 8616,
+      "dex": 2368,
+      "agi": 407,
+      "hack": 964,
+      "strAsc": 14.071117302364716,
+      "defAsc": 14.966396838372331,
+      "dexAsc": 11.569037353375936,
+      "agiAsc": 4.511277339518422,
+      "hackAsc": 5.380174030701059
+    }
+  ],
+  "bridgeUpdatedAt": 1782525161087
+}

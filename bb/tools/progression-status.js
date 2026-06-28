@@ -8,6 +8,7 @@ const BACKDOOR_STATE_FILE = "/data/backdoor-service-state.txt";
 const FACTION_JOIN_STATUS_FILE = "/data/faction-join-status.txt";
 const FACTION_WORK_SERVICE_STATE_FILE = "/data/faction-work-service-state.txt";
 const BN9_LEVEL_STUDY_STATE_FILE = "/data/bn9-level-study-state.txt";
+const RESET_PLAN_FILE = "/data/reset-plan.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -23,6 +24,7 @@ export async function main(ns) {
     const join = readJson(ns, FACTION_JOIN_STATUS_FILE);
     const factionWorkService = readJson(ns, FACTION_WORK_SERVICE_STATE_FILE);
     const bn9Study = readJson(ns, BN9_LEVEL_STUDY_STATE_FILE);
+    const resetPlan = readJson(ns, RESET_PLAN_FILE);
 
     const currentWork = getCurrentWork(ns);
     const factionProgression = daemon.factionProgression ?? {};
@@ -130,6 +132,14 @@ export async function main(ns) {
         ns.tprint(`Favor: ${formatNumber(donation.favor)} / ${formatNumber(donation.favorToDonate)}`);
         ns.tprint(`Estimated Donation: ${formatMoney(donation.estimatedDonation)}`);
     }
+
+    ns.tprint("-".repeat(70));
+    ns.tprint("Reset / Install");
+    ns.tprint(
+        `Ready: ${yesNo(resetPlan.ready)} | Armed: ${yesNo(resetPlan.armed)} | ` +
+        `Pending: ${resetPlan.pendingCount ?? "?"} | Installed: ${resetPlan.installedCount ?? "?"}`
+    );
+    ns.tprint(`Reason: ${resetPlan.reason ?? "No reset plan published yet."}`);
 
     ns.tprint("-".repeat(70));
     ns.tprint("Last Purchase");

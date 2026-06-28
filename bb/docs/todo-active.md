@@ -147,6 +147,13 @@ Server purchaser / dashboard ticker:
   - correction: Red Pill remains the first Daedalus purchase priority and masks other Daedalus candidates while unowned
   - post-Red-Pill logic remains the normal level-to-live-world-daemon-requirement / destroy world daemon path
 
+- BN2 gang / personal augmentation reset loop:
+  - crime-gang roadmap stays gang/economy-led until personal augmentation progression is needed
+  - during BN2 progression, factions/backdoors can advance while gang, cloud servers, Hacknet, and home upgrades continue in the background
+  - BN2 reset planner auto-installs after 6 pending personal augmentations and restarts `/startup.js`
+  - Red Pill must be installed, not merely queued, before destroy-node mode can attempt `w0r1d_d43m0n`
+  - destroy-node service uses `--next auto`; BN2 routes to BN3 by default
+
 - Pre-Red-Pill Daedalus NeuroFlux donation-unlock loop:
   - Daedalus NeuroFlux can now be selected before Red Pill only while projected Daedalus favor is below donation unlock
   - favor projection uses formulas.reputation when available

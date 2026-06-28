@@ -22,7 +22,7 @@ export async function main(ns) {
     ]);
 
     const target = WORLD_DAEMON;
-    const nextBitNode = Number(flags.next ?? ns.args[0] ?? 4);
+    const nextBitNode = resolveNextBitNode(ns, flags.next ?? ns.args[0] ?? "auto");
     const nextScript = String(flags.script ?? ns.args[1] ?? "daemon.js");
     const path = findPath(ns, "home", target);
 
@@ -318,9 +318,34 @@ function isTruthy(value) {
 function safeHasRedPill(ns) {
     try {
         return ns.singularity
-            .getOwnedAugmentations(true)
+            .getOwnedAugmentations(false)
             .includes("The Red Pill");
     } catch {
         return false;
+    }
+}
+
+function resolveNextBitNode(ns, value) {
+    const raw = String(value ?? "auto").trim().toLowerCase();
+
+    if (raw !== "auto") {
+        const numeric = Number(value);
+        if (Number.isFinite(numeric) && numeric > 0) return numeric;
+    }
+
+    const current = getCurrentBitNode(ns);
+
+    if (current === 2) return 3;
+    if (current === 4) return 4;
+    if (current === 9) return 2;
+
+    return Math.max(1, current);
+}
+
+function getCurrentBitNode(ns) {
+    try {
+        return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
+    } catch {
+        return 1;
     }
 }

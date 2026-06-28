@@ -142,11 +142,26 @@ body::before {
 }
 
 .theme-bn2_underworld {
-    --purple: #a855f7;
+    --purple: #f97316;
     --cyan: #ff3864;
-    --border: rgba(168, 85, 247, .58);
-    --theme-ambient-a: rgba(168, 85, 247, .16);
-    --theme-ambient-b: rgba(255, 56, 100, .10);
+    --green: #34d399;
+    --yellow: #facc15;
+    --border: rgba(249, 115, 22, .62);
+    --glow-purple: 0 0 18px rgba(249, 115, 22, .28);
+    --glow-cyan: 0 0 18px rgba(255, 56, 100, .28);
+    --theme-ambient-a: rgba(127, 29, 29, .22);
+    --theme-ambient-b: rgba(250, 204, 21, .08);
+    --card-accent-wash: rgba(248, 113, 113, .08);
+    --card-border-soft: rgba(249, 115, 22, .34);
+    --card-shadow-accent: rgba(127, 29, 29, .16);
+    --card-sweep: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 56, 100, .10) 32%,
+        rgba(249, 115, 22, .16) 48%,
+        rgba(250, 204, 21, .13) 58%,
+        transparent 76%
+    );
 }
 
 .theme-bn3_corporate {

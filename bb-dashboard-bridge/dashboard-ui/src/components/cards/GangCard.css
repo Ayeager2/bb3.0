@@ -1,0 +1,357 @@
+.gang-card {
+    display: grid;
+    gap: 12px;
+}
+
+.gang-hero,
+.gang-metric,
+.gang-panel,
+.gang-task-chip,
+.gang-member-card {
+    border: 1px solid rgba(248, 113, 113, .22);
+    background:
+        linear-gradient(135deg, rgba(248, 113, 113, .08), rgba(250, 204, 21, .035)),
+        rgba(3, 7, 18, .58);
+    border-radius: 8px;
+}
+
+.gang-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px;
+    box-shadow: inset 0 0 24px rgba(127, 29, 29, .16);
+}
+
+.gang-kicker,
+.gang-metric span,
+.gang-panel-head span,
+.gang-table th {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-size: 10px;
+}
+
+.gang-name {
+    color: var(--cyan);
+    font-size: 24px;
+    font-weight: 900;
+    margin-top: 4px;
+}
+
+.gang-message,
+.gang-panel p,
+.gang-footer {
+    color: var(--text);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.gang-status {
+    color: var(--muted);
+    border: 1px solid rgba(148, 163, 184, .25);
+    border-radius: 999px;
+    padding: 7px 10px;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 11px;
+}
+
+.gang-status.online {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .45);
+}
+
+.gang-status.offline {
+    color: var(--red);
+    border-color: rgba(255, 56, 100, .45);
+}
+
+.gang-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.gang-metrics-secondary .gang-metric b {
+    font-size: 15px;
+}
+
+.gang-metric {
+    padding: 10px;
+    min-width: 0;
+}
+
+.gang-metric b {
+    display: block;
+    margin-top: 6px;
+    font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.gang-green b {
+    color: var(--green);
+}
+
+.gang-yellow b {
+    color: var(--yellow);
+}
+
+.gang-cyan b {
+    color: var(--cyan);
+}
+
+.gang-purple b {
+    color: var(--purple);
+}
+
+.gang-red b {
+    color: var(--red);
+}
+
+.gang-panel {
+    padding: 10px 12px;
+}
+
+.gang-panel-head,
+.gang-footer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.gang-panel-head b {
+    color: var(--cyan);
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.gang-panel p {
+    margin: 8px 0 0;
+    color: var(--muted);
+}
+
+.gang-bar {
+    height: 8px;
+    border-radius: 999px;
+    margin-top: 10px;
+    background: rgba(15, 23, 42, .9);
+    border: 1px solid rgba(148, 163, 184, .18);
+    overflow: hidden;
+}
+
+.gang-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--red), var(--yellow), var(--green));
+    box-shadow: 0 0 14px rgba(248, 113, 113, .22);
+}
+
+.gang-task-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.gang-task-chip {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    padding: 9px 10px;
+}
+
+.gang-task-chip span {
+    color: var(--text);
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gang-task-chip b {
+    color: var(--yellow);
+}
+
+.gang-member-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.gang-member-card {
+    padding: 12px;
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+}
+
+.gang-member-card header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+}
+
+.gang-member-card header b {
+    display: block;
+    color: var(--text);
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gang-member-card header span {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gang-member-card header em {
+    color: var(--yellow);
+    border: 1px solid rgba(250, 204, 21, .28);
+    border-radius: 999px;
+    padding: 4px 7px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 10px;
+}
+
+.gang-member-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.gang-member-stats div {
+    border: 1px solid rgba(148, 163, 184, .13);
+    border-radius: 6px;
+    padding: 7px;
+    background: rgba(2, 6, 23, .52);
+    min-width: 0;
+}
+
+.gang-member-stats span,
+.gang-asc-label span,
+.gang-member-gains span {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    font-size: 9px;
+}
+
+.gang-member-stats b {
+    display: block;
+    color: var(--green);
+    font-size: 13px;
+    margin-top: 4px;
+    overflow-wrap: anywhere;
+}
+
+.gang-asc-row {
+    display: grid;
+    gap: 6px;
+}
+
+.gang-asc-label {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+}
+
+.gang-asc-label b {
+    color: var(--cyan);
+    font-size: 11px;
+}
+
+.gang-asc-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, .92);
+    border: 1px solid rgba(148, 163, 184, .15);
+    overflow: hidden;
+}
+
+.gang-asc-bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #64748b, var(--cyan));
+    box-shadow: 0 0 12px rgba(0, 229, 255, .18);
+}
+
+.gang-asc-warm .gang-asc-bar span {
+    background: linear-gradient(90deg, #f97316, #facc15);
+    box-shadow: 0 0 12px rgba(250, 204, 21, .18);
+}
+
+.gang-asc-hot .gang-asc-bar span {
+    background: linear-gradient(90deg, #facc15, #34d399);
+    box-shadow: 0 0 14px rgba(52, 211, 153, .22);
+}
+
+.gang-asc-ready {
+    border-color: rgba(52, 211, 153, .45);
+    box-shadow: 0 0 18px rgba(52, 211, 153, .10);
+}
+
+.gang-asc-ready .gang-asc-bar span {
+    background: linear-gradient(90deg, #34d399, #00e5ff);
+    box-shadow: 0 0 16px rgba(0, 229, 255, .28);
+}
+
+.gang-member-gains {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.gang-member-gains span {
+    border-top: 1px solid rgba(148, 163, 184, .12);
+    padding-top: 6px;
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gang-legend p {
+    color: var(--text);
+}
+
+.gang-empty {
+    color: var(--muted);
+    padding: 12px;
+    text-align: center;
+}
+
+.gang-footer {
+    color: var(--muted);
+}
+
+.gang-footer b {
+    color: var(--cyan);
+    text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+    .gang-metrics,
+    .gang-task-grid,
+    .gang-member-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gang-member-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

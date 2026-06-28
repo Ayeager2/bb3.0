@@ -37,7 +37,7 @@ export default function ThemeSettings({
         <div className="settings-list">
             <ThemeGroup
                 title="BitNode Skin"
-                detail={`Active: ${activeAccent}. Auto follows the current BitNode, so BN9 is BN9 Hash.`}
+                detail={`Active: ${activeAccent}. Auto follows the current BitNode skin.`}
                 options={BITNODE_THEMES}
                 selected={themeAccent}
                 onSelect={onThemeAccentChange}

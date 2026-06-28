@@ -182,7 +182,35 @@ export function chooseModeFromRoadmap(ns, roadmap, rootedServers) {
         return chooseHacknetRoadmapMode(ns, rootedServers);
     }
     if (roadmap === "bladeburner") return "exp";
-    if (roadmap === "crime-gang") return "exp";
+    if (roadmap === "crime-gang") {
+        const resetPlan = buildResetPlan(ns);
+        const factionProgression = buildFactionProgressionState(ns);
+        const redPillOwned = hasRedPill(ns);
+        const world = getWorldDaemonStatus(ns);
+
+        if (redPillOwned) {
+            if (!world.exists) return "progression";
+            if (!world.hackReady) return "exp";
+            if (!world.rooted) return "progression";
+
+            return "destroy-node";
+        }
+
+        if (resetPlan.ready) return "reset-prep";
+
+        if (shouldBn2BuildMoneyBeforeDaedalus(factionProgression)) {
+            return "money";
+        }
+
+        if (
+            factionProgression.currentBlocker !== "none" &&
+            factionProgression.recommendedMode
+        ) {
+            return factionProgression.recommendedMode;
+        }
+
+        return "money";
+    }
 
     return chooseMode(ns, rootedServers);
 }
@@ -448,26 +476,99 @@ export function chooseSpendingPolicy(ns, mode, capabilities = {}, overrides = {}
     }
 
     if (roadmap === "crime-gang") {
+        const resetPlan = buildResetPlan(ns);
+        const factionProgression = buildFactionProgressionState(ns);
+
+        if (resetPlan.ready) {
+            return {
+                priority: "reset-prep",
+                reserveMoney: 0,
+
+                allowServerPurchases: false,
+                allowStockTrading: false,
+                allowHacknet: false,
+                allowHomeRam: false,
+                allowExePurchases: false,
+
+                allowAugmentPurchases: false,
+                allowFactionWork: false,
+                allowFactionDonation: false,
+                allowFactionJoin: false,
+                allowBackdoors: false,
+                allowReset: true,
+                allowIntTravel: false,
+
+                gangPrimary: true,
+                gangReason: "BN2 queued enough augmentations; reset executor can install and restart startup.js.",
+                resetReason: resetPlan.reason,
+                bitNodeCapabilities,
+            };
+        }
+
+        const redPillOwned = hasRedPill(ns);
+        const world = getWorldDaemonStatus(ns);
+        const finalDestroy =
+            mode === "destroy-node" ||
+            (
+                redPillOwned &&
+                world.readyToDestroy === true
+            );
+
+        if (finalDestroy) {
+            return {
+                priority: "destroy-node",
+                reserveMoney: 0,
+
+                allowServerPurchases: false,
+                allowStockTrading: false,
+                allowHacknet: false,
+                allowHomeRam: false,
+                allowExePurchases: false,
+
+                allowAugmentPurchases: false,
+                allowFactionWork: false,
+                allowFactionDonation: false,
+                allowFactionJoin: false,
+                allowBackdoors: true,
+                allowReset: true,
+                allowIntTravel: false,
+
+                gangPrimary: true,
+                gangReason: "BN2 final state: Red Pill is installed and w0r1d_d43m0n is ready.",
+                bitNodeCapabilities,
+            };
+        }
+
+        const shouldProgress =
+            mode === "progression" ||
+            mode === "faction" ||
+            priority === "progression" ||
+            priority === "faction" ||
+            factionProgression.recommendedMode === "progression";
+
         return {
-            priority: "leveling",
+            priority: shouldProgress ? "progression" : "income",
             reserveMoney: 0,
 
-            allowServerPurchases: false,
+            allowServerPurchases: bitNodeCapabilities.cloud.allowed === true,
             allowStockTrading: false,
             allowHacknet: true,
             allowHomeRam: true,
             allowExePurchases: true,
 
             allowAugmentPurchases: true,
-            allowFactionWork: false,
+            allowFactionWork: shouldProgress,
             allowFactionDonation: false,
-            allowFactionJoin: false,
+            allowFactionJoin: shouldProgress,
             allowBackdoors: true,
             allowReset: false,
             allowIntTravel: false,
 
             gangPrimary: true,
-            gangReason: "BN2 is gang-led: no faction work/join loop; gang owns augmentation progress while UHM stays on EXP and Hacknet supports early money.",
+            gangReason:
+                shouldProgress
+                    ? "BN2 is entering personal augmentation progression: factions/backdoors can advance while gang and money engines continue in the background."
+                    : "BN2 is gang-led: gang owns early augmentation progress while UHM and cloud servers stay focused on money.",
             bitNodeCapabilities,
         };
     }
@@ -1102,9 +1203,20 @@ export function hasBladeburnerAccess() {
 function hasRedPill(ns) {
     try {
         return ns.singularity
-            .getOwnedAugmentations(true)
+            .getOwnedAugmentations(false)
             .includes("The Red Pill");
     } catch {
         return false;
     }
+}
+
+function shouldBn2BuildMoneyBeforeDaedalus(factionProgression) {
+    if (factionProgression?.currentFactionStage !== "daedalus") {
+        return false;
+    }
+
+    const req =
+        factionProgression.daedalusRequirements ?? {};
+
+    return req.moneyReady === false;
 }

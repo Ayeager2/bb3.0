@@ -1,34 +1,6 @@
 {
-  "updatedAt": 1782437649809,
   "source": "hacknet-hash-spender",
-  "allowed": true,
-  "status": "waiting-hashes",
-  "message": "Banking hashes for Improve Studying. Need 1.700k; have 1.664k spendable.",
-  "upgradeName": "Improve Studying",
-  "target": null,
-  "hashPolicy": {
-    "upgradeName": "Improve Studying",
-    "target": null,
-    "source": "bn9-study-boost",
-    "phase": "study",
-    "bankHashes": true,
-    "maxSpendsPerCycle": 1,
-    "reason": "BN9 hacking-level blocker is being solved by studying; bank hashes for Improve Studying instead of selling."
-  },
-  "reserveHashes": 0,
-  "minHashesToSpend": 4,
-  "maxSpendsPerCycle": 1,
-  "fallbackMaxSpendsPerCycle": 499,
-  "fallbackOnlyAfterPrimary": false,
-  "bankHashes": true,
-  "liquidate": false,
-  "targetShaping": false,
-  "hashes": 1664,
-  "capacity": 1664,
-  "acted": false,
-  "spends": 0,
-  "primarySpends": 0,
-  "fallbackSpends": 0,
-  "recentActions": [],
-  "bridgeUpdatedAt": 1782439441663
+  "status": "unavailable",
+  "message": "Could not read /data/hacknet-hash-spender-state.txt. Is /economy/hacknet-hash-spender-service.js running?",
+  "bridgeUpdatedAt": 1782525161039
 }

@@ -40,6 +40,8 @@ const BITBURNER_FACTION_WORK_PLAN_FILE = "/data/faction-work-plan.txt";
 const OUT_FACTION_WORK_PLAN_FILE = path.join(OUT_DIR, "faction-work-plan.json");
 const BITBURNER_FACTION_STATE_FILE = "/data/faction-state.txt";
 const OUT_FACTION_STATE_FILE = path.join(OUT_DIR, "faction-state.json");
+const BITBURNER_GANG_STATE_FILE = "/data/gang-state.txt";
+const OUT_GANG_STATE_FILE = path.join(OUT_DIR, "gang-state.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -479,6 +481,7 @@ function normalizeDashboardState(state = {}) {
     return {
         ...state,
         economy,
+        gang: readLocalJson(OUT_GANG_STATE_FILE, null),
         augmentationIntel,
         strategicTargetPlan: state?.strategicTargetPlan ?? plan,
         targetAnalysis: normalizeTargetAnalysis({
@@ -908,6 +911,14 @@ async function pollEconomyTelemetry() {
             status: "unavailable",
             message: `Could not read ${BITBURNER_FACTION_STATE_FILE}. Is /tools/faction-observer-service.js running?`,
             profiles: [],
+        }),
+        pollJsonFile(BITBURNER_GANG_STATE_FILE, OUT_GANG_STATE_FILE, {
+            source: "gang-manager-service",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_GANG_STATE_FILE}. Is /tools/gang-manager-service.js running?`,
+            inGang: false,
+            members: [],
+            assignments: [],
         }),
     ]);
 }

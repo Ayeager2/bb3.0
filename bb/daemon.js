@@ -22,6 +22,10 @@ import { buildGlobalState } from "/lib/daemon/state.js";
 import { logTargetDecision } from "/lib/daemon/telemetry.js";
 import { buildBackdoorState } from "/lib/daemon/backdoor.js";
 import { refreshDaemonState } from "/lib/daemon/dev-reset.js";
+import {
+  buildResetPlan,
+  writeResetPlan,
+} from "/lib/daemon/reset-planner.js";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -231,6 +235,8 @@ export async function main(ns) {
       updatedAt: Date.now(),
       capabilities,
     };
+
+    writeResetPlan(ns, buildResetPlan(ns));
 
     state.services = manageServices(ns, state);
 

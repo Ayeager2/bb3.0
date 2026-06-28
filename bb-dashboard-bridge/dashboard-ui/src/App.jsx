@@ -30,6 +30,21 @@ const THEME_SIGNAL_STORAGE_KEY = "bbdash-theme-signal";
 const MIN_FONT_OFFSET = 0;
 const MAX_FONT_OFFSET = 8;
 const LEGACY_SIGNAL_THEMES = new Set(["money_green", "exp_blue", "faction_cyan", "danger_red"]);
+const BITNODE_THEME_BY_NODE = {
+    1: "bn1_genesis",
+    2: "bn2_underworld",
+    3: "bn3_corporate",
+    4: "sf4_singularity",
+    5: "bn5_ai",
+    6: "bn6_bladeburner",
+    7: "bn7_bladeburner",
+    8: "bn8_market",
+    9: "bn9_hacknet",
+    10: "bn10_sleeves",
+    11: "bn11_knife",
+    12: "bn12_loop",
+};
+const BITNODE_THEME_IDS = new Set(Object.values(BITNODE_THEME_BY_NODE));
 
 export default function App() {
     const [state, setState] = useState(null);
@@ -134,6 +149,18 @@ export default function App() {
     }
 
     useEffect(() => {
+        const resolvedTheme = resolveBitNodeTheme(state);
+        const savedBitNodeThemeIsStale = themeAccent !== "auto"
+            && BITNODE_THEME_IDS.has(themeAccent)
+            && themeAccent !== resolvedTheme;
+
+        if (!savedBitNodeThemeIsStale) return;
+
+        setThemeAccent("auto");
+        localStorage.setItem(THEME_ACCENT_STORAGE_KEY, "auto");
+    }, [state?.bitnode?.number, themeAccent]);
+
+    useEffect(() => {
         function onKeyDown(event) {
             const isCommandK = (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k";
 
@@ -234,34 +261,7 @@ function loadThemeSignal() {
 
 function resolveBitNodeTheme(state) {
     const bitNode = Number(state?.bitnode?.number);
-
-    switch (bitNode) {
-        case 2:
-            return "bn2_underworld";
-        case 3:
-            return "bn3_corporate";
-        case 4:
-            return "sf4_singularity";
-        case 5:
-            return "bn5_ai";
-        case 6:
-            return "bn6_bladeburner";
-        case 7:
-            return "bn7_bladeburner";
-        case 8:
-            return "bn8_market";
-        case 9:
-            return "bn9_hacknet";
-        case 10:
-            return "bn10_sleeves";
-        case 11:
-            return "bn11_knife";
-        case 12:
-            return "bn12_loop";
-        case 1:
-        default:
-            return "bn1_genesis";
-    }
+    return BITNODE_THEME_BY_NODE[bitNode] ?? BITNODE_THEME_BY_NODE[1];
 }
 
 function resolveSignalTheme(state) {

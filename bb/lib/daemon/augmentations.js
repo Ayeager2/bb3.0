@@ -219,17 +219,18 @@ export function buildAugmentationPlan(ns, options = {}) {
                 spendable,
                 ownedAugmentations,
                 neuroFluxPolicy,
+                bitNode,
             })
         );
     }
 
     const progressionFrontier =
-        selectProgressionFrontier(ns, candidates);
+        selectProgressionFrontier(ns, candidates, bitNode);
 
     candidates =
         progressionFrontier.candidates;
 
-    candidates.sort((a, b) => compareForPurchase(a, b, strategy));
+    candidates.sort((a, b) => compareForPurchase(a, b, strategy, bitNode));
 
     const daedalusNeuroFluxGoal =
         getDaedalusNeuroFluxGoal(candidates, neuroFluxPolicy);
@@ -263,12 +264,31 @@ export function buildAugmentationPlan(ns, options = {}) {
     });
 }
 
-function selectProgressionFrontier(ns, candidates) {
+function selectProgressionFrontier(ns, candidates, bitNode = getCurrentBitNode(ns)) {
     if (!candidates.length) {
         return {
             stage: null,
             reason: "No candidates available.",
             candidates,
+        };
+    }
+
+    if (bitNode === 2) {
+        const gangFaction =
+            getGangFaction(ns);
+        const gangCandidates =
+            candidates.filter(candidate =>
+                candidate.faction === gangFaction &&
+                candidate.repeatable !== true
+            );
+
+        return {
+            stage: "bn2-gang",
+            reason:
+                gangCandidates.length > 0
+                    ? `BN2 buys only ${gangFaction} gang augmentations, cheapest first.`
+                    : `BN2 found no unowned non-repeatable augmentations from ${gangFaction}.`,
+            candidates: gangCandidates,
         };
     }
 
@@ -320,6 +340,17 @@ function selectProgressionFrontier(ns, candidates) {
     };
 }
 
+function getGangFaction(ns) {
+    try {
+        const info = ns.gang?.getGangInformation?.();
+        if (info?.faction) return info.faction;
+    } catch {
+        // Fall through to the BN2 default.
+    }
+
+    return "Slum Snakes";
+}
+
 function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set(), context = {}) {
     if (!aug) return true;
     const neuroFlux =
@@ -341,7 +372,11 @@ function shouldSkipAug(aug, maxPrice, ownedAugmentations = new Set(), context = 
     return false;
 }
 
-function compareForPurchase(a, b) {
+function compareForPurchase(a, b, strategy = null, bitNode = 1) {
+    if (bitNode === 2) {
+        return compareForBn2GangPurchase(a, b);
+    }
+
     const aReady = a.hasRep && a.affordable && a.hasPrereqs;
     const bReady = b.hasRep && b.affordable && b.hasPrereqs;
 
@@ -375,6 +410,25 @@ function compareForPurchase(a, b) {
     if (aStage !== bStage) return bStage - aStage;
 
     return b.score - a.score;
+}
+
+function compareForBn2GangPurchase(a, b) {
+    const aReady = a.hasRep && a.affordable && a.hasPrereqs;
+    const bReady = b.hasRep && b.affordable && b.hasPrereqs;
+
+    if (aReady && !bReady) return -1;
+    if (!aReady && bReady) return 1;
+
+    const aUsable = a.hasRep && a.hasPrereqs;
+    const bUsable = b.hasRep && b.hasPrereqs;
+
+    if (aUsable && !bUsable) return -1;
+    if (!aUsable && bUsable) return 1;
+
+    if (a.hasPrereqs && !b.hasPrereqs) return -1;
+    if (!a.hasPrereqs && b.hasPrereqs) return 1;
+
+    return a.price - b.price;
 }
 
 function getAugPriorityClass(item) {
@@ -422,7 +476,10 @@ function scoreStrategicValue(name, faction, aug, strategy) {
 
 function buildLiveFallbackCandidates(ns, context) {
     const player = ns.getPlayer();
-    const joinedFactions = player.factions ?? [];
+    const joinedFactions =
+        context.bitNode === 2
+            ? [getGangFaction(ns)].filter(Boolean)
+            : player.factions ?? [];
     const seen = new Set();
     const fallback = [];
     const needsDaedalusInviteAugs =

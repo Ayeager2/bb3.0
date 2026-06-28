@@ -1,7 +1,7 @@
 {
-  "updatedAt": 1782437652470,
-  "mode": "exp",
-  "priority": "leveling",
+  "updatedAt": 1782525155064,
+  "mode": "money",
+  "priority": "income",
   "allowBuying": true,
   "forceBuy": false,
   "policyAllowAugmentPurchases": true,
@@ -11,9 +11,29 @@
   "reserveMoney": 1000000,
   "maxPrice": 1000000000000,
   "planReady": false,
-  "nextGoal": null,
-  "planBlockedReason": "No valid augmentation candidate found.",
+  "nextGoal": {
+    "name": "Unstable Circadian Modulator",
+    "faction": "Slum Snakes",
+    "price": 5000000000,
+    "rep": 362500,
+    "factionRep": 4985.834263255726,
+    "hasRep": false,
+    "affordable": false,
+    "hasPrereqs": true,
+    "stagePolicy": {
+      "stage": "side",
+      "priority": 100,
+      "urgency": "low",
+      "buyReadiness": "opportunistic",
+      "factionWork": "background",
+      "moneyWork": "money-primary",
+      "reason": "This augmentation is not on the primary BN4 hacking faction path."
+    },
+    "repeatable": false,
+    "favorLoop": null
+  },
+  "planBlockedReason": "Need more rep with Slum Snakes.",
   "status": "blocked",
-  "blockedReason": "No valid augmentation candidate found.",
-  "bridgeUpdatedAt": 1782439441685
+  "blockedReason": "Need more rep with Slum Snakes.",
+  "bridgeUpdatedAt": 1782525161085
 }
