@@ -278,6 +278,10 @@ Current service-audit cleanup:
 
 ```txt
 - daemon-session-service disabled to avoid daemon-state race writes
+- daemon-hud retired from daemon services; UHM writes /data/uhm-hud.txt instead
+- darknet-scout is manual-only; it no longer runs as a daemon keep-alive service
+- daemon-telemetry-service retired; dashboard-state/reasoning writers own UI-facing status
+- daemon.js imports /lib/daemon/daemon-process.js for duplicate-kill only, avoiding old share cleanup RAM
 - faction-donation-service imports logPurchase
 - dashboard-command-runner reports failed ns.run launches
 - refresh-augmentation-plans waits for augmentation-data-builder

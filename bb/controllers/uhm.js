@@ -45,6 +45,7 @@ import { runShareMode } from "/lib/uhm/modes/share.js";
 import { getProgressionPhase } from "/lib/uhm/progression.js";
 
 const UHM_STATE_FILE = "/data/uhm-state.txt";
+const UHM_HUD_FILE = "/data/uhm-hud.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -320,9 +321,160 @@ function writeUhmState(ns, {
 
   try {
     ns.write(UHM_STATE_FILE, JSON.stringify(state, null, 2), "w");
+    ns.write(UHM_HUD_FILE, buildUhmHudText(ns, state, daemonState), "w");
   } catch {
     // Status telemetry should never stop the controller.
   }
+}
+
+function buildUhmHudText(ns, uhmState, daemonState) {
+  const player = daemonState?.player ?? {};
+  const reset = daemonState?.resetPlan ?? {};
+  const policy = daemonState?.spendingPolicy ?? {};
+  const faction = daemonState?.factionProgression ?? {};
+  const targetStats = daemonState?.targetStats ?? {};
+  const services = Array.isArray(daemonState?.services) ? daemonState.services : [];
+  const serviceCounts = countServices(services);
+  const lines = [];
+
+  lines.push("UHM + Daemon HUD");
+  lines.push("============================================================");
+  lines.push(`Updated: ${uhmState.updatedAtText ?? new Date().toLocaleTimeString()}`);
+  lines.push(`Mode: ${uhmState.mode} | Priority: ${uhmState.priority} | Phase: ${uhmState.phase}`);
+  lines.push(`Target: ${daemonState?.target ?? "none"} | Hosts: ${uhmState.hostCount ?? 0}`);
+  lines.push(`Money: ${formatMoney(ns, player.money ?? ns.getPlayer().money)} | Hacking: ${ns.format.number(player.hacking ?? ns.getHackingLevel(), 0)}`);
+  lines.push("");
+
+  lines.push("Target");
+  lines.push("------------------------------------------------------------");
+  lines.push(`Money: ${formatPercent(targetStats.moneyPercent)} | Security: +${formatNumber(targetStats.securityDiff ?? 0)} | Weaken: ${formatDuration(targetStats.weakenTime ?? 0)}`);
+  lines.push(`Reason: ${daemonState?.targetReason ?? daemonState?.controller?.reason ?? "No target reason published."}`);
+  lines.push("");
+
+  lines.push("Progression");
+  lines.push("------------------------------------------------------------");
+  lines.push(`Stage: ${faction.currentFactionStage ?? "unknown"} | Blocker: ${faction.currentBlocker ?? "none"} | Next: ${faction.nextBestAction ?? "none"}`);
+  lines.push(`Reason: ${faction.reason ?? daemonState?.controller?.reason ?? "No progression reason published."}`);
+  lines.push("");
+
+  lines.push("Reset");
+  lines.push("------------------------------------------------------------");
+  lines.push(`Ready: ${yesNo(reset.ready)} | Armed: ${yesNo(reset.armed)} | Pending: ${reset.pendingCount ?? 0} | Installed: ${reset.installedCount ?? 0}`);
+  lines.push(`Reason: ${reset.reason ?? "No reset reason."}`);
+  lines.push("");
+
+  lines.push("Policy");
+  lines.push("------------------------------------------------------------");
+  lines.push(
+    `EXE${mark(policy.allowExePurchases)} SERV${mark(policy.allowServerPurchases)} ` +
+    `STOCK${mark(policy.allowStockTrading)} HACKNET${mark(policy.allowHacknet)} ` +
+    `HOME${mark(policy.allowHomeRam)} AUG${mark(policy.allowAugmentPurchases)} ` +
+    `RESET${mark(policy.allowReset)}`
+  );
+  lines.push(`Reserve: ${formatMoney(ns, policy.reserveMoney ?? daemonState?.reserveMoney ?? 0)}`);
+  lines.push("");
+
+  lines.push("UHM Lanes");
+  lines.push("------------------------------------------------------------");
+  for (const lane of uhmState.lanes ?? []) {
+    lines.push(
+      `${lane.name}: ${lane.mode} ${lane.target ?? "none"} | ${lane.status ?? "idle"} | ` +
+      `hosts ${lane.hosts ?? 0} | free ${formatRam(ns, lane.ram?.freeRam ?? 0)} / ${formatRam(ns, lane.ram?.maxRam ?? 0)}`
+    );
+  }
+  if (!uhmState.lanes?.length) lines.push("No lanes published.");
+  lines.push("");
+
+  lines.push("Runtime");
+  lines.push("------------------------------------------------------------");
+  lines.push(
+    `Batches: ${uhmState.runtime?.batches ?? 0} | Failed: ${uhmState.runtime?.failed ?? 0} | ` +
+    `Prep: ${uhmState.runtime?.prep ?? 0} | Scans: ${uhmState.runtime?.scans ?? 0} | Copies: ${uhmState.runtime?.copies ?? 0}`
+  );
+  lines.push(`Share: ${uhmState.share?.active ? "ON" : "OFF"} | ${uhmState.share?.threads ?? 0}t | ${formatNumber(uhmState.share?.bonus ?? 1)}x`);
+  lines.push("");
+
+  lines.push("Services");
+  lines.push("------------------------------------------------------------");
+  lines.push(`Live: ${serviceCounts.live} | Started: ${serviceCounts.started} | Blocked: ${serviceCounts.blocked} | Done: ${serviceCounts.done} | Failed: ${serviceCounts.failed}`);
+  for (const item of services.slice(0, 8)) {
+    lines.push(`${String(item.kind ?? item.status ?? "?").toUpperCase().padEnd(7)} ${item.name ?? item.id} - ${item.reason ?? ""}`);
+  }
+
+  return `${lines.join("\n")}\n`;
+}
+
+function countServices(services) {
+  const counts = {
+    live: 0,
+    started: 0,
+    blocked: 0,
+    done: 0,
+    failed: 0,
+  };
+
+  for (const service of services) {
+    if (service.kind === "live") counts.live++;
+    else if (service.status === "started") counts.started++;
+    else if (service.kind === "locked") counts.blocked++;
+    else if (service.kind === "done") counts.done++;
+    else if (service.kind === "failed") counts.failed++;
+  }
+
+  return counts;
+}
+
+function mark(value) {
+  return value === true ? "Y" : "N";
+}
+
+function yesNo(value) {
+  return value === true ? "YES" : "NO";
+}
+
+function formatPercent(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "unknown";
+  return `${(number * 100).toFixed(1)}%`;
+}
+
+function formatNumber(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "0";
+  if (Math.abs(number) >= 1000) return number.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  return number.toFixed(2);
+}
+
+function formatMoney(ns, value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "$0";
+  try {
+    return `$${ns.format.number(number)}`;
+  } catch {
+    return `$${Math.round(number).toLocaleString()}`;
+  }
+}
+
+function formatRam(ns, value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return "0GB";
+  try {
+    return ns.format.ram(number);
+  } catch {
+    return `${number.toFixed(2)}GB`;
+  }
+}
+
+function formatDuration(ms) {
+  const number = Number(ms);
+  if (!Number.isFinite(number) || number <= 0) return "0s";
+  const seconds = Math.round(number / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  if (minutes < 60) return `${minutes}m ${rest}s`;
+  const hours = Math.floor(minutes / 60);
+  return `${hours}h ${minutes % 60}m`;
 }
 
 function getUhmPhase(ns, daemonState) {

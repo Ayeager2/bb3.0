@@ -1,48 +1,12 @@
 const STATE_FILE = "/data/gang-state.txt";
 
-const MEMBER_NAMES = [
-  "Darth Vader",
-  "Joker",
-  "Two-Face",
-  "Warden Norton",
-  "Hannibal Lecter",
-  "Sauron",
-  "Bane",
-  "Tyler Durden",
-  "Agent Smith",
-  "Gollum",
-  "Vincent Vega",
-  "Saruman",
-  "Loki",
-  "Vito Corleone",
-  "Balrog",
-  "Palpatine",
-  "Michael Corleone",
-  "Talia al Ghul",
-  "John Doe",
-  "Scarecrow",
-  "Commodus",
-  "Jabba the Hutt",
-  "Scar",
-  "Grand Moff Tarkin",
-  "Boba Fett",
-  "Thanos",
-  "Terminator",
-  "Frank Costello",
-  "Hector Barbossa",
-  "Xenomorph",
-];
-
+const MEMBER_NAME_PREFIX = "Operator";
 const TRAIN_COMBAT_MIN = 350;
 const TRAIN_COMBAT_AVG = 650;
 const WANTED_PENALTY_FLOOR = 0.995;
 const TERRITORY_TASK = "Territory Warfare";
-const TERRITORY_MIN_MEMBERS = 8;
-const TERRITORY_POWER_LEAD_MULT = 1.2;
-const TERRITORY_FORCE_CLASH_POWER_LEAD_MULT = 1.2;
-const TERRITORY_DOMINANT_POWER_LEAD_MULT = 3;
-const TERRITORY_CLASH_WIN_CHANCE = 0.78;
-const TERRITORY_SAFE_WIN_CHANCE = 0.9;
+const TERRITORY_MIN_MEMBERS = 1;
+const TERRITORY_CLASH_WIN_CHANCE = 0.5;
 const MONEY_TASKS = [
   {
     name: "Traffick Illegal Arms",
@@ -62,6 +26,8 @@ const MONEY_TASKS = [
   },
 ];
 
+let cycleCache = null;
+
 /** @param {NS} ns */
 export async function main(ns) {
   ns.disableLog("ALL");
@@ -75,7 +41,7 @@ export async function main(ns) {
     ["ascend", true],
     ["asc-mult", 10],
     ["fast-asc-mult", 100],
-    ["debug", true],
+    ["debug", false],
   ]);
 
   const refreshMs = Number(flags.refresh) || 2500;
@@ -112,6 +78,8 @@ export async function main(ns) {
 }
 
 function runGangCycle(ns, options) {
+  cycleCache = createCycleCache();
+
   if (getCurrentBitNode(ns) !== 2) {
     return baseState("blocked", "Gang manager is only enabled for BN2.", {});
   }
@@ -149,6 +117,7 @@ function runGangCycle(ns, options) {
     options.ascend ? ascendGangMembers(ns, names, options) : 0;
   const territory = buildTerritoryPolicy(ns, names);
   const assignments = assignGangTasks(ns, names, territory);
+  invalidateGangInfoCache();
   const info = safeGangInfo(ns);
 
   return {
@@ -180,8 +149,9 @@ function recruitMembers(ns) {
 
   while (safeCanRecruit(ns)) {
     const count = safeMemberNames(ns).length;
-    const name = MEMBER_NAMES[count] ?? `Operator-${count + 1}`;
+    const name = `${MEMBER_NAME_PREFIX}-${count + 1}`;
     if (!safeRecruit(ns, name)) break;
+    invalidateMemberNameCache();
     recruited++;
   }
 
@@ -355,20 +325,20 @@ function buildTerritoryPolicy(ns, names) {
   const strongestRivalPower =
     chance.strongestRivalPower;
   const targetPower =
-    strongestRivalPower * TERRITORY_POWER_LEAD_MULT;
+    strongestRivalPower;
   const powerLeadRatio =
     strongestRivalPower > 0
       ? power / strongestRivalPower
       : Number.POSITIVE_INFINITY;
-  const hasOverwhelmingPowerLead =
-    powerLeadRatio >= TERRITORY_FORCE_CLASH_POWER_LEAD_MULT;
-  const hasDominantPowerLead =
-    powerLeadRatio >= TERRITORY_DOMINANT_POWER_LEAD_MULT;
   const winChanceSafe =
     lowestWinChance !== null &&
     lowestWinChance >= TERRITORY_CLASH_WIN_CHANCE;
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
+  const bestCombatAverage =
+    sorted.length > 0
+      ? getCombatScore(ns, sorted[0]).average
+      : 0;
 
   const complete =
     territory >= 0.99;
@@ -378,19 +348,15 @@ function buildTerritoryPolicy(ns, names) {
     !complete &&
     enoughMembers &&
     (
-      power < targetPower ||
       lowestWinChance === null ||
-      lowestWinChance < TERRITORY_SAFE_WIN_CHANCE
+      lowestWinChance < TERRITORY_CLASH_WIN_CHANCE
     );
   const safeToClash =
     !complete &&
     enoughMembers &&
-    (
-      winChanceSafe ||
-      hasOverwhelmingPowerLead
-    );
+    winChanceSafe;
   const warriorCount =
-    !complete && enoughMembers
+    !complete && enoughMembers && (shouldBuildPower || safeToClash)
       ? getTerritoryWarriorCount(memberCount)
       : 0;
   const warriorNames =
@@ -417,9 +383,9 @@ function buildTerritoryPolicy(ns, names) {
       : !enoughMembers
         ? `Need ${TERRITORY_MIN_MEMBERS} members before territory warfare.`
         : safeToClash
-          ? `Clash enabled: ${lowestWinChance === null ? `power lead ${formatNumber(powerLeadRatio)}x` : `lowest win chance ${(lowestWinChance * 100).toFixed(1)}%`}, power ${formatNumber(power)}.`
+          ? `Clash enabled: every rival is at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
           : shouldBuildPower
-            ? `Don/strongest member is building gang power. Power ${formatNumber(power)} / target ${formatNumber(targetPower)}, lowest win chance ${lowestWinChance === null ? "unknown" : `${(lowestWinChance * 100).toFixed(1)}%`}.`
+            ? `Strongest member is building gang power until every rival is at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%. Lowest win chance ${lowestWinChance === null ? "unknown" : `${(lowestWinChance * 100).toFixed(1)}%`}.`
             : "Territory warfare idle.",
     territory,
     power,
@@ -432,17 +398,12 @@ function buildTerritoryPolicy(ns, names) {
     strongestRivalPower,
     targetPower,
     powerLeadRatio,
-    hasOverwhelmingPowerLead,
-    hasDominantPowerLead,
+    bestCombatAverage,
     winChanceSafe,
     winChances: chance.chances,
     thresholds: {
       minMembers: TERRITORY_MIN_MEMBERS,
-      powerLeadMult: TERRITORY_POWER_LEAD_MULT,
-      forceClashPowerLeadMult: TERRITORY_FORCE_CLASH_POWER_LEAD_MULT,
-      dominantPowerLeadMult: TERRITORY_DOMINANT_POWER_LEAD_MULT,
       clashWinChance: TERRITORY_CLASH_WIN_CHANCE,
-      safeWinChance: TERRITORY_SAFE_WIN_CHANCE,
     },
   };
 }
@@ -529,12 +490,16 @@ function setBestAvailableTask(ns, name, preferredTask) {
 }
 
 function safeEquipment(ns) {
+  if (cycleCache?.equipment) return cycleCache.equipment;
+
   try {
-    return ns.gang.getEquipmentNames().map(name => ({
+    const equipment = ns.gang.getEquipmentNames().map(name => ({
       name,
       type: ns.gang.getEquipmentType(name),
       cost: ns.gang.getEquipmentCost(name),
     }));
+    if (cycleCache) cycleCache.equipment = equipment;
+    return equipment;
   } catch {
     return [];
   }
@@ -685,24 +650,38 @@ function safeJoinGangFaction(ns, faction) {
 }
 
 function safeGangInfo(ns) {
+  if (cycleCache?.gangInfo) return cycleCache.gangInfo;
+
   try {
-    return ns.gang.getGangInformation();
+    const info = ns.gang.getGangInformation();
+    if (cycleCache) cycleCache.gangInfo = info;
+    return info;
   } catch {
     return null;
   }
 }
 
 function safeMemberNames(ns) {
+  if (cycleCache?.memberNames) return cycleCache.memberNames;
+
   try {
-    return ns.gang.getMemberNames();
+    const names = ns.gang.getMemberNames();
+    if (cycleCache) cycleCache.memberNames = names;
+    return names;
   } catch {
     return [];
   }
 }
 
 function safeMemberInfo(ns, name) {
+  if (cycleCache?.memberInfo?.has(name)) {
+    return cycleCache.memberInfo.get(name);
+  }
+
   try {
-    return ns.gang.getMemberInformation(name);
+    const info = ns.gang.getMemberInformation(name);
+    cycleCache?.memberInfo?.set(name, info);
+    return info;
   } catch {
     return null;
   }
@@ -733,8 +712,14 @@ function safePurchaseEquipment(ns, name, equipment) {
 }
 
 function safeAscensionResult(ns, name) {
+  if (cycleCache?.ascensionResult?.has(name)) {
+    return cycleCache.ascensionResult.get(name);
+  }
+
   try {
-    return ns.gang.getAscensionResult(name);
+    const result = ns.gang.getAscensionResult(name);
+    cycleCache?.ascensionResult?.set(name, result);
+    return result;
   } catch {
     return null;
   }
@@ -757,17 +742,27 @@ function safeSetTask(ns, name, task) {
 }
 
 function safeOtherGangInfo(ns) {
+  if (cycleCache?.otherGangInfo) return cycleCache.otherGangInfo;
+
   try {
-    return ns.gang.getOtherGangInformation() ?? {};
+    const info = ns.gang.getOtherGangInformation() ?? {};
+    if (cycleCache) cycleCache.otherGangInfo = info;
+    return info;
   } catch {
     return {};
   }
 }
 
 function safeChanceToWinClash(ns, gangName) {
+  if (cycleCache?.clashChance?.has(gangName)) {
+    return cycleCache.clashChance.get(gangName);
+  }
+
   try {
     const chance = ns.gang.getChanceToWinClash(gangName);
-    return Number.isFinite(chance) ? chance : null;
+    const normalized = Number.isFinite(chance) ? chance : null;
+    cycleCache?.clashChance?.set(gangName, normalized);
+    return normalized;
   } catch {
     return null;
   }
@@ -780,4 +775,26 @@ function safeSetTerritoryWarfare(ns, enabled) {
   } catch {
     return false;
   }
+}
+
+function createCycleCache() {
+  return {
+    gangInfo: null,
+    memberNames: null,
+    equipment: null,
+    otherGangInfo: null,
+    memberInfo: new Map(),
+    ascensionResult: new Map(),
+    clashChance: new Map(),
+  };
+}
+
+function invalidateMemberNameCache() {
+  if (!cycleCache) return;
+  cycleCache.memberNames = null;
+}
+
+function invalidateGangInfoCache() {
+  if (!cycleCache) return;
+  cycleCache.gangInfo = null;
 }

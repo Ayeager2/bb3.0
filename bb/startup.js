@@ -6,6 +6,7 @@ const BN2_GANG_MANAGER = "/tools/gang-manager-service.js";
 const BN2_CRIME_BOOTSTRAP = "/tools/crime-bootstrap.js";
 const TINY_HACKNET_BUYER = "/economy/tiny-hacknet-buyer.js";
 const HOME_RAM_BUYER = "/economy/home-ram-buyer-service.js";
+const FINAL_LEVEL_STUDY = "/tools/final-level-study-service.js";
 const MIN_HOME_RAM_FOR_FULL_DAEMON = 64;
 
 /** @param {NS} ns **/
@@ -31,6 +32,7 @@ export async function main(ns) {
     await ns.sleep(1000);
 
     startBn2CoreServices(ns);
+    startFinalLevelStudy(ns);
 
     if (shouldUseBootstrap(ns)) {
         if (!ns.scriptRunning(BOOTSTRAP_DAEMON, "home")) {
@@ -54,6 +56,7 @@ export async function main(ns) {
     }
 
     startBn2GangManager(ns);
+    startFinalLevelStudy(ns);
 }
 
 function shouldUseBootstrap(ns) {
@@ -129,6 +132,16 @@ function startBn2CoreServices(ns) {
     ], {
         label: "BN2 auto crime bootstrap",
         priority: true,
+    });
+}
+
+function startFinalLevelStudy(ns) {
+    startScript(ns, FINAL_LEVEL_STUDY, [
+        "--refresh", 5000,
+        "--focus", false,
+    ], {
+        label: "final level study",
+        priority: false,
     });
 }
 

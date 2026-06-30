@@ -1,10 +1,7 @@
 // daemon.js - Main loop for Bitburner automation daemon
 import { CONFIG, STATE_FILE } from "/lib/daemon/config.js";
 
-import {
-  killOtherDaemonInstances,
-  manageShareWorkers,
-} from "/lib/daemon/control.js";
+import { killOtherDaemonInstances } from "/lib/daemon/daemon-process.js";
 
 import { writeJson } from "/lib/daemon/safe.js";
 
@@ -239,8 +236,6 @@ export async function main(ns) {
     writeResetPlan(ns, buildResetPlan(ns));
 
     state.services = manageServices(ns, state);
-
-    manageShareWorkers(ns, state);
 
     writeJson(ns, STATE_FILE, state);
 

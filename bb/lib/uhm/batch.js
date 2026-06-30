@@ -31,7 +31,10 @@ export function launchBatchesAggressive(
         options.fillAvailableRam === true
             ? getRamFillBatchLimit(hosts, plan, maxActiveProcesses)
             : configuredBatchLimit;
-    const batchLimit = Math.max(configuredBatchLimit, ramFillBatchLimit);
+    const batchLimit =
+        options.fillAvailableRam === true
+            ? Math.min(configuredBatchLimit, ramFillBatchLimit)
+            : configuredBatchLimit;
 
     if (countActiveWorkerProcesses(ns, hosts) >= maxActiveProcesses) {
         return 0;

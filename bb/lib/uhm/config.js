@@ -30,8 +30,8 @@ export const maxBatchesPerCycle = 25;
 export const cycleDelayMs = 1000;
 
 export const maxWorkerThreadsPerProcess = 256;
-export const maxLevelingWorkerThreadsPerProcess = 8192;
-export const maxLevelingBatchesPerCycle = 2000;
-export const maxLevelingActiveProcesses = 100000;
+export const maxLevelingWorkerThreadsPerProcess = 65536;
+export const maxLevelingBatchesPerCycle = 500;
+export const maxLevelingActiveProcesses = 8000;
 export const maxPrepThreadsPerProcess = 256;
 export const maxExpThreadsPerProcess = 256;
