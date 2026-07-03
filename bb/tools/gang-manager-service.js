@@ -1,32 +1,54 @@
 const STATE_FILE = "/data/gang-state.txt";
+const DIAGNOSTIC_VERSION = "gang-wanted-control-v8";
 
 const MEMBER_NAME_PREFIX = "Operator";
-const TRAIN_COMBAT_MIN = 350;
-const TRAIN_COMBAT_AVG = 650;
-const WANTED_PENALTY_FLOOR = 0.995;
+const STRIKE_TEAM_NAMES = [
+  "Operator-1",
+  "Operator-2",
+  "Operator-3",
+  "Operator-4",
+  "Operator-5",
+];
+const STRIKE_TEAM_STR_DEF_MIN = 100000;
+const SUPPORT_TRAIN_COMBAT_MIN = 1000;
+const SUPPORT_TRAIN_COMBAT_AVG = 5000;
+const TERRITORY_STRIKE_TEAM_SIZE = 5;
+const WANTED_PENALTY_SOFT_FLOOR = 0.90;
+const WANTED_PENALTY_HARD_FLOOR = 0.75;
+const WANTED_PENALTY_CRITICAL_FLOOR = 0.50;
+const WANTED_PENALTY_EMERGENCY_FLOOR = 0.25;
 const TERRITORY_TASK = "Territory Warfare";
 const TERRITORY_MIN_MEMBERS = 1;
-const TERRITORY_CLASH_WIN_CHANCE = 0.5;
+const TERRITORY_CLASH_WIN_CHANCE = 0.99;
+const GANG_FACTIONS = [
+  "Slum Snakes",
+  "Tetrads",
+  "The Syndicate",
+  "The Dark Army",
+  "Speakers for the Dead",
+  "The Black Hand",
+  "NiteSec",
+];
 const MONEY_TASKS = [
   {
     name: "Traffick Illegal Arms",
-    minCombat: 650,
+    minCombat: 5000,
   },
   {
     name: "Armed Robbery",
-    minCombat: 450,
+    minCombat: 2500,
   },
   {
     name: "Strongarm Civilians",
-    minCombat: 180,
+    minCombat: 1000,
   },
   {
     name: "Mug People",
     minCombat: 25,
   },
 ];
-
 let cycleCache = null;
+let previousTerritorySnapshot = null;
 
 /** @param {NS} ns */
 export async function main(ns) {
@@ -116,9 +138,12 @@ function runGangCycle(ns, options) {
   const ascended =
     options.ascend ? ascendGangMembers(ns, names, options) : 0;
   const territory = buildTerritoryPolicy(ns, names);
-  const assignments = assignGangTasks(ns, names, territory);
+  const wantedPolicy = buildWantedPolicy(safeGangInfo(ns), names.length);
+  const assignments = assignGangTasks(ns, names, territory, wantedPolicy);
+  invalidateMemberInfoCache();
   invalidateGangInfoCache();
   const info = safeGangInfo(ns);
+  const territoryDelta = getTerritoryDelta(info);
 
   return {
     ...baseState("running", "Gang manager active.", {}),
@@ -130,7 +155,9 @@ function runGangCycle(ns, options) {
     equipmentBuyer,
     ascended,
     assignments,
+    wantedPolicy,
     territoryPolicy: territory,
+    territoryDelta,
     respect: info?.respect ?? 0,
     respectGainRate: info?.respectGainRate ?? 0,
     wantedLevel: info?.wantedLevel ?? 0,
@@ -162,12 +189,14 @@ function buyGangEquipment(ns, names, reserve) {
   const spendable = () => Math.max(0, ns.getPlayer().money - reserve);
   const equipment = safeEquipment(ns)
     .sort((a, b) => a.cost - b.cost);
+  const buyerNames =
+    getGangEquipmentBuyerNames(ns, names, equipment.map(item => item.name));
   let bought = 0;
   let nextItem = null;
   let failedItem = null;
 
   for (const item of equipment) {
-    for (const name of names) {
+    for (const name of buyerNames.names) {
       const member = safeMemberInfo(ns, name);
       if (!member) continue;
       if ((member.upgrades ?? []).includes(item.name)) continue;
@@ -204,9 +233,12 @@ function buyGangEquipment(ns, names, reserve) {
 
   return {
     bought,
+    targetScope: buyerNames.scope,
+    targetNames: buyerNames.names,
+    strikeTeamReady: buyerNames.strikeTeamReady,
     status: bought > 0 ? "bought" : nextItem ? "waiting-money" : failedItem ? "purchase-failed" : "complete",
     message: bought > 0
-      ? `Bought ${bought} gang equipment/augmentation item${bought === 1 ? "" : "s"}.`
+      ? `Bought ${bought} gang equipment/augmentation item${bought === 1 ? "" : "s"} for ${buyerNames.scope}.`
       : nextItem
         ? `Waiting for ${nextItem.member} to buy ${nextItem.item}; need ${formatMoney(nextItem.cost)}, spendable ${formatMoney(nextItem.spendable)} after ${formatMoney(reserve)} reserve.`
         : failedItem
@@ -214,6 +246,32 @@ function buyGangEquipment(ns, names, reserve) {
           : "All affordable configured gang equipment is already owned.",
     nextItem,
     failedItem,
+  };
+}
+
+function getGangEquipmentBuyerNames(ns, names, equipmentNames) {
+  const sorted = [...names]
+    .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
+  const strikeTeam =
+    getStrikeTeamNames(names);
+  const readiness =
+    strikeTeam.map(name => getMemberEquipmentCompletion(ns, name, equipmentNames));
+  const strikeTeamReady =
+    strikeTeam.length >= TERRITORY_STRIKE_TEAM_SIZE &&
+    readiness.every(item => item.complete);
+
+  if (!strikeTeamReady && strikeTeam.length > 0) {
+    return {
+      scope: "top-five strike team",
+      names: strikeTeam,
+      strikeTeamReady,
+    };
+  }
+
+  return {
+    scope: "whole gang",
+    names: sorted,
+    strikeTeamReady,
   };
 }
 
@@ -258,30 +316,84 @@ function shouldAscend(info, result, options) {
   return projected >= 1.15;
 }
 
-function assignGangTasks(ns, names, territory = null) {
-  const info = safeGangInfo(ns);
-  const assignments = [];
+function buildWantedPolicy(info, memberCount) {
   const wantedLevel = Number(info?.wantedLevel) || 0;
-  const respect = Number(info?.respect) || 0;
   const wantedGain = Number(info?.wantedLevelGainRate) || 0;
   const respectGain = Number(info?.respectGainRate) || 0;
   const wantedPenalty = Number(info?.wantedPenalty) || 1;
-  const needVigilante =
-    wantedLevel > 10 &&
-    (
-      wantedPenalty < WANTED_PENALTY_FLOOR ||
-      (wantedLevel > 500 && wantedGain > 0) ||
-      wantedGain > respectGain / 10 ||
-      wantedLevel * 10 > Math.max(1, respect)
-    );
+  const count =
+    Math.max(0, Number(memberCount) || 0);
+  let status =
+    count > 0 ? "money-training" : "no-members";
+  let reason =
+    count > 0
+      ? "Wanted penalty is healthy enough; keep members on the train/money split."
+      : "No gang members available for wanted control.";
+  let vigilanteCount = 0;
+  let borrowStrikeTeam = false;
+
+  if (count > 0 && wantedPenalty < WANTED_PENALTY_EMERGENCY_FLOOR) {
+    status = "emergency-control";
+    vigilanteCount = Math.max(1, Math.ceil(count * 0.80));
+    borrowStrikeTeam = true;
+    reason =
+      `Wanted penalty ${(wantedPenalty * 100).toFixed(1)}% is wrecking production; most members reduce wanted until recovery.`;
+  } else if (count > 0 && wantedPenalty < WANTED_PENALTY_CRITICAL_FLOOR) {
+    status = "critical-control";
+    vigilanteCount = Math.max(1, Math.ceil(count * 0.60));
+    borrowStrikeTeam = true;
+    reason =
+      `Wanted penalty ${(wantedPenalty * 100).toFixed(1)}% is critical; heavy wanted control enabled.`;
+  } else if (count > 0 && wantedPenalty < WANTED_PENALTY_HARD_FLOOR) {
+    status = "hard-control";
+    vigilanteCount = Math.max(1, Math.ceil(count * 0.40));
+    reason =
+      `Wanted penalty ${(wantedPenalty * 100).toFixed(1)}% is below the hard floor; support members reduce wanted.`;
+  } else if (count > 0 && wantedPenalty < WANTED_PENALTY_SOFT_FLOOR) {
+    status = "soft-control";
+    vigilanteCount = Math.max(1, Math.ceil(count * 0.25));
+    reason =
+      `Wanted penalty ${(wantedPenalty * 100).toFixed(1)}% is below the soft floor; light wanted control enabled.`;
+  }
+
+  return {
+    active: vigilanteCount > 0,
+    status,
+    reason,
+    vigilanteCount,
+    borrowStrikeTeam,
+    wantedLevel,
+    wantedGain,
+    respectGain,
+    wantedPenalty,
+    thresholds: {
+      strikeTeamStrDefMin: STRIKE_TEAM_STR_DEF_MIN,
+      softPenalty: WANTED_PENALTY_SOFT_FLOOR,
+      hardPenalty: WANTED_PENALTY_HARD_FLOOR,
+      criticalPenalty: WANTED_PENALTY_CRITICAL_FLOOR,
+      emergencyPenalty: WANTED_PENALTY_EMERGENCY_FLOOR,
+    },
+  };
+}
+
+function assignGangTasks(ns, names, territory = null, wantedPolicy = null) {
+  const assignments = [];
 
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
-  const territoryNames = new Set(territory?.warriorNames ?? []);
-  let vigilantes =
-    needVigilante
-      ? Math.max(1, Math.ceil(sorted.length * (wantedPenalty < 0.98 ? 0.5 : 0.25)))
-      : 0;
+  const allowTerritoryTasks =
+    territory?.territoryTaskAllowed === true &&
+    (territory?.warriorCount ?? 0) > 0;
+  const territoryNames =
+    allowTerritoryTasks
+      ? new Set(territory?.warriorNames ?? [])
+      : new Set();
+  const strikeTeamNames =
+    new Set(territory?.strikeTeamNames ?? getStrikeTeamNames(names));
+  const territoryTrainingNames =
+    new Set(territory?.trainingNames ?? []);
+  const wantedControlNames =
+    getWantedControlNames(ns, sorted, strikeTeamNames, wantedPolicy);
 
   for (const name of sorted) {
     const member = safeMemberInfo(ns, name);
@@ -289,19 +401,21 @@ function assignGangTasks(ns, names, territory = null) {
 
     let task = "Train Combat";
     const combat = getMemberCombat(member);
-    const shouldTrain =
-      combat.minimum < TRAIN_COMBAT_MIN ||
-      (
-        combat.average < TRAIN_COMBAT_AVG &&
-        (member.upgrades?.length ?? 0) < 6
-      );
+    const shouldTrainStrikeTeam =
+      !hasStrikeTeamDurability(member);
+    const shouldSupportTrain =
+      combat.minimum < SUPPORT_TRAIN_COMBAT_MIN ||
+      combat.average < SUPPORT_TRAIN_COMBAT_AVG;
 
     if (territoryNames.has(name)) {
       task = TERRITORY_TASK;
-    } else if (vigilantes > 0) {
+    } else if (wantedControlNames.has(name)) {
       task = "Vigilante Justice";
-      vigilantes--;
-    } else if (shouldTrain) {
+    } else if (territoryTrainingNames.has(name)) {
+      task = "Train Combat";
+    } else if (strikeTeamNames.has(name) && shouldTrainStrikeTeam) {
+      task = "Train Combat";
+    } else if (shouldSupportTrain) {
       task = "Train Combat";
     } else {
       task = chooseMoneyTask(combat.average);
@@ -315,6 +429,8 @@ function assignGangTasks(ns, names, territory = null) {
 }
 
 function buildTerritoryPolicy(ns, names) {
+  // Territory clashes are dangerous; fail closed before any telemetry-dependent logic.
+  const failClosedSet = safeSetTerritoryWarfare(ns, false);
   const info = safeGangInfo(ns);
   const otherGangs = safeOtherGangInfo(ns);
   const territory = Number(info?.territory) || 0;
@@ -322,6 +438,13 @@ function buildTerritoryPolicy(ns, names) {
   const memberCount = names.length;
   const chance = getTerritoryWinChance(ns, info, otherGangs);
   const lowestWinChance = chance.lowestWinChance;
+  const unsafeRivals = chance.chances
+    .filter(item => item.chance < TERRITORY_CLASH_WIN_CHANCE);
+  const allRivalsChecked =
+    chance.chances.length > 0;
+  const allRivalsReady =
+    allRivalsChecked &&
+    unsafeRivals.length === 0;
   const strongestRivalPower =
     chance.strongestRivalPower;
   const targetPower =
@@ -331,70 +454,100 @@ function buildTerritoryPolicy(ns, names) {
       ? power / strongestRivalPower
       : Number.POSITIVE_INFINITY;
   const winChanceSafe =
-    lowestWinChance !== null &&
-    lowestWinChance >= TERRITORY_CLASH_WIN_CHANCE;
+    allRivalsReady;
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
   const bestCombatAverage =
     sorted.length > 0
       ? getCombatScore(ns, sorted[0]).average
       : 0;
+  const strikeTeamSize =
+    Math.min(TERRITORY_STRIKE_TEAM_SIZE, memberCount);
+  const strikeTeamNames =
+    getStrikeTeamNames(names);
+  const equipmentNames =
+    safeEquipment(ns).map(item => item.name);
+  const equipmentReadiness =
+    strikeTeamNames.map(name => getMemberEquipmentCompletion(ns, name, equipmentNames));
+  const topEquipmentReadyCount =
+    equipmentReadiness.filter(item => item.complete).length;
+  const strikeTeamFullyEquipped =
+    strikeTeamSize >= TERRITORY_STRIKE_TEAM_SIZE &&
+    topEquipmentReadyCount >= TERRITORY_STRIKE_TEAM_SIZE;
 
   const complete =
     territory >= 0.99;
   const enoughMembers =
     memberCount >= TERRITORY_MIN_MEMBERS;
-  const shouldBuildPower =
-    !complete &&
-    enoughMembers &&
-    (
-      lowestWinChance === null ||
-      lowestWinChance < TERRITORY_CLASH_WIN_CHANCE
-    );
   const safeToClash =
     !complete &&
     enoughMembers &&
+    strikeTeamFullyEquipped &&
     winChanceSafe;
   const warriorCount =
-    !complete && enoughMembers && (shouldBuildPower || safeToClash)
-      ? getTerritoryWarriorCount(memberCount)
+    safeToClash
+      ? Math.min(TERRITORY_STRIKE_TEAM_SIZE, memberCount)
       : 0;
   const warriorNames =
-    sorted.slice(0, warriorCount);
+    strikeTeamNames.slice(0, warriorCount);
+  const trainingNames =
+    !complete && strikeTeamFullyEquipped && !safeToClash
+      ? strikeTeamNames
+      : [];
+  const trainingCount =
+    trainingNames.length;
 
   const clashEnabled =
-    safeToClash;
+    safeToClash === true;
+  const territoryTaskAllowed =
+    clashEnabled &&
+    warriorCount > 0;
   const clashSet =
     safeSetTerritoryWarfare(ns, clashEnabled);
-
-  return {
-    active: shouldBuildPower || safeToClash,
-    status: complete
+  const status =
+    complete
       ? "complete"
       : !enoughMembers
         ? "waiting-members"
-        : safeToClash
-          ? "clashing"
-          : shouldBuildPower
-            ? "building-power"
-            : "idle",
+        : !strikeTeamFullyEquipped
+          ? "waiting-equipment"
+          : safeToClash
+            ? "clashing"
+            : "training-strike-team";
+
+  return {
+    active: safeToClash,
+    status,
     reason: complete
       ? "Territory is effectively complete."
       : !enoughMembers
         ? `Need ${TERRITORY_MIN_MEMBERS} members before territory warfare.`
-        : safeToClash
-          ? `Clash enabled: every rival is at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
-          : shouldBuildPower
-            ? `Strongest member is building gang power until every rival is at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%. Lowest win chance ${lowestWinChance === null ? "unknown" : `${(lowestWinChance * 100).toFixed(1)}%`}.`
-            : "Territory warfare idle.",
+      : !strikeTeamFullyEquipped
+        ? `Territory paused until the top ${TERRITORY_STRIKE_TEAM_SIZE} have full gang equipment/augmentation sets. ${topEquipmentReadyCount}/${TERRITORY_STRIKE_TEAM_SIZE} are fully equipped.`
+      : safeToClash
+          ? `Clash enabled: all rival gangs are at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
+          : `Top ${TERRITORY_STRIKE_TEAM_SIZE} are fully equipped. Training combat only; clashes stay OFF until every rival reaches ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%+. ${formatTerritoryBlocker(allRivalsChecked, unsafeRivals)}`,
     territory,
     power,
     memberCount,
+    strikeTeamSize: TERRITORY_STRIKE_TEAM_SIZE,
+    strikeTeamNames,
+    strikeTeamFullyEquipped,
+    topEquipmentReadyCount,
+    equipmentReadiness,
     warriorCount,
     warriorNames,
+    trainingCount,
+    trainingNames,
+    respectCount: 0,
+    territoryTaskAllowed,
     clashEnabled,
     clashSet,
+    failClosedSet,
     lowestWinChance,
+    allRivalsChecked,
+    allRivalsReady,
+    unsafeRivals,
     strongestRivalPower,
     targetPower,
     powerLeadRatio,
@@ -404,20 +557,150 @@ function buildTerritoryPolicy(ns, names) {
     thresholds: {
       minMembers: TERRITORY_MIN_MEMBERS,
       clashWinChance: TERRITORY_CLASH_WIN_CHANCE,
+      strikeTeamStrDefMin: STRIKE_TEAM_STR_DEF_MIN,
+      supportTrainCombatMin: SUPPORT_TRAIN_COMBAT_MIN,
+      supportTrainCombatAvg: SUPPORT_TRAIN_COMBAT_AVG,
+      strikeTeamSize: TERRITORY_STRIKE_TEAM_SIZE,
     },
   };
 }
 
-function getTerritoryWarriorCount(memberCount) {
-  if (memberCount <= 0) return 0;
-  return 1;
+function getMemberEquipmentCompletion(ns, name, equipmentNames) {
+  const member = safeMemberInfo(ns, name);
+  const owned = new Set([
+    ...(member?.upgrades ?? []),
+    ...(member?.augmentations ?? []),
+  ]);
+  const missing =
+    equipmentNames.filter(item => !owned.has(item));
+
+  return {
+    name,
+    complete: equipmentNames.length > 0 && missing.length === 0,
+    ownedCount: Math.max(0, equipmentNames.length - missing.length),
+    totalCount: equipmentNames.length,
+    missingCount: missing.length,
+    missingPreview: missing.slice(0, 5),
+  };
+}
+
+function getStrikeTeamNames(names) {
+  const available =
+    new Set(names);
+  const pinned =
+    STRIKE_TEAM_NAMES.filter(name => available.has(name));
+
+  if (pinned.length >= Math.min(TERRITORY_STRIKE_TEAM_SIZE, names.length)) {
+    return pinned.slice(0, TERRITORY_STRIKE_TEAM_SIZE);
+  }
+
+  const remaining =
+    [...names]
+      .filter(name => !pinned.includes(name))
+      .sort(compareGangMemberNames);
+
+  return [...pinned, ...remaining]
+    .slice(0, Math.min(TERRITORY_STRIKE_TEAM_SIZE, names.length));
+}
+
+function getWantedControlNames(ns, sortedNames, strikeTeamNames, wantedPolicy) {
+  const count =
+    Math.max(0, Math.floor(Number(wantedPolicy?.vigilanteCount) || 0));
+
+  if (count <= 0) return new Set();
+
+  const byWeakestCombat =
+    [...sortedNames].sort((a, b) =>
+      getCombatScore(ns, a).average - getCombatScore(ns, b).average
+    );
+  const support =
+    byWeakestCombat.filter(name => !strikeTeamNames.has(name));
+  const strike =
+    wantedPolicy?.borrowStrikeTeam === true
+      ? byWeakestCombat.filter(name => strikeTeamNames.has(name))
+      : [];
+
+  return new Set([...support, ...strike].slice(0, count));
+}
+
+function compareGangMemberNames(a, b) {
+  const aIndex =
+    getGangMemberNumericSuffix(a);
+  const bIndex =
+    getGangMemberNumericSuffix(b);
+
+  if (aIndex !== bIndex) return aIndex - bIndex;
+
+  return String(a).localeCompare(String(b));
+}
+
+function getGangMemberNumericSuffix(name) {
+  const match =
+    String(name ?? "").match(/-(\d+)$/);
+
+  return match
+    ? Number(match[1])
+    : Number.MAX_SAFE_INTEGER;
+}
+
+function getTerritoryDelta(info) {
+  const now = Date.now();
+  const snapshot = {
+    updatedAt: now,
+    power: Number(info?.power) || 0,
+    territory: Number(info?.territory) || 0,
+  };
+
+  if (!previousTerritorySnapshot) {
+    previousTerritorySnapshot = snapshot;
+    return {
+      ageMs: 0,
+      powerDelta: 0,
+      territoryDelta: 0,
+      powerPerMinute: 0,
+      territoryPerMinute: 0,
+    };
+  }
+
+  const ageMs =
+    Math.max(1, now - previousTerritorySnapshot.updatedAt);
+  const powerDelta =
+    snapshot.power - previousTerritorySnapshot.power;
+  const territoryDelta =
+    snapshot.territory - previousTerritorySnapshot.territory;
+  previousTerritorySnapshot = snapshot;
+
+  return {
+    ageMs,
+    powerDelta,
+    territoryDelta,
+    powerPerMinute: powerDelta / ageMs * 60_000,
+    territoryPerMinute: territoryDelta / ageMs * 60_000,
+  };
+}
+
+function formatUnsafeRivals(unsafeRivals) {
+  if (!unsafeRivals.length) return "no unsafe rivals";
+  return unsafeRivals
+    .map(item => `${item.gang} ${(item.chance * 100).toFixed(1)}%`)
+    .join(", ");
+}
+
+function formatTerritoryBlocker(allRivalsChecked, unsafeRivals) {
+  if (!allRivalsChecked) return "Waiting for rival clash chance telemetry.";
+  return `Blocked by ${formatUnsafeRivals(unsafeRivals)}.`;
 }
 
 function getTerritoryWinChance(ns, info, otherGangs) {
   const ownFaction = info?.faction ?? "";
   const chances = [];
+  const knownGangNames = Object.keys(otherGangs ?? {});
+  const gangNames =
+    knownGangNames.length > 0
+      ? knownGangNames
+      : GANG_FACTIONS;
 
-  for (const gangName of Object.keys(otherGangs ?? {})) {
+  for (const gangName of gangNames) {
     if (gangName === ownFaction) continue;
 
     const chance = safeChanceToWinClash(ns, gangName);
@@ -465,6 +748,13 @@ function getMemberCombat(member) {
     average: values.reduce((sum, value) => sum + value, 0) / values.length,
     minimum: Math.min(...values),
   };
+}
+
+function hasStrikeTeamDurability(member) {
+  return (
+    (Number(member?.str) || 0) >= STRIKE_TEAM_STR_DEF_MIN &&
+    (Number(member?.def) || 0) >= STRIKE_TEAM_STR_DEF_MIN
+  );
 }
 
 function chooseMoneyTask(combatAverage) {
@@ -597,6 +887,7 @@ function baseState(status, message, extra) {
     updatedAt: Date.now(),
     updatedAtText: new Date().toLocaleTimeString(),
     source: "gang-manager-service",
+    diagnosticVersion: DIAGNOSTIC_VERSION,
     status,
     message,
     ...extra,
@@ -792,6 +1083,11 @@ function createCycleCache() {
 function invalidateMemberNameCache() {
   if (!cycleCache) return;
   cycleCache.memberNames = null;
+}
+
+function invalidateMemberInfoCache() {
+  if (!cycleCache) return;
+  cycleCache.memberInfo = new Map();
 }
 
 function invalidateGangInfoCache() {

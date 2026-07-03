@@ -33,12 +33,19 @@ export default function GraphCard({
     overlay,
 }) {
     const graphWrapRef = useRef(null);
+    const userMovedViewportRef = useRef(false);
+    const lastFitGraphKeyRef = useRef("");
     const [hoverTooltip, setHoverTooltip] = useState(null);
     const [flowInstance, setFlowInstance] = useState(null);
     const [resizeTick, setResizeTick] = useState(0);
 
     const stableNodes = useMemo(() => nodes ?? [], [nodes]);
     const stableEdges = useMemo(() => edges ?? [], [edges]);
+    const graphKey = useMemo(() => {
+        const nodeKey = stableNodes.map(node => node.id).sort().join("|");
+        const edgeKey = stableEdges.map(edge => edge.id ?? `${edge.source}-${edge.target}`).sort().join("|");
+        return `${nodeKey}::${edgeKey}`;
+    }, [stableNodes, stableEdges]);
 
     const [graphNodes, setGraphNodes, onNodesChange] = useNodesState(stableNodes);
     const [graphEdges, setGraphEdges, onEdgesChange] = useEdgesState(stableEdges);
@@ -76,16 +83,18 @@ export default function GraphCard({
 
     useEffect(() => {
         if (!fitView || !flowInstance || stableNodes.length === 0 || collapsed) return undefined;
+        if (userMovedViewportRef.current && lastFitGraphKeyRef.current === graphKey) return undefined;
 
         const frame = window.requestAnimationFrame(() => {
             flowInstance.fitView({
                 padding: 0.25,
                 duration: 180,
             });
+            lastFitGraphKeyRef.current = graphKey;
         });
 
         return () => window.cancelAnimationFrame(frame);
-    }, [fitView, flowInstance, stableNodes, stableEdges, height, size, collapsed, resizeTick]);
+    }, [fitView, flowInstance, graphKey, stableNodes.length, height, size, collapsed, resizeTick]);
 
     return (
         <Card
@@ -125,8 +134,17 @@ export default function GraphCard({
                         onNodeMouseLeave?.(node);
                     }}
                     onInit={setFlowInstance}
+                    onMoveStart={() => {
+                        userMovedViewportRef.current = true;
+                    }}
                     fitView={fitView}
                     fitViewOptions={{ padding: 0.25 }}
+                    minZoom={0.05}
+                    maxZoom={2.5}
+                    zoomOnScroll
+                    zoomOnPinch
+                    zoomOnDoubleClick
+                    panOnDrag
                     nodesDraggable
                     nodesConnectable={false}
                     elementsSelectable

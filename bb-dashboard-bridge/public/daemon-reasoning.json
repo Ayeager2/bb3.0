@@ -1,22 +1,22 @@
 {
   "schemaVersion": 2,
-  "updatedAt": 1782525157892,
+  "updatedAt": 1783016362195,
   "source": "daemon-reasoning-writer",
   "summary": "2 warning item(s) need attention.",
-  "fingerprint": "mode:info:Daemon is running in money mode.:faction-join|target:warning:Current target is neo-net.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+  "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is neo-net.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 1/4.:Still waiting on: hacking level, money, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
   "items": [
     {
       "id": "mode",
       "title": "Current Mode",
-      "summary": "Daemon is running in money mode.",
-      "detail": "faction-join",
+      "summary": "Daemon is running in exp mode.",
+      "detail": "exp",
       "level": "info",
       "data": {
         "phase": "level-hacking",
         "priority": "income",
         "posture": "AGGRESSIVE_INCOME"
       },
-      "ts": 1782525157892
+      "ts": 1783016362195
     },
     {
       "id": "target",
@@ -25,12 +25,12 @@
       "detail": "Target likely needs prep work before it becomes efficient.",
       "level": "warning",
       "data": {
-        "moneyPercent": 0.2,
-        "securityDiff": 0,
-        "prepNeed": 0.8,
-        "weakenTime": 109609.40743045602
+        "moneyPercent": 0.012290754085586263,
+        "securityDiff": 0.0039999999999995595,
+        "prepNeed": 0.9882092459144137,
+        "weakenTime": 94467.53592787977
       },
-      "ts": 1782525157892
+      "ts": 1783016362195
     },
     {
       "id": "policy",
@@ -52,32 +52,32 @@
         "allowReset": false,
         "allowIntTravel": false
       },
-      "ts": 1782525157892
+      "ts": 1783016362195
     },
     {
       "id": "readiness",
       "title": "BN4 Readiness",
-      "summary": "BN4 readiness is incomplete: 2/4.",
-      "detail": "Still waiting on: hacking level, money.",
+      "summary": "BN4 readiness is incomplete: 1/4.",
+      "detail": "Still waiting on: hacking level, money, augmentations.",
       "level": "warning",
       "data": {
         "targetBitNode": 4,
         "goal": "Unlock Source-File 4",
         "ready": false,
-        "readyCount": 2,
+        "readyCount": 1,
         "totalChecks": 4,
         "hackingReady": false,
         "moneyReady": false,
         "homeRamReady": true,
-        "augReady": true,
-        "hacking": 168,
+        "augReady": false,
+        "hacking": 203,
         "hackingTarget": 2500,
-        "money": 363400467.4569891,
+        "money": 1671604.0478474437,
         "moneyTarget": 100000000000,
-        "augmentCount": 35,
+        "augmentCount": 24,
         "augmentTarget": 30
       },
-      "ts": 1782525157892
+      "ts": 1783016362195
     },
     {
       "id": "victory",
@@ -94,8 +94,8 @@
         "worldDaemon": "w0r1d_d43m0n",
         "canUseWorldDaemon": false
       },
-      "ts": 1782525157892
+      "ts": 1783016362195
     }
   ],
-  "bridgeUpdatedAt": 1782525158998
+  "bridgeUpdatedAt": 1783016364193
 }

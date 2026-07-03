@@ -4,8 +4,9 @@ const BOOTSTRAP_DAEMON = "bootstrap-daemon.js";
 const FULL_DAEMON = "daemon.js";
 const BN2_GANG_MANAGER = "/tools/gang-manager-service.js";
 const BN2_CRIME_BOOTSTRAP = "/tools/crime-bootstrap.js";
-const TINY_HACKNET_BUYER = "/economy/tiny-hacknet-buyer.js";
+const HACKNET_BUYER = "/economy/hacknet-buyer-service.js";
 const HOME_RAM_BUYER = "/economy/home-ram-buyer-service.js";
+const SERVER_PURCHASER = "/economy/server-purchaser-service.js";
 const FINAL_LEVEL_STUDY = "/tools/final-level-study-service.js";
 const MIN_HOME_RAM_FOR_FULL_DAEMON = 64;
 
@@ -49,7 +50,7 @@ export async function main(ns) {
     }
 
     if (!ns.scriptRunning(FULL_DAEMON, "home")) {
-        ns.run(FULL_DAEMON, 1);
+        ns.run(FULL_DAEMON, 1, "--skip-refresh", true);
         ns.tprint("[STARTUP] daemon.js started.");
     } else {
         ns.tprint("[STARTUP] daemon.js already running.");
@@ -79,17 +80,7 @@ function stopFullDaemonIfRunning(ns) {
 function startBn2GangManager(ns) {
     if (getCurrentBitNode(ns) !== 2) return;
 
-    startScript(ns, BN2_GANG_MANAGER, [
-        "--refresh", 2500,
-        "--reserve", 0,
-        "--create", true,
-        "--faction", "Slum Snakes",
-        "--buy-equipment", true,
-        "--ascend", true,
-        "--asc-mult", 10,
-        "--fast-asc-mult", 100,
-        "--debug", true,
-    ], {
+    startScript(ns, BN2_GANG_MANAGER, [], {
         label: "BN2 gang manager",
         priority: true,
     });
@@ -99,29 +90,41 @@ function startBn2CoreServices(ns) {
     if (getCurrentBitNode(ns) !== 2) return;
 
     startBn2GangManager(ns);
-    startScript(ns, TINY_HACKNET_BUYER, [
+    startScript(ns, HACKNET_BUYER, [
         "--refresh", 3000,
-        "--nodes", 5,
-        "--level", 200,
-        "--ram", 64,
-        "--cores", 12,
+        "--nodes", 0,
+        "--level", 0,
+        "--ram", 0,
+        "--cores", 0,
+        "--cache", 0,
         "--reserve", 0,
-        "--max-purchases", 1000,
+        "--max-payback", 0,
+        "--min-production", 100_000,
+        "--max-purchases", 25,
         "--force", true,
-        "--debug", true,
+        "--debug", false,
         "--toast", false,
         "--terminal", false,
     ], {
-        label: "BN2 tiny Hacknet buyer",
+        label: "BN2 Hacknet economy buyer",
         priority: true,
     });
     startScript(ns, HOME_RAM_BUYER, [
         "--refresh", 5000,
         "--min-money", 1_000_000,
         "--force", true,
-        "--debug", true,
+        "--debug", false,
     ], {
         label: "BN2 home RAM buyer",
+        priority: true,
+    });
+    startScript(ns, SERVER_PURCHASER, [
+        "--refresh", 5000,
+        "--debug", false,
+        "--toast", false,
+        "--terminal", false,
+    ], {
+        label: "BN2 cloud server purchaser",
         priority: true,
     });
     startScript(ns, BN2_CRIME_BOOTSTRAP, [

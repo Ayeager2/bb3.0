@@ -10,6 +10,7 @@ const TINY_WORKER = "/workers/tiny-worker.js";
 const CRIME_BOOTSTRAP = "/tools/crime-bootstrap.js";
 const BN2_GANG_MANAGER = "/tools/gang-manager-service.js";
 const HOME_RAM_BUYER = "/economy/home-ram-buyer-service.js";
+const SERVER_PURCHASER = "/economy/server-purchaser-service.js";
 const TINY_HACKNET_BUYER = "/economy/tiny-hacknet-buyer.js";
 const HACKNET_BUYER = "/economy/hacknet-buyer-service.js";
 const HACKNET_HASH_SPENDER = "/economy/hacknet-hash-spender-service.js";
@@ -52,6 +53,7 @@ export async function main(ns) {
     startBootstrapHomeRamBuyer(ns);
     startFreshCrimeBootstrap(ns);
     startBootstrapHacknetServices(ns);
+    startBootstrapServerPurchaser(ns);
 
     const target = chooseBestTarget(ns, rootedServers);
     const plan = buildBootstrapPlan(ns, target);
@@ -100,17 +102,7 @@ function startFreshCrimeBootstrap(ns) {
 function startBootstrapGangManager(ns) {
   if (getCurrentBitNode(ns) !== 2) return;
 
-  startBootstrapService(ns, BN2_GANG_MANAGER, [
-    "--refresh", 2500,
-    "--reserve", 0,
-    "--create", true,
-    "--faction", "Slum Snakes",
-    "--buy-equipment", true,
-    "--ascend", true,
-    "--asc-mult", 10,
-    "--fast-asc-mult", 100,
-    "--debug", true,
-  ], {
+  startBootstrapService(ns, BN2_GANG_MANAGER, [], {
     priority: true,
     reserveRam: 0,
   });
@@ -123,7 +115,23 @@ function startBootstrapHomeRamBuyer(ns) {
     "--refresh", 5000,
     "--min-money", 1_000_000,
     "--force", true,
-    "--debug", true,
+    "--debug", false,
+  ], {
+    priority: true,
+    reserveRam: 0,
+  });
+}
+
+function startBootstrapServerPurchaser(ns) {
+  if (getCurrentBitNode(ns) !== 2) return;
+
+  startBootstrapService(ns, SERVER_PURCHASER, [
+    "--refresh", 5000,
+    "--debug", false,
+    "--toast", false,
+    "--terminal", false,
+    "--max-purchases", 25,
+    "--force", true,
   ], {
     priority: true,
     reserveRam: 0,
@@ -150,7 +158,7 @@ function startBootstrapHacknetServices(ns) {
     "--sell-value", 2_000_000,
     "--max-purchases", isHashNode ? 50 : 1000,
     "--force", true,
-    "--debug", true,
+    "--debug", false,
     "--toast", false,
     "--terminal", false,
   ], {
@@ -171,7 +179,7 @@ function startBootstrapHacknetServices(ns) {
     "--min", 4,
     "--max-spends", 500,
     "--force", true,
-    "--debug", true,
+    "--debug", false,
   ], {
     priority: true,
   });

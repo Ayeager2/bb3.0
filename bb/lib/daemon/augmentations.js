@@ -254,6 +254,7 @@ export function buildAugmentationPlan(ns, options = {}) {
         progressionFrontier: {
             stage: progressionFrontier.stage,
             reason: progressionFrontier.reason,
+            targetFaction: progressionFrontier.targetFaction ?? null,
             candidateCount: candidates.length,
         },
         ready: !!nextGoal && nextGoal.hasRep && nextGoal.affordable && nextGoal.hasPrereqs,
@@ -284,6 +285,7 @@ function selectProgressionFrontier(ns, candidates, bitNode = getCurrentBitNode(n
 
         return {
             stage: "bn2-gang",
+            targetFaction: gangFaction,
             reason:
                 gangCandidates.length > 0
                     ? `BN2 buys only ${gangFaction} gang augmentations, cheapest first.`

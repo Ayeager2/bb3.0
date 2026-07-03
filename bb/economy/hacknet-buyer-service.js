@@ -19,6 +19,7 @@ export async function main(ns) {
         ["max-payback", 0],
         ["hash-buffer-minutes", 120],
         ["sell-value", 2_000_000],
+        ["min-production", 0],
         ["max-purchases", 50],
         ["use-policy-reserve", false],
         ["force", false],
@@ -47,6 +48,8 @@ export async function main(ns) {
         (Number(flags["hash-buffer-minutes"]) || 120) * 60;
     const sellForMoneyValue =
         Number(flags["sell-value"]) || 2_000_000;
+    const minProduction =
+        Math.max(0, Number(flags["min-production"]) || 0);
     const maxPurchasesPerCycle =
         Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
     const usePolicyReserve =
@@ -102,6 +105,7 @@ export async function main(ns) {
                 maxPaybackSeconds,
                 hashBufferSeconds,
                 sellForMoneyValue,
+                minProduction,
                 maxPurchasesPerCycle,
             });
 
@@ -134,6 +138,9 @@ export async function main(ns) {
             ns.print(`Message: ${result.message}`);
             ns.print(`Nodes: ${state.nodeCount}/${state.targetNodes}`);
             ns.print(`Production: ${ns.format.number(state.totalProduction)} / sec`);
+            if (minProduction > 0) {
+                ns.print(`Production floor: ${ns.format.number(state.totalProduction)} / ${ns.format.number(minProduction)} / sec`);
+            }
             ns.print(`Spendable: ${ns.format.number(state.spendable)}`);
             ns.print(`ROI gate: ${ns.format.number(state.roi?.maxPaybackSeconds ?? maxPaybackSeconds)}s`);
             ns.print(`Hash sell value: $${ns.format.number(state.roi?.sellForMoneyValue ?? sellForMoneyValue)}`);

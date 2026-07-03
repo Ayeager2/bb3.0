@@ -1,5 +1,5 @@
 //bb-dashboard-bridge\dashboard-ui\src\components\settings\DashboardControlPanel.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiGrid, FiLayout, FiSliders, FiDatabase, FiTerminal, FiBell, FiMonitor, FiX } from "react-icons/fi";
 import WidgetsSettings from "./WidgetsSettings.jsx";
 import LayoutSettings from "./LayoutSettings.jsx";
@@ -39,8 +39,23 @@ export default function DashboardControlPanel({
     themeSignal,
     activeSignal,
     onThemeSignalChange,
+    gangSpriteSettings,
+    onGangSpriteSettingsChange,
 }) {
     const [activeTab, setActiveTab] = useState("widgets");
+
+    useEffect(() => {
+        if (!open) return undefined;
+
+        function onKeyDown(event) {
+            if (event.key !== "Escape") return;
+            onClose?.();
+        }
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [open, onClose]);
 
     if (!open) return null;
 
@@ -66,7 +81,7 @@ export default function DashboardControlPanel({
                         <div className="control-subtitle">{TABS.find(t => t.id === activeTab)?.label}</div>
                     </div>
 
-                    <button className="control-close" onClick={onClose}>
+                    <button className="control-close" onClick={onClose} type="button" title="Close settings">
                         <FiX />
                     </button>
                 </div>
@@ -94,6 +109,8 @@ export default function DashboardControlPanel({
                         themeSignal={themeSignal}
                         activeSignal={activeSignal}
                         onThemeSignalChange={onThemeSignalChange}
+                        gangSpriteSettings={gangSpriteSettings}
+                        onGangSpriteSettingsChange={onGangSpriteSettingsChange}
                     />
                 )}
 

@@ -22,6 +22,8 @@ export function buildHacknetState(ns, options = {}) {
         Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
     const sellForMoneyValue =
         Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
+    const minProduction =
+        Math.max(0, Number(options.minProduction) || 0);
     const reserveMoney =
         Number(options.reserveMoney) || 0;
     const money =
@@ -42,6 +44,7 @@ export function buildHacknetState(ns, options = {}) {
             maxPaybackSeconds: options.maxPaybackSeconds,
             hashBufferSeconds,
             sellForMoneyValue,
+            minProduction,
             spendable,
             totalProduction,
         });
@@ -74,7 +77,9 @@ export function buildHacknetState(ns, options = {}) {
         },
         roi: {
             strategy:
-                getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY
+                minProduction > 0 && totalProduction < minProduction
+                    ? "production-floor-aggressive"
+                    : getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY
                     ? "aggressive-cheapest-affordable"
                     : "payback-seconds",
             unlimitedPayback:
@@ -82,6 +87,11 @@ export function buildHacknetState(ns, options = {}) {
             maxPaybackSeconds:
                 getSerializablePaybackSeconds(options.maxPaybackSeconds),
             sellForMoneyValue,
+            minProduction,
+            productionFloorMet:
+                minProduction <= 0 || totalProduction >= minProduction,
+            productionFloorGap:
+                Math.max(0, minProduction - totalProduction),
             hashMoneyValue: getHashMoneyValue(ns, sellForMoneyValue),
             homeCompetition: getHomeUpgradeCompetition(ns),
             bestCandidate: summarizeAction(actionPlan.bestCandidate),
@@ -120,6 +130,7 @@ export function runHacknetBuyer(ns, options = {}) {
                 maxPaybackSeconds: options.maxPaybackSeconds,
                 hashBufferSeconds: lastState.cachePolicy?.hashBufferSeconds,
                 sellForMoneyValue: lastState.roi?.sellForMoneyValue,
+                minProduction: options.minProduction,
                 spendable: lastState.spendable,
                 totalProduction: lastState.totalProduction,
             });
@@ -217,6 +228,7 @@ export function runHacknetBuyer(ns, options = {}) {
             maxPaybackSeconds: options.maxPaybackSeconds,
             hashBufferSeconds: state.cachePolicy?.hashBufferSeconds,
             sellForMoneyValue: state.roi?.sellForMoneyValue,
+            minProduction: options.minProduction,
             spendable: state.spendable,
             totalProduction: state.totalProduction,
         });
@@ -292,6 +304,8 @@ export function getHacknetActionPlan(ns, options = {}) {
         Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
     const sellForMoneyValue =
         Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
+    const minProduction =
+        Math.max(0, Number(options.minProduction) || 0);
     const spendable =
         Math.max(0, Number(options.spendable) || 0);
     const nodeCount =
@@ -380,6 +394,9 @@ export function getHacknetActionPlan(ns, options = {}) {
         getHashMoneyValue(ns, sellForMoneyValue);
     const unlimitedPayback =
         maxPaybackSeconds === Number.POSITIVE_INFINITY;
+    const belowProductionFloor =
+        minProduction > 0 &&
+        totalProduction < minProduction;
 
     const rawCandidates = actions
         .filter(action =>
@@ -395,7 +412,7 @@ export function getHacknetActionPlan(ns, options = {}) {
         )
         .sort((a, b) => a.paybackSeconds - b.paybackSeconds);
     const bestCandidate =
-        unlimitedPayback
+        unlimitedPayback || belowProductionFloor
             ? rawCandidates[0] ?? null
             : candidates[0] ?? null;
     const affordableAction =
@@ -404,6 +421,7 @@ export function getHacknetActionPlan(ns, options = {}) {
         affordableAction ??
         (
             unlimitedPayback
+                || belowProductionFloor
                 ? rawCandidates[0] ?? null
                 : candidates
                     .filter(action =>
@@ -426,6 +444,8 @@ export function getHacknetActionPlan(ns, options = {}) {
         bestCandidate,
         candidates: candidates.map(summarizeAction),
         maxPaybackSeconds,
+        minProduction,
+        belowProductionFloor,
     };
 }
 
@@ -524,9 +544,7 @@ function getTargetNodes(ns, value) {
         Number(value);
 
     if (!Number.isFinite(n) || n <= 0) {
-        return getCurrentBitNode(ns) === 2
-            ? Math.min(5, max)
-            : max;
+        return max;
     }
 
     return Math.min(n, max);
@@ -547,14 +565,9 @@ function getTargetRam(ns, value) {
 
     const cap =
         getHacknetCap(ns, "MaxRam", 8192);
-    const nodeCap =
-        getCurrentBitNode(ns) === 2
-            ? Math.min(64, cap)
-            : cap;
+    if (Number.isFinite(n) && n > 0) return Math.min(n, cap);
 
-    if (Number.isFinite(n) && n > 0) return Math.min(n, nodeCap);
-
-    return nodeCap;
+    return cap;
 }
 
 function getTargetCores(ns, value) {
@@ -563,14 +576,9 @@ function getTargetCores(ns, value) {
 
     const cap =
         getHacknetCap(ns, "MaxCores", 128);
-    const nodeCap =
-        getCurrentBitNode(ns) === 2
-            ? Math.min(12, cap)
-            : cap;
+    if (Number.isFinite(n) && n > 0) return Math.min(n, cap);
 
-    if (Number.isFinite(n) && n > 0) return Math.min(n, nodeCap);
-
-    return nodeCap;
+    return cap;
 }
 
 function getCurrentBitNode(ns) {

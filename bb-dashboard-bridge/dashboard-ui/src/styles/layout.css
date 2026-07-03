@@ -15,6 +15,9 @@
     box-shadow:
         0 0 28px var(--card-shadow-accent),
         inset 0 -1px 0 var(--signal-soft);
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .app-title {
@@ -45,6 +48,9 @@
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 12px;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .settings-gear {
@@ -72,6 +78,14 @@
 .settings-gear:hover {
     color: white;
     border-color: var(--cyan);
+}
+
+.settings-gear.active {
+    color: var(--yellow);
+    border-color: rgba(250, 204, 21, .75);
+    box-shadow:
+        0 0 18px rgba(250, 204, 21, .28),
+        inset 0 0 14px rgba(250, 204, 21, .12);
 }
 
 .minimized-card-dock {
@@ -286,7 +300,7 @@
     position: fixed;
     left: 18px;
     bottom: 76px;
-    z-index: 100;
+    z-index: 1000;
     width: min(760px, calc(100vw - 36px));
     height: min(620px, calc(100vh - 110px));
     display: grid;
@@ -577,4 +591,97 @@
     background: rgba(2, 6, 23, .65);
     color: var(--cyan);
     font-size: 12px;
+}
+
+.sprite-palette-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.sprite-palette-chip {
+    display: grid;
+    gap: 5px;
+    min-height: 70px;
+    padding: 9px 10px;
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 9px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .09), rgba(255, 56, 100, .08)),
+        rgba(2, 6, 23, .72);
+    color: var(--text);
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sprite-palette-chip:hover,
+.sprite-palette-chip.active {
+    border-color: rgba(0, 229, 255, .65);
+    box-shadow: 0 0 16px rgba(0, 229, 255, .16);
+}
+
+.sprite-palette-chip span {
+    color: var(--cyan);
+    font-weight: 900;
+}
+
+.sprite-palette-chip em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 11px;
+}
+
+.sprite-color-strip {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    height: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 999px;
+}
+
+.sprite-color-strip i {
+    display: block;
+}
+
+.sprite-color-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.sprite-color-field {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 34px auto;
+    align-items: center;
+    gap: 7px;
+    padding: 8px;
+    border: 1px solid rgba(148, 163, 184, .14);
+    border-radius: 8px;
+    background: rgba(2, 6, 23, .55);
+}
+
+.sprite-color-field span {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.sprite-color-field input {
+    width: 30px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid rgba(0, 229, 255, .28);
+    border-radius: 6px;
+    background: transparent;
+}
+
+.sprite-color-field b {
+    color: var(--text);
+    font-size: 10px;
+    text-transform: uppercase;
 }

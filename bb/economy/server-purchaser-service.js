@@ -15,6 +15,8 @@ export async function main(ns) {
         ["debug", true],
         ["toast", true],
         ["terminal", false],
+        ["max-purchases", 25],
+        ["force", false],
     ]);
 
     const refreshMs = Number(flags.refresh) || 10000;
@@ -24,6 +26,8 @@ export async function main(ns) {
 
     while (true) {
         const state = readJson(ns, STATE_FILE);
+        const hasDaemonPolicy =
+            !!state?.spendingPolicy;
         const policy = state?.spendingPolicy ?? {};
 
         const hasFormulas =
@@ -31,6 +35,10 @@ export async function main(ns) {
 
         const serverPurchasePolicy = {
             ...policy,
+            allowServerPurchases:
+                flags.force === true ||
+                hasDaemonPolicy !== true ||
+                policy.allowServerPurchases === true,
             maxServerUpgradeCost:
                 hasFormulas
                     ? Number.POSITIVE_INFINITY
@@ -39,6 +47,8 @@ export async function main(ns) {
                 hasFormulas
                     ? "Formulas.exe owned; cloud upgrade cap removed."
                     : "Formulas.exe missing; cloud upgrade cost capped at 1b.",
+            maxServerPurchasesPerCycle:
+                Math.max(1, Math.floor(Number(flags["max-purchases"]) || 25)),
         };
 
         const moneyBefore = ns.getPlayer().money;
@@ -81,6 +91,8 @@ export async function main(ns) {
                 moneyBefore,
                 moneyAfter,
                 message,
+                details: result.purchases ?? null,
+                purchases: result.purchases ?? [],
             });
         }
 
@@ -139,6 +151,13 @@ function writeServerTicker(ns, data) {
                     null,
                 cost,
                 message: result.message ?? "No server purchase action.",
+                purchases: result.purchases ?? [],
+                purchaseCount: Array.isArray(result.purchases)
+                    ? result.purchases.length
+                    : acted
+                        ? 1
+                        : 0,
+                stoppedReason: result.stoppedReason ?? null,
                 moneyBefore: data.moneyBefore,
                 moneyAfter: data.moneyAfter,
                 policy: {
@@ -174,21 +193,98 @@ function getFleetSummary(ns) {
             Object.fromEntries(
                 names.map(name => [name, ns.getServerMaxRam(name)])
             );
+        const servers =
+            names
+                .map(name => ({
+                    name,
+                    ram: ns.getServerMaxRam(name),
+                    usedRam: ns.getServerUsedRam(name),
+                }))
+                .sort((a, b) => a.ram - b.ram || a.name.localeCompare(b.name));
+        const weakest =
+            servers[0] ?? null;
+        const strongest =
+            servers[servers.length - 1] ?? null;
+        const maxRamLimit =
+            ns.cloud.getRamLimit();
+        const nextUpgradeRam =
+            weakest
+                ? getNextRamTier(weakest.ram, maxRamLimit)
+                : 0;
+        const nextUpgradeCost =
+            weakest && nextUpgradeRam > weakest.ram
+                ? safeGetServerUpgradeCost(ns, weakest.name, nextUpgradeRam)
+                : 0;
+        const nextPurchaseRam =
+            weakest?.ram ?? 8;
+        const nextPurchaseCost =
+            names.length < ns.cloud.getServerLimit()
+                ? safeGetServerCost(ns, nextPurchaseRam)
+                : 0;
+        const money =
+            ns.getPlayer().money;
 
         return {
             available: true,
             count: names.length,
             limit: ns.cloud.getServerLimit(),
-            maxRamLimit: ns.cloud.getRamLimit(),
+            maxRamLimit,
             minRam: ramValues.length ? Math.min(...ramValues) : 0,
             maxRam: ramValues.length ? Math.max(...ramValues) : 0,
+            totalRam: ramValues.reduce((sum, ram) => sum + ram, 0),
             names,
             serverRam,
+            servers,
+            weakest,
+            strongest,
+            nextAction:
+                names.length < ns.cloud.getServerLimit()
+                    ? {
+                        type: "purchase",
+                        server: null,
+                        ram: nextPurchaseRam,
+                        cost: nextPurchaseCost,
+                        affordable: money >= nextPurchaseCost,
+                    }
+                    : {
+                        type: nextUpgradeRam > (weakest?.ram ?? 0) ? "upgrade" : "none",
+                        server: weakest?.name ?? null,
+                        fromRam: weakest?.ram ?? 0,
+                        ram: nextUpgradeRam,
+                        cost: nextUpgradeCost,
+                        affordable: money >= nextUpgradeCost,
+                    },
         };
     } catch (error) {
         return {
             available: false,
             reason: String(error),
         };
+    }
+}
+
+function getNextRamTier(currentRam, maxRam) {
+    const current = Math.max(0, Number(currentRam) || 0);
+    const max = Math.max(0, Number(maxRam) || 0);
+
+    if (max <= 0 || current >= max) return 0;
+    if (current <= 0) return Math.min(8, max);
+
+    return Math.min(current * 2, max);
+}
+
+function safeGetServerCost(ns, ram) {
+    try {
+        return ns.cloud.getServerCost(ram);
+    } catch {
+        return 0;
+    }
+}
+
+function safeGetServerUpgradeCost(ns, server, ram) {
+    try {
+        return ns.cloud.getServerUpgradeCost(server, ram);
+    } catch {
+        return 0;
     }
 }

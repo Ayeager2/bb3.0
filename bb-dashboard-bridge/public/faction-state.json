@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1782525155064,
+  "updatedAt": 1783016354345,
   "singularityEnabled": true,
   "bitNode": 2,
   "hacknetTotals": {
@@ -9,12 +9,14 @@
     "cores": 60,
     "maxRam": 64,
     "maxCores": 12,
-    "production": 108605.09057892967
+    "production": 77170.20981028727
   },
   "joined": [
-    "Slum Snakes"
+    "Slum Snakes",
+    "Netburners",
+    "CyberSec"
   ],
-  "hackingLevel": 168,
+  "hackingLevel": 203,
   "profiles": [
     {
       "faction": "CyberSec",
@@ -1482,7 +1484,7 @@
       "moneyReady": false,
       "combatReady": true,
       "cityReady": true,
-      "augReady": true,
+      "augReady": false,
       "homeRamReady": true,
       "hacknetLevelsReady": true,
       "hacknetRamReady": true,
@@ -1494,13 +1496,14 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
         "hacking 2500",
-        "money $100.00b"
+        "money $100.00b",
+        "30 augmentations"
       ],
       "readyForManualBackdoor": false,
       "readyForInvite": false
@@ -1544,7 +1547,7 @@
       "moneyReady": false,
       "combatReady": false,
       "cityReady": true,
-      "augReady": true,
+      "augReady": false,
       "homeRamReady": true,
       "hacknetLevelsReady": true,
       "hacknetRamReady": true,
@@ -1556,14 +1559,15 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
         "hacking 1500",
         "money $150.00b",
-        "combat 1200"
+        "combat 1200",
+        "30 augmentations"
       ],
       "readyForManualBackdoor": false,
       "readyForInvite": false
@@ -1619,7 +1623,7 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
@@ -1682,7 +1686,7 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
@@ -1744,7 +1748,7 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
@@ -1790,7 +1794,7 @@
       "exists": true,
       "rooted": true,
       "backdoored": false,
-      "hackReady": false,
+      "hackReady": true,
       "moneyReady": true,
       "combatReady": true,
       "cityReady": true,
@@ -1806,15 +1810,14 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "backdoor avmnite-02h",
-        "hacking 200"
+        "backdoor avmnite-02h"
       ],
-      "readyForManualBackdoor": false,
+      "readyForManualBackdoor": true,
       "readyForInvite": false
     },
     {
@@ -1868,13 +1871,13 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
-      "joined": false,
-      "ready": true,
+      "joined": true,
+      "ready": false,
       "blockers": [],
       "readyForManualBackdoor": false,
-      "readyForInvite": true
+      "readyForInvite": false
     },
     {
       "faction": "Tian Di Hui",
@@ -1912,7 +1915,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": true,
+      "moneyReady": false,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -1927,11 +1930,12 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "money $1.00m",
         "travel Chongqing"
       ],
       "readyForManualBackdoor": false,
@@ -1973,7 +1977,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": true,
+      "moneyReady": false,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -1988,11 +1992,12 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "money $20.00m",
         "travel Chongqing"
       ],
       "readyForManualBackdoor": false,
@@ -2034,7 +2039,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": true,
+      "moneyReady": false,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -2049,11 +2054,12 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "money $20.00m",
         "travel New Tokyo"
       ],
       "readyForManualBackdoor": false,
@@ -2095,7 +2101,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": true,
+      "moneyReady": false,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -2110,11 +2116,12 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "money $30.00m",
         "travel Ishima"
       ],
       "readyForManualBackdoor": false,
@@ -2153,7 +2160,7 @@
       },
       "server": "fulcrumassets",
       "exists": true,
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "hackReady": false,
       "moneyReady": true,
@@ -2171,11 +2178,12 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "root fulcrumassets",
         "backdoor fulcrumassets",
         "hacking 1000",
         "company rep Fulcrum Secret Technologies"
@@ -2235,20 +2243,25 @@
         "cores": 60,
         "maxRam": 64,
         "maxCores": 12,
-        "production": 108605.09057892967
+        "production": 77170.20981028727
       },
-      "joined": false,
-      "ready": true,
+      "joined": true,
+      "ready": false,
       "blockers": [],
       "readyForManualBackdoor": false,
-      "readyForInvite": true
+      "readyForInvite": false
     }
   ],
   "nextGoal": {
-    "type": "auto-join-ready",
-    "faction": "CyberSec",
-    "server": "CSEC",
-    "message": "CyberSec is ready for future auto-join flow."
+    "type": "blocked",
+    "faction": "Speakers for the Dead",
+    "server": null,
+    "blockers": [
+      "combat 300",
+      "karma -45",
+      "30 kills"
+    ],
+    "message": "Speakers for the Dead blocked: combat 300, karma -45, 30 kills."
   },
   "automation": {
     "canAutoJoin": true,
@@ -2257,7 +2270,7 @@
     "canAutoTravel": true
   },
   "backdoors": {
-    "updatedAt": 1782525155064,
+    "updatedAt": 1783016354345,
     "singularityEnabled": true,
     "autoBackdoor": false,
     "announced": [
@@ -2292,7 +2305,7 @@
         },
         "exists": true,
         "rooted": true,
-        "hackReady": false,
+        "hackReady": true,
         "backdoored": false
       },
       {
@@ -2336,11 +2349,11 @@
           "default": 45
         },
         "exists": true,
-        "rooted": true,
+        "rooted": false,
         "hackReady": false,
         "backdoored": false
       }
     ]
   },
-  "bridgeUpdatedAt": 1782525161086
+  "bridgeUpdatedAt": 1783016364156
 }

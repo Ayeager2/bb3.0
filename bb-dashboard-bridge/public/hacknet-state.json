@@ -1,50 +1,24 @@
 {
-  "updatedAt": 1782525160040,
+  "updatedAt": 1783016363846,
+  "source": "tiny-hacknet-buyer",
+  "allowed": true,
+  "status": "complete",
+  "message": "No Hacknet action is available.",
+  "acted": false,
+  "purchaseCount": 0,
+  "purchases": [],
+  "money": 3656521.093975931,
+  "reserveMoney": 0,
+  "spendable": 3656521.093975931,
   "nodeCount": 5,
   "maxNodes": null,
   "targetNodes": 5,
   "targetLevel": 200,
   "targetRam": 64,
   "targetCores": 12,
-  "targetCache": 15,
-  "money": 332719890.26590145,
-  "reserveMoney": 0,
-  "spendable": 332719890.26590145,
-  "totalProduction": 108605.09057892967,
-  "totalProduced": 54962346.74036488,
-  "hashes": {
-    "available": true,
-    "hashes": 0,
-    "capacity": 0,
-    "upgrades": []
-  },
-  "cachePolicy": {
-    "targetCache": 15,
-    "hashBufferSeconds": 7200,
-    "desiredCapacity": 781956652.1682936,
-    "capacityGap": 781956652.1682936,
-    "nextAction": null
-  },
-  "roi": {
-    "strategy": "payback-seconds",
-    "unlimitedPayback": false,
-    "maxPaybackSeconds": 3600,
-    "sellForMoneyValue": 2000000,
-    "hashMoneyValue": 500000,
-    "homeCompetition": {
-      "ram": {
-        "cost": 10039402980.70664,
-        "current": 2048
-      },
-      "cores": {
-        "cost": 7500000000,
-        "current": 1
-      }
-    },
-    "bestCandidate": null,
-    "blockedByPayback": false
-  },
-  "complete": true,
+  "targetCache": 0,
+  "totalProduction": 77170.20981028727,
+  "totalProduced": 83361186.34824878,
   "nextAction": null,
   "canAffordNext": false,
   "nodes": [
@@ -54,10 +28,9 @@
       "level": 200,
       "ram": 64,
       "cores": 12,
-      "cache": null,
-      "production": 21721.018115785933,
-      "totalProduction": 11341075.084341807,
-      "timeOnline": 530.1999999999838
+      "cache": 0,
+      "production": 15434.041962057454,
+      "totalProduction": 17309938.023255505
     },
     {
       "index": 1,
@@ -65,10 +38,9 @@
       "level": 200,
       "ram": 64,
       "cores": 12,
-      "cache": null,
-      "production": 21721.018115785933,
-      "totalProduction": 11125836.4050047,
-      "timeOnline": 530.1999999999838
+      "cache": 0,
+      "production": 15434.041962057454,
+      "totalProduction": 16814675.658305444
     },
     {
       "index": 2,
@@ -76,10 +48,9 @@
       "level": 200,
       "ram": 64,
       "cores": 12,
-      "cache": null,
-      "production": 21721.018115785933,
-      "totalProduction": 10938039.03778952,
-      "timeOnline": 530.1999999999838
+      "cache": 0,
+      "production": 15434.041962057454,
+      "totalProduction": 16640938.767126234
     },
     {
       "index": 3,
@@ -87,10 +58,9 @@
       "level": 200,
       "ram": 64,
       "cores": 12,
-      "cache": null,
-      "production": 21721.018115785933,
-      "totalProduction": 10817778.704431055,
-      "timeOnline": 530.1999999999838
+      "cache": 0,
+      "production": 15434.041962057454,
+      "totalProduction": 16435139.021307327
     },
     {
       "index": 4,
@@ -98,42 +68,27 @@
       "level": 200,
       "ram": 64,
       "cores": 12,
-      "cache": null,
-      "production": 21721.018115785933,
-      "totalProduction": 10739617.50879779,
-      "timeOnline": 530.1999999999838
+      "cache": 0,
+      "production": 15434.041962057454,
+      "totalProduction": 16160494.878254272
     }
   ],
-  "source": "hacknet-buyer",
-  "allowed": true,
-  "status": "complete",
-  "message": "No Hacknet action is available.",
-  "acted": false,
-  "purchaseCount": 0,
-  "purchases": [],
-  "mode": "money",
-  "priority": "income",
+  "hashes": {
+    "available": false,
+    "hashes": 0,
+    "capacity": 0
+  },
   "recentActions": [
-    "[9:44:28 PM] 56 Hacknet purchases for $19.967m: upgrade node 4 level by 1 x56.",
-    "[9:44:27 PM] 2 Hacknet purchases for $188.479k: upgrade node 4 level by 1 x2.",
-    "[9:44:26 PM] 154 Hacknet purchases for $22.738m: upgrade node 3 level by 1 x62; upgrade node 4 level by 1 x92.",
-    "[9:44:25 PM] 5 Hacknet purchases for $85.027k: upgrade node 3 level by 1; upgrade node 4 level by 1 x4.",
-    "[9:44:24 PM] 170 Hacknet purchases for $22.797m: upgrade node 2 level by 1 x69; upgrade node 3 level by 1 x75; upgrade node 4 level by 1 x26.",
-    "[9:44:23 PM] 4 Hacknet purchases for $66.010k: upgrade node 2 level by 1; upgrade node 3 level by 1 x2; upgrade node 4 level by 1.",
-    "[9:44:22 PM] 128 Hacknet purchases for $22.778m: upgrade node 0 level by 1; upgrade node 1 level by 1 x65; upgrade node 2 level by 1 x41; upgrade node 3 level by 1 x19.",
-    "[9:44:21 PM] 5 Hacknet purchases for $51.452k: upgrade node 2 level by 1 x5.",
-    "[9:44:20 PM] 10 Hacknet purchases for $22.780m: upgrade node 4 cores; upgrade node 0 level by 1; upgrade node 1 level by 1 x3; upgrade node 2 level by 1 x2.",
-    "[9:44:19 PM] 20 Hacknet purchases for $22.761m: upgrade node 4 cores; upgrade node 0 level by 1 x12; upgrade node 1 level by 1 x5; upgrade node 4 level by 1 x2.",
-    "[9:44:18 PM] 11 Hacknet purchases for $47.193k: upgrade node 2 level by 1 x5; upgrade node 3 level by 1 x5; upgrade node 4 level by 1.",
-    "[9:44:17 PM] 13 Hacknet purchases for $22.753m: upgrade node 4 cores x3; upgrade node 0 level by 1 x3; upgrade node 1 level by 1 x3; upgrade node 2 level by 1 x2.",
-    "[9:44:16 PM] 12 Hacknet purchases for $44.900k: upgrade node 2 level by 1 x7; upgrade node 3 level by 1 x3; upgrade node 4 level by 1 x2.",
-    "[9:44:15 PM] 12 Hacknet purchases for $22.744m: upgrade node 3 cores; upgrade node 0 level by 1 x2; upgrade node 1 level by 1 x3; upgrade node 2 level by 1 x2.",
-    "[9:44:14 PM] 6 Hacknet purchases for $42.908k: upgrade node 1 level by 1; upgrade node 3 level by 1 x3; upgrade node 4 level by 1 x2.",
-    "[9:44:13 PM] 19 Hacknet purchases for $22.735m: upgrade node 3 cores; upgrade node 4 cores x2; upgrade node 0 level by 1 x8; upgrade node 1 level by 1.",
-    "[9:44:11 PM] 3 Hacknet purchases for $40.609k: upgrade node 1 level by 1; upgrade node 2 level by 1; upgrade node 4 level by 1.",
-    "[9:44:10 PM] 23 Hacknet purchases for $22.726m: upgrade node 3 cores x3; upgrade node 0 level by 1 x5; upgrade node 1 level by 1 x5; upgrade node 2 level by 1 x5.",
-    "[9:44:09 PM] 4 Hacknet purchases for $37.994k: upgrade node 1 level by 1; upgrade node 2 level by 1 x3.",
-    "[9:44:08 PM] 9 Hacknet purchases for $22.718m: upgrade node 2 cores; upgrade node 0 level by 1 x4; upgrade node 1 level by 1 x2; upgrade node 3 level by 1 x2."
+    "[2:04:57 PM] 1 bootstrap Hacknet buy.",
+    "[2:00:11 PM] 1 bootstrap Hacknet buy.",
+    "[1:55:55 PM] 3 bootstrap Hacknet buys.",
+    "[1:55:49 PM] 4 bootstrap Hacknet buys.",
+    "[1:55:43 PM] 5 bootstrap Hacknet buys.",
+    "[1:55:37 PM] 7 bootstrap Hacknet buys.",
+    "[1:55:31 PM] 10 bootstrap Hacknet buys.",
+    "[1:55:25 PM] 19 bootstrap Hacknet buys.",
+    "[1:55:19 PM] 25 bootstrap Hacknet buys.",
+    "[1:55:13 PM] 25 bootstrap Hacknet buys."
   ],
-  "bridgeUpdatedAt": 1782525161039
+  "bridgeUpdatedAt": 1783016364062
 }

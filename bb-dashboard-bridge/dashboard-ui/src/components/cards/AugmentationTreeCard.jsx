@@ -20,7 +20,16 @@ export default function AugmentationTreeCard({
     const buyer = state?.augmentationIntel?.buyer ?? null;
     const factionWork = state?.augmentationIntel?.factionWork ?? null;
     const isBn9 = Number(state?.bitnode?.number) === 9;
-    const factions = useMemo(() => buildFactionNodes(augmentationState, plan), [augmentationState, plan]);
+    const isBn2 = Number(state?.bitnode?.number) === 2 || Number(plan?.bitNode) === 2;
+    const gangFaction =
+        plan?.progressionFrontier?.targetFaction ??
+        plan?.nextGoal?.faction ??
+        state?.gang?.gang ??
+        "Slum Snakes";
+    const factions = useMemo(
+        () => buildFactionNodes(augmentationState, plan, { isBn2, gangFaction }),
+        [augmentationState, plan, isBn2, gangFaction],
+    );
     const [selectedFaction, setSelectedFaction] = useState(null);
     const selected = factions.find(faction => faction.name === selectedFaction) ?? factions[0] ?? null;
 
@@ -37,12 +46,12 @@ export default function AugmentationTreeCard({
             <div className="aug-tree-card">
                 <div className="aug-tree-header">
                     <div>
-                        <span>Next Augmentation</span>
+                        <span>{isBn2 ? "Next Gang Augmentation" : "Next Augmentation"}</span>
                         <b>{plan?.nextGoal?.name ?? "No goal"}</b>
                     </div>
                     <div>
-                        <span>Faction</span>
-                        <b>{plan?.nextGoal?.faction ?? factionWork?.targetFaction ?? "none"}</b>
+                        <span>{isBn2 ? "Gang" : "Faction"}</span>
+                        <b>{plan?.nextGoal?.faction ?? factionWork?.targetFaction ?? (isBn2 ? gangFaction : "none")}</b>
                     </div>
                     <div>
                         <span>Buyer</span>
@@ -54,7 +63,13 @@ export default function AugmentationTreeCard({
                     </div>
                 </div>
 
-                {isBn9 ? (
+                {isBn2 ? (
+                    <GangAugmentationFocus
+                        faction={selected}
+                        plan={plan}
+                        factionWork={factionWork}
+                    />
+                ) : isBn9 ? (
                     <FactionAccordion
                         factions={factions}
                         selectedFaction={selectedFaction}
@@ -101,6 +116,45 @@ export default function AugmentationTreeCard({
                 )}
             </div>
         </Card>
+    );
+}
+
+function GangAugmentationFocus({ faction, plan, factionWork }) {
+    const [drilldown, setDrilldown] = useState("needed");
+
+    if (!faction) {
+        return (
+            <div className="aug-gang-focus">
+                <div className="aug-empty">Waiting for gang augmentation telemetry.</div>
+            </div>
+        );
+    }
+
+    const segments = buildAugmentationSegments(faction);
+    const activeSegment = segments.find(segment => segment.id === drilldown) ?? segments[0];
+
+    return (
+        <div className="aug-gang-focus">
+            <div className="aug-gang-chart">
+                <AugmentationMix
+                    faction={faction}
+                    segments={segments}
+                    activeSegment={activeSegment}
+                    onSelect={setDrilldown}
+                    large
+                />
+            </div>
+
+            <FactionInspector
+                faction={faction}
+                plan={plan}
+                factionWork={factionWork}
+                showMix={false}
+                drilldown={activeSegment.id}
+                onDrilldownChange={setDrilldown}
+                forceDrilldown
+            />
+        </div>
     );
 }
 
@@ -167,7 +221,17 @@ function FactionAccordion({
     );
 }
 
-function FactionInspector({ faction, plan, factionWork }) {
+function FactionInspector({
+    faction,
+    plan,
+    factionWork,
+    showMix = true,
+    drilldown: controlledDrilldown,
+    onDrilldownChange,
+    forceDrilldown = false,
+}) {
+    const [localDrilldown, setLocalDrilldown] = useState(null);
+
     if (!faction) {
         return (
             <aside className="aug-inspector">
@@ -179,6 +243,13 @@ function FactionInspector({ faction, plan, factionWork }) {
     const activeGoal = plan?.nextGoal?.faction === faction.name ? plan.nextGoal : null;
     const activeWork = factionWork?.targetFaction === faction.name ? factionWork : null;
     const displayAugs = faction.augmentations.slice(0, 18);
+    const segments = buildAugmentationSegments(faction);
+    const drilldown = controlledDrilldown ?? localDrilldown;
+    const setDrilldown = onDrilldownChange ?? setLocalDrilldown;
+    const activeSegment = segments.find(segment => segment.id === drilldown) ?? null;
+    const drilldownRows = activeSegment
+        ? getAugmentationRows(faction, activeSegment.id)
+        : [];
 
     return (
         <aside className="aug-inspector">
@@ -207,29 +278,140 @@ function FactionInspector({ faction, plan, factionWork }) {
                 </div>
             )}
 
-            <div className="aug-list">
-                {displayAugs.map(aug => (
-                    <div
-                        key={`${faction.name}-${aug.name}`}
+            {showMix && (
+                <AugmentationMix
+                    faction={faction}
+                    segments={segments}
+                    activeSegment={activeSegment}
+                    onSelect={segmentId => setDrilldown(drilldown === segmentId ? null : segmentId)}
+                />
+            )}
+
+            {activeSegment ? (
+                <AugmentationDrilldown
+                    title={activeSegment.label}
+                    rows={drilldownRows}
+                    onClose={forceDrilldown ? null : () => setDrilldown(null)}
+                />
+            ) : (
+                <div className="aug-list">
+                    {displayAugs.map(aug => (
+                        <div
+                            key={`${faction.name}-${aug.name}`}
+                            className={[
+                                "aug-row",
+                                aug.owned ? "owned" : "",
+                                aug.ready ? "ready" : "",
+                                aug.repeatable ? "repeatable" : "",
+                            ].filter(Boolean).join(" ")}
+                        >
+                            <div>
+                                <b>{aug.name}</b>
+                                <span>{aug.tags.join(" / ") || "misc"}</span>
+                            </div>
+                            <div className="aug-row-status">
+                                <span>{aug.owned ? "owned" : aug.ready ? "ready" : "locked"}</span>
+                                <em>{formatMoney(aug.price)} | {formatNumber(aug.rep, 0)} rep</em>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </aside>
+    );
+}
+
+function AugmentationMix({ faction, segments, activeSegment, onSelect, large = false }) {
+    const total = Math.max(1, faction.nonRepeatableCount);
+    const centerSegment = activeSegment ?? segments[0];
+    const chartStyle = {
+        "--need": segments[0].percent,
+        "--ready": segments[1].percent,
+        "--owned": segments[2].percent,
+    };
+
+    return (
+        <div className={large ? "aug-mix-panel aug-mix-panel-large" : "aug-mix-panel"}>
+            <button
+                className={`aug-donut aug-donut-${centerSegment.id}`}
+                style={chartStyle}
+                onClick={event => onSelect(getDonutSegmentId(event, segments))}
+                type="button"
+                aria-label="Open augmentation slice"
+            >
+                <span>{centerSegment.count}</span>
+                <em>{centerSegment.shortLabel}</em>
+            </button>
+
+            <div className="aug-mix-legend">
+                {segments.map(segment => (
+                    <button
+                        key={segment.id}
                         className={[
-                            "aug-row",
-                            aug.owned ? "owned" : "",
-                            aug.ready ? "ready" : "",
-                            aug.repeatable ? "repeatable" : "",
+                            "aug-mix-segment",
+                            `aug-mix-${segment.id}`,
+                            activeSegment?.id === segment.id ? "active" : "",
                         ].filter(Boolean).join(" ")}
+                        onClick={() => onSelect(segment.id)}
+                        type="button"
                     >
-                        <div>
-                            <b>{aug.name}</b>
-                            <span>{aug.tags.join(" / ") || "misc"}</span>
-                        </div>
-                        <div className="aug-row-status">
-                            <span>{aug.owned ? "owned" : aug.ready ? "ready" : "locked"}</span>
-                            <em>{formatMoney(aug.price)} | {formatNumber(aug.rep, 0)} rep</em>
-                        </div>
-                    </div>
+                        <span>{segment.label}</span>
+                        <b>{segment.count}/{total}</b>
+                    </button>
                 ))}
             </div>
-        </aside>
+        </div>
+    );
+}
+
+function getDonutSegmentId(event, segments) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+    const angle = (Math.atan2(y, x) * 180 / Math.PI + 90 + 360) % 360;
+    const percent = angle / 360 * 100;
+    let cursor = 0;
+
+    for (const segment of segments) {
+        cursor += segment.percent;
+        if (percent <= cursor) return segment.id;
+    }
+
+    return segments.at(-1)?.id ?? "needed";
+}
+
+function AugmentationDrilldown({ title, rows, onClose }) {
+    return (
+        <div className="aug-drilldown">
+            <div className="aug-drilldown-head">
+                <div>
+                    <span>Drilldown</span>
+                    <b>{title}</b>
+                </div>
+                {onClose && <button type="button" onClick={onClose}>List</button>}
+            </div>
+
+            <div className="aug-table" role="table" aria-label={`${title} augmentations`}>
+                <div className="aug-table-row aug-table-head" role="row">
+                    <span>Name</span>
+                    <span>Rep</span>
+                    <span>Cost</span>
+                    <span>Status</span>
+                </div>
+                <div className="aug-table-body">
+                    {rows.length === 0 ? (
+                        <div className="aug-table-empty">No augmentations in this slice.</div>
+                    ) : rows.map(aug => (
+                        <div className="aug-table-row" key={aug.name} role="row">
+                            <span title={aug.name}>{aug.name}</span>
+                            <span>{formatNumber(aug.rep, 0)}</span>
+                            <span>{formatMoney(aug.price)}</span>
+                            <span>{getAugmentationStatus(aug)}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }
 
@@ -242,14 +424,18 @@ function Metric({ label, value, tone }) {
     );
 }
 
-function buildFactionNodes(augmentationState, plan) {
+function buildFactionNodes(augmentationState, plan, options = {}) {
     const factions = Array.isArray(augmentationState?.factions) ? augmentationState.factions : [];
+    const isBn2 = options.isBn2 === true;
+    const gangFaction = options.gangFaction ?? "Slum Snakes";
     const planFactions = new Set([
         plan?.nextGoal?.faction,
+        plan?.progressionFrontier?.targetFaction,
         ...(Array.isArray(plan?.candidates) ? plan.candidates.map(candidate => candidate.faction) : []),
     ].filter(Boolean));
 
     return factions
+        .filter(faction => !isBn2 || faction.faction === gangFaction || planFactions.has(faction.faction))
         .map(faction => {
             const augmentations = (faction.augmentations ?? []).map(aug => {
                 const repeatable = aug.name === NEUROFLUX;
@@ -263,6 +449,8 @@ function buildFactionNodes(augmentationState, plan) {
                     rep: aug.rep,
                     tags: aug.tags ?? [],
                     owned,
+                    hasRep,
+                    affordable: aug.affordableAtBuild === true,
                     ready,
                     repeatable,
                 };
@@ -286,8 +474,10 @@ function buildFactionNodes(augmentationState, plan) {
                 augmentations: augmentations.sort(compareAugmentations),
             };
         })
-        .filter(faction => faction.joined || faction.isPlanFaction || faction.remaining > 0)
+        .filter(faction => isBn2 || faction.joined || faction.isPlanFaction || faction.remaining > 0)
         .sort((a, b) => {
+            if (isBn2 && a.name === gangFaction && b.name !== gangFaction) return -1;
+            if (isBn2 && a.name !== gangFaction && b.name === gangFaction) return 1;
             if (a.isPlanFaction !== b.isPlanFaction) return a.isPlanFaction ? -1 : 1;
             if (a.joined !== b.joined) return a.joined ? -1 : 1;
             return b.remaining - a.remaining || a.name.localeCompare(b.name);
@@ -300,4 +490,37 @@ function compareAugmentations(a, b) {
     if (a.owned !== b.owned) return a.owned ? 1 : -1;
     if (a.ready !== b.ready) return a.ready ? -1 : 1;
     return Number(a.rep ?? 0) - Number(b.rep ?? 0);
+}
+
+function buildAugmentationSegments(faction) {
+    const nonRepeatable = faction.augmentations.filter(aug => !aug.repeatable);
+    const total = Math.max(1, nonRepeatable.length);
+    const ready = nonRepeatable.filter(aug => !aug.owned && aug.ready).length;
+    const owned = nonRepeatable.filter(aug => aug.owned).length;
+    const needed = nonRepeatable.filter(aug => !aug.owned && !aug.ready).length;
+
+    return [
+        { id: "needed", label: "Need to Buy", shortLabel: "left", count: needed, percent: (needed / total) * 100 },
+        { id: "ready", label: "Ready", shortLabel: "ready", count: ready, percent: (ready / total) * 100 },
+        { id: "owned", label: "Owned", shortLabel: "owned", count: owned, percent: (owned / total) * 100 },
+    ];
+}
+
+function getAugmentationRows(faction, segmentId) {
+    return faction.augmentations
+        .filter(aug => !aug.repeatable)
+        .filter(aug => {
+            if (segmentId === "owned") return aug.owned;
+            if (segmentId === "ready") return !aug.owned && aug.ready;
+            return !aug.owned && !aug.ready;
+        })
+        .sort(compareAugmentations);
+}
+
+function getAugmentationStatus(aug) {
+    if (aug.owned) return "owned";
+    if (aug.ready) return "ready";
+    if (!aug.hasRep) return "rep";
+    if (!aug.affordable) return "money";
+    return "locked";
 }

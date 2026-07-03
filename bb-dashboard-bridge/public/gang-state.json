@@ -1,24 +1,25 @@
 {
-  "updatedAt": 1782525160398,
-  "updatedAtText": "9:52:40 PM",
+  "updatedAt": 1783016363773,
+  "updatedAtText": "2:19:23 PM",
   "source": "gang-manager-service",
+  "diagnosticVersion": "gang-territory-safe-clash-v4",
   "status": "running",
   "message": "Gang manager active.",
   "inGang": true,
   "gang": "Slum Snakes",
-  "memberCount": 12,
+  "memberCount": 11,
   "recruited": 0,
   "boughtEquipment": 0,
   "equipmentBuyer": {
     "bought": 0,
     "status": "waiting-money",
-    "message": "Waiting for Jimmy to buy BitWire; need $4.22b, spendable $355.29m after $0 reserve.",
+    "message": "Waiting for Operator-9 to buy Katana; need $10.41m, spendable $3.64m after $0 reserve.",
     "nextItem": {
-      "member": "Jimmy",
-      "item": "BitWire",
-      "type": "Augmentation",
-      "cost": 4221214520.35324,
-      "spendable": 355289360.0399203,
+      "member": "Operator-9",
+      "item": "Katana",
+      "type": "Weapon",
+      "cost": 10414670.162114521,
+      "spendable": 3641279.052013873,
       "reserve": 0
     },
     "failedItem": null
@@ -26,239 +27,574 @@
   "ascended": 0,
   "assignments": [
     {
-      "name": "Lou",
+      "name": "Operator-3",
+      "task": "Vigilante Justice"
+    },
+    {
+      "name": "Operator-6",
+      "task": "Vigilante Justice"
+    },
+    {
+      "name": "Operator-5",
+      "task": "Vigilante Justice"
+    },
+    {
+      "name": "Operator-2",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Bob",
+      "name": "Operator-7",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Erie",
+      "name": "Operator-4",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Frank",
+      "name": "Operator-8",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Jimmy",
+      "name": "Operator-1",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Don",
+      "name": "Operator-9",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Lu",
+      "name": "Operator-10",
       "task": "Traffick Illegal Arms"
     },
     {
-      "name": "Jane",
-      "task": "Traffick Illegal Arms"
-    },
-    {
-      "name": "Jannine",
-      "task": "Traffick Illegal Arms"
-    },
-    {
-      "name": "Gollum",
-      "task": "Traffick Illegal Arms"
-    },
-    {
-      "name": "Vincent Vega",
-      "task": "Traffick Illegal Arms"
-    },
-    {
-      "name": "Saruman",
+      "name": "Operator-11",
       "task": "Traffick Illegal Arms"
     }
   ],
-  "respect": 258774.46160522898,
-  "wantedLevel": 485.25918364498574,
-  "wantedPenalty": 0.9981282893379333,
-  "money": 355289360.0399203,
+  "wantedPolicy": {
+    "active": true,
+    "status": "soft-control",
+    "reason": "Wanted penalty 79.0% is below the 90% money floor; light wanted control enabled.",
+    "vigilanteCount": 3,
+    "wantedLevel": 7867.710532420329,
+    "wantedGain": -2.002465216685505,
+    "respectGain": 1.627446164659186,
+    "wantedPenalty": 0.7899109741661653,
+    "thresholds": {
+      "softPenalty": 0.9,
+      "hardPenalty": 0.75,
+      "emergencyPenalty": 0.5,
+      "driftWantedLevel": 5000
+    }
+  },
+  "territoryPolicy": {
+    "active": false,
+    "status": "waiting-safe-odds",
+    "reason": "Territory work is paused; members stay on money/training/control. Blocked by The Black Hand 0.2%, NiteSec 0.7%, The Syndicate 0.7%, The Dark Army 0.7%, Tetrads 0.7%, Speakers for the Dead 1.2%. All rival gangs must be at least 50%.",
+    "territory": 0,
+    "power": 40.97887578831058,
+    "memberCount": 11,
+    "warriorCount": 0,
+    "warriorNames": [],
+    "territoryTaskAllowed": false,
+    "clashEnabled": false,
+    "clashSet": true,
+    "failClosedSet": true,
+    "lowestWinChance": 0.002080147159876555,
+    "allRivalsChecked": true,
+    "allRivalsReady": false,
+    "unsafeRivals": [
+      {
+        "gang": "The Black Hand",
+        "chance": 0.002080147159876555,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "NiteSec",
+        "chance": 0.007015854962371385,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "The Syndicate",
+        "chance": 0.007107051177731437,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "The Dark Army",
+        "chance": 0.007119964985902885,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "Tetrads",
+        "chance": 0.0071829907961387975,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "Speakers for the Dead",
+        "chance": 0.011667277065907177,
+        "power": 0,
+        "territory": 0
+      }
+    ],
+    "strongestRivalPower": 0,
+    "targetPower": 0,
+    "powerLeadRatio": null,
+    "bestCombatAverage": 22816.75,
+    "winChanceSafe": false,
+    "winChances": [
+      {
+        "gang": "The Black Hand",
+        "chance": 0.002080147159876555,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "NiteSec",
+        "chance": 0.007015854962371385,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "The Syndicate",
+        "chance": 0.007107051177731437,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "The Dark Army",
+        "chance": 0.007119964985902885,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "Tetrads",
+        "chance": 0.0071829907961387975,
+        "power": 0,
+        "territory": 0
+      },
+      {
+        "gang": "Speakers for the Dead",
+        "chance": 0.011667277065907177,
+        "power": 0,
+        "territory": 0
+      }
+    ],
+    "thresholds": {
+      "minMembers": 1,
+      "clashWinChance": 0.5
+    }
+  },
+  "respect": 29581.701692676674,
+  "respectGainRate": 1.627446164659186,
+  "wantedLevel": 7867.710532420329,
+  "wantedLevelGainRate": -2.002465216685505,
+  "wantedPenalty": 0.7899109741661653,
+  "moneyGainRate": 48957.58784388403,
+  "territory": 0,
+  "power": 40.97887578831058,
+  "money": 3641279.052013873,
   "members": [
     {
-      "name": "Don",
+      "name": "Operator-1",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 22402.30172116102,
-      "str": 13637,
-      "def": 14714,
-      "dex": 5669,
-      "agi": 551,
-      "hack": 2429,
-      "strAsc": 24.137817506255967,
-      "defAsc": 24.874380207878023,
-      "dexAsc": 25.287210829644323,
-      "agiAsc": 9.548662842019995,
-      "hackAsc": 11.417484053296276
+      "earnedRespect": 94.93341591427921,
+      "moneyGain": 4767.776214820719,
+      "respectGain": 0.15844054763522472,
+      "wantedLevelGain": 0.027243552350319417,
+      "str": 13138,
+      "def": 16176,
+      "dex": 10216,
+      "agi": 369,
+      "hack": 5569,
+      "combatAverage": 9974.75,
+      "combatMinimum": 369,
+      "strAsc": 89.80491495607114,
+      "defAsc": 96.13858374301175,
+      "dexAsc": 75.88667625675342,
+      "agiAsc": 9.400579066199947,
+      "hackAsc": 53.75781959520496,
+      "ascension": {
+        "current": 96.13858374301175,
+        "projected": 1.0010389737529337,
+        "threshold": 1.15,
+        "progress": 0.870468672828638,
+        "ready": false,
+        "result": {
+          "respect": 94.93341591427921,
+          "hack": 1.0007117452960577,
+          "str": 1.0008927854730625,
+          "def": 1.0008630808536556,
+          "dex": 1.0010389737529337,
+          "agi": 1.0000305061294639,
+          "cha": 1.0008255635311274
+        }
+      }
     },
     {
-      "name": "Frank",
+      "name": "Operator-2",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 26686.78339654288,
-      "str": 13861,
-      "def": 14990,
-      "dex": 5799,
-      "agi": 587,
-      "hack": 2497,
-      "strAsc": 23.850304156325,
-      "defAsc": 24.652370355684216,
-      "dexAsc": 25.1118622238477,
-      "agiAsc": 9.551106372607178,
-      "hackAsc": 11.318626733195822
+      "earnedRespect": 4488.817369696326,
+      "moneyGain": 9450.070846308668,
+      "respectGain": 0.31436170924311074,
+      "wantedLevelGain": 0.013739728763592788,
+      "str": 26534,
+      "def": 44862,
+      "dex": 19338,
+      "agi": 484,
+      "hack": 14101,
+      "combatAverage": 22804.5,
+      "combatMinimum": 484,
+      "strAsc": 88.6034821093859,
+      "defAsc": 95.5476903125573,
+      "dexAsc": 77.1462383446026,
+      "agiAsc": 9.295460583370577,
+      "hackAsc": 54.33213014065393,
+      "ascension": {
+        "current": 95.5476903125573,
+        "projected": 1.0169220432435604,
+        "threshold": 1.15,
+        "progress": 0.884280037603096,
+        "ready": false,
+        "result": {
+          "respect": 4488.817369696326,
+          "hack": 1.0169220432435604,
+          "str": 1.0141249979757092,
+          "def": 1.0148727105446527,
+          "dex": 1.0157097649304305,
+          "agi": 1,
+          "cha": 1.0184420347719667
+        }
+      }
     },
     {
-      "name": "Jimmy",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 25484.098716489832,
-      "str": 13806,
-      "def": 15042,
-      "dex": 5325,
-      "agi": 561,
-      "hack": 1989,
-      "strAsc": 23.855543765081674,
-      "defAsc": 24.791464766612332,
-      "dexAsc": 23.448208115632962,
-      "agiAsc": 9.86960910432594,
-      "hackAsc": 9.880150355059543
+      "name": "Operator-3",
+      "task": "Vigilante Justice",
+      "earnedRespect": 4140.190263577356,
+      "moneyGain": 0,
+      "respectGain": 0,
+      "wantedLevelGain": -0.04174500000000001,
+      "str": 26485,
+      "def": 44846,
+      "dex": 19225,
+      "agi": 711,
+      "hack": 13113,
+      "combatAverage": 22816.75,
+      "combatMinimum": 711,
+      "strAsc": 89.16889134621236,
+      "defAsc": 96.30645279872896,
+      "dexAsc": 77.37539218964736,
+      "agiAsc": 8.55854336505011,
+      "hackAsc": 53.976266658775145,
+      "ascension": {
+        "current": 96.30645279872896,
+        "projected": 1.0154814776591774,
+        "threshold": 1.15,
+        "progress": 0.8830273718775457,
+        "ready": false,
+        "result": {
+          "respect": 4140.190263577356,
+          "hack": 1.0154814776591774,
+          "str": 1.0132005523930685,
+          "def": 1.0138278565251866,
+          "dex": 1.0147402780154702,
+          "agi": 1.0011159946176225,
+          "cha": 1.0168287623987107
+        }
+      }
     },
     {
-      "name": "Jannine",
+      "name": "Operator-4",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 3030.2559716395835,
-      "str": 9786,
-      "def": 10853,
-      "dex": 3175,
-      "agi": 620,
-      "hack": 777,
-      "strAsc": 24.71090612251297,
-      "defAsc": 25.69089960628479,
-      "dexAsc": 21.37234790635449,
-      "agiAsc": 9.736602963626396,
-      "hackAsc": 7.552078154669141
+      "earnedRespect": 4464.417567130305,
+      "moneyGain": 9400.341321346783,
+      "respectGain": 0.31270586544546414,
+      "wantedLevelGain": 0.013812440337452547,
+      "str": 26209,
+      "def": 44544,
+      "dex": 19276,
+      "agi": 651,
+      "hack": 13411,
+      "combatAverage": 22670,
+      "combatMinimum": 651,
+      "strAsc": 87.48703719230582,
+      "defAsc": 94.8493594284562,
+      "dexAsc": 76.77207651590304,
+      "agiAsc": 8.848565786351024,
+      "hackAsc": 54.3658266295698,
+      "ascension": {
+        "current": 94.8493594284562,
+        "projected": 1.0167043530590563,
+        "threshold": 1.15,
+        "progress": 0.8840907417904837,
+        "ready": false,
+        "result": {
+          "respect": 4464.417567130305,
+          "hack": 1.0167043530590563,
+          "str": 1.0145206447193305,
+          "def": 1.0151134015227006,
+          "dex": 1.0160362907382285,
+          "agi": 1.0002395536442488,
+          "cha": 1.018404427132818
+        }
+      }
     },
     {
-      "name": "Bob",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 29848.19006693265,
-      "str": 14513,
-      "def": 15776,
-      "dex": 5132,
-      "agi": 506,
-      "hack": 1593,
-      "strAsc": 24.327616464058533,
-      "defAsc": 25.252394184322835,
-      "dexAsc": 22.237260556276148,
-      "agiAsc": 10.220342665688731,
-      "hackAsc": 8.056200582173599
-    },
-    {
-      "name": "Jane",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 3621.1497671422485,
-      "str": 10422,
-      "def": 11802,
-      "dex": 3568,
-      "agi": 597,
-      "hack": 905,
-      "strAsc": 25.512774757039573,
-      "defAsc": 26.839672484225147,
-      "dexAsc": 22.79034699580563,
-      "agiAsc": 11.793677369143564,
-      "hackAsc": 7.952907579027114
-    },
-    {
-      "name": "Lou",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 42648.99168438861,
-      "str": 15127,
-      "def": 16763,
-      "dex": 5140,
-      "agi": 653,
-      "hack": 1342,
-      "strAsc": 23.964207545496134,
-      "defAsc": 25.30583935846877,
-      "dexAsc": 21.09651527219888,
-      "agiAsc": 11.777471867045335,
-      "hackAsc": 6.567892900267336
-    },
-    {
-      "name": "Erie",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 23818.788992386922,
-      "str": 14335,
-      "def": 15834,
-      "dex": 4970,
+      "name": "Operator-5",
+      "task": "Vigilante Justice",
+      "earnedRespect": 4299.525969634233,
+      "moneyGain": 0,
+      "respectGain": 0,
+      "wantedLevelGain": -0.041787000000000005,
+      "str": 26352,
+      "def": 44761,
+      "dex": 19499,
       "agi": 609,
-      "hack": 1416,
-      "strAsc": 24.881538030086876,
-      "defAsc": 26.15297751312138,
-      "dexAsc": 22.394113611311862,
-      "agiAsc": 11.827063743189475,
-      "hackAsc": 7.6672563578515085
+      "hack": 13264,
+      "combatAverage": 22805.25,
+      "combatMinimum": 609,
+      "strAsc": 88.38676196445347,
+      "defAsc": 95.74583103664331,
+      "dexAsc": 77.97715983573357,
+      "agiAsc": 9.337749338634248,
+      "hackAsc": 54.141571100183036,
+      "ascension": {
+        "current": 95.74583103664331,
+        "projected": 1.016164165958359,
+        "threshold": 1.15,
+        "progress": 0.8836210138768339,
+        "ready": false,
+        "result": {
+          "respect": 4299.525969634233,
+          "hack": 1.016164165958359,
+          "str": 1.0137767417916894,
+          "def": 1.014373741282158,
+          "dex": 1.0151345170078359,
+          "agi": 1,
+          "cha": 1.0175119211684955
+        }
+      }
     },
     {
-      "name": "Lu",
-      "task": "Traffick Illegal Arms",
-      "earnedRespect": 24308.23262581541,
-      "str": 12450,
-      "def": 13813,
-      "dex": 4080,
-      "agi": 519,
-      "hack": 1418,
-      "strAsc": 21.637330332958506,
-      "defAsc": 22.839837140888413,
-      "dexAsc": 18.626659942990518,
-      "agiAsc": 8.377034645738833,
-      "hackAsc": 7.484888783336791
+      "name": "Operator-6",
+      "task": "Vigilante Justice",
+      "earnedRespect": 4228.868895296078,
+      "moneyGain": 0,
+      "respectGain": 0,
+      "wantedLevelGain": -0.04176660000000001,
+      "str": 26297,
+      "def": 44777,
+      "dex": 19431,
+      "agi": 717,
+      "hack": 13212,
+      "combatAverage": 22805.5,
+      "combatMinimum": 717,
+      "strAsc": 88.33286401342608,
+      "defAsc": 95.91213595115069,
+      "dexAsc": 77.82482262969144,
+      "agiAsc": 9.4667576421845,
+      "hackAsc": 54.062215236335874,
+      "ascension": {
+        "current": 95.91213595115069,
+        "projected": 1.0159773745689802,
+        "threshold": 1.15,
+        "progress": 0.8834585865817219,
+        "ready": false,
+        "result": {
+          "respect": 4228.868895296078,
+          "hack": 1.0159773745689802,
+          "str": 1.0136570137785013,
+          "def": 1.0141885400373076,
+          "dex": 1.0150442846675163,
+          "agi": 1.0003568335837865,
+          "cha": 1.017326627808681
+        }
+      }
     },
     {
-      "name": "Gollum",
+      "name": "Operator-7",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 19549.823098741654,
-      "str": 7778,
-      "def": 8713,
-      "dex": 2384,
-      "agi": 359,
-      "hack": 975,
-      "strAsc": 14.136262669748238,
-      "defAsc": 15.03967887648006,
-      "dexAsc": 11.569908576001472,
-      "agiAsc": 4.491327027901435,
-      "hackAsc": 5.3802880336207535
+      "earnedRespect": 4280.919254393,
+      "moneyGain": 9400.35527993223,
+      "respectGain": 0.31270633022472016,
+      "wantedLevelGain": 0.013812419820051082,
+      "str": 26284,
+      "def": 44739,
+      "dex": 19465,
+      "agi": 730,
+      "hack": 13236,
+      "combatAverage": 22804.5,
+      "combatMinimum": 730,
+      "strAsc": 88.14972036453526,
+      "defAsc": 95.69788953060142,
+      "dexAsc": 77.80487098986524,
+      "agiAsc": 10.0509196000125,
+      "hackAsc": 54.019197181417795,
+      "ascension": {
+        "current": 95.69788953060142,
+        "projected": 1.016251315277652,
+        "threshold": 1.15,
+        "progress": 0.8836967958936105,
+        "ready": false,
+        "result": {
+          "respect": 4280.919254393,
+          "hack": 1.016251315277652,
+          "str": 1.013860202996115,
+          "def": 1.0143891227495352,
+          "dex": 1.0152516081599592,
+          "agi": 1.0001231645090218,
+          "cha": 1.0177053868458945
+        }
+      }
     },
     {
-      "name": "Vincent Vega",
+      "name": "Operator-8",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 18731.358982023114,
-      "str": 7715,
-      "def": 8635,
-      "dex": 2375,
-      "agi": 381,
-      "hack": 966,
-      "strAsc": 14.106118525304796,
-      "defAsc": 14.995955794372435,
-      "dexAsc": 11.594205933249663,
-      "agiAsc": 4.52058590345928,
-      "hackAsc": 5.3794885822042255
+      "earnedRespect": 3385.924380928609,
+      "moneyGain": 9160.474652132523,
+      "respectGain": 0.304718996190526,
+      "wantedLevelGain": 0.014174251293084722,
+      "str": 25419,
+      "def": 43405,
+      "dex": 18791,
+      "agi": 658,
+      "hack": 12775,
+      "combatAverage": 22068.25,
+      "combatMinimum": 658,
+      "strAsc": 88.12097390384241,
+      "defAsc": 95.67629721207221,
+      "dexAsc": 77.75873017498068,
+      "agiAsc": 10.043670699254276,
+      "hackAsc": 54.126859544996975,
+      "ascension": {
+        "current": 95.67629721207221,
+        "projected": 1.0130171980379699,
+        "threshold": 1.15,
+        "progress": 0.8808845200330173,
+        "ready": false,
+        "result": {
+          "respect": 3385.924380928609,
+          "hack": 1.0130171980379699,
+          "str": 1.011142051945524,
+          "def": 1.0117318239599564,
+          "dex": 1.0122086253757967,
+          "agi": 1,
+          "cha": 1.0142659534103557
+        }
+      }
     },
     {
-      "name": "Saruman",
+      "name": "Operator-9",
       "task": "Traffick Illegal Arms",
-      "earnedRespect": 18643.486581955764,
-      "str": 7684,
-      "def": 8616,
-      "dex": 2368,
-      "agi": 407,
-      "hack": 964,
-      "strAsc": 14.071117302364716,
-      "defAsc": 14.966396838372331,
-      "dexAsc": 11.569037353375936,
-      "agiAsc": 4.511277339518422,
-      "hackAsc": 5.380174030701059
+      "earnedRespect": 52.29644213960619,
+      "moneyGain": 3938.251707051445,
+      "respectGain": 0.13081128769781958,
+      "wantedLevelGain": 0.03298787007959335,
+      "str": 10677,
+      "def": 13484,
+      "dex": 8391,
+      "agi": 390,
+      "hack": 3455,
+      "combatAverage": 8235.5,
+      "combatMinimum": 390,
+      "strAsc": 76.73833182136487,
+      "defAsc": 84.07343908801566,
+      "dexAsc": 65.34733705545575,
+      "agiAsc": 6.805877004696466,
+      "hackAsc": 44.7839081915253,
+      "ascension": {
+        "current": 84.07343908801566,
+        "projected": 1.0054857670247597,
+        "threshold": 1.15,
+        "progress": 0.8743354495867476,
+        "ready": false,
+        "result": {
+          "respect": 52.29644213960619,
+          "hack": 1.000450406719577,
+          "str": 1.0013726068965698,
+          "def": 1.0012827430482454,
+          "dex": 1.0015865710323348,
+          "agi": 1.0054857670247597,
+          "cha": 1.0005384461614046
+        }
+      }
+    },
+    {
+      "name": "Operator-10",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 17.487710572309386,
+      "moneyGain": 2490.5796045364145,
+      "respectGain": 0.08258131381099128,
+      "wantedLevelGain": 0.0521965461401717,
+      "str": 6832,
+      "def": 8701,
+      "dex": 5191,
+      "agi": 378,
+      "hack": 1242,
+      "combatAverage": 5275.5,
+      "combatMinimum": 378,
+      "strAsc": 49.93459560490698,
+      "defAsc": 55.06068085139974,
+      "dexAsc": 41.407275148530196,
+      "agiAsc": 5.4690030494534,
+      "hackAsc": 27.497903836422392,
+      "ascension": {
+        "current": 55.06068085139974,
+        "projected": 1.016683155066413,
+        "threshold": 1.15,
+        "progress": 0.8840723087534027,
+        "ready": false,
+        "result": {
+          "respect": 17.487710572309386,
+          "hack": 1.0001496413227418,
+          "str": 1.0030118589908361,
+          "def": 1.00279875741185,
+          "dex": 1.0035691100942894,
+          "agi": 1.016683155066413,
+          "cha": 1.000366229023811
+        }
+      }
+    },
+    {
+      "name": "Operator-11",
+      "task": "Traffick Illegal Arms",
+      "earnedRespect": 127.32042339616645,
+      "moneyGain": 409.09960660249834,
+      "respectGain": 0.013095756914156216,
+      "wantedLevelGain": 0.32191912001907114,
+      "str": 887,
+      "def": 1563,
+      "dex": 553,
+      "agi": 721,
+      "hack": 75,
+      "combatAverage": 931,
+      "combatMinimum": 553,
+      "strAsc": 5.239113371889559,
+      "defAsc": 5.751289054968793,
+      "dexAsc": 4.0722287581725,
+      "agiAsc": 4.444419368981764,
+      "hackAsc": 1,
+      "ascension": {
+        "current": 5.751289054968793,
+        "projected": 1.229025945103422,
+        "threshold": 1.25,
+        "progress": 0.9832207560827376,
+        "ready": false,
+        "result": {
+          "respect": 127.32042339616645,
+          "hack": 1.021273643755681,
+          "str": 1.1849736860007458,
+          "def": 1.1910346785568293,
+          "dex": 1.229025945103422,
+          "agi": 1.0586708581074726,
+          "cha": 1.5074096414940288
+        }
+      }
     }
   ],
-  "bridgeUpdatedAt": 1782525161087
+  "bridgeUpdatedAt": 1783016364161
 }

@@ -58,6 +58,8 @@ export default function DashboardGrid({
     themeSignal,
     activeSignal,
     onThemeSignalChange,
+    gangSpriteSettings,
+    onGangSpriteSettingsChange,
 }) {
     const [layout, setLayout] = useState(() => loadLayout());
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -149,7 +151,7 @@ export default function DashboardGrid({
     if (!state) {
         return (
             <>
-                <SettingsButton onClick={() => setSettingsOpen(true)} />
+                <SettingsButton onClick={() => setSettingsOpen(open => !open)} active={settingsOpen} />
 
                 <div className="grid">
                     <section className="card card-full">
@@ -178,6 +180,8 @@ export default function DashboardGrid({
                     themeSignal={themeSignal}
                     activeSignal={activeSignal}
                     onThemeSignalChange={onThemeSignalChange}
+                    gangSpriteSettings={gangSpriteSettings}
+                    onGangSpriteSettingsChange={onGangSpriteSettingsChange}
                 />
             </>
         );
@@ -214,7 +218,7 @@ export default function DashboardGrid({
                 onRestore={toggleCard}
             />
 
-            <SettingsButton onClick={() => setSettingsOpen(true)} />
+            <SettingsButton onClick={() => setSettingsOpen(open => !open)} active={settingsOpen} />
 
             <DashboardControlPanel
                 open={settingsOpen}
@@ -236,6 +240,8 @@ export default function DashboardGrid({
                 themeSignal={themeSignal}
                 activeSignal={activeSignal}
                 onThemeSignalChange={onThemeSignalChange}
+                gangSpriteSettings={gangSpriteSettings}
+                onGangSpriteSettingsChange={onGangSpriteSettingsChange}
             />
         </>
     );
@@ -266,9 +272,14 @@ function MinimizedCardDock({ cards, registry, onRestore }) {
     );
 }
 
-function SettingsButton({ onClick }) {
+function SettingsButton({ onClick, active = false }) {
     return (
-        <button className="settings-gear" onClick={onClick} title="Dashboard control panel">
+        <button
+            className={`settings-gear ${active ? "active" : ""}`}
+            onClick={onClick}
+            title={active ? "Close dashboard control panel" : "Open dashboard control panel"}
+            type="button"
+        >
             <FiSettings />
         </button>
     );

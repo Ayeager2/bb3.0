@@ -17,6 +17,8 @@ export default function GangCard({
     const assignmentMix = countAssignments(assignments);
     const penalty = Number(gang?.wantedPenalty ?? 1);
     const penaltyPercent = Math.max(0, Math.min(100, penalty * 100));
+    const wantedPolicy = gang?.wantedPolicy ?? null;
+    const territoryPolicy = gang?.territoryPolicy ?? null;
     const combatSummary = getCombatSummary(members);
     const ascensionSummary = getAscensionSummary(members);
 
@@ -46,7 +48,7 @@ export default function GangCard({
                     <Metric label="Members" value={`${gang?.memberCount ?? members.length}/12`} tone="cyan" />
                     <Metric label="Respect" value={formatNumber(gang?.respect ?? 0, 1)} tone="purple" />
                     <Metric label="Money/sec" value={formatMoney(gang?.moneyGainRate ?? 0)} tone="green" />
-                    <Metric label="Wanted" value={formatNumber(gang?.wantedLevel ?? 0, 2)} tone={penalty < 0.995 ? "red" : "yellow"} />
+                    <Metric label="Wanted" value={formatNumber(gang?.wantedLevel ?? 0, 2)} tone={getWantedTone(penalty)} />
                 </section>
 
                 <section className="gang-metrics gang-metrics-secondary">
@@ -73,6 +75,34 @@ export default function GangCard({
                     </div>
                 </section>
 
+                <section className={`gang-panel gang-policy-panel gang-policy-${wantedPolicy?.status ?? "unknown"}`}>
+                    <div className="gang-panel-head">
+                        <span>Wanted Policy</span>
+                        <b>{formatPolicyStatus(wantedPolicy?.status)}</b>
+                    </div>
+                    <div className="gang-policy-grid">
+                        <MiniStat label="Vigilantes" value={formatNumber(wantedPolicy?.vigilanteCount ?? 0, 0)} />
+                        <MiniStat label="Penalty" value={`${formatNumber((wantedPolicy?.wantedPenalty ?? penalty) * 100, 1)}%`} />
+                        <MiniStat label="Wanted/s" value={formatNumber(wantedPolicy?.wantedGain ?? 0, 3)} />
+                        <MiniStat label="Train Floor" value={formatNumber(wantedPolicy?.thresholds?.trainCombatMin ?? 50000, 0)} />
+                    </div>
+                    <p>{wantedPolicy?.reason ?? "Waiting for wanted-control telemetry."}</p>
+                </section>
+
+                <section className={`gang-panel gang-territory-panel ${territoryPolicy?.territoryTaskAllowed ? "armed" : "paused"}`}>
+                    <div className="gang-panel-head">
+                        <span>Territory Policy</span>
+                        <b>{formatPolicyStatus(territoryPolicy?.status)}</b>
+                    </div>
+                    <div className="gang-policy-grid">
+                        <MiniStat label="Warriors" value={formatNumber(territoryPolicy?.warriorCount ?? 0, 0)} />
+                        <MiniStat label="Clash" value={territoryPolicy?.clashEnabled ? "ON" : "OFF"} />
+                        <MiniStat label="Kitted" value={`${formatNumber(territoryPolicy?.topEquipmentReadyCount ?? 0, 0)}/${formatNumber(territoryPolicy?.strikeTeamSize ?? 5, 0)}`} />
+                        <MiniStat label="Power/min" value={formatNumber(gang?.territoryDelta?.powerPerMinute ?? 0, 2)} />
+                    </div>
+                    <p>{territoryPolicy?.reason ?? "Waiting for territory telemetry."}</p>
+                </section>
+
                 <section className="gang-panel">
                     <div className="gang-panel-head">
                         <span>Equipment Buyer</span>
@@ -93,7 +123,7 @@ export default function GangCard({
                     {assignmentMix.length === 0 ? (
                         <div className="gang-empty">No assignments published.</div>
                     ) : assignmentMix.map(item => (
-                        <div className="gang-task-chip" key={item.task}>
+                        <div className={`gang-task-chip ${getTaskToneClass(item.task)}`} key={item.task}>
                             <span>{item.task}</span>
                             <b>{item.count}</b>
                         </div>
@@ -135,16 +165,38 @@ function MemberCard({ member }) {
         ascension.ready === true;
     const progressTone =
         ready ? "ready" : progress >= 75 ? "hot" : progress >= 45 ? "warm" : "cold";
+    const sprite = getTaskSprite(member.task);
 
     return (
         <article className={`gang-member-card gang-asc-${progressTone}`}>
-            <header>
-                <div>
-                    <b>{member.name}</b>
-                    <span>{member.task ?? "--"}</span>
+            <div className="gang-member-portrait">
+                <div className={`gang-operator-sprite gang-operator-${sprite.kind}`} title={sprite.label} aria-hidden="true">
+                    <div className="gang-sprite-grid">
+                        <span className="sprite-head" />
+                        <span className="sprite-hair" />
+                        <span className="sprite-eye sprite-eye-left" />
+                        <span className="sprite-eye sprite-eye-right" />
+                        <span className="sprite-body" />
+                        <span className="sprite-arm sprite-arm-left" />
+                        <span className="sprite-arm sprite-arm-right" />
+                        <span className="sprite-leg sprite-leg-left" />
+                        <span className="sprite-leg sprite-leg-right" />
+                        <span className="sprite-prop sprite-prop-a" />
+                        <span className="sprite-prop sprite-prop-b" />
+                        <span className="sprite-prop sprite-prop-c" />
+                    </div>
                 </div>
-                <em>{ready ? "ASCEND" : `${Math.round(progress)}%`}</em>
-            </header>
+                <small>{sprite.label}</small>
+            </div>
+
+            <div className="gang-member-content">
+                <header className="gang-member-header">
+                    <div className="gang-member-title">
+                        <b>{member.name}</b>
+                        <span>{member.task ?? "--"}</span>
+                    </div>
+                    <em>{ready ? "ASCEND" : `${Math.round(progress)}%`}</em>
+                </header>
 
             <div className="gang-member-stats">
                 <MiniStat label="Combat" value={formatNumber(combatAverage, 0)} />
@@ -168,8 +220,37 @@ function MemberCard({ member }) {
                 <span>rep/s {formatNumber(member.respectGain ?? 0, 2)}</span>
                 <span>wanted/s {formatNumber(member.wantedLevelGain ?? 0, 3)}</span>
             </div>
+            </div>
         </article>
     );
+}
+
+function getTaskSprite(task) {
+    const normalized = String(task ?? "").toLowerCase();
+
+    if (normalized.includes("cyber") || normalized.includes("hack") || normalized.includes("ransomware") || normalized.includes("identity")) {
+        return { kind: "hack", label: "datapad op" };
+    }
+    if (normalized.includes("traffic") || normalized.includes("arms")) {
+        return { kind: "arms", label: "cache lookout" };
+    }
+    if (normalized.includes("homicide") || normalized.includes("terrorism")) {
+        return { kind: "strike", label: "close-quarters" };
+    }
+    if (normalized.includes("mug") || normalized.includes("robbery") || normalized.includes("strongarm")) {
+        return { kind: "ambush", label: "street ambush" };
+    }
+    if (normalized.includes("vigilante")) {
+        return { kind: "control", label: "heat control" };
+    }
+    if (normalized.includes("territory")) {
+        return { kind: "territory", label: "turf watch" };
+    }
+    if (normalized.includes("train")) {
+        return { kind: "train", label: "training" };
+    }
+
+    return { kind: "money", label: "crew work" };
 }
 
 function MiniStat({ label, value }) {
@@ -190,6 +271,24 @@ function Metric({ label, value, tone }) {
     );
 }
 
+function getWantedTone(penalty) {
+    if (penalty < 0.5) return "red";
+    if (penalty < 0.75) return "red";
+    if (penalty < 0.9) return "yellow";
+    return "green";
+}
+
+function formatPolicyStatus(status) {
+    return String(status ?? "unknown")
+        .replaceAll("-", " ");
+}
+
+function formatChance(value) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return "--";
+    return `${formatNumber(n * 100, 1)}%`;
+}
+
 function countAssignments(assignments) {
     const counts = new Map();
 
@@ -201,6 +300,17 @@ function countAssignments(assignments) {
     return [...counts.entries()]
         .map(([task, count]) => ({ task, count }))
         .sort((a, b) => b.count - a.count);
+}
+
+function getTaskToneClass(task) {
+    const normalized = String(task ?? "").toLowerCase();
+    if (normalized.includes("vigilante")) return "gang-task-control";
+    if (normalized.includes("territory")) return "gang-task-territory";
+    if (normalized.includes("train")) return "gang-task-training";
+    if (normalized.includes("traffic") || normalized.includes("robbery") || normalized.includes("mug") || normalized.includes("strongarm")) {
+        return "gang-task-money";
+    }
+    return "";
 }
 
 function getCombatAverage(member) {

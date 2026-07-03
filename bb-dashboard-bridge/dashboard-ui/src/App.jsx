@@ -27,6 +27,7 @@ import {
 const FONT_SCALE_STORAGE_KEY = "bbdash-font-scale";
 const THEME_ACCENT_STORAGE_KEY = "bbdash-theme-accent";
 const THEME_SIGNAL_STORAGE_KEY = "bbdash-theme-signal";
+const GANG_SPRITE_STORAGE_KEY = "bbdash-gang-sprite-v1";
 const MIN_FONT_OFFSET = 0;
 const MAX_FONT_OFFSET = 8;
 const LEGACY_SIGNAL_THEMES = new Set(["money_green", "exp_blue", "faction_cyan", "danger_red"]);
@@ -44,7 +45,18 @@ const BITNODE_THEME_BY_NODE = {
     11: "bn11_knife",
     12: "bn12_loop",
 };
-const BITNODE_THEME_IDS = new Set(Object.values(BITNODE_THEME_BY_NODE));
+const GANG_SPRITE_PALETTES = {
+    rainbow: ["#ff2e88", "#ff8a00", "#faff00", "#00ff9c", "#00f5ff", "#3b82f6", "#a855f7"],
+    lesbian: ["#d52d00", "#ef7627", "#ff9a56", "#ffffff", "#d162a4", "#b55690", "#a30262"],
+    pride: ["#e40303", "#ff8c00", "#ffed00", "#008026", "#24408e", "#732982", "#ff2e88"],
+    trans: ["#5bcefa", "#f5a9b8", "#ffffff", "#f5a9b8", "#5bcefa", "#ffffff", "#5bcefa"],
+    bi: ["#d60270", "#d60270", "#9b4f96", "#0038a8", "#0038a8", "#9b4f96", "#d60270"],
+    pan: ["#ff218c", "#ff218c", "#ffd800", "#ffd800", "#21b1ff", "#21b1ff", "#ff218c"],
+    ace: ["#000000", "#a3a3a3", "#ffffff", "#800080", "#000000", "#a3a3a3", "#800080"],
+    nonbinary: ["#fff430", "#ffffff", "#9c59d1", "#000000", "#fff430", "#9c59d1", "#ffffff"],
+    agender: ["#000000", "#b9b9b9", "#ffffff", "#b8f483", "#ffffff", "#b9b9b9", "#000000"],
+    genderfluid: ["#ff75a2", "#ffffff", "#be18d6", "#000000", "#333ebd", "#be18d6", "#ff75a2"],
+};
 
 export default function App() {
     const [state, setState] = useState(null);
@@ -62,6 +74,7 @@ export default function App() {
     const [fontOffset, setFontOffset] = useState(() => loadFontOffset());
     const [themeAccent, setThemeAccent] = useState(() => loadThemeAccent());
     const [themeSignal, setThemeSignal] = useState(() => loadThemeSignal());
+    const [gangSpriteSettings, setGangSpriteSettings] = useState(() => loadGangSpriteSettings());
 
     async function refreshState() {
         try {
@@ -148,17 +161,11 @@ export default function App() {
         localStorage.setItem(THEME_SIGNAL_STORAGE_KEY, signal);
     }
 
-    useEffect(() => {
-        const resolvedTheme = resolveBitNodeTheme(state);
-        const savedBitNodeThemeIsStale = themeAccent !== "auto"
-            && BITNODE_THEME_IDS.has(themeAccent)
-            && themeAccent !== resolvedTheme;
-
-        if (!savedBitNodeThemeIsStale) return;
-
-        setThemeAccent("auto");
-        localStorage.setItem(THEME_ACCENT_STORAGE_KEY, "auto");
-    }, [state?.bitnode?.number, themeAccent]);
+    function updateGangSpriteSettings(nextSettings) {
+        const normalized = normalizeGangSpriteSettings(nextSettings);
+        setGangSpriteSettings(normalized);
+        localStorage.setItem(GANG_SPRITE_STORAGE_KEY, JSON.stringify(normalized));
+    }
 
     useEffect(() => {
         function onKeyDown(event) {
@@ -190,7 +197,10 @@ export default function App() {
     return (
         <div
             className={`app-shell theme-${activeAccent} signal-${activeSignal} workspace-${workspaceSettings.mode}`}
-            style={{ "--font-boost": `${fontOffset}px` }}
+            style={{
+                "--font-boost": `${fontOffset}px`,
+                ...buildGangSpriteStyle(gangSpriteSettings),
+            }}
         >
             <TopBar
                 state={state}
@@ -215,6 +225,8 @@ export default function App() {
                 themeSignal={themeSignal}
                 activeSignal={activeSignal}
                 onThemeSignalChange={updateThemeSignal}
+                gangSpriteSettings={gangSpriteSettings}
+                onGangSpriteSettingsChange={updateGangSpriteSettings}
             />
 
             <RightInspectorDrawer
@@ -257,6 +269,30 @@ function loadThemeSignal() {
 
     const oldMainTheme = localStorage.getItem(THEME_ACCENT_STORAGE_KEY);
     return LEGACY_SIGNAL_THEMES.has(oldMainTheme) ? oldMainTheme : "auto";
+}
+
+function loadGangSpriteSettings() {
+    try {
+        return normalizeGangSpriteSettings(JSON.parse(localStorage.getItem(GANG_SPRITE_STORAGE_KEY) || "null"));
+    } catch {
+        return normalizeGangSpriteSettings(null);
+    }
+}
+
+function normalizeGangSpriteSettings(settings) {
+    const paletteId = String(settings?.paletteId || "rainbow");
+    const fallbackColors = GANG_SPRITE_PALETTES[paletteId] ?? GANG_SPRITE_PALETTES.rainbow;
+    const colors = Array.from({ length: 7 }, (_, index) => {
+        const value = settings?.colors?.[index] ?? fallbackColors[index] ?? GANG_SPRITE_PALETTES.rainbow[index];
+        return /^#[0-9a-f]{6}$/i.test(String(value)) ? String(value) : GANG_SPRITE_PALETTES.rainbow[index];
+    });
+
+    return { paletteId, colors };
+}
+
+function buildGangSpriteStyle(settings) {
+    const normalized = normalizeGangSpriteSettings(settings);
+    return Object.fromEntries(normalized.colors.map((color, index) => [`--gang-shirt-${index + 1}`, color]));
 }
 
 function resolveBitNodeTheme(state) {

@@ -29,6 +29,7 @@ export async function main(ns) {
             maxPaybackSeconds: serviceMaxPayback,
             hashBufferSeconds: serviceState.cachePolicy?.hashBufferSeconds ?? 7200,
             sellForMoneyValue: serviceState.roi?.sellForMoneyValue ?? 2_000_000,
+            minProduction: serviceState.roi?.minProduction ?? 0,
         });
 
     ns.tprint("Hacknet Status");
@@ -63,6 +64,12 @@ export async function main(ns) {
     ns.tprint(`Nodes: ${live.nodeCount}/${live.targetNodes} | Max Nodes: ${live.maxNodes}`);
     ns.tprint(`Targets: level ${live.targetLevel} | RAM ${live.targetRam}GB | cores ${live.targetCores} | cache ${live.targetCache}`);
     ns.tprint(`Production: ${formatMoney(ns, live.totalProduction)} / sec`);
+    if ((live.roi?.minProduction ?? 0) > 0) {
+        ns.tprint(
+            `Production Floor: ${formatMoney(ns, live.totalProduction)} / ${formatMoney(ns, live.roi.minProduction)} / sec | ` +
+            `${live.roi.productionFloorMet ? "MET" : `gap ${formatMoney(ns, live.roi.productionFloorGap)}/sec`}`
+        );
+    }
     ns.tprint(`Produced: ${formatMoney(ns, live.totalProduced)}`);
     ns.tprint(`Money: ${formatMoney(ns, live.money)} | Reserve: ${formatMoney(ns, live.reserveMoney)} | Spendable: ${formatMoney(ns, live.spendable)}`);
 

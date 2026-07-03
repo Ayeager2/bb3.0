@@ -14,6 +14,7 @@ const RESERVE_PERCENT = 0.15;
 const EARLY_MIN_RESERVE = 1_000_000;
 
 const PRE_FORMULAS_MAX_UPGRADE_COST = 10_000_000_000;
+const DEFAULT_MAX_ACTIONS_PER_CYCLE = 25;
 
 export async function runServerPurchaser(ns, policy = {}) {
     if (!ns.cloud) {
@@ -24,6 +25,66 @@ export async function runServerPurchaser(ns, policy = {}) {
         return noAction("Server purchases blocked by policy.");
     }
 
+    const maxActions =
+        Math.max(
+            1,
+            Math.floor(
+                Number(policy.maxServerPurchasesPerCycle) ||
+                DEFAULT_MAX_ACTIONS_PER_CYCLE
+            )
+        );
+    const purchases = [];
+    let lastResult = null;
+    let totalCost = 0;
+
+    for (let i = 0; i < maxActions; i++) {
+        const result =
+            runServerPurchaserOnce(ns, policy);
+
+        lastResult = result;
+
+        if (result?.acted !== true) {
+            break;
+        }
+
+        purchases.push(result);
+        totalCost += Number(result.cost) || 0;
+
+        await ns.sleep(0);
+    }
+
+    if (purchases.length === 0) {
+        return lastResult ?? noAction("No server purchase action.");
+    }
+
+    const lastPurchase =
+        purchases[purchases.length - 1];
+    const summary =
+        summarizePurchases(ns, purchases);
+
+    return {
+        acted: true,
+        type: lastPurchase.type ?? "server",
+        server: lastPurchase.server ?? null,
+        item: lastPurchase.item ?? lastPurchase.server ?? "cloud server",
+        ram: lastPurchase.ram ?? null,
+        previousRam: lastPurchase.previousRam ?? null,
+        cost: totalCost,
+        message:
+            `${purchases.length} cloud action${purchases.length === 1 ? "" : "s"} for ` +
+            `${ns.format.number(totalCost)}: ${summary}.`,
+        purchases,
+        lastResult,
+        stoppedReason:
+            lastResult?.acted === false
+                ? lastResult.message
+                : purchases.length >= maxActions
+                    ? `Reached max actions per cycle (${maxActions}).`
+                    : null,
+    };
+}
+
+function runServerPurchaserOnce(ns, policy = {}) {
     const hasFormulas =
         ns.fileExists("Formulas.exe", "home");
 
@@ -120,6 +181,23 @@ export async function runServerPurchaser(ns, policy = {}) {
         maxUpgradeCost,
         hasFormulas
     );
+}
+
+function summarizePurchases(ns, purchases) {
+    const counts = new Map();
+
+    for (const purchase of purchases) {
+        const key =
+            purchase.type === "upgrade"
+                ? `${purchase.server} ${ns.format.ram(purchase.previousRam)} -> ${ns.format.ram(purchase.ram)}`
+                : `${purchase.server} ${ns.format.ram(purchase.ram)}`;
+
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+
+    return [...counts.entries()]
+        .map(([label, count]) => count > 1 ? `${label} x${count}` : label)
+        .join("; ");
 }
 
 function getEffectiveReserve(

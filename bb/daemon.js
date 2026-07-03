@@ -37,6 +37,7 @@ export async function main(ns) {
     ["force-mode", ""],
     ["force-priority", ""],
     ["force-target", ""],
+    ["skip-refresh", false],
   ]);
 
   const wantsLeveling =
@@ -79,14 +80,18 @@ export async function main(ns) {
   };
 
   killOtherDaemonInstances(ns);
-  refreshDaemonState(ns, {
-    volatile: true,
-    completions: true,
-    sessions: true,
-    allDataText: true,
-    verbose: true,
-  });
-  ns.tprint("[DAEMON] Startup state refresh complete.");
+  if (flags["skip-refresh"] !== true) {
+    refreshDaemonState(ns, {
+      volatile: true,
+      completions: true,
+      sessions: true,
+      allDataText: true,
+      verbose: true,
+    });
+    ns.tprint("[DAEMON] Startup state refresh complete.");
+  } else {
+    ns.tprint("[DAEMON] Startup state refresh skipped; startup.js already refreshed state.");
+  }
 
   let capabilities;
   let cachedState = null;
