@@ -170,13 +170,13 @@ export async function main(ns) {
             const message =
                 `[HACKNET] ${result.message}`;
 
-            if (toast) {
-                ns.toast(result.message, "success", 3000);
-            }
+            // if (toast) {
+            //     ns.toast(result.message, "success", 3000);
+            // }
 
-            if (terminal) {
-                ns.tprint(message);
-            }
+            // if (terminal) {
+            //     ns.tprint(message);
+            // }
 
             logPurchase(ns, {
                 source: "hacknet-buyer",

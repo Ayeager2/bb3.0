@@ -138,7 +138,7 @@
     margin-top: 10px;
 }
 
-.gang-policy-grid > div {
+.gang-policy-grid>div {
     border: 1px solid rgba(148, 163, 184, .14);
     border-radius: 6px;
     padding: 8px;
@@ -183,6 +183,40 @@
 .gang-panel p {
     margin: 8px 0 0;
     color: var(--muted);
+}
+
+.gang-mode-panel {
+    border-color: rgba(0, 229, 255, .3);
+}
+
+.gang-mode-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.gang-mode-buttons button {
+    border: 1px solid rgba(148, 163, 184, .22);
+    border-radius: 6px;
+    padding: 9px 8px;
+    background: rgba(2, 6, 23, .68);
+    color: var(--muted);
+    font: inherit;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    cursor: pointer;
+}
+
+.gang-mode-buttons button:hover,
+.gang-mode-buttons button.active {
+    color: var(--cyan);
+    border-color: rgba(0, 229, 255, .58);
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .14), rgba(255, 214, 10, .08)),
+        rgba(2, 6, 23, .8);
+    box-shadow: 0 0 16px rgba(0, 229, 255, .12);
 }
 
 .gang-bar {
@@ -333,6 +367,112 @@
     filter: blur(4px);
 }
 
+.gang-manual-ascend {
+    position: absolute;
+    z-index: 4;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(250, 204, 21, .42);
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at 50% 35%, rgba(250, 255, 0, .22), transparent 58%),
+        rgba(2, 6, 23, .78);
+    color: var(--yellow);
+    font: inherit;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow:
+        inset 0 0 14px rgba(250, 204, 21, .08),
+        0 0 14px rgba(250, 204, 21, .12);
+}
+
+.gang-manual-ascend:hover,
+.gang-manual-ascend.ready {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .58);
+    box-shadow:
+        inset 0 0 16px rgba(0, 255, 156, .12),
+        0 0 18px rgba(0, 255, 156, .18);
+}
+
+.gang-manual-ascend:focus {
+    outline: none;
+    box-shadow:
+        0 0 0 2px rgba(0, 229, 255, .18),
+        0 0 18px rgba(0, 255, 156, .18);
+}
+
+.gang-manual-ascend::before,
+.gang-manual-ascend::after {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        opacity .14s ease,
+        transform .14s ease;
+}
+
+.gang-manual-ascend::before {
+    content: "ASCENSION PREVIEW";
+    right: 0;
+    top: 42px;
+    z-index: 8;
+    width: max-content;
+    max-width: 320px;
+    border: 1px solid rgba(0, 229, 255, .42);
+    border-bottom: 0;
+    border-radius: 8px 8px 0 0;
+    padding: 7px 10px 5px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .18), rgba(255, 46, 136, .10)),
+        rgba(2, 6, 23, .96);
+    color: var(--cyan);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-align: left;
+    box-shadow: 0 0 22px rgba(0, 229, 255, .16);
+}
+
+.gang-manual-ascend::after {
+    content: attr(data-tooltip);
+    right: 0;
+    top: 70px;
+    z-index: 7;
+    width: max-content;
+    max-width: 320px;
+    border: 1px solid rgba(0, 229, 255, .42);
+    border-radius: 0 0 8px 8px;
+    padding: 9px 10px 10px;
+    background:
+        linear-gradient(135deg, rgba(3, 7, 18, .98), rgba(15, 23, 42, .94)),
+        rgba(2, 6, 23, .98);
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.45;
+    letter-spacing: .02em;
+    text-align: left;
+    white-space: pre;
+    text-transform: none;
+    box-shadow:
+        0 0 28px rgba(0, 229, 255, .16),
+        inset 0 0 18px rgba(255, 46, 136, .06);
+}
+
+.gang-manual-ascend:hover::before,
+.gang-manual-ascend:hover::after,
+.gang-manual-ascend:focus-visible::before,
+.gang-manual-ascend:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .gang-member-card header b,
 .gang-member-title b {
     display: block;
@@ -352,6 +492,37 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.gang-member-title label {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(132px, auto);
+    gap: 8px;
+    align-items: center;
+    margin-top: 3px;
+}
+
+.gang-member-title select {
+    min-width: 0;
+    max-width: 190px;
+    border: 1px solid rgba(0, 229, 255, .28);
+    border-radius: 5px;
+    padding: 4px 22px 4px 7px;
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .08), rgba(255, 46, 136, .06)),
+        rgba(2, 6, 23, .92);
+    color: var(--cyan);
+    font: inherit;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.gang-member-title select:focus {
+    outline: none;
+    border-color: rgba(0, 229, 255, .72);
+    box-shadow: 0 0 0 2px rgba(0, 229, 255, .12);
 }
 
 .gang-member-title small {
@@ -703,6 +874,113 @@
     box-shadow: 0 3px 0 #00ff9c, 0 6px 0 #ff2e88;
 }
 
+.gang-operator-mug .sprite-body,
+.gang-operator-deal .sprite-body,
+.gang-operator-arms .sprite-body,
+.gang-operator-train .sprite-body {
+    animation: gang-sprite-breathe 1.35s ease-in-out infinite;
+}
+
+.gang-operator-mug .sprite-head,
+.gang-operator-mug .sprite-hair,
+.gang-operator-mug .sprite-arm,
+.gang-operator-deal .sprite-head,
+.gang-operator-deal .sprite-hair,
+.gang-operator-deal .sprite-arm,
+.gang-operator-arms .sprite-head,
+.gang-operator-arms .sprite-hair,
+.gang-operator-arms .sprite-arm,
+.gang-operator-train .sprite-head,
+.gang-operator-train .sprite-hair,
+.gang-operator-train .sprite-arm {
+    animation: gang-sprite-breathe 1.35s ease-in-out infinite;
+}
+
+.gang-operator-mug .sprite-body {
+    border-top: 2px solid rgba(255, 46, 136, .95);
+}
+
+.gang-operator-mug .sprite-arm-left {
+    transform-origin: top right;
+    animation: gang-mug-swipe .82s steps(2, end) infinite;
+}
+
+.gang-operator-mug .sprite-prop-a {
+    opacity: 1;
+    left: 4px;
+    top: 32px;
+    width: 14px;
+    height: 5px;
+    background: #ff2e88;
+    box-shadow:
+        5px -5px 0 -1px #00f5ff,
+        11px -8px 0 -2px #faff00;
+    transform: rotate(-18deg);
+    animation: gang-mug-streak .82s steps(2, end) infinite;
+}
+
+.gang-operator-mug .sprite-prop-b {
+    opacity: 1;
+    left: 35px;
+    top: 34px;
+    width: 8px;
+    height: 8px;
+    background: #f8fafc;
+    box-shadow: inset 0 -3px 0 #64748b, 0 0 5px rgba(255, 255, 255, .28);
+    animation: gang-mug-bag .82s steps(2, end) infinite;
+}
+
+.gang-operator-deal .sprite-body {
+    border-top: 2px solid rgba(0, 255, 156, .95);
+}
+
+.gang-operator-deal .sprite-arm-left {
+    transform-origin: top right;
+    animation: gang-deal-hand .95s steps(2, end) infinite;
+}
+
+.gang-operator-deal .sprite-arm-right {
+    transform-origin: top left;
+    animation: gang-deal-hand .95s steps(2, end) infinite reverse;
+}
+
+.gang-operator-deal .sprite-prop-a {
+    opacity: 1;
+    left: 5px;
+    top: 39px;
+    width: 18px;
+    height: 8px;
+    background: #111827;
+    border: 1px solid #334155;
+    box-shadow:
+        inset 0 3px 0 #475569,
+        0 0 7px rgba(0, 245, 255, .22);
+}
+
+.gang-operator-deal .sprite-prop-b {
+    opacity: 1;
+    left: 14px;
+    top: 28px;
+    width: 6px;
+    height: 4px;
+    background: #00ff9c;
+    box-shadow:
+        12px 2px 0 #ff2e88,
+        0 0 7px rgba(0, 255, 156, .65);
+    animation: gang-deal-packet .95s steps(2, end) infinite;
+}
+
+.gang-operator-deal .sprite-prop-c {
+    opacity: 1;
+    left: 39px;
+    top: 16px;
+    width: 6px;
+    height: 11px;
+    background: #020617;
+    border: 1px solid #00f5ff;
+    box-shadow: inset 0 4px 0 #ff2e88, 0 0 6px rgba(0, 245, 255, .42);
+}
+
 .gang-operator-arms .sprite-body {
     border-top: 2px solid rgba(255, 214, 10, .9);
 }
@@ -723,15 +1001,17 @@
 
 .gang-operator-arms .sprite-prop-b {
     opacity: 1;
-    left: 7px;
-    top: 27px;
-    width: 12px;
-    height: 3px;
+    left: 3px;
+    top: 25px;
+    width: 20px;
+    height: 4px;
     background: #00f5ff;
     box-shadow:
-        2px -3px 0 #faff00,
-        6px -1px 0 #ff2e88;
-    transform: rotate(-12deg);
+        3px -4px 0 #faff00,
+        8px -2px 0 #ff2e88,
+        17px 1px 0 -1px #94a3b8;
+    transform: rotate(-14deg);
+    animation: gang-arms-check .9s steps(2, end) infinite;
 }
 
 .gang-operator-arms .sprite-prop-c {
@@ -841,14 +1121,39 @@
     border-top: 2px solid rgba(0, 245, 255, .9);
 }
 
+.gang-operator-train .sprite-arm-left {
+    transform-origin: top right;
+    animation: gang-train-punch .7s steps(2, end) infinite;
+}
+
+.gang-operator-train .sprite-arm-right {
+    transform-origin: top left;
+    animation: gang-train-punch .7s steps(2, end) infinite reverse;
+}
+
 .gang-operator-train .sprite-prop-a {
     opacity: 1;
-    left: 6px;
-    top: 35px;
-    width: 15px;
-    height: 3px;
-    background: #94a3b8;
-    box-shadow: 0 -3px 0 #64748b;
+    left: 5px;
+    top: 15px;
+    width: 9px;
+    height: 28px;
+    border-radius: 6px 6px 3px 3px;
+    background: linear-gradient(to bottom, #ff2e88 0 22%, #faff00 22% 55%, #00f5ff 55% 100%);
+    box-shadow:
+        0 0 10px rgba(255, 46, 136, .42),
+        4px 30px 0 -3px #334155;
+    animation: gang-train-bag .7s steps(2, end) infinite;
+}
+
+.gang-operator-train .sprite-prop-b {
+    opacity: 1;
+    left: 38px;
+    top: 29px;
+    width: 8px;
+    height: 4px;
+    background: #faff00;
+    box-shadow: 0 0 8px rgba(250, 255, 0, .5);
+    animation: gang-train-spark .7s steps(2, end) infinite;
 }
 
 .gang-operator-money .sprite-body {
@@ -865,29 +1170,509 @@
     box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .22);
 }
 
+.gang-pixel-actor {
+    --skin: var(--sprite-skin, #f8c995);
+    --hair: var(--sprite-hair, #111827);
+    --shirt: var(--sprite-shirt, #ff2e88);
+    position: relative;
+    z-index: 2;
+    width: 150px;
+    height: 150px;
+    image-rendering: pixelated;
+    flex: 0 0 auto;
+    margin: 2px 0 0;
+    transform: translateZ(0);
+}
+
+.gang-pixel-actor span {
+    position: absolute;
+    display: block;
+    border-radius: 0;
+}
+
+.pixel-shadow {
+    left: 28px;
+    top: 132px;
+    width: 92px;
+    height: 8px;
+    background: rgba(0, 245, 255, .18);
+    box-shadow:
+        0 0 18px rgba(0, 245, 255, .25),
+        22px 0 26px rgba(255, 46, 136, .18);
+}
+
+.pixel-pack {
+    left: 87px;
+    top: 40px;
+    width: 32px;
+    height: 57px;
+    background:
+        linear-gradient(#2c1c16 0 62%, #191016 62% 100%);
+    border: 4px solid #0f0a0c;
+    box-shadow:
+        inset 0 8px 0 rgba(255, 255, 255, .08),
+        0 0 12px rgba(0, 245, 255, .10);
+}
+
+.pixel-leg {
+    top: 94px;
+    width: 17px;
+    height: 35px;
+    background: #1c1b29;
+    box-shadow: inset 0 -7px 0 rgba(0, 0, 0, .42);
+}
+
+.pixel-leg-back {
+    left: 59px;
+}
+
+.pixel-leg-front {
+    left: 82px;
+}
+
+.pixel-boot {
+    top: 124px;
+    width: 24px;
+    height: 12px;
+    background: #0f1119;
+    border-bottom: 4px solid #5f4636;
+}
+
+.pixel-boot-back {
+    left: 53px;
+}
+
+.pixel-boot-front {
+    left: 78px;
+}
+
+.pixel-body {
+    left: 48px;
+    top: 60px;
+    width: 61px;
+    height: 43px;
+    background: var(--shirt);
+    border-bottom: 9px solid rgba(0, 0, 0, .22);
+    box-shadow:
+        inset 0 9px 0 rgba(255, 255, 255, .12),
+        inset -8px 0 0 rgba(0, 0, 0, .16),
+        0 0 16px color-mix(in srgb, var(--shirt), transparent 68%);
+    animation: gang-pixel-breathe 1.35s steps(2, end) infinite;
+}
+
+.pixel-vest {
+    left: 48px;
+    top: 60px;
+    width: 18px;
+    height: 43px;
+    background: rgba(5, 11, 20, .42);
+    box-shadow: 44px 0 0 rgba(5, 11, 20, .24);
+    animation: gang-pixel-breathe 1.35s steps(2, end) infinite;
+}
+
+.pixel-neck {
+    left: 69px;
+    top: 52px;
+    width: 21px;
+    height: 12px;
+    background: var(--skin);
+    box-shadow: inset 0 -4px 0 rgba(73, 32, 20, .18);
+}
+
+.pixel-head {
+    left: 58px;
+    top: 24px;
+    width: 44px;
+    height: 34px;
+    background: var(--skin);
+    box-shadow:
+        inset 0 -7px 0 rgba(80, 33, 18, .16),
+        inset -5px 0 0 rgba(0, 0, 0, .08);
+    animation: gang-pixel-head 1.35s steps(2, end) infinite;
+}
+
+.pixel-hair {
+    left: 53px;
+    top: 14px;
+    width: 54px;
+    height: 18px;
+    background: var(--hair);
+    box-shadow:
+        0 10px 0 -4px var(--hair),
+        36px 0 0 -4px #ff2e88;
+    animation: gang-pixel-head 1.35s steps(2, end) infinite;
+}
+
+.pixel-eye {
+    top: 39px;
+    width: 6px;
+    height: 5px;
+    background: #00f5ff;
+    box-shadow: 0 0 8px rgba(0, 245, 255, .85);
+    animation: gang-pixel-look 3.8s steps(1, end) infinite;
+}
+
+.pixel-eye-left {
+    left: 68px;
+}
+
+.pixel-eye-right {
+    left: 86px;
+}
+
+.pixel-arm {
+    top: 63px;
+    width: 18px;
+    height: 48px;
+    background: var(--skin);
+    box-shadow: inset 0 -9px 0 rgba(80, 33, 18, .15);
+    transform-origin: top center;
+}
+
+.pixel-arm-back {
+    left: 34px;
+}
+
+.pixel-arm-front {
+    left: 105px;
+}
+
+.pixel-prop,
+.pixel-spark {
+    opacity: 0;
+}
+
+.gang-pixel-mug .pixel-body {
+    background: #ff2e88;
+}
+
+.gang-pixel-mug .pixel-pack {
+    left: 96px;
+    width: 26px;
+    height: 42px;
+}
+
+.gang-pixel-mug .pixel-arm-front {
+    transform: rotate(-34deg);
+    animation: gang-pixel-snatch .72s steps(2, end) infinite;
+}
+
+.gang-pixel-mug .pixel-prop-a {
+    opacity: 1;
+    left: 108px;
+    top: 85px;
+    width: 26px;
+    height: 18px;
+    background: #e2e8f0;
+    border: 4px solid #64748b;
+    box-shadow: inset 0 -5px 0 #94a3b8;
+    animation: gang-pixel-bag-snatch .72s steps(2, end) infinite;
+}
+
+.gang-pixel-mug .pixel-spark-a {
+    opacity: 1;
+    left: 103px;
+    top: 78px;
+    width: 23px;
+    height: 6px;
+    background: #00f5ff;
+    box-shadow: 16px -8px 0 -2px #faff00;
+    animation: gang-pixel-streak .72s steps(2, end) infinite;
+}
+
+.gang-pixel-deal .pixel-body {
+    background: #00ff9c;
+}
+
+.gang-pixel-deal .pixel-arm-back {
+    transform: rotate(32deg);
+}
+
+.gang-pixel-deal .pixel-arm-front {
+    transform: rotate(-28deg);
+    animation: gang-pixel-handoff .9s steps(2, end) infinite;
+}
+
+.gang-pixel-deal .pixel-prop-a {
+    opacity: 1;
+    left: 28px;
+    top: 98px;
+    width: 46px;
+    height: 26px;
+    background: #111827;
+    border: 5px solid #334155;
+    box-shadow:
+        inset 0 8px 0 #475569,
+        0 0 12px rgba(0, 245, 255, .16);
+}
+
+.gang-pixel-deal .pixel-prop-b {
+    opacity: 1;
+    left: 101px;
+    top: 78px;
+    width: 12px;
+    height: 9px;
+    background: #faff00;
+    box-shadow:
+        -14px 1px 0 #00f5ff,
+        0 0 10px rgba(250, 255, 0, .6);
+    animation: gang-pixel-packet .9s steps(2, end) infinite;
+}
+
+.gang-pixel-arms .pixel-body {
+    background: #f97316;
+}
+
+.gang-pixel-arms .pixel-pack {
+    left: 95px;
+    top: 50px;
+    height: 48px;
+    background: #2a1f19;
+}
+
+.gang-pixel-arms .pixel-arm-back {
+    transform: rotate(35deg);
+}
+
+.gang-pixel-arms .pixel-arm-front {
+    transform: rotate(-30deg);
+    animation: gang-pixel-cargo-check .9s steps(2, end) infinite;
+}
+
+.gang-pixel-arms .pixel-prop-a {
+    opacity: 1;
+    left: 20px;
+    top: 99px;
+    width: 54px;
+    height: 31px;
+    background: #1e293b;
+    border: 5px solid #334155;
+    box-shadow:
+        inset 0 8px 0 #64748b,
+        inset 0 -5px 0 #020617;
+}
+
+.gang-pixel-arms .pixel-prop-b {
+    opacity: 1;
+    left: 26px;
+    top: 81px;
+    width: 72px;
+    height: 11px;
+    background: #00f5ff;
+    box-shadow:
+        16px -8px 0 -2px #faff00,
+        34px -5px 0 -2px #ff2e88,
+        0 0 12px rgba(0, 245, 255, .48);
+    transform: rotate(-13deg);
+    animation: gang-pixel-cargo-check .9s steps(2, end) infinite;
+}
+
+.gang-pixel-train .pixel-body {
+    background: #ef4444;
+}
+
+.gang-pixel-train .pixel-pack {
+    display: none;
+}
+
+.gang-pixel-train .pixel-arm-back {
+    transform: rotate(22deg);
+}
+
+.gang-pixel-train .pixel-arm-front {
+    transform: rotate(-42deg);
+    animation: gang-pixel-punch .62s steps(2, end) infinite;
+}
+
+.gang-pixel-train .pixel-prop-a {
+    opacity: 1;
+    left: 19px;
+    top: 27px;
+    width: 23px;
+    height: 70px;
+    background:
+        linear-gradient(#faff00 0 18%, #ff8a00 18% 58%, #ff2e88 58% 100%);
+    border: 5px solid #4b1d12;
+    box-shadow:
+        0 0 16px rgba(255, 138, 0, .35),
+        8px 76px 0 -5px #334155;
+    animation: gang-pixel-bag-hit .62s steps(2, end) infinite;
+}
+
+.gang-pixel-train .pixel-spark-a,
+.gang-pixel-train .pixel-spark-b {
+    opacity: 1;
+    width: 8px;
+    height: 8px;
+    background: #faff00;
+    box-shadow: 0 0 9px rgba(250, 255, 0, .6);
+    animation: gang-pixel-impact .62s steps(2, end) infinite;
+}
+
+.gang-pixel-train .pixel-spark-a {
+    left: 44px;
+    top: 64px;
+}
+
+.gang-pixel-train .pixel-spark-b {
+    left: 36px;
+    top: 83px;
+    animation-delay: .12s;
+}
+
+.gang-pixel-mug,
+.gang-pixel-deal,
+.gang-pixel-arms,
+.gang-pixel-train,
+.gang-pixel-vigilante,
+.gang-pixel-strongarm,
+.gang-pixel-con,
+.gang-pixel-robbery,
+.gang-pixel-blackmail,
+.gang-pixel-traffic,
+.gang-pixel-terrorism,
+.gang-pixel-train-hack,
+.gang-pixel-train-charisma,
+.gang-pixel-territory {
+    width: 256px;
+    height: 256px;
+    margin: -8px 0 -28px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 1024px 256px;
+    animation: gang-sheet-play 2.6s steps(4, end) infinite;
+    transform: scale(.76);
+    transform-origin: center;
+}
+
+.gang-pixel-mug span,
+.gang-pixel-deal span,
+.gang-pixel-arms span,
+.gang-pixel-train span,
+.gang-pixel-vigilante span,
+.gang-pixel-strongarm span,
+.gang-pixel-con span,
+.gang-pixel-robbery span,
+.gang-pixel-blackmail span,
+.gang-pixel-traffic span,
+.gang-pixel-terrorism span,
+.gang-pixel-train-hack span,
+.gang-pixel-train-charisma span,
+.gang-pixel-territory span {
+    display: none;
+}
+
+.gang-pixel-mug {
+    background-image: url("/sprites/gang/generated/mug-sheet.png");
+}
+
+.gang-pixel-deal {
+    background-image: url("/sprites/gang/generated/deal-sheet.png?v=deal-drugs-centered-20260704");
+    animation-duration: 2.8s;
+}
+
+.gang-pixel-arms {
+    background-image: url("/sprites/gang/generated/arms-sheet.png?v=arms-sniper-crate-20260704");
+    animation-duration: 3s;
+}
+
+.gang-pixel-train {
+    background-image: url("/sprites/gang/generated/train-sheet.png?v=train-combat-centered-20260704");
+    animation-duration: 2s;
+}
+
+.gang-pixel-vigilante {
+    background-image: url("/sprites/gang/generated/vigilante-sheet.png?v=vigilante-justice-20260704");
+    animation-duration: 2.8s;
+}
+
+.gang-pixel-strongarm {
+    background-image: url("/sprites/gang/generated/strongarm-sheet.png?v=strongarm-civilian-20260704");
+    animation-duration: 3s;
+}
+
+.gang-pixel-con {
+    background-image: url("/sprites/gang/generated/con-sheet.png?v=run-a-con-20260704");
+    animation-duration: 3.1s;
+}
+
+.gang-pixel-robbery {
+    background-image: url("/sprites/gang/generated/robbery-sheet.png?v=armed-robbery-20260704");
+    animation-duration: 3s;
+}
+
+.gang-pixel-blackmail {
+    background-image: url("/sprites/gang/generated/blackmail-sheet.png?v=threaten-blackmail-20260704");
+    animation-duration: 3s;
+}
+
+.gang-pixel-traffic {
+    background-image: url("/sprites/gang/generated/traffic-sheet.png?v=human-traffic-jam-20260704");
+    animation-duration: 3.1s;
+}
+
+.gang-pixel-terrorism {
+    background-image: url("/sprites/gang/generated/terrorism-sheet.png?v=chaos-op-redraw-covered-20260704");
+    animation-duration: 2.8s;
+}
+
+.gang-pixel-train-hack {
+    background-image: url("/sprites/gang/generated/train-hack-sheet.png?v=train-hacking-20260704");
+    animation-duration: 2.7s;
+}
+
+.gang-pixel-train-charisma {
+    background-image: url("/sprites/gang/generated/train-charisma-sheet.png?v=train-charisma-20260704");
+    animation-duration: 2.8s;
+}
+
+.gang-pixel-territory {
+    background-image: url("/sprites/gang/generated/territory-sheet.png?v=territory-warfare-20260704");
+    animation-duration: 3s;
+}
+
 @keyframes gang-sprite-breathe {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(1px);
     }
 }
 
+@keyframes gang-sheet-play {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -1024px 0;
+    }
+}
+
 @keyframes gang-sprite-pant {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(2px);
     }
 }
 
 @keyframes gang-fire-flicker {
-    0%, 100% {
+
+    0%,
+    100% {
         filter: hue-rotate(0deg) brightness(1);
         transform: translateY(0) scaleX(1);
     }
+
     50% {
         filter: hue-rotate(-12deg) brightness(1.18);
         transform: translateY(-1px) scaleX(.88);
@@ -895,29 +1680,309 @@
 }
 
 @keyframes gang-sprite-look {
-    0%, 70%, 100% {
+
+    0%,
+    70%,
+    100% {
         transform: translateX(0);
     }
-    76%, 82% {
+
+    76%,
+    82% {
         transform: translateX(1px);
     }
-    88%, 94% {
+
+    88%,
+    94% {
         transform: translateX(-1px);
     }
 }
 
 @keyframes gang-sprite-idle {
-    0%, 100% {
+
+    0%,
+    100% {
         filter: saturate(1);
         transform: scale(var(--sprite-scale)) translateY(0);
     }
+
     50% {
         filter: saturate(1.22) brightness(1.06);
         transform: scale(var(--sprite-scale)) translateY(1px);
     }
 }
 
+@keyframes gang-pixel-breathe {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(3px);
+    }
+}
+
+@keyframes gang-pixel-head {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+}
+
+@keyframes gang-pixel-look {
+
+    0%,
+    70%,
+    100% {
+        transform: translateX(0);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    90% {
+        transform: translateX(-3px);
+    }
+}
+
+@keyframes gang-pixel-snatch {
+
+    0%,
+    100% {
+        transform: rotate(-24deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(-48deg) translateX(8px);
+    }
+}
+
+@keyframes gang-pixel-bag-snatch {
+
+    0%,
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-14px) translateY(4px);
+    }
+}
+
+@keyframes gang-pixel-streak {
+
+    0%,
+    100% {
+        opacity: .4;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-18px);
+    }
+}
+
+@keyframes gang-pixel-handoff {
+
+    0%,
+    100% {
+        transform: rotate(-18deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(-36deg) translateX(-7px);
+    }
+}
+
+@keyframes gang-pixel-packet {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: translateX(-16px);
+        filter: brightness(1.35);
+    }
+}
+
+@keyframes gang-pixel-cargo-check {
+
+    0%,
+    100% {
+        transform: rotate(-13deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-7deg) translateY(5px);
+    }
+}
+
+@keyframes gang-pixel-punch {
+
+    0%,
+    100% {
+        transform: rotate(-18deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(-58deg) translateX(-18px);
+    }
+}
+
+@keyframes gang-pixel-bag-hit {
+
+    0%,
+    100% {
+        transform: translateX(0) skewX(0deg);
+    }
+
+    50% {
+        transform: translateX(-8px) skewX(-5deg);
+    }
+}
+
+@keyframes gang-pixel-impact {
+
+    0%,
+    100% {
+        opacity: .15;
+        transform: scale(.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.35);
+    }
+}
+
+@keyframes gang-mug-swipe {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(-28deg) translateX(-2px);
+    }
+}
+
+@keyframes gang-mug-streak {
+
+    0%,
+    100% {
+        opacity: .62;
+        transform: rotate(-18deg) translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: rotate(-18deg) translateX(-4px);
+    }
+}
+
+@keyframes gang-mug-bag {
+
+    0%,
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-3px) translateY(1px);
+    }
+}
+
+@keyframes gang-deal-hand {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(14deg) translateX(1px);
+    }
+}
+
+@keyframes gang-deal-packet {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        filter: brightness(1);
+    }
+
+    50% {
+        transform: translateX(5px);
+        filter: brightness(1.35);
+    }
+}
+
+@keyframes gang-arms-check {
+
+    0%,
+    100% {
+        transform: rotate(-14deg) translateY(0);
+    }
+
+    50% {
+        transform: rotate(-9deg) translateY(1px);
+    }
+}
+
+@keyframes gang-train-punch {
+
+    0%,
+    100% {
+        transform: rotate(0deg) translateX(0);
+    }
+
+    50% {
+        transform: rotate(-18deg) translateX(-4px);
+    }
+}
+
+@keyframes gang-train-bag {
+
+    0%,
+    100% {
+        transform: translateX(0) skewX(0deg);
+    }
+
+    50% {
+        transform: translateX(-2px) skewX(-4deg);
+    }
+}
+
+@keyframes gang-train-spark {
+
+    0%,
+    100% {
+        opacity: .3;
+        transform: translateX(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-5px);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
+
     .gang-operator-sprite,
     .sprite-head,
     .sprite-hair,
@@ -1050,7 +2115,124 @@
     text-transform: uppercase;
 }
 
+.card-full[data-card-id="gang"] .gang-card,
+.card-three-quarters[data-card-id="gang"] .gang-card {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.card-full[data-card-id="gang"] .gang-hero,
+.card-three-quarters[data-card-id="gang"] .gang-hero {
+    grid-column: span 3;
+    min-height: 0;
+    padding: 10px 12px;
+}
+
+.card-full[data-card-id="gang"] .gang-name,
+.card-three-quarters[data-card-id="gang"] .gang-name {
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.card-full[data-card-id="gang"] .gang-message,
+.card-three-quarters[data-card-id="gang"] .gang-message {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-full[data-card-id="gang"] .gang-metrics,
+.card-three-quarters[data-card-id="gang"] .gang-metrics {
+    gap: 6px;
+}
+
+.card-full[data-card-id="gang"] .gang-metrics:nth-of-type(2),
+.card-three-quarters[data-card-id="gang"] .gang-metrics:nth-of-type(2) {
+    grid-column: span 9;
+}
+
+.card-full[data-card-id="gang"] .gang-metrics:nth-of-type(3),
+.card-full[data-card-id="gang"] .gang-metrics:nth-of-type(4),
+.card-three-quarters[data-card-id="gang"] .gang-metrics:nth-of-type(3),
+.card-three-quarters[data-card-id="gang"] .gang-metrics:nth-of-type(4) {
+    grid-column: span 6;
+}
+
+.card-full[data-card-id="gang"] .gang-metric,
+.card-three-quarters[data-card-id="gang"] .gang-metric {
+    padding: 8px 10px;
+}
+
+.card-full[data-card-id="gang"] .gang-metric b,
+.card-three-quarters[data-card-id="gang"] .gang-metric b {
+    margin-top: 3px;
+    font-size: 15px;
+}
+
+.card-full[data-card-id="gang"] .gang-mode-panel,
+.card-three-quarters[data-card-id="gang"] .gang-mode-panel {
+    grid-column: span 12;
+}
+
+.card-full[data-card-id="gang"] .gang-mode-buttons,
+.card-three-quarters[data-card-id="gang"] .gang-mode-buttons {
+    margin-top: 6px;
+}
+
+.card-full[data-card-id="gang"] .gang-mode-buttons button,
+.card-three-quarters[data-card-id="gang"] .gang-mode-buttons button {
+    padding: 7px 8px;
+}
+
+.card-full[data-card-id="gang"] .gang-penalty-panel,
+.card-full[data-card-id="gang"] .gang-policy-panel,
+.card-full[data-card-id="gang"] .gang-territory-panel,
+.card-three-quarters[data-card-id="gang"] .gang-penalty-panel,
+.card-three-quarters[data-card-id="gang"] .gang-policy-panel,
+.card-three-quarters[data-card-id="gang"] .gang-territory-panel {
+    grid-column: span 4;
+}
+
+.card-full[data-card-id="gang"] .gang-panel,
+.card-three-quarters[data-card-id="gang"] .gang-panel {
+    padding: 8px 10px;
+}
+
+.card-full[data-card-id="gang"] .gang-panel p,
+.card-three-quarters[data-card-id="gang"] .gang-panel p {
+    margin-top: 6px;
+}
+
+.card-full[data-card-id="gang"] .gang-policy-grid,
+.card-three-quarters[data-card-id="gang"] .gang-policy-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.card-full[data-card-id="gang"] .gang-policy-grid>div,
+.card-three-quarters[data-card-id="gang"] .gang-policy-grid>div {
+    padding: 6px;
+}
+
+.card-full[data-card-id="gang"] .gang-panel:not(.gang-mode-panel):not(.gang-penalty-panel):not(.gang-policy-panel):not(.gang-territory-panel):not(.gang-legend),
+.card-full[data-card-id="gang"] .gang-legend,
+.card-three-quarters[data-card-id="gang"] .gang-panel:not(.gang-mode-panel):not(.gang-penalty-panel):not(.gang-policy-panel):not(.gang-territory-panel):not(.gang-legend),
+.card-three-quarters[data-card-id="gang"] .gang-legend {
+    grid-column: span 6;
+}
+
+.card-full[data-card-id="gang"] .gang-task-grid,
+.card-full[data-card-id="gang"] .gang-member-grid,
+.card-full[data-card-id="gang"] .gang-footer,
+.card-three-quarters[data-card-id="gang"] .gang-task-grid,
+.card-three-quarters[data-card-id="gang"] .gang-member-grid,
+.card-three-quarters[data-card-id="gang"] .gang-footer {
+    grid-column: 1 / -1;
+}
+
 @media (max-width: 900px) {
+
     .gang-metrics,
     .gang-task-grid,
     .gang-member-grid {
@@ -1094,8 +2276,38 @@
         letter-spacing: .16em;
     }
 
+    .gang-manual-ascend::before,
+    .gang-manual-ascend::after {
+        position: fixed;
+        left: 14px;
+        right: 14px;
+        width: auto;
+        max-width: none;
+        transform: translateY(8px);
+    }
+
+    .gang-manual-ascend::before {
+        top: auto;
+        bottom: 174px;
+    }
+
+    .gang-manual-ascend::after {
+        top: auto;
+        bottom: 40px;
+        white-space: pre-wrap;
+    }
+
     .gang-member-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gang-member-title label {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .gang-member-title select {
+        max-width: none;
+        width: 100%;
     }
 
     .gang-member-gains {

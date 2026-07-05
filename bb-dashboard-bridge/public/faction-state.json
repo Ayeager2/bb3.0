@@ -1,22 +1,26 @@
 {
-  "updatedAt": 1783016354345,
+  "updatedAt": 1783213606782,
   "singularityEnabled": true,
   "bitNode": 2,
   "hacknetTotals": {
-    "count": 5,
-    "levels": 1000,
-    "ram": 320,
-    "cores": 60,
+    "count": 27,
+    "levels": 5400,
+    "ram": 1728,
+    "cores": 432,
     "maxRam": 64,
-    "maxCores": 12,
-    "production": 77170.20981028727
+    "maxCores": 16,
+    "production": 769040.6874545214
   },
   "joined": [
+    "BitRunners",
+    "The Black Hand",
+    "NiteSec",
+    "Sector-12",
     "Slum Snakes",
     "Netburners",
     "CyberSec"
   ],
-  "hackingLevel": 203,
+  "hackingLevel": 566,
   "profiles": [
     {
       "faction": "CyberSec",
@@ -1484,26 +1488,25 @@
       "moneyReady": false,
       "combatReady": true,
       "cityReady": true,
-      "augReady": false,
+      "augReady": true,
       "homeRamReady": true,
       "hacknetLevelsReady": true,
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
         "hacking 2500",
-        "money $100.00b",
-        "30 augmentations"
+        "money $100.00b"
       ],
       "readyForManualBackdoor": false,
       "readyForInvite": false
@@ -1547,27 +1550,26 @@
       "moneyReady": false,
       "combatReady": false,
       "cityReady": true,
-      "augReady": false,
+      "augReady": true,
       "homeRamReady": true,
       "hacknetLevelsReady": true,
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
         "hacking 1500",
         "money $150.00b",
-        "combat 1200",
-        "30 augmentations"
+        "combat 1200"
       ],
       "readyForManualBackdoor": false,
       "readyForInvite": false
@@ -1617,13 +1619,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
@@ -1669,8 +1671,8 @@
       "server": "I.I.I.I",
       "exists": true,
       "rooted": true,
-      "backdoored": false,
-      "hackReady": false,
+      "backdoored": true,
+      "hackReady": true,
       "moneyReady": true,
       "combatReady": true,
       "cityReady": true,
@@ -1680,20 +1682,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
-      "joined": false,
+      "joined": true,
       "ready": false,
-      "blockers": [
-        "backdoor I.I.I.I",
-        "hacking 300"
-      ],
+      "blockers": [],
       "readyForManualBackdoor": false,
       "readyForInvite": false
     },
@@ -1731,8 +1730,8 @@
       "server": "run4theh111z",
       "exists": true,
       "rooted": true,
-      "backdoored": false,
-      "hackReady": false,
+      "backdoored": true,
+      "hackReady": true,
       "moneyReady": true,
       "combatReady": true,
       "cityReady": true,
@@ -1742,20 +1741,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
-      "joined": false,
+      "joined": true,
       "ready": false,
-      "blockers": [
-        "backdoor run4theh111z",
-        "hacking 500"
-      ],
+      "blockers": [],
       "readyForManualBackdoor": false,
       "readyForInvite": false
     },
@@ -1793,7 +1789,7 @@
       "server": "avmnite-02h",
       "exists": true,
       "rooted": true,
-      "backdoored": false,
+      "backdoored": true,
       "hackReady": true,
       "moneyReady": true,
       "combatReady": true,
@@ -1804,20 +1800,18 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
-      "joined": false,
+      "joined": true,
       "ready": false,
-      "blockers": [
-        "backdoor avmnite-02h"
-      ],
-      "readyForManualBackdoor": true,
+      "blockers": [],
+      "readyForManualBackdoor": false,
       "readyForInvite": false
     },
     {
@@ -1865,13 +1859,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": true,
       "ready": false,
@@ -1915,7 +1909,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": false,
+      "moneyReady": true,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -1924,18 +1918,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "money $1.00m",
         "travel Chongqing"
       ],
       "readyForManualBackdoor": false,
@@ -1977,7 +1970,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": false,
+      "moneyReady": true,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -1986,18 +1979,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "money $20.00m",
         "travel Chongqing"
       ],
       "readyForManualBackdoor": false,
@@ -2039,7 +2031,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": false,
+      "moneyReady": true,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -2048,18 +2040,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "money $20.00m",
         "travel New Tokyo"
       ],
       "readyForManualBackdoor": false,
@@ -2101,7 +2092,7 @@
       "rooted": true,
       "backdoored": true,
       "hackReady": true,
-      "moneyReady": false,
+      "moneyReady": true,
       "combatReady": true,
       "cityReady": false,
       "augReady": true,
@@ -2110,18 +2101,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "money $30.00m",
         "travel Ishima"
       ],
       "readyForManualBackdoor": false,
@@ -2160,7 +2150,7 @@
       },
       "server": "fulcrumassets",
       "exists": true,
-      "rooted": false,
+      "rooted": true,
       "backdoored": false,
       "hackReady": false,
       "moneyReady": true,
@@ -2172,18 +2162,17 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": false,
       "ready": false,
       "blockers": [
-        "root fulcrumassets",
         "backdoor fulcrumassets",
         "hacking 1000",
         "company rep Fulcrum Secret Technologies"
@@ -2237,13 +2226,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 5,
-        "levels": 1000,
-        "ram": 320,
-        "cores": 60,
+        "count": 27,
+        "levels": 5400,
+        "ram": 1728,
+        "cores": 432,
         "maxRam": 64,
-        "maxCores": 12,
-        "production": 77170.20981028727
+        "maxCores": 16,
+        "production": 769040.6874545214
       },
       "joined": true,
       "ready": false,
@@ -2270,11 +2259,14 @@
     "canAutoTravel": true
   },
   "backdoors": {
-    "updatedAt": 1783016354345,
+    "updatedAt": 1783213606782,
     "singularityEnabled": true,
     "autoBackdoor": false,
     "announced": [
-      "CSEC"
+      "CSEC",
+      "avmnite-02h",
+      "I.I.I.I",
+      "run4theh111z"
     ],
     "announcedEvents": [],
     "servers": [
@@ -2306,7 +2298,7 @@
         "exists": true,
         "rooted": true,
         "hackReady": true,
-        "backdoored": false
+        "backdoored": true
       },
       {
         "faction": "The Black Hand",
@@ -2320,8 +2312,8 @@
         },
         "exists": true,
         "rooted": true,
-        "hackReady": false,
-        "backdoored": false
+        "hackReady": true,
+        "backdoored": true
       },
       {
         "faction": "BitRunners",
@@ -2335,8 +2327,8 @@
         },
         "exists": true,
         "rooted": true,
-        "hackReady": false,
-        "backdoored": false
+        "hackReady": true,
+        "backdoored": true
       },
       {
         "faction": "Fulcrum Secret Technologies",
@@ -2349,11 +2341,11 @@
           "default": 45
         },
         "exists": true,
-        "rooted": false,
+        "rooted": true,
         "hackReady": false,
         "backdoored": false
       }
     ]
   },
-  "bridgeUpdatedAt": 1783016364156
+  "bridgeUpdatedAt": 1783213614460
 }

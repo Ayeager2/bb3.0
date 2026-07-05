@@ -4,6 +4,9 @@ import { writeUiEvent } from "/lib/ui/event-log.js";
 
 const COMMAND_FILE = "/data/ui/dashboard-command.txt";
 const STATUS_FILE = "/data/ui/dashboard-command-status.txt";
+const GANG_MODE_FILE = "/data/gang-mode.txt";
+const GANG_TASK_OVERRIDE_FILE = "/data/gang-task-overrides.txt";
+const GANG_ASCEND_REQUEST_FILE = "/data/gang-ascend-request.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -101,6 +104,87 @@ async function handleCommand(ns, command) {
             return;
         }
 
+        if (name === "setGangMode") {
+            const mode = normalizeGangMode(command.mode ?? command.target);
+            if (!mode) {
+                fail(ns, command, "Gang mode command missing valid mode.");
+                return;
+            }
+
+            ns.write(GANG_MODE_FILE, JSON.stringify({
+                updatedAt: Date.now(),
+                updatedAtText: new Date().toLocaleTimeString(),
+                source: "dashboard-command-runner",
+                mode,
+                label: getGangModeLabel(mode),
+                commandId: command.id,
+            }, null, 2), "w");
+
+            complete(ns, command, `Gang mode switched to ${getGangModeLabel(mode)}.`, "success");
+            return;
+        }
+
+        if (name === "setGangMemberTask") {
+            const member = String(command.member ?? command.target ?? "").trim();
+            const task = String(command.task ?? "").trim();
+
+            if (!member) {
+                fail(ns, command, "Gang task command missing member.");
+                return;
+            }
+
+            const state = readJson(ns, GANG_TASK_OVERRIDE_FILE, {});
+            const overrides = {
+                ...(state?.overrides && typeof state.overrides === "object" ? state.overrides : {}),
+            };
+
+            if (task) {
+                overrides[member] = task;
+            } else {
+                delete overrides[member];
+            }
+
+            ns.write(GANG_TASK_OVERRIDE_FILE, JSON.stringify({
+                updatedAt: Date.now(),
+                updatedAtText: new Date().toLocaleTimeString(),
+                source: "dashboard-command-runner",
+                overrides,
+                lastChange: {
+                    member,
+                    task: task || null,
+                    commandId: command.id,
+                },
+            }, null, 2), "w");
+
+            if (task) {
+                writeGangMode(ns, "custom", command.id);
+                complete(ns, command, `${member} override set to ${task}; gang mode switched to Custom.`, "success");
+            } else {
+                complete(ns, command, `${member} override cleared.`, "warning");
+            }
+            return;
+        }
+
+        if (name === "ascendGangMember") {
+            const member = String(command.member ?? command.target ?? "").trim();
+
+            if (!member) {
+                fail(ns, command, "Ascend command missing gang member.");
+                return;
+            }
+
+            ns.write(GANG_ASCEND_REQUEST_FILE, JSON.stringify({
+                id: command.id,
+                updatedAt: Date.now(),
+                updatedAtText: new Date().toLocaleTimeString(),
+                source: "dashboard-command-runner",
+                member,
+            }, null, 2), "w");
+
+            complete(ns, command, `Ascend request queued for ${member}.`, "success");
+            return;
+        }
+
         if (name === "clearEvents") {
             ns.write("/data/ui/event-log.txt", "", "w");
 
@@ -128,6 +212,36 @@ async function handleCommand(ns, command) {
     } catch (error) {
         fail(ns, command, String(error?.message ?? error));
     }
+}
+
+function normalizeGangMode(mode) {
+    const text = String(mode ?? "").trim().toLowerCase();
+
+    if (["old", "oldlogic", "old-logic", "legacy"].includes(text)) return "old-logic";
+    if (["balanced", "current", "train", "training"].includes(text)) return "balanced";
+    if (["money", "money-only", "pure-money", "cash"].includes(text)) return "money-only";
+    if (["combat", "combat-train", "combat-train-only", "train-combat", "train-combat-only"].includes(text)) return "combat-train-only";
+    if (["custom", "manual", "override", "overrides"].includes(text)) return "custom";
+    return null;
+}
+
+function getGangModeLabel(mode) {
+    if (mode === "old-logic") return "Old Logic";
+    if (mode === "money-only") return "Money Only";
+    if (mode === "combat-train-only") return "Combat Train Only";
+    if (mode === "custom") return "Custom";
+    return "Balanced";
+}
+
+function writeGangMode(ns, mode, commandId) {
+    ns.write(GANG_MODE_FILE, JSON.stringify({
+        updatedAt: Date.now(),
+        updatedAtText: new Date().toLocaleTimeString(),
+        source: "dashboard-command-runner",
+        mode,
+        label: getGangModeLabel(mode),
+        commandId,
+    }, null, 2), "w");
 }
 
 function complete(ns, command, message, level = "success") {

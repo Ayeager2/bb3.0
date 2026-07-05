@@ -1,6 +1,6 @@
 {
-  "updatedAt": 1783016354345,
-  "mode": "exp",
+  "updatedAt": 1783213606781,
+  "mode": "money",
   "priority": "income",
   "allowBuying": true,
   "forceBuy": false,
@@ -12,13 +12,13 @@
   "maxPrice": 1000000000000,
   "planReady": false,
   "nextGoal": {
-    "name": "HemoRecirculator",
+    "name": "Golden Tongue Module",
     "faction": "Slum Snakes",
-    "price": 45000000,
-    "rep": 10000,
-    "factionRep": 743.902859693087,
+    "price": 125000000,
+    "rep": 125000,
+    "factionRep": 19591.638396120037,
     "hasRep": false,
-    "affordable": false,
+    "affordable": true,
     "hasPrereqs": true,
     "stagePolicy": {
       "stage": "side",
@@ -35,5 +35,5 @@
   "planBlockedReason": "Need more rep with Slum Snakes.",
   "status": "blocked",
   "blockedReason": "Need more rep with Slum Snakes.",
-  "bridgeUpdatedAt": 1783016364153
+  "bridgeUpdatedAt": 1783213614458
 }

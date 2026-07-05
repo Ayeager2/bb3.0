@@ -1,9 +1,142 @@
 [
   {
-    "ts": 1783014913435,
+    "ts": 1783213147263,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213147263,
+    "type": "command",
+    "level": "danger",
+    "message": "Gang mode command missing valid mode.",
+    "data": null
+  },
+  {
+    "ts": 1783213446042,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213446042,
+    "type": "command",
+    "level": "danger",
+    "message": "Gang mode command missing valid mode.",
+    "data": null
+  },
+  {
+    "ts": 1783213451194,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213451194,
+    "type": "command",
+    "level": "danger",
+    "message": "Gang mode command missing valid mode.",
+    "data": null
+  },
+  {
+    "ts": 1783213467739,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213467739,
     "type": "command",
     "level": "success",
-    "message": "Dashboard command runner online.",
+    "message": "Gang mode switched to Balanced.",
+    "data": null
+  },
+  {
+    "ts": 1783213476786,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213476786,
+    "type": "command",
+    "level": "success",
+    "message": "Gang mode switched to Money Only.",
+    "data": null
+  },
+  {
+    "ts": 1783213482823,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213482823,
+    "type": "command",
+    "level": "danger",
+    "message": "Gang mode command missing valid mode.",
+    "data": null
+  },
+  {
+    "ts": 1783213488912,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213488912,
+    "type": "command",
+    "level": "success",
+    "message": "Gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783213493948,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213493948,
+    "type": "command",
+    "level": "success",
+    "message": "Gang mode switched to Old Logic.",
+    "data": null
+  },
+  {
+    "ts": 1783213508026,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783213508026,
+    "type": "command",
+    "level": "success",
+    "message": "Gang mode switched to Balanced.",
+    "data": null
+  },
+  {
+    "ts": 1783213560148,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783213560148,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-8 override set to Vigilante Justice; gang mode switched to Custom.",
     "data": null
   }
 ]

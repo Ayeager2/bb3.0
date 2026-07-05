@@ -1,6 +1,24 @@
 import Card from "../shared/Card.jsx";
+import { sendDashboardCommand } from "../../api/dashboardApi.js";
 import { formatMoney, formatNumber } from "../../utils/formatters.js";
 import "./GangCard.css";
+
+const GANG_TASK_OPTIONS = [
+    "Mug People",
+    "Deal Drugs",
+    "Strongarm Civilians",
+    "Run a Con",
+    "Armed Robbery",
+    "Traffick Illegal Arms",
+    "Threaten & Blackmail",
+    "Human Trafficking",
+    "Terrorism",
+    "Vigilante Justice",
+    "Train Combat",
+    "Train Hacking",
+    "Train Charisma",
+    "Territory Warfare",
+];
 
 export default function GangCard({
     state,
@@ -16,11 +34,29 @@ export default function GangCard({
     const assignments = Array.isArray(gang?.assignments) ? gang.assignments : [];
     const assignmentMix = countAssignments(assignments);
     const penalty = Number(gang?.wantedPenalty ?? 1);
-    const penaltyPercent = Math.max(0, Math.min(100, penalty * 100));
+    const penaltyLossPercent = Number.isFinite(Number(gang?.wantedPenaltyLossPercent))
+        ? Number(gang.wantedPenaltyLossPercent)
+        : (1 - penalty) * 100;
     const wantedPolicy = gang?.wantedPolicy ?? null;
     const territoryPolicy = gang?.territoryPolicy ?? null;
+    const gangMode = gang?.mode ?? "balanced";
     const combatSummary = getCombatSummary(members);
     const ascensionSummary = getAscensionSummary(members);
+    const setGangMode = mode => {
+        sendDashboardCommand("setGangMode", { mode }).catch(error => {
+            console.error(error);
+        });
+    };
+    const setMemberTask = (member, task) => {
+        sendDashboardCommand("setGangMemberTask", { member, task }).catch(error => {
+            console.error(error);
+        });
+    };
+    const ascendMember = member => {
+        sendDashboardCommand("ascendGangMember", { member }).catch(error => {
+            console.error(error);
+        });
+    };
 
     return (
         <Card
@@ -47,31 +83,66 @@ export default function GangCard({
                 <section className="gang-metrics">
                     <Metric label="Members" value={`${gang?.memberCount ?? members.length}/12`} tone="cyan" />
                     <Metric label="Respect" value={formatNumber(gang?.respect ?? 0, 1)} tone="purple" />
-                    <Metric label="Money/sec" value={formatMoney(gang?.moneyGainRate ?? 0)} tone="green" />
-                    <Metric label="Wanted" value={formatNumber(gang?.wantedLevel ?? 0, 2)} tone={getWantedTone(penalty)} />
-                </section>
-
-                <section className="gang-metrics gang-metrics-secondary">
-                    <Metric label="Respect/sec" value={formatNumber(gang?.respectGainRate ?? 0, 2)} tone="purple" />
-                    <Metric label="Wanted/sec" value={formatNumber(gang?.wantedLevelGainRate ?? 0, 3)} tone={Number(gang?.wantedLevelGainRate) > 0 ? "yellow" : "green"} />
-                    <Metric label="Territory" value={`${formatNumber((gang?.territory ?? 0) * 100, 2)}%`} tone="cyan" />
+                    <Metric label="Money/sec" value={formatMoney(gang?.moneyGainPerSecond ?? ((gang?.moneyGainRate ?? 0) * 5))} tone="green" />
+                    <Metric label="Wanted Penalty" value={`${penaltyLossPercent > 0 ? "-" : ""}${Math.abs(penaltyLossPercent).toFixed(2)}%`} tone={getWantedTone(penalty)} />
                     <Metric label="Power" value={formatNumber(gang?.power ?? 0, 1)} tone="yellow" />
+                    <Metric label="Avg Combat" value={formatNumber(combatSummary.average, 0)} tone="green" />
+                    <Metric label="Territory" value={`${formatNumber((gang?.territory ?? 0) * 100, 2)}%`} tone="cyan" />
+                    <Metric label="Asc Ready" value={`${ascensionSummary.ready}/${members.length || 0}`} tone={ascensionSummary.ready > 0 ? "green" : "purple"} />
                 </section>
 
-                <section className="gang-metrics gang-metrics-secondary">
-                    <Metric label="Avg Combat" value={formatNumber(combatSummary.average, 0)} tone="green" />
-                    <Metric label="Weakest" value={combatSummary.weakestName ?? "--"} tone="yellow" />
-                    <Metric label="Asc Ready" value={`${ascensionSummary.ready}/${members.length || 0}`} tone={ascensionSummary.ready > 0 ? "green" : "purple"} />
-                    <Metric label="Next Asc" value={ascensionSummary.nextName ?? "--"} tone={ascensionSummary.nextProgress >= 0.75 ? "green" : "cyan"} />
+                <section className="gang-panel gang-mode-panel">
+                    <div className="gang-panel-head">
+                        <span>Gang Doctrine</span>
+                        <b>{gang?.modeLabel ?? formatGangMode(gangMode)}</b>
+                    </div>
+                    <div className="gang-mode-buttons" role="group" aria-label="Gang doctrine mode">
+                        <button
+                            type="button"
+                            className={gangMode === "old-logic" ? "active" : ""}
+                            onClick={() => setGangMode("old-logic")}
+                        >
+                            Old Logic
+                        </button>
+                        <button
+                            type="button"
+                            className={gangMode === "balanced" ? "active" : ""}
+                            onClick={() => setGangMode("balanced")}
+                        >
+                            Balanced
+                        </button>
+                        <button
+                            type="button"
+                            className={gangMode === "money-only" ? "active" : ""}
+                            onClick={() => setGangMode("money-only")}
+                        >
+                            Money Only
+                        </button>
+                        <button
+                            type="button"
+                            className={gangMode === "combat-train-only" ? "active" : ""}
+                            onClick={() => setGangMode("combat-train-only")}
+                        >
+                            Combat Train
+                        </button>
+                        <button
+                            type="button"
+                            className={gangMode === "custom" ? "active" : ""}
+                            onClick={() => setGangMode("custom")}
+                        >
+                            Custom
+                        </button>
+                    </div>
+                    <p>{getGangModeDescription(gangMode)}</p>
                 </section>
 
                 <section className="gang-panel gang-penalty-panel">
                     <div className="gang-panel-head">
                         <span>Wanted Penalty</span>
-                        <b>{penaltyPercent.toFixed(2)}%</b>
+                        <b>{penaltyLossPercent > 0 ? "-" : ""}{Math.abs(penaltyLossPercent).toFixed(2)}%</b>
                     </div>
                     <div className="gang-bar">
-                        <span style={{ width: `${penaltyPercent}%` }} />
+                        <span style={{ width: `${Math.max(0, Math.min(100, penalty * 100))}%` }} />
                     </div>
                 </section>
 
@@ -82,8 +153,8 @@ export default function GangCard({
                     </div>
                     <div className="gang-policy-grid">
                         <MiniStat label="Vigilantes" value={formatNumber(wantedPolicy?.vigilanteCount ?? 0, 0)} />
-                        <MiniStat label="Penalty" value={`${formatNumber((wantedPolicy?.wantedPenalty ?? penalty) * 100, 1)}%`} />
-                        <MiniStat label="Wanted/s" value={formatNumber(wantedPolicy?.wantedGain ?? 0, 3)} />
+                        <MiniStat label="Penalty" value={`${formatWantedPenaltyLoss(wantedPolicy?.wantedPenalty ?? penalty)}`} />
+                        <MiniStat label="Wanted/s" value={formatNumber(gang?.wantedLevelGainPerSecond ?? ((wantedPolicy?.wantedGain ?? 0) * 5), 3)} />
                         <MiniStat label="Train Floor" value={formatNumber(wantedPolicy?.thresholds?.trainCombatMin ?? 50000, 0)} />
                     </div>
                     <p>{wantedPolicy?.reason ?? "Waiting for wanted-control telemetry."}</p>
@@ -134,7 +205,13 @@ export default function GangCard({
                     {members.length === 0 ? (
                         <div className="gang-empty">No gang members yet.</div>
                     ) : members.slice(0, 12).map(member => (
-                        <MemberCard key={member.name} member={member} />
+                        <MemberCard
+                            key={member.name}
+                            member={member}
+                            overrideTask={gang?.taskOverrides?.[member.name] ?? ""}
+                            onTaskChange={setMemberTask}
+                            onAscend={ascendMember}
+                        />
                     ))}
                 </section>
 
@@ -147,7 +224,35 @@ export default function GangCard({
     );
 }
 
-function MemberCard({ member }) {
+function formatGangMode(mode) {
+    if (mode === "old-logic") return "Old Logic";
+    if (mode === "money-only") return "Money Only";
+    if (mode === "combat-train-only") return "Combat Train Only";
+    if (mode === "custom") return "Custom";
+    return "Balanced";
+}
+
+function getGangModeDescription(mode) {
+    if (mode === "old-logic") {
+        return "Original gang script behavior: buy for everyone, split wanted control, Terrorism, arms trafficking, fallback crimes, and old strength-window ascension.";
+    }
+
+    if (mode === "money-only") {
+        return "Cash doctrine: buy for everyone, keep wanted penalty sane, and otherwise push money tasks without the 100k stat training plan.";
+    }
+
+    if (mode === "combat-train-only") {
+        return "Combat drill doctrine: every gang member trains combat until you switch modes or set manual task overrides.";
+    }
+
+    if (mode === "custom") {
+        return "Custom doctrine: member dropdown overrides win over automation. Members set to Auto fall back to money/control behavior.";
+    }
+
+    return "Current doctrine: train weak members, manage wanted, build toward the 100k STR/DEF territory team, then earn money.";
+}
+
+function MemberCard({ member, overrideTask = "", onTaskChange, onAscend }) {
     const combatAverage =
         Number(member.combatAverage) || getCombatAverage(member);
     const combatMinimum =
@@ -159,33 +264,39 @@ function MemberCard({ member }) {
         );
     const ascension =
         member.ascension ?? {};
+    const ascensionThreshold =
+        Number(ascension.threshold);
+    const hasAscensionThreshold =
+        Number.isFinite(ascensionThreshold) && ascensionThreshold > 0;
     const progress =
-        Math.max(0, Math.min(100, Number(ascension.progress ?? 0) * 100));
+        hasAscensionThreshold
+            ? Math.max(0, Math.min(100, Number(ascension.progress ?? 0) * 100))
+            : 0;
     const ready =
-        ascension.ready === true;
+        hasAscensionThreshold && ascension.ready === true;
+    const readinessLabel =
+        hasAscensionThreshold
+            ? `${formatNumber(ascension.projected ?? 1, 2)} / ${formatNumber(ascensionThreshold, 2)}`
+            : `${formatNumber(ascension.projected ?? 1, 2)} / capped`;
     const progressTone =
         ready ? "ready" : progress >= 75 ? "hot" : progress >= 45 ? "warm" : "cold";
     const sprite = getTaskSprite(member.task);
+    const ascendTooltip =
+        buildAscendTooltip(member, ascension);
 
     return (
         <article className={`gang-member-card gang-asc-${progressTone}`}>
             <div className="gang-member-portrait">
-                <div className={`gang-operator-sprite gang-operator-${sprite.kind}`} title={sprite.label} aria-hidden="true">
-                    <div className="gang-sprite-grid">
-                        <span className="sprite-head" />
-                        <span className="sprite-hair" />
-                        <span className="sprite-eye sprite-eye-left" />
-                        <span className="sprite-eye sprite-eye-right" />
-                        <span className="sprite-body" />
-                        <span className="sprite-arm sprite-arm-left" />
-                        <span className="sprite-arm sprite-arm-right" />
-                        <span className="sprite-leg sprite-leg-left" />
-                        <span className="sprite-leg sprite-leg-right" />
-                        <span className="sprite-prop sprite-prop-a" />
-                        <span className="sprite-prop sprite-prop-b" />
-                        <span className="sprite-prop sprite-prop-c" />
-                    </div>
-                </div>
+                <button
+                    type="button"
+                    className={`gang-manual-ascend ${ready ? "ready" : ""}`}
+                    data-tooltip={ascendTooltip}
+                    aria-label={`Ascend ${member.name}`}
+                    onClick={() => onAscend?.(member.name)}
+                >
+                    ↑
+                </button>
+                <GangPixelActor kind={sprite.kind} label={sprite.label} />
                 <small>{sprite.label}</small>
             </div>
 
@@ -193,63 +304,145 @@ function MemberCard({ member }) {
                 <header className="gang-member-header">
                     <div className="gang-member-title">
                         <b>{member.name}</b>
-                        <span>{member.task ?? "--"}</span>
+                        <label>
+                            <span>{overrideTask ? "override" : (member.task ?? "--")}</span>
+                            <select
+                                value={overrideTask}
+                                onChange={event => onTaskChange?.(member.name, event.target.value)}
+                                aria-label={`Set ${member.name} task override`}
+                            >
+                                <option value="">Auto</option>
+                                {GANG_TASK_OPTIONS.map(task => (
+                                    <option key={task} value={task}>{task}</option>
+                                ))}
+                            </select>
+                        </label>
                     </div>
-                    <em>{ready ? "ASCEND" : `${Math.round(progress)}%`}</em>
+                    <em>{ready ? "ASCEND" : hasAscensionThreshold ? `${Math.round(progress)}%` : "CAP"}</em>
                 </header>
 
-            <div className="gang-member-stats">
-                <MiniStat label="Combat" value={formatNumber(combatAverage, 0)} />
-                <MiniStat label="Lowest" value={formatNumber(combatMinimum, 0)} />
-                <MiniStat label="Asc" value={`${formatNumber(getAscAverage(member), 2)}x`} />
-                <MiniStat label="Respect" value={formatNumber(member.earnedRespect ?? 0, 1)} />
-            </div>
-
-            <div className="gang-asc-row">
-                <div className="gang-asc-label">
-                    <span>Ascension readiness</span>
-                    <b>{formatNumber(ascension.projected ?? 1, 2)} / {formatNumber(ascension.threshold ?? 0, 2)}</b>
+                <div className="gang-member-stats">
+                    <MiniStat label="Combat" value={formatNumber(combatAverage, 0)} />
+                    <MiniStat label="Lowest" value={formatNumber(combatMinimum, 0)} />
+                    <MiniStat label="Asc" value={`${formatNumber(getAscAverage(member), 2)}x`} />
+                    <MiniStat label="Respect" value={formatNumber(member.earnedRespect ?? 0, 1)} />
                 </div>
-                <div className="gang-asc-bar">
-                    <span style={{ width: `${progress}%` }} />
-                </div>
-            </div>
 
-            <div className="gang-member-gains">
-                <span>$/s {formatMoney(member.moneyGain ?? 0)}</span>
-                <span>rep/s {formatNumber(member.respectGain ?? 0, 2)}</span>
-                <span>wanted/s {formatNumber(member.wantedLevelGain ?? 0, 3)}</span>
-            </div>
+                <div className="gang-asc-row">
+                    <div className="gang-asc-label">
+                        <span>Ascension readiness</span>
+                        <b>{readinessLabel}</b>
+                    </div>
+                    <div className="gang-asc-bar">
+                        <span style={{ width: `${progress}%` }} />
+                    </div>
+                </div>
+
+                <div className="gang-member-gains">
+                    <span>$/s {formatMoney(member.moneyGainPerSecond ?? ((member.moneyGain ?? 0) * 5))}</span>
+                    <span>rep/s {formatNumber(member.respectGainPerSecond ?? ((member.respectGain ?? 0) * 5), 2)}</span>
+                    <span>wanted/s {formatNumber(member.wantedLevelGainPerSecond ?? ((member.wantedLevelGain ?? 0) * 5), 3)}</span>
+                </div>
             </div>
         </article>
     );
 }
 
+function GangPixelActor({ kind, label }) {
+    return (
+        <div className={`gang-pixel-actor gang-pixel-${kind}`} title={label} aria-hidden="true">
+            <span className="pixel-shadow" />
+            <span className="pixel-pack" />
+            <span className="pixel-leg pixel-leg-back" />
+            <span className="pixel-leg pixel-leg-front" />
+            <span className="pixel-boot pixel-boot-back" />
+            <span className="pixel-boot pixel-boot-front" />
+            <span className="pixel-arm pixel-arm-back" />
+            <span className="pixel-body" />
+            <span className="pixel-vest" />
+            <span className="pixel-arm pixel-arm-front" />
+            <span className="pixel-neck" />
+            <span className="pixel-head" />
+            <span className="pixel-hair" />
+            <span className="pixel-eye pixel-eye-left" />
+            <span className="pixel-eye pixel-eye-right" />
+            <span className="pixel-prop pixel-prop-a" />
+            <span className="pixel-prop pixel-prop-b" />
+            <span className="pixel-prop pixel-prop-c" />
+            <span className="pixel-spark pixel-spark-a" />
+            <span className="pixel-spark pixel-spark-b" />
+        </div>
+    );
+}
+
+function buildAscendTooltip(member, ascension) {
+    const result = ascension?.result ?? {};
+    const rows = [
+        ["Hacking", member.hackAsc, result.hack],
+        ["Strength", member.strAsc, result.str],
+        ["Defense", member.defAsc, result.def],
+        ["Dexterity", member.dexAsc, result.dex],
+        ["Agility", member.agiAsc, result.agi],
+        ["Charisma", member.chaAsc, result.cha],
+    ];
+
+    return rows
+        .map(([label, current, projected]) => {
+            const currentValue = Number(current) || 1;
+            const projectedValue = Number(projected) || 1;
+            return `${label}: x${currentValue.toFixed(5)} => x${(currentValue * projectedValue).toFixed(5)}`;
+        })
+        .join("\n");
+}
+
 function getTaskSprite(task) {
     const normalized = String(task ?? "").toLowerCase();
 
-    if (normalized.includes("cyber") || normalized.includes("hack") || normalized.includes("ransomware") || normalized.includes("identity")) {
-        return { kind: "hack", label: "datapad op" };
+    if (normalized.includes("mug")) {
+        return { kind: "mug", label: "mug people" };
+    }
+    if (normalized.includes("deal drugs")) {
+        return { kind: "deal", label: "street deal" };
+    }
+    if (normalized.includes("run a con")) {
+        return { kind: "con", label: "run a con" };
+    }
+    if (normalized.includes("threaten") || normalized.includes("blackmail")) {
+        return { kind: "blackmail", label: "blackmail" };
+    }
+    if (normalized.includes("human trafficking")) {
+        return { kind: "traffic", label: "traffic jam" };
     }
     if (normalized.includes("traffic") || normalized.includes("arms")) {
-        return { kind: "arms", label: "cache lookout" };
+        return { kind: "arms", label: "arms runner" };
     }
-    if (normalized.includes("homicide") || normalized.includes("terrorism")) {
-        return { kind: "strike", label: "close-quarters" };
+    if (normalized.includes("strongarm")) {
+        return { kind: "strongarm", label: "strongarm" };
     }
-    if (normalized.includes("mug") || normalized.includes("robbery") || normalized.includes("strongarm")) {
-        return { kind: "ambush", label: "street ambush" };
+    if (normalized.includes("armed robbery") || normalized.includes("robbery")) {
+        return { kind: "robbery", label: "armed robbery" };
     }
     if (normalized.includes("vigilante")) {
-        return { kind: "control", label: "heat control" };
+        return { kind: "vigilante", label: "vigilante justice" };
     }
-    if (normalized.includes("territory")) {
-        return { kind: "territory", label: "turf watch" };
+    if (normalized.includes("train hacking")) {
+        return { kind: "train-hack", label: "hack training" };
+    }
+    if (normalized.includes("train charisma")) {
+        return { kind: "train-charisma", label: "charisma drill" };
     }
     if (normalized.includes("train")) {
         return { kind: "train", label: "training" };
     }
-
+    if (normalized.includes("cyber") || normalized.includes("hack") || normalized.includes("ransomware") || normalized.includes("identity")) {
+        return { kind: "hack", label: "datapad op" };
+    }
+    if (normalized.includes("homicide") || normalized.includes("terrorism")) {
+        return { kind: "terrorism", label: "chaos op" };
+    }
+    if (normalized.includes("territory")) {
+        return { kind: "territory", label: "turf watch" };
+    }
     return { kind: "money", label: "crew work" };
 }
 
@@ -281,6 +474,12 @@ function getWantedTone(penalty) {
 function formatPolicyStatus(status) {
     return String(status ?? "unknown")
         .replaceAll("-", " ");
+}
+
+function formatWantedPenaltyLoss(penalty) {
+    const loss =
+        (1 - (Number(penalty) || 1)) * 100;
+    return `${loss > 0 ? "-" : ""}${Math.abs(loss).toFixed(1)}%`;
 }
 
 function formatChance(value) {

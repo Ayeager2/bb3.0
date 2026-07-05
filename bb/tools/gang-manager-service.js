@@ -1,5 +1,22 @@
 const STATE_FILE = "/data/gang-state.txt";
-const DIAGNOSTIC_VERSION = "gang-wanted-control-v8";
+const MODE_FILE = "/data/gang-mode.txt";
+const TASK_OVERRIDE_FILE = "/data/gang-task-overrides.txt";
+const ASCEND_REQUEST_FILE = "/data/gang-ascend-request.txt";
+const ASCEND_STATE_FILE = "/data/gang-ascend-state.txt";
+const DIAGNOSTIC_VERSION = "gang-mode-switch-v10";
+const GANG_MODE_BALANCED = "balanced";
+const GANG_MODE_OLD_LOGIC = "old-logic";
+const GANG_MODE_MONEY_ONLY = "money-only";
+const GANG_MODE_COMBAT_TRAIN_ONLY = "combat-train-only";
+const GANG_MODE_CUSTOM = "custom";
+const GANG_MODES = [
+  GANG_MODE_BALANCED,
+  GANG_MODE_OLD_LOGIC,
+  GANG_MODE_MONEY_ONLY,
+  GANG_MODE_COMBAT_TRAIN_ONLY,
+  GANG_MODE_CUSTOM,
+];
+const GANG_TICKS_PER_SECOND = 5;
 
 const MEMBER_NAME_PREFIX = "Operator";
 const STRIKE_TEAM_NAMES = [
@@ -49,6 +66,7 @@ const MONEY_TASKS = [
 ];
 let cycleCache = null;
 let previousTerritorySnapshot = null;
+let lastAscendRequestId = null;
 
 /** @param {NS} ns */
 export async function main(ns) {
@@ -63,6 +81,7 @@ export async function main(ns) {
     ["ascend", true],
     ["asc-mult", 10],
     ["fast-asc-mult", 100],
+    ["mode", "auto"],
     ["debug", false],
   ]);
 
@@ -70,7 +89,7 @@ export async function main(ns) {
   const debug = flags.debug === true;
 
   while (true) {
-    const state = runGangCycle(ns, {
+    const state = await runGangCycle(ns, {
       reserve: Number(flags.reserve) || 0,
       create: flags.create === true,
       faction: String(flags.faction || "Slum Snakes"),
@@ -78,6 +97,7 @@ export async function main(ns) {
       ascend: flags.ascend === true,
       ascMult: Number(flags["asc-mult"]) || 10,
       fastAscMult: Number(flags["fast-asc-mult"]) || 100,
+      mode: String(flags.mode ?? "auto"),
     });
 
     writeState(ns, state);
@@ -99,7 +119,83 @@ export async function main(ns) {
   }
 }
 
-function runGangCycle(ns, options) {
+function processManualAscendRequest(ns, names) {
+  const request =
+    readJson(ns, ASCEND_REQUEST_FILE, null);
+
+  if (!request?.id || request.id === lastAscendRequestId) {
+    return readJson(ns, ASCEND_STATE_FILE, null);
+  }
+
+  lastAscendRequestId = request.id;
+
+  const requested =
+    String(request.member ?? "").trim();
+  const member =
+    findGangMemberName(names, requested);
+
+  if (!member) {
+    return writeAscendState(ns, {
+      status: "error",
+      message: `Cannot ascend: ${requested || "unknown member"} was not found.`,
+      request,
+      requested,
+      members: names,
+      ascended: false,
+    });
+  }
+
+  const before =
+    safeMemberInfo(ns, member);
+  const projected =
+    safeAscensionResult(ns, member);
+  const result =
+    safeAscendRaw(ns, member);
+
+  invalidateMemberInfoCache();
+
+  return writeAscendState(ns, {
+    status: result ? "success" : "error",
+    message: result ? `Ascended ${member}.` : `Ascend failed for ${member}.`,
+    request,
+    requested,
+    member,
+    before,
+    projected,
+    result,
+    ascended: !!result,
+  });
+}
+
+function findGangMemberName(names, requested) {
+  const exact =
+    names.find(name => name === requested);
+  if (exact) return exact;
+
+  const wanted =
+    String(requested ?? "").toLowerCase();
+
+  return names.find(name => String(name).toLowerCase() === wanted) ?? null;
+}
+
+function writeAscendState(ns, state) {
+  const next = {
+    updatedAt: Date.now(),
+    updatedAtText: new Date().toLocaleTimeString(),
+    source: "gang-manager-service",
+    ...state,
+  };
+
+  try {
+    ns.write(ASCEND_STATE_FILE, JSON.stringify(next, null, 2), "w");
+  } catch {
+    // Ascend telemetry should not stop gang control.
+  }
+
+  return next;
+}
+
+async function runGangCycle(ns, options) {
   cycleCache = createCycleCache();
 
   if (getCurrentBitNode(ns) !== 2) {
@@ -126,6 +222,10 @@ function runGangCycle(ns, options) {
 
   const recruited = recruitMembers(ns);
   const names = safeMemberNames(ns);
+  const manualAscend =
+    processManualAscendRequest(ns, names);
+  const mode = getGangMode(ns, options.mode);
+  const taskOverrides = getTaskOverrides(ns);
   const equipmentBuyer =
     options.buyEquipment
       ? buyGangEquipment(ns, names, options.reserve)
@@ -135,11 +235,29 @@ function runGangCycle(ns, options) {
         message: "Gang equipment buying is disabled.",
         nextItem: null,
       };
+  const autoAscended =
+    options.ascend
+      ? mode === GANG_MODE_OLD_LOGIC
+        ? ascendGangMembersOldLogic(ns, names, options)
+        : ascendGangMembers(ns, names, options)
+      : 0;
   const ascended =
-    options.ascend ? ascendGangMembers(ns, names, options) : 0;
-  const territory = buildTerritoryPolicy(ns, names);
-  const wantedPolicy = buildWantedPolicy(safeGangInfo(ns), names.length);
-  const assignments = assignGangTasks(ns, names, territory, wantedPolicy);
+    autoAscended + (manualAscend?.ascended ? 1 : 0);
+  const territory =
+    mode === GANG_MODE_BALANCED
+      ? buildTerritoryPolicy(ns, names)
+      : buildInactiveTerritoryPolicy(ns, mode);
+  const wantedPolicy =
+    mode === GANG_MODE_OLD_LOGIC
+      ? buildOldWantedPolicy(safeGangInfo(ns), names.length)
+      : buildWantedPolicy(safeGangInfo(ns), names.length);
+  const assignments = assignGangTasks(ns, names, territory, wantedPolicy, mode, taskOverrides);
+
+  // Let Bitburner recalculate gang production after task changes before publishing telemetry.
+  // Without this, the dashboard can show the previous task mix while the in-game Gang page
+  // has already refreshed to the new money/respect/wanted rates.
+  await ns.sleep(50);
+
   invalidateMemberInfoCache();
   invalidateGangInfoCache();
   const info = safeGangInfo(ns);
@@ -149,21 +267,31 @@ function runGangCycle(ns, options) {
     ...baseState("running", "Gang manager active.", {}),
     inGang: true,
     gang: info?.faction ?? null,
+    mode,
+    modeLabel: getGangModeLabel(mode),
+    availableModes: GANG_MODES,
+    taskOverrides,
     memberCount: names.length,
     recruited,
     boughtEquipment: equipmentBuyer.bought,
     equipmentBuyer,
     ascended,
+    autoAscended,
+    manualAscend,
     assignments,
     wantedPolicy,
     territoryPolicy: territory,
     territoryDelta,
     respect: info?.respect ?? 0,
     respectGainRate: info?.respectGainRate ?? 0,
+    respectGainPerSecond: (info?.respectGainRate ?? 0) * GANG_TICKS_PER_SECOND,
     wantedLevel: info?.wantedLevel ?? 0,
     wantedLevelGainRate: info?.wantedLevelGainRate ?? 0,
+    wantedLevelGainPerSecond: (info?.wantedLevelGainRate ?? 0) * GANG_TICKS_PER_SECOND,
     wantedPenalty: info?.wantedPenalty ?? 1,
+    wantedPenaltyLossPercent: (1 - (info?.wantedPenalty ?? 1)) * 100,
     moneyGainRate: info?.moneyGainRate ?? 0,
+    moneyGainPerSecond: (info?.moneyGainRate ?? 0) * GANG_TICKS_PER_SECOND,
     territory: info?.territory ?? 0,
     power: info?.power ?? 0,
     money: ns.getPlayer().money,
@@ -252,26 +380,12 @@ function buyGangEquipment(ns, names, reserve) {
 function getGangEquipmentBuyerNames(ns, names, equipmentNames) {
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
-  const strikeTeam =
-    getStrikeTeamNames(names);
-  const readiness =
-    strikeTeam.map(name => getMemberEquipmentCompletion(ns, name, equipmentNames));
-  const strikeTeamReady =
-    strikeTeam.length >= TERRITORY_STRIKE_TEAM_SIZE &&
-    readiness.every(item => item.complete);
-
-  if (!strikeTeamReady && strikeTeam.length > 0) {
-    return {
-      scope: "top-five strike team",
-      names: strikeTeam,
-      strikeTeamReady,
-    };
-  }
 
   return {
     scope: "whole gang",
     names: sorted,
-    strikeTeamReady,
+    strikeTeamReady: sorted.length > 0 &&
+      sorted.every(name => getMemberEquipmentCompletion(ns, name, equipmentNames).complete),
   };
 }
 
@@ -291,6 +405,46 @@ function ascendGangMembers(ns, names, options) {
 
   for (const candidate of candidates) {
     if (safeAscend(ns, candidate.name)) ascended++;
+  }
+
+  return ascended;
+}
+
+function ascendGangMembersOldLogic(ns, names, options) {
+  const members =
+    names
+      .map(name => safeMemberInfo(ns, name))
+      .filter(Boolean);
+  const equipmentNames =
+    safeEquipment(ns)
+      .filter(item => item.type !== "Augmentation")
+      .map(item => item.name);
+  const minStrengthAsc =
+    members.length > 0
+      ? Math.min(...members.map(member => Number(member.str_asc_mult) || 1))
+      : 1;
+  const expectedStrengthAsc =
+    Math.min(minStrengthAsc + 2, Number(options.fastAscMult) || 100);
+  const earlyAscension =
+    minStrengthAsc < 2;
+  const maxAscensions =
+    Math.min(5, Math.max(1, Math.ceil(names.length / 3)));
+  const candidates =
+    members
+      .filter(member => (Number(member.str_asc_mult) || 1) < expectedStrengthAsc)
+      .filter(member => {
+        const upgrades =
+          Array.isArray(member.upgrades) ? member.upgrades : [];
+        if (earlyAscension) return upgrades.length > 10;
+        return equipmentNames.length === 0 || upgrades.length >= equipmentNames.length;
+      })
+      .sort((a, b) => (a.earnedRespect ?? 0) - (b.earnedRespect ?? 0))
+      .slice(0, maxAscensions);
+
+  let ascended = 0;
+
+  for (const member of candidates) {
+    if (safeAscend(ns, member.name)) ascended++;
   }
 
   return ascended;
@@ -376,8 +530,62 @@ function buildWantedPolicy(info, memberCount) {
   };
 }
 
-function assignGangTasks(ns, names, territory = null, wantedPolicy = null) {
+function buildOldWantedPolicy(info, memberCount) {
+  const wantedLevel = Number(info?.wantedLevel) || 0;
+  const wantedGain = Number(info?.wantedLevelGainRate) || 0;
+  const respectGain = Number(info?.respectGainRate) || 0;
+  const respect = Number(info?.respect) || 0;
+  const wantedPenalty = Number(info?.wantedPenalty) || 1;
+  const count = Math.max(0, Number(memberCount) || 0);
+  const wantToReduceWanted =
+    count > 0 &&
+    wantedLevel > 10 &&
+    (
+      (wantedGain > 0 && respectGain < wantedGain * 10) ||
+      wantedLevel * 10 > respect
+    );
+  const vigilanteCount =
+    wantToReduceWanted
+      ? Math.max(1, Math.ceil(count / 3))
+      : 0;
+
+  return {
+    active: vigilanteCount > 0,
+    status: wantToReduceWanted ? "old-logic-control" : "old-logic-money",
+    reason: wantToReduceWanted
+      ? "Old Logic: wanted pressure is high, so about one third of the gang runs Vigilante Justice."
+      : "Old Logic: wanted pressure is acceptable, so members split between Terrorism, arms trafficking, and fallback crime.",
+    vigilanteCount,
+    borrowStrikeTeam: true,
+    wantedLevel,
+    wantedGain,
+    respectGain,
+    wantedPenalty,
+    respect,
+    thresholds: {
+      oldWantedLevel: 10,
+      oldRespectRatio: 10,
+    },
+  };
+}
+
+function assignGangTasks(ns, names, territory = null, wantedPolicy = null, mode = GANG_MODE_BALANCED, taskOverrides = {}) {
+  if (mode === GANG_MODE_OLD_LOGIC) {
+    return assignOldLogicTasks(ns, names, wantedPolicy);
+  }
+
   const assignments = [];
+
+  if (mode === GANG_MODE_COMBAT_TRAIN_ONLY) {
+    for (const name of names) {
+      assignments.push({
+        name,
+        task: setBestAvailableTask(ns, name, "Train Combat"),
+      });
+    }
+
+    return assignments;
+  }
 
   const sorted = [...names]
     .sort((a, b) => getCombatScore(ns, b).average - getCombatScore(ns, a).average);
@@ -407,7 +615,15 @@ function assignGangTasks(ns, names, territory = null, wantedPolicy = null) {
       combat.minimum < SUPPORT_TRAIN_COMBAT_MIN ||
       combat.average < SUPPORT_TRAIN_COMBAT_AVG;
 
-    if (territoryNames.has(name)) {
+    if (mode === GANG_MODE_CUSTOM && taskOverrides[name]) {
+      task = taskOverrides[name];
+    } else if (mode === GANG_MODE_MONEY_ONLY || mode === GANG_MODE_CUSTOM) {
+      if (wantedControlNames.has(name)) {
+        task = "Vigilante Justice";
+      } else {
+        task = chooseMoneyTask(combat.average);
+      }
+    } else if (territoryNames.has(name)) {
       task = TERRITORY_TASK;
     } else if (wantedControlNames.has(name)) {
       task = "Vigilante Justice";
@@ -425,7 +641,142 @@ function assignGangTasks(ns, names, territory = null, wantedPolicy = null) {
     assignments.push({ name, task });
   }
 
+  return mode === GANG_MODE_CUSTOM
+    ? applyTaskOverrides(ns, assignments, taskOverrides)
+    : assignments;
+}
+
+function applyTaskOverrides(ns, assignments, taskOverrides = {}) {
+  if (!taskOverrides || Object.keys(taskOverrides).length === 0) return assignments;
+
+  return assignments.map(assignment => {
+    const override =
+      String(taskOverrides[assignment.name] ?? "").trim();
+    if (!override) return assignment;
+
+    return {
+      name: assignment.name,
+      task: setBestAvailableTask(ns, assignment.name, override),
+      override: true,
+    };
+  });
+}
+
+function assignOldLogicTasks(ns, names, wantedPolicy = null) {
+  const info = safeGangInfo(ns);
+  const memberCount = names.length;
+  const wantedTarget =
+    Math.max(0, Math.ceil(Number(wantedPolicy?.vigilanteCount) || 0));
+  const terrorismDividerRate =
+    Number(info?.wantedLevel) > Number(info?.respect) ||
+      Number(info?.respect) < 2_500_000
+      ? 2
+      : 4;
+  let wantedRemaining =
+    wantedTarget;
+  let terrorismRemaining =
+    Math.ceil(Math.max(0, memberCount - wantedTarget) / terrorismDividerRate);
+  let traffickRemaining =
+    Math.max(0, memberCount - wantedTarget - terrorismRemaining);
+  const sorted =
+    [...names].sort((a, b) => {
+      const aInfo = safeMemberInfo(ns, a) ?? {};
+      const bInfo = safeMemberInfo(ns, b) ?? {};
+      return getOldVigilanteAbility(bInfo) - getOldVigilanteAbility(aInfo) ||
+        getOldTerrorismAbility(bInfo) - getOldTerrorismAbility(aInfo) ||
+        compareGangMemberNames(a, b);
+    });
+  const assignments = [];
+
+  for (const name of sorted) {
+    const member = safeMemberInfo(ns, name);
+    if (!member) continue;
+
+    const terrorismAbility = getOldTerrorismAbility(member);
+    const isTerrorismRisky =
+      terrorismAbility > 620 && terrorismAbility < 710;
+    let task;
+
+    if (wantedRemaining > 0) {
+      task = "Vigilante Justice";
+      wantedRemaining--;
+    } else if (!isTerrorismRisky && terrorismRemaining > 0) {
+      task = "Terrorism";
+      terrorismRemaining--;
+    } else if (terrorismAbility > 800 && traffickRemaining > 0) {
+      task = "Traffick Illegal Arms";
+      traffickRemaining--;
+    } else if (memberCount < 30 && (Number(member.str) || 0) > 20 && (Number(member.str) || 0) < 120) {
+      task = "Mug People";
+    } else if (isTerrorismRisky) {
+      if ((Number(member.str) || 0) > 120) {
+        task = "Strongarm Civilians";
+      } else if ((Number(member.str) || 0) > 20) {
+        task = "Mug People";
+      } else {
+        task = "Vigilante Justice";
+      }
+    } else {
+      task = "Terrorism";
+    }
+
+    task = setBestAvailableTask(ns, name, task);
+    assignments.push({ name, task });
+  }
+
   return assignments;
+}
+
+function getOldTerrorismAbility(member) {
+  return (
+    (Number(member.hack) || 0) +
+    (Number(member.str) || 0) +
+    (Number(member.def) || 0) +
+    (Number(member.dex) || 0) +
+    (Number(member.cha) || 0)
+  );
+}
+
+function getOldVigilanteAbility(member) {
+  return (
+    (Number(member.hack) || 0) +
+    (Number(member.str) || 0) +
+    (Number(member.def) || 0) +
+    (Number(member.dex) || 0) +
+    (Number(member.agi) || 0)
+  );
+}
+
+function buildInactiveTerritoryPolicy(ns, mode) {
+  const failClosedSet = safeSetTerritoryWarfare(ns, false);
+  const info = safeGangInfo(ns);
+  const otherGangs = safeOtherGangInfo(ns);
+  const chance = getTerritoryWinChance(ns, info, otherGangs);
+
+  return {
+    active: false,
+    status: mode === GANG_MODE_OLD_LOGIC ? "old-logic-disabled" : "money-only-disabled",
+    reason: mode === GANG_MODE_OLD_LOGIC
+      ? "Old Logic mode does not assign territory warfare; it follows the original money/respect/wanted task split."
+      : "Money Only mode disables territory warfare and training so members focus on cash and wanted control.",
+    territory: Number(info?.territory) || 0,
+    power: Number(info?.power) || 0,
+    warriorCount: 0,
+    warriorNames: [],
+    trainingCount: 0,
+    trainingNames: [],
+    respectCount: 0,
+    territoryTaskAllowed: false,
+    clashEnabled: false,
+    clashSet: failClosedSet,
+    failClosedSet,
+    lowestWinChance: chance.lowestWinChance,
+    allRivalsChecked: chance.chances.length > 0,
+    allRivalsReady: false,
+    unsafeRivals: chance.chances,
+    strongestRivalPower: chance.strongestRivalPower,
+    winChances: chance.chances,
+  };
 }
 
 function buildTerritoryPolicy(ns, names) {
@@ -474,6 +825,11 @@ function buildTerritoryPolicy(ns, names) {
   const strikeTeamFullyEquipped =
     strikeTeamSize >= TERRITORY_STRIKE_TEAM_SIZE &&
     topEquipmentReadyCount >= TERRITORY_STRIKE_TEAM_SIZE;
+  const durabilityReadiness =
+    strikeTeamNames.map(name => getStrikeTeamDurabilityState(ns, name));
+  const strikeTeamDurable =
+    strikeTeamSize >= TERRITORY_STRIKE_TEAM_SIZE &&
+    durabilityReadiness.every(item => item.ready);
 
   const complete =
     territory >= 0.99;
@@ -483,15 +839,21 @@ function buildTerritoryPolicy(ns, names) {
     !complete &&
     enoughMembers &&
     strikeTeamFullyEquipped &&
+    strikeTeamDurable &&
     winChanceSafe;
+  const shouldBuildPower =
+    !complete &&
+    enoughMembers &&
+    strikeTeamDurable &&
+    !safeToClash;
   const warriorCount =
-    safeToClash
+    safeToClash || shouldBuildPower
       ? Math.min(TERRITORY_STRIKE_TEAM_SIZE, memberCount)
       : 0;
   const warriorNames =
     strikeTeamNames.slice(0, warriorCount);
   const trainingNames =
-    !complete && strikeTeamFullyEquipped && !safeToClash
+    !complete && !strikeTeamDurable
       ? strikeTeamNames
       : [];
   const trainingCount =
@@ -500,7 +862,7 @@ function buildTerritoryPolicy(ns, names) {
   const clashEnabled =
     safeToClash === true;
   const territoryTaskAllowed =
-    clashEnabled &&
+    (clashEnabled || shouldBuildPower) &&
     warriorCount > 0;
   const clashSet =
     safeSetTerritoryWarfare(ns, clashEnabled);
@@ -509,11 +871,11 @@ function buildTerritoryPolicy(ns, names) {
       ? "complete"
       : !enoughMembers
         ? "waiting-members"
-        : !strikeTeamFullyEquipped
-          ? "waiting-equipment"
+        : !strikeTeamDurable
+          ? "training-strike-team"
           : safeToClash
             ? "clashing"
-            : "training-strike-team";
+            : "building-power";
 
   return {
     active: safeToClash,
@@ -522,16 +884,18 @@ function buildTerritoryPolicy(ns, names) {
       ? "Territory is effectively complete."
       : !enoughMembers
         ? `Need ${TERRITORY_MIN_MEMBERS} members before territory warfare.`
-      : !strikeTeamFullyEquipped
-        ? `Territory paused until the top ${TERRITORY_STRIKE_TEAM_SIZE} have full gang equipment/augmentation sets. ${topEquipmentReadyCount}/${TERRITORY_STRIKE_TEAM_SIZE} are fully equipped.`
-      : safeToClash
-          ? `Clash enabled: all rival gangs are at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
-          : `Top ${TERRITORY_STRIKE_TEAM_SIZE} are fully equipped. Training combat only; clashes stay OFF until every rival reaches ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%+. ${formatTerritoryBlocker(allRivalsChecked, unsafeRivals)}`,
+        : !strikeTeamDurable
+          ? `Top ${TERRITORY_STRIKE_TEAM_SIZE} train until STR and DEF reach ${formatNumber(STRIKE_TEAM_STR_DEF_MIN)}.`
+          : safeToClash
+            ? `Clash enabled: all rival gangs are at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
+            : `Building gang power with clashes OFF. Top ${TERRITORY_STRIKE_TEAM_SIZE} are durable; ${topEquipmentReadyCount}/${TERRITORY_STRIKE_TEAM_SIZE} fully equipped. Clashes wait until every rival reaches ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%+. ${formatTerritoryBlocker(allRivalsChecked, unsafeRivals)}`,
     territory,
     power,
     memberCount,
     strikeTeamSize: TERRITORY_STRIKE_TEAM_SIZE,
     strikeTeamNames,
+    strikeTeamDurable,
+    durabilityReadiness,
     strikeTeamFullyEquipped,
     topEquipmentReadyCount,
     equipmentReadiness,
@@ -581,6 +945,28 @@ function getMemberEquipmentCompletion(ns, name, equipmentNames) {
     totalCount: equipmentNames.length,
     missingCount: missing.length,
     missingPreview: missing.slice(0, 5),
+  };
+}
+
+function getStrikeTeamDurabilityState(ns, name) {
+  const member =
+    safeMemberInfo(ns, name);
+  const strength =
+    Number(member?.str) || 0;
+  const defense =
+    Number(member?.def) || 0;
+
+  return {
+    name,
+    strength,
+    defense,
+    ready:
+      strength >= STRIKE_TEAM_STR_DEF_MIN &&
+      defense >= STRIKE_TEAM_STR_DEF_MIN,
+    missingStrength:
+      Math.max(0, STRIKE_TEAM_STR_DEF_MIN - strength),
+    missingDefense:
+      Math.max(0, STRIKE_TEAM_STR_DEF_MIN - defense),
   };
 }
 
@@ -813,6 +1199,61 @@ function formatNumber(value) {
   return n.toFixed(2);
 }
 
+function getGangMode(ns, requestedMode = "auto") {
+  const normalized =
+    normalizeGangMode(requestedMode);
+
+  if (normalized) return normalized;
+
+  const stored =
+    readJson(ns, MODE_FILE, null);
+  const storedMode =
+    normalizeGangMode(stored?.mode ?? stored);
+
+  return storedMode ?? GANG_MODE_BALANCED;
+}
+
+function normalizeGangMode(mode) {
+  const text =
+    String(mode ?? "").trim().toLowerCase();
+
+  if (!text || text === "auto") return null;
+  if (["old", "oldlogic", "old-logic", "legacy"].includes(text)) return GANG_MODE_OLD_LOGIC;
+  if (["balanced", "current", "train", "training"].includes(text)) return GANG_MODE_BALANCED;
+  if (["money", "money-only", "pure-money", "cash"].includes(text)) return GANG_MODE_MONEY_ONLY;
+  if (["combat", "combat-train", "combat-train-only", "train-combat", "train-combat-only"].includes(text)) return GANG_MODE_COMBAT_TRAIN_ONLY;
+  if (["custom", "manual", "override", "overrides"].includes(text)) return GANG_MODE_CUSTOM;
+  return GANG_MODES.includes(text) ? text : null;
+}
+
+function getGangModeLabel(mode) {
+  if (mode === GANG_MODE_OLD_LOGIC) return "Old Logic";
+  if (mode === GANG_MODE_MONEY_ONLY) return "Money Only";
+  if (mode === GANG_MODE_COMBAT_TRAIN_ONLY) return "Combat Train Only";
+  if (mode === GANG_MODE_CUSTOM) return "Custom";
+  return "Balanced";
+}
+
+function getTaskOverrides(ns) {
+  const state =
+    readJson(ns, TASK_OVERRIDE_FILE, {});
+  const rawOverrides =
+    state?.overrides && typeof state.overrides === "object"
+      ? state.overrides
+      : state;
+  const overrides = {};
+
+  for (const [name, task] of Object.entries(rawOverrides ?? {})) {
+    const memberName =
+      String(name ?? "").trim();
+    const taskName =
+      String(task ?? "").trim();
+    if (memberName && taskName) overrides[memberName] = taskName;
+  }
+
+  return overrides;
+}
+
 function summarizeMember(ns, name, options) {
   const info = safeMemberInfo(ns, name) ?? {};
   const ascensionResult = safeAscensionResult(ns, name);
@@ -824,12 +1265,16 @@ function summarizeMember(ns, name, options) {
     task: info.task ?? "",
     earnedRespect: info.earnedRespect ?? 0,
     moneyGain: info.moneyGain ?? 0,
+    moneyGainPerSecond: (info.moneyGain ?? 0) * GANG_TICKS_PER_SECOND,
     respectGain: info.respectGain ?? 0,
+    respectGainPerSecond: (info.respectGain ?? 0) * GANG_TICKS_PER_SECOND,
     wantedLevelGain: info.wantedLevelGain ?? 0,
+    wantedLevelGainPerSecond: (info.wantedLevelGain ?? 0) * GANG_TICKS_PER_SECOND,
     str: info.str ?? 0,
     def: info.def ?? 0,
     dex: info.dex ?? 0,
     agi: info.agi ?? 0,
+    cha: info.cha ?? 0,
     hack: info.hack ?? 0,
     combatAverage: combat.average,
     combatMinimum: combat.minimum,
@@ -837,6 +1282,7 @@ function summarizeMember(ns, name, options) {
     defAsc: info.def_asc_mult ?? 1,
     dexAsc: info.dex_asc_mult ?? 1,
     agiAsc: info.agi_asc_mult ?? 1,
+    chaAsc: info.cha_asc_mult ?? 1,
     hackAsc: info.hack_asc_mult ?? 1,
     ascension,
   };
@@ -899,6 +1345,17 @@ function writeState(ns, state) {
     ns.write(STATE_FILE, JSON.stringify(state, null, 2), "w");
   } catch {
     // Telemetry should not stop gang control.
+  }
+}
+
+function readJson(ns, file, fallback = null) {
+  try {
+    if (!ns.fileExists(file, "home")) return fallback;
+    const raw = ns.read(file);
+    if (!raw.trim()) return fallback;
+    return JSON.parse(raw);
+  } catch {
+    return fallback;
   }
 }
 
@@ -1021,6 +1478,14 @@ function safeAscend(ns, name) {
     return !!ns.gang.ascendMember(name);
   } catch {
     return false;
+  }
+}
+
+function safeAscendRaw(ns, name) {
+  try {
+    return ns.gang.ascendMember(name);
+  } catch {
+    return null;
   }
 }
 

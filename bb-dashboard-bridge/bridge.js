@@ -82,6 +82,9 @@ app.post("/command", async (req, res) => {
     const allowed = new Set([
         "refreshTopology",
         "forceBackdoor",
+        "setGangMode",
+        "setGangMemberTask",
+        "ascendGangMember",
         "clearEvents",
         "debugSnapshot",
         "eventTest",
@@ -96,6 +99,9 @@ app.post("/command", async (req, res) => {
         createdAt: Date.now(),
         command,
         target: sanitizeCommandText(req.body?.target),
+        mode: sanitizeCommandText(req.body?.mode),
+        member: sanitizeCommandText(req.body?.member),
+        task: sanitizeCommandText(req.body?.task),
         args: sanitizeCommandArgs(req.body?.args),
     };
 

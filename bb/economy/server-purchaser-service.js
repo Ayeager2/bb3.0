@@ -71,13 +71,13 @@ export async function main(ns) {
             const message =
                 `[SERVER PURCHASER] ${result.message}`;
 
-            if (toast) {
-                ns.toast(result.message, "success", 8000);
-            }
+            // if (toast) {
+            //     ns.toast(result.message, "success", 8000);
+            // }
 
-            if (terminal) {
-                ns.tprint(message);
-            }
+            // if (terminal) {
+            //     ns.tprint(message);
+            // }
 
             logPurchase(ns, {
                 source: "server-purchaser",

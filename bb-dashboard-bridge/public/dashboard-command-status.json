@@ -1,9 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1783014913435,
+  "updatedAt": 1783185884912,
   "running": true,
   "status": "ready",
   "message": "Dashboard command runner heartbeat.",
-  "lastHeartbeatAt": 1783016338985,
-  "bridgeUpdatedAt": 1783016364021
+  "lastHeartbeatAt": 1783213605151,
+  "command": "setGangMemberTask",
+  "commandId": "1783213559927-95c6024ada164",
+  "startedAt": 1783213560148,
+  "completedAt": 1783213560148,
+  "bridgeUpdatedAt": 1783213614227
 }

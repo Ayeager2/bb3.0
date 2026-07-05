@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="96" viewBox="0 0 384 96" shape-rendering="crispEdges">
+  <defs>
+    <g id="train-a">
+      <rect x="25" y="78" width="47" height="5" fill="#07111f"/>
+      <rect x="35" y="60" width="11" height="20" fill="#172033"/><rect x="55" y="60" width="11" height="20" fill="#172033"/>
+      <rect x="31" y="77" width="19" height="7" fill="#0b0f19"/><rect x="52" y="77" width="20" height="7" fill="#0b0f19"/>
+      <rect x="29" y="34" width="42" height="32" fill="#7f1d1d"/><rect x="39" y="34" width="32" height="32" fill="#ef4444"/>
+      <rect x="24" y="43" width="18" height="10" fill="#f1b987"/><rect x="70" y="43" width="16" height="10" fill="#f1b987"/>
+      <rect x="39" y="23" width="29" height="22" fill="#f1b987"/><rect x="35" y="16" width="38" height="12" fill="#111827"/>
+      <rect x="45" y="33" width="5" height="4" fill="#00f5ff"/><rect x="59" y="33" width="5" height="4" fill="#00f5ff"/>
+      <rect x="10" y="26" width="18" height="43" fill="#ff2e88"/><rect x="10" y="19" width="18" height="11" fill="#faff00"/><rect x="10" y="68" width="18" height="9" fill="#ff8a00"/>
+    </g>
+    <g id="train-b">
+      <rect x="25" y="78" width="47" height="5" fill="#07111f"/>
+      <rect x="35" y="60" width="11" height="20" fill="#172033"/><rect x="55" y="60" width="11" height="20" fill="#172033"/>
+      <rect x="31" y="77" width="19" height="7" fill="#0b0f19"/><rect x="52" y="77" width="20" height="7" fill="#0b0f19"/>
+      <rect x="29" y="34" width="42" height="32" fill="#7f1d1d"/><rect x="39" y="34" width="32" height="32" fill="#ef4444"/>
+      <rect x="21" y="49" width="30" height="10" fill="#f1b987"/><rect x="66" y="43" width="16" height="10" fill="#f1b987"/>
+      <rect x="39" y="24" width="29" height="22" fill="#f1b987"/><rect x="35" y="17" width="38" height="12" fill="#111827"/>
+      <rect x="45" y="34" width="5" height="4" fill="#00f5ff"/><rect x="59" y="34" width="5" height="4" fill="#00f5ff"/>
+      <rect x="7" y="28" width="18" height="43" fill="#ff2e88"/><rect x="7" y="21" width="18" height="11" fill="#faff00"/><rect x="7" y="70" width="18" height="9" fill="#ff8a00"/>
+      <rect x="28" y="50" width="7" height="7" fill="#faff00"/><rect x="20" y="45" width="5" height="5" fill="#00f5ff"/>
+    </g>
+  </defs>
+  <use href="#train-a" x="0" y="0"/>
+  <use href="#train-b" x="96" y="0"/>
+  <use href="#train-a" x="192" y="0"/>
+  <use href="#train-b" x="288" y="0"/>
+</svg>
