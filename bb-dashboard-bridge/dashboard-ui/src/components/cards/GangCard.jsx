@@ -265,19 +265,25 @@ function MemberCard({ member, overrideTask = "", onTaskChange, onAscend }) {
     const ascension =
         member.ascension ?? {};
     const ascensionThreshold =
-        Number(ascension.threshold);
-    const hasAscensionThreshold =
-        Number.isFinite(ascensionThreshold) && ascensionThreshold > 0;
+        Number.isFinite(Number(ascension.threshold)) && Number(ascension.threshold) > 0
+            ? Number(ascension.threshold)
+            : 1.5;
+    const projectedAscension =
+        Number(ascension.projected) || 1;
+    const reportedProgress =
+        Number(ascension.progress);
+    const computedProgress =
+        projectedAscension / ascensionThreshold;
+    const progressValue =
+        Number.isFinite(reportedProgress) && reportedProgress > 0
+            ? reportedProgress
+            : computedProgress;
     const progress =
-        hasAscensionThreshold
-            ? Math.max(0, Math.min(100, Number(ascension.progress ?? 0) * 100))
-            : 0;
+        Math.max(0, Math.min(100, progressValue * 100));
     const ready =
-        hasAscensionThreshold && ascension.ready === true;
+        ascension.ready === true || projectedAscension >= ascensionThreshold;
     const readinessLabel =
-        hasAscensionThreshold
-            ? `${formatNumber(ascension.projected ?? 1, 2)} / ${formatNumber(ascensionThreshold, 2)}`
-            : `${formatNumber(ascension.projected ?? 1, 2)} / capped`;
+        `${formatNumber(projectedAscension, 2)} / ${formatNumber(ascensionThreshold, 2)}`;
     const progressTone =
         ready ? "ready" : progress >= 75 ? "hot" : progress >= 45 ? "warm" : "cold";
     const sprite = getTaskSprite(member.task);
@@ -318,7 +324,7 @@ function MemberCard({ member, overrideTask = "", onTaskChange, onAscend }) {
                             </select>
                         </label>
                     </div>
-                    <em>{ready ? "ASCEND" : hasAscensionThreshold ? `${Math.round(progress)}%` : "CAP"}</em>
+                    <em>{ready ? "ASCEND" : `${Math.round(progress)}%`}</em>
                 </header>
 
                 <div className="gang-member-stats">

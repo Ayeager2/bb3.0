@@ -2035,7 +2035,6 @@
 
 .gang-asc-label {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 8px;
 }
@@ -2229,6 +2228,125 @@
 .card-three-quarters[data-card-id="gang"] .gang-member-grid,
 .card-three-quarters[data-card-id="gang"] .gang-footer {
     grid-column: 1 / -1;
+}
+
+.card-half[data-card-id="gang"] .gang-card,
+.card-third[data-card-id="gang"] .gang-card,
+.card-quarter[data-card-id="gang"] .gang-card {
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+    padding-right: 4px;
+    scrollbar-color: #ff5aa8 rgba(2, 6, 23, .72);
+    scrollbar-width: thin;
+}
+
+.card-half[data-card-id="gang"] .gang-card::-webkit-scrollbar,
+.card-third[data-card-id="gang"] .gang-card::-webkit-scrollbar,
+.card-quarter[data-card-id="gang"] .gang-card::-webkit-scrollbar {
+    width: 10px;
+}
+
+.card-half[data-card-id="gang"] .gang-card::-webkit-scrollbar-track,
+.card-third[data-card-id="gang"] .gang-card::-webkit-scrollbar-track,
+.card-quarter[data-card-id="gang"] .gang-card::-webkit-scrollbar-track {
+    border: 1px solid rgba(255, 90, 168, .13);
+    border-radius: 999px;
+    background:
+        linear-gradient(180deg, rgba(2, 6, 23, .78), rgba(15, 23, 42, .64));
+}
+
+.card-half[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb,
+.card-third[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb,
+.card-quarter[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(2, 6, 23, .86);
+    border-radius: 999px;
+    background:
+        linear-gradient(180deg, #ff5aa8, var(--yellow), var(--cyan));
+    box-shadow: 0 0 12px rgba(255, 90, 168, .32);
+}
+
+.card-half[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb:hover,
+.card-third[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb:hover,
+.card-quarter[data-card-id="gang"] .gang-card::-webkit-scrollbar-thumb:hover {
+    background:
+        linear-gradient(180deg, var(--cyan), #ff5aa8, var(--yellow));
+}
+
+.card-half[data-card-id="gang"] .gang-hero,
+.card-third[data-card-id="gang"] .gang-hero,
+.card-quarter[data-card-id="gang"] .gang-hero {
+    padding: 10px 12px;
+}
+
+.card-half[data-card-id="gang"] .gang-name,
+.card-third[data-card-id="gang"] .gang-name,
+.card-quarter[data-card-id="gang"] .gang-name {
+    font-size: 19px;
+}
+
+.card-half[data-card-id="gang"] .gang-metrics,
+.card-third[data-card-id="gang"] .gang-metrics,
+.card-quarter[data-card-id="gang"] .gang-metrics,
+.card-half[data-card-id="gang"] .gang-policy-grid,
+.card-third[data-card-id="gang"] .gang-policy-grid,
+.card-quarter[data-card-id="gang"] .gang-policy-grid,
+.card-half[data-card-id="gang"] .gang-task-grid,
+.card-third[data-card-id="gang"] .gang-task-grid,
+.card-quarter[data-card-id="gang"] .gang-task-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-half[data-card-id="gang"] .gang-member-grid,
+.card-third[data-card-id="gang"] .gang-member-grid,
+.card-quarter[data-card-id="gang"] .gang-member-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.card-half[data-card-id="gang"] .gang-member-card,
+.card-third[data-card-id="gang"] .gang-member-card,
+.card-quarter[data-card-id="gang"] .gang-member-card {
+    gap: 8px;
+    padding: 9px;
+}
+
+.card-half[data-card-id="gang"] .gang-member-portrait,
+.card-third[data-card-id="gang"] .gang-member-portrait,
+.card-quarter[data-card-id="gang"] .gang-member-portrait {
+    min-height: 112px;
+    padding: 8px 8px 6px;
+    gap: 4px;
+}
+
+.card-half[data-card-id="gang"] .gang-pixel-actor,
+.card-third[data-card-id="gang"] .gang-pixel-actor,
+.card-quarter[data-card-id="gang"] .gang-pixel-actor {
+    width: 221px;
+    height: 243px;
+    margin: -46px -48px -30px;
+    transform: scale(.44);
+    transform-origin: center;
+}
+
+.card-half[data-card-id="gang"] .gang-member-portrait small,
+.card-third[data-card-id="gang"] .gang-member-portrait small,
+.card-quarter[data-card-id="gang"] .gang-member-portrait small {
+    max-width: 190px;
+    font-size: 12px;
+}
+
+.card-half[data-card-id="gang"] .gang-member-stats,
+.card-third[data-card-id="gang"] .gang-member-stats,
+.card-quarter[data-card-id="gang"] .gang-member-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-half[data-card-id="gang"] .gang-member-gains,
+.card-third[data-card-id="gang"] .gang-member-gains,
+.card-quarter[data-card-id="gang"] .gang-member-gains {
+    grid-template-columns: 1fr;
 }
 
 @media (max-width: 900px) {

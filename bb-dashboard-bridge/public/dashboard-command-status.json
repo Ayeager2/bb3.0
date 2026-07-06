@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1783185884912,
+  "updatedAt": 1783304542163,
   "running": true,
   "status": "ready",
   "message": "Dashboard command runner heartbeat.",
-  "lastHeartbeatAt": 1783213605151,
-  "command": "setGangMemberTask",
-  "commandId": "1783213559927-95c6024ada164",
-  "startedAt": 1783213560148,
-  "completedAt": 1783213560148,
-  "bridgeUpdatedAt": 1783213614227
+  "lastHeartbeatAt": 1783307516610,
+  "command": "refreshTopology",
+  "commandId": "1783307144035-3c3763471434",
+  "startedAt": 1783307144166,
+  "completedAt": 1783307144166,
+  "bridgeUpdatedAt": 1783307540389
 }

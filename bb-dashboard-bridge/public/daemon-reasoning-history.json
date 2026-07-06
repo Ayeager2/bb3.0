@@ -1,12 +1,12 @@
 [
   {
-    "ts": 1783213443753,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "ts": 1783307360469,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is the-hub.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
-      "success": 1,
-      "warning": 1,
+      "success": 0,
+      "warning": 2,
       "danger": 0,
       "error": 0
     },
@@ -21,9 +21,9 @@
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
+        "summary": "Current target is the-hub.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
       },
       {
         "id": "policy",
@@ -49,7 +49,7 @@
     ]
   },
   {
-    "ts": 1783213423691,
+    "ts": 1783307355446,
     "summary": "2 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -98,7 +98,7 @@
     ]
   },
   {
-    "ts": 1783213363586,
+    "ts": 1783307345437,
     "summary": "1 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -147,7 +147,7 @@
     ]
   },
   {
-    "ts": 1783213323479,
+    "ts": 1783307315395,
     "summary": "2 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -196,7 +196,7 @@
     ]
   },
   {
-    "ts": 1783213303328,
+    "ts": 1783307300381,
     "summary": "1 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -245,7 +245,7 @@
     ]
   },
   {
-    "ts": 1783213213211,
+    "ts": 1783307255303,
     "summary": "2 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -294,7 +294,7 @@
     ]
   },
   {
-    "ts": 1783213203201,
+    "ts": 1783307240289,
     "summary": "1 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -343,7 +343,7 @@
     ]
   },
   {
-    "ts": 1783213183166,
+    "ts": 1783307195196,
     "summary": "2 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -392,7 +392,7 @@
     ]
   },
   {
-    "ts": 1783213143044,
+    "ts": 1783307180178,
     "summary": "1 warning item(s) need attention.",
     "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
@@ -441,9 +441,1724 @@
     ]
   },
   {
-    "ts": 1783213133015,
+    "ts": 1783307135117,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783307125101,
     "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in exp mode.:Prioritize EXP until hacking is high enough for late-game faction progression.|target:success:Current target is joesguns.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: server purchases, stock trading, augmentation purchases, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, augmentations.|victory:info:Current victory stage is level-hacking.:Prioritize EXP until hacking is high enough for late-game faction progression.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306989835,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306719432,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is the-hub.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is the-hub.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306674384,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is the-hub.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306654354,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306644342,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306599212,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306594204,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306539111,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306534096,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306479011,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306474005,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306418935,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306413922,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306313740,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306293718,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306153518,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is the-hub.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is the-hub.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783306103465,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is the-hub.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is the-hub.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305988240,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is the-hub.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is the-hub.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305928174,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305923168,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305802860,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305792851,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305662367,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305652348,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target money is below ideal level, so grow support may be needed.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305592015,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305582003,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305471852,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305461841,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305401556,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305381530,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 1,
+      "warning": 1,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target appears stable enough for current automation.",
+        "level": "success"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305331388,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in money mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305311371,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in progression mode.:backdoor|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in progression mode.",
+        "detail": "backdoor",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305271271,
+    "summary": "2 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "levels": {
+      "info": 3,
+      "success": 0,
+      "warning": 2,
+      "danger": 0,
+      "error": 0
+    },
+    "items": [
+      {
+        "id": "mode",
+        "title": "Current Mode",
+        "summary": "Daemon is running in exp mode.",
+        "detail": "exp",
+        "level": "info"
+      },
+      {
+        "id": "target",
+        "title": "Current Target",
+        "summary": "Current target is phantasy.",
+        "detail": "Target likely needs prep work before it becomes efficient.",
+        "level": "warning"
+      },
+      {
+        "id": "policy",
+        "title": "Spending Policy",
+        "summary": "Current policy controls what automation is allowed to buy or trigger.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
+        "level": "info"
+      },
+      {
+        "id": "readiness",
+        "title": "BN4 Readiness",
+        "summary": "BN4 readiness is incomplete: 2/4.",
+        "detail": "Still waiting on: hacking level, money.",
+        "level": "warning"
+      },
+      {
+        "id": "victory",
+        "title": "Victory Plan",
+        "summary": "Current victory stage is level-hacking.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
+        "level": "info"
+      }
+    ]
+  },
+  {
+    "ts": 1783305256235,
+    "summary": "1 warning item(s) need attention.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 1,
@@ -456,13 +2171,13 @@
         "id": "mode",
         "title": "Current Mode",
         "summary": "Daemon is running in exp mode.",
-        "detail": "Prioritize EXP until hacking is high enough for late-game faction progression.",
+        "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is joesguns.",
+        "summary": "Current target is phantasy.",
         "detail": "Target appears stable enough for current automation.",
         "level": "success"
       },
@@ -470,29 +2185,29 @@
         "id": "policy",
         "title": "Spending Policy",
         "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: server purchases, stock trading, augmentation purchases, reset execution.",
+        "detail": "Policy currently blocks: stock trading, reset execution.",
         "level": "info"
       },
       {
         "id": "readiness",
         "title": "BN4 Readiness",
         "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, augmentations.",
+        "detail": "Still waiting on: hacking level, money.",
         "level": "warning"
       },
       {
         "id": "victory",
         "title": "Victory Plan",
         "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP until hacking is high enough for late-game faction progression.",
+        "detail": "Prioritize EXP only until faction progression requirements are met.",
         "level": "info"
       }
     ]
   },
   {
-    "ts": 1783213112998,
+    "ts": 1783305201046,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 0,
@@ -504,7 +2219,7 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
@@ -539,58 +2254,9 @@
     ]
   },
   {
-    "ts": 1783213092972,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783213002814,
+    "ts": 1783305191016,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is rho-construction.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is neo-net.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 0,
@@ -602,14 +2268,14 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
       {
         "id": "target",
         "title": "Current Target",
-        "summary": "Current target is rho-construction.",
+        "summary": "Current target is neo-net.",
         "detail": "Target likely needs prep work before it becomes efficient.",
         "level": "warning"
       },
@@ -637,58 +2303,9 @@
     ]
   },
   {
-    "ts": 1783212992797,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212982792,
+    "ts": 1783305110790,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is rho-construction.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 0,
@@ -700,252 +2317,7 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212962749,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212952725,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is rho-construction.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212812356,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212802333,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212792288,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
@@ -980,9 +2352,9 @@
     ]
   },
   {
-    "ts": 1783212752173,
+    "ts": 1783305100766,
     "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 1,
@@ -994,7 +2366,7 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },
@@ -1029,9 +2401,9 @@
     ]
   },
   {
-    "ts": 1783212722128,
+    "ts": 1783304970360,
     "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
+    "fingerprint": "mode:info:Daemon is running in exp mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
     "levels": {
       "info": 3,
       "success": 0,
@@ -1043,1379 +2415,7 @@
       {
         "id": "mode",
         "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212712103,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target money is below ideal level, so grow support may be needed.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212671973,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212531623,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212471526,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212441415,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212361200,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212060473,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212010403,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783212000391,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211970309,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211940254,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211890187,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211880169,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211850035,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211799947,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211789918,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target money is below ideal level, so grow support may be needed.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211759843,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211729796,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211668725,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is rho-construction.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211658681,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target money is below ideal level, so grow support may be needed.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211463043,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is rho-construction.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is rho-construction.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211448023,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211437999,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target money is below ideal level, so grow support may be needed.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target money is below ideal level, so grow support may be needed.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211377837,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211342738,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211327680,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target likely needs prep work before it becomes efficient.",
-        "level": "warning"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211317666,
-    "summary": "1 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:success:Current target is phantasy.:Target appears stable enough for current automation.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 1,
-      "warning": 1,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
-        "detail": "exp",
-        "level": "info"
-      },
-      {
-        "id": "target",
-        "title": "Current Target",
-        "summary": "Current target is phantasy.",
-        "detail": "Target appears stable enough for current automation.",
-        "level": "success"
-      },
-      {
-        "id": "policy",
-        "title": "Spending Policy",
-        "summary": "Current policy controls what automation is allowed to buy or trigger.",
-        "detail": "Policy currently blocks: stock trading, reset execution.",
-        "level": "info"
-      },
-      {
-        "id": "readiness",
-        "title": "BN4 Readiness",
-        "summary": "BN4 readiness is incomplete: 2/4.",
-        "detail": "Still waiting on: hacking level, money.",
-        "level": "warning"
-      },
-      {
-        "id": "victory",
-        "title": "Victory Plan",
-        "summary": "Current victory stage is level-hacking.",
-        "detail": "Prioritize EXP only until faction progression requirements are met.",
-        "level": "info"
-      }
-    ]
-  },
-  {
-    "ts": 1783211282612,
-    "summary": "2 warning item(s) need attention.",
-    "fingerprint": "mode:info:Daemon is running in money mode.:exp|target:warning:Current target is phantasy.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: stock trading, reset execution.|readiness:warning:BN4 readiness is incomplete: 2/4.:Still waiting on: hacking level, money.|victory:info:Current victory stage is level-hacking.:Prioritize EXP only until faction progression requirements are met.",
-    "levels": {
-      "info": 3,
-      "success": 0,
-      "warning": 2,
-      "danger": 0,
-      "error": 0
-    },
-    "items": [
-      {
-        "id": "mode",
-        "title": "Current Mode",
-        "summary": "Daemon is running in money mode.",
+        "summary": "Daemon is running in exp mode.",
         "detail": "exp",
         "level": "info"
       },

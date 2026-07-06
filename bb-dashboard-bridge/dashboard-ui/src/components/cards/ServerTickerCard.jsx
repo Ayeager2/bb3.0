@@ -20,6 +20,14 @@ export default function ServerTickerCard({
     const acted = ticker?.acted === true;
     const ram = ticker?.ram ?? fleet.maxRam ?? 0;
     const fleetRamPercent = getFleetRamPercent(fleet);
+    const featuredServer =
+        nextAction?.server
+            ? {
+                name: nextAction.server,
+                ram: nextAction?.ram ?? nextAction?.toRam ?? fleet?.weakest?.ram ?? 0,
+                usedRam: fleet?.weakest?.usedRam ?? 0,
+            }
+            : servers[0] ?? null;
 
     return (
         <Card
@@ -83,29 +91,23 @@ export default function ServerTickerCard({
                             {nextAction?.affordable ? "READY" : "WAIT"}
                         </b>
                     </div>
-                    <div className="server-ticker-next-grid">
-                        <Mini label="Server" value={nextAction?.server ?? "new"} />
-                        <Mini label="From" value={formatRam(nextAction?.fromRam ?? fleet?.weakest?.ram)} />
-                        <Mini label="To" value={formatRam(nextAction?.ram)} />
-                        <Mini label="Cost" value={formatMoney(nextAction?.cost ?? 0)} />
+                    <div className="server-ticker-next-showcase">
+                        <ServerTile server={featuredServer} featured />
+                        <div className="server-ticker-next-grid">
+                            <Mini label="Server" value={nextAction?.server ?? featuredServer?.name ?? "new"} />
+                            <Mini label="From" value={formatRam(nextAction?.fromRam ?? fleet?.weakest?.ram)} />
+                            <Mini label="To" value={formatRam(nextAction?.ram ?? featuredServer?.ram)} />
+                            <Mini label="Cost" value={formatMoney(nextAction?.cost ?? 0)} />
+                        </div>
                     </div>
                     <p>{fleet?.weakest?.name ? `Weakest server: ${fleet.weakest.name}` : "No weakest server telemetry."}</p>
                 </div>
 
-                <div className="server-ticker-table">
-                    <div className="server-ticker-table-head">
-                        <span>Server</span>
-                        <span>RAM</span>
-                        <span>Used</span>
-                    </div>
+                <div className="server-ticker-grid" aria-label="Cloud server fleet">
                     {servers.length === 0 ? (
                         <div className="server-ticker-empty">No cloud fleet telemetry.</div>
                     ) : servers.slice(0, 25).map(server => (
-                        <div className="server-ticker-table-row" key={server.name}>
-                            <b>{server.name}</b>
-                            <span>{formatRam(server.ram)}</span>
-                            <span>{formatRam(server.usedRam)}</span>
-                        </div>
+                        <ServerTile server={server} key={server.name} />
                     ))}
                 </div>
 
@@ -130,6 +132,60 @@ function Mini({ label, value }) {
             <b>{value}</b>
         </div>
     );
+}
+
+function ServerTile({ server, featured = false }) {
+    const ram = Number(server?.ram) || 0;
+    const usedRam = Number(server?.usedRam) || 0;
+    const tier = getServerTier(ram);
+    const usedPercent =
+        ram > 0
+            ? Math.max(0, Math.min(100, (usedRam / ram) * 100))
+            : 0;
+
+    return (
+        <div className={`server-tile server-tile-${tier.id} ${featured ? "server-tile-featured" : ""}`}>
+            <div className="server-tile-online" />
+            <img
+                src={tier.image}
+                alt=""
+                className="server-tile-art"
+                draggable="false"
+            />
+            <div className="server-tile-name">{server?.name ?? "new-server"}</div>
+            <div className="server-tile-ram">{formatRam(ram)}</div>
+            <div className="server-tile-tier">{tier.label}</div>
+            <div className="server-tile-used" title={`Used RAM: ${formatRam(usedRam)} / ${formatRam(ram)}`}>
+                <span style={{ width: `${usedPercent}%` }} />
+            </div>
+        </div>
+    );
+}
+
+function getServerTier(ram) {
+    const value = Number(ram) || 0;
+
+    if (value >= 1024 * 1024) {
+        return { id: "1p", image: "/sprites/servers/generated/server-tier-1p.png", label: "128-bit / 32-core" };
+    }
+
+    if (value >= 1024) {
+        return { id: "1t", image: "/sprites/servers/generated/server-tier-1t.png", label: "64-bit / 16-core" };
+    }
+
+    if (value >= 512) {
+        return { id: "512", image: "/sprites/servers/generated/server-tier-512.png", label: "96-bit / 16-core" };
+    }
+
+    if (value >= 256) {
+        return { id: "256", image: "/sprites/servers/generated/server-tier-256.png", label: "64-bit / 8-core" };
+    }
+
+    if (value >= 64) {
+        return { id: "64", image: "/sprites/servers/generated/server-tier-64.png", label: "64-bit / 4-core" };
+    }
+
+    return { id: "32", image: "/sprites/servers/generated/server-tier-32.png", label: "32-bit / 2-core" };
 }
 
 function formatRam(value) {

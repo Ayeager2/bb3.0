@@ -1,142 +1,191 @@
 [
   {
-    "ts": 1783213147263,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213147263,
-    "type": "command",
-    "level": "danger",
-    "message": "Gang mode command missing valid mode.",
-    "data": null
-  },
-  {
-    "ts": 1783213446042,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213446042,
-    "type": "command",
-    "level": "danger",
-    "message": "Gang mode command missing valid mode.",
-    "data": null
-  },
-  {
-    "ts": 1783213451194,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213451194,
-    "type": "command",
-    "level": "danger",
-    "message": "Gang mode command missing valid mode.",
-    "data": null
-  },
-  {
-    "ts": 1783213467739,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213467739,
+    "ts": 1783304542163,
     "type": "command",
     "level": "success",
-    "message": "Gang mode switched to Balanced.",
+    "message": "Dashboard command runner online.",
     "data": null
   },
   {
-    "ts": 1783213476786,
+    "ts": 1783305113696,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783305113696,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-7.",
+    "data": null
+  },
+  {
+    "ts": 1783305647372,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783305647373,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-6.",
+    "data": null
+  },
+  {
+    "ts": 1783305658658,
     "type": "command",
     "level": "info",
     "message": "Received dashboard command: setGangMode",
     "data": null
   },
   {
-    "ts": 1783213476786,
+    "ts": 1783305658658,
+    "type": "command",
+    "level": "success",
+    "message": "Gang mode switched to Combat Train Only.",
+    "data": null
+  },
+  {
+    "ts": 1783305667759,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMode",
+    "data": null
+  },
+  {
+    "ts": 1783305667759,
     "type": "command",
     "level": "success",
     "message": "Gang mode switched to Money Only.",
     "data": null
   },
   {
-    "ts": 1783213482823,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213482823,
-    "type": "command",
-    "level": "danger",
-    "message": "Gang mode command missing valid mode.",
-    "data": null
-  },
-  {
-    "ts": 1783213488912,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213488912,
-    "type": "command",
-    "level": "success",
-    "message": "Gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783213493948,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213493948,
-    "type": "command",
-    "level": "success",
-    "message": "Gang mode switched to Old Logic.",
-    "data": null
-  },
-  {
-    "ts": 1783213508026,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783213508026,
-    "type": "command",
-    "level": "success",
-    "message": "Gang mode switched to Balanced.",
-    "data": null
-  },
-  {
-    "ts": 1783213560148,
+    "ts": 1783305671777,
     "type": "command",
     "level": "info",
     "message": "Received dashboard command: setGangMemberTask",
     "data": null
   },
   {
-    "ts": 1783213560148,
+    "ts": 1783305671778,
     "type": "command",
     "level": "success",
-    "message": "Operator-8 override set to Vigilante Justice; gang mode switched to Custom.",
+    "message": "Operator-6 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305680819,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783305680819,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-7 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305703964,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783305703965,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-12 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305724056,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783305724056,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-8 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305728141,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783305728141,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-10 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305903416,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: setGangMemberTask",
+    "data": null
+  },
+  {
+    "ts": 1783305903417,
+    "type": "command",
+    "level": "success",
+    "message": "Operator-3 override set to Train Combat; gang mode switched to Custom.",
+    "data": null
+  },
+  {
+    "ts": 1783305904422,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783305904423,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-3.",
+    "data": null
+  },
+  {
+    "ts": 1783305915580,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783305915580,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-11.",
+    "data": null
+  },
+  {
+    "ts": 1783307144166,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: refreshTopology",
+    "data": null
+  },
+  {
+    "ts": 1783307144166,
+    "type": "command",
+    "level": "success",
+    "message": "Triggered topology refresh.",
     "data": null
   }
 ]

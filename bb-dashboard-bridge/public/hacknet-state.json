@@ -1,17 +1,17 @@
 {
-  "updatedAt": 1783213611189,
-  "nodeCount": 27,
+  "updatedAt": 1783307537738,
+  "nodeCount": 22,
   "maxNodes": null,
   "targetNodes": null,
-  "targetLevel": 300,
+  "targetLevel": 200,
   "targetRam": 8192,
   "targetCores": 128,
   "targetCache": 15,
-  "money": 8183213325.751076,
+  "money": 100828698.86730705,
   "reserveMoney": 0,
-  "spendable": 8183213325.751076,
-  "totalProduction": 769040.6874545214,
-  "totalProduced": 18018708390.758488,
+  "spendable": 100828698.86730705,
+  "totalProduction": 772290.5876834634,
+  "totalProduced": 1712919103.777722,
   "hashes": {
     "available": true,
     "hashes": 0,
@@ -21,8 +21,8 @@
   "cachePolicy": {
     "targetCache": 15,
     "hashBufferSeconds": 7200,
-    "desiredCapacity": 5537092949.672554,
-    "capacityGap": 5537092949.672554,
+    "desiredCapacity": 5560492231.320936,
+    "capacityGap": 5560492231.320936,
     "nextAction": null
   },
   "roi": {
@@ -49,11 +49,11 @@
       "index": null,
       "amount": null,
       "label": "purchase hacknet node",
-      "cost": 10160266760.322397,
-      "productionGain": 7120.74710606038,
-      "moneyPerSecond": 3560373553.03019,
-      "paybackSeconds": 2.8537080755683966,
-      "roi": 0.35042126717913213,
+      "cost": 380429302.39304245,
+      "productionGain": 8776.029405493904,
+      "moneyPerSecond": 4388014702.746952,
+      "paybackSeconds": 0.0866973627401223,
+      "roi": 11.534376230076653,
       "capacityPolicy": null,
       "affordable": null
     },
@@ -65,11 +65,11 @@
     "index": null,
     "amount": null,
     "label": "purchase hacknet node",
-    "cost": 10160266760.322397,
-    "productionGain": 7120.74710606038,
-    "moneyPerSecond": 3560373553.03019,
-    "paybackSeconds": 2.8537080755683966,
-    "roi": 0.35042126717913213,
+    "cost": 380429302.39304245,
+    "productionGain": 8776.029405493904,
+    "moneyPerSecond": 4388014702.746952,
+    "paybackSeconds": 0.0866973627401223,
+    "roi": 11.534376230076653,
     "capacityPolicy": null,
     "affordable": null
   },
@@ -82,9 +82,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 767824581.5558909,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 96080488.66629305,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 1,
@@ -93,9 +93,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 766559289.2833515,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 93944487.82199691,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 2,
@@ -104,9 +104,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 765436269.2495004,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 92531580.96688502,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 3,
@@ -115,9 +115,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 764307026.8920827,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 90848025.62500544,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 4,
@@ -126,9 +126,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 763302426.2735467,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 88915348.7839935,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 5,
@@ -137,9 +137,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 762347144.1578513,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 87751696.55991751,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 6,
@@ -148,9 +148,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 761495342.6603162,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 86620399.50456087,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 7,
@@ -159,9 +159,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 760792243.059682,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 85602446.19174983,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 8,
@@ -170,9 +170,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 760073657.9081997,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 84793143.3118855,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 9,
@@ -181,9 +181,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 759308901.6635327,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 83999335.74714659,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 10,
@@ -192,9 +192,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 758576421.4490002,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 83216080.49967362,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 11,
@@ -203,9 +203,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 757780702.6359993,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 82512754.23718885,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 12,
@@ -214,9 +214,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 757140981.6178193,
-      "timeOnline": 27726.2000000647
+      "production": 35104.117621975616,
+      "totalProduction": 81733929.36255579,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 13,
@@ -225,9 +225,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 756245011.1059401,
-      "timeOnline": 27723.200000064688
+      "production": 35104.117621975616,
+      "totalProduction": 80975560.70359503,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 14,
@@ -236,9 +236,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 755470266.6385304,
-      "timeOnline": 27717.200000064666
+      "production": 35104.117621975616,
+      "totalProduction": 80236413.38345751,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 15,
@@ -247,9 +247,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 754005025.5239977,
-      "timeOnline": 27099.200000062443
+      "production": 35104.117621975616,
+      "totalProduction": 79497932.0405316,
+      "timeOnline": 2995.59999999947
     },
     {
       "index": 16,
@@ -258,9 +258,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 750099219.7944448,
-      "timeOnline": 26903.00000006174
+      "production": 35104.117621975616,
+      "totalProduction": 78643608.06400505,
+      "timeOnline": 2992.599999999473
     },
     {
       "index": 17,
@@ -269,9 +269,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 747892413.4572773,
-      "timeOnline": 26800.400000061374
+      "production": 35104.117621975616,
+      "totalProduction": 77842837.4182015,
+      "timeOnline": 2635.799999999795
     },
     {
       "index": 18,
@@ -280,9 +280,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 727622939.2243123,
-      "timeOnline": 25871.60000005803
+      "production": 35104.117621975616,
+      "totalProduction": 77045745.06612706,
+      "timeOnline": 2432.799999999978
     },
     {
       "index": 19,
@@ -291,9 +291,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 681842967.4601699,
-      "timeOnline": 24053.200000051533
+      "production": 35104.117621975616,
+      "totalProduction": 57907776.5120807,
+      "timeOnline": 1745.8000000002567
     },
     {
       "index": 20,
@@ -302,9 +302,9 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 631758096.0411423,
-      "timeOnline": 22220.00000004499
+      "production": 35104.117621975616,
+      "totalProduction": 28223025.201965123,
+      "timeOnline": 824.8000000000502
     },
     {
       "index": 21,
@@ -313,96 +313,41 @@
       "ram": 64,
       "cores": 16,
       "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 582918254.8086431,
-      "timeOnline": 20500.600000038845
-    },
-    {
-      "index": 22,
-      "name": "hacknet-node-22",
-      "level": 200,
-      "ram": 64,
-      "cores": 16,
-      "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 569817619.5711734,
-      "timeOnline": 20036.20000003719
-    },
-    {
-      "index": 23,
-      "name": "hacknet-node-23",
-      "level": 200,
-      "ram": 64,
-      "cores": 16,
-      "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 494542871.6304144,
-      "timeOnline": 17377.600000027676
-    },
-    {
-      "index": 24,
-      "name": "hacknet-node-24",
-      "level": 200,
-      "ram": 64,
-      "cores": 16,
-      "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 273657289.6183028,
-      "timeOnline": 9620.99999999994
-    },
-    {
-      "index": 25,
-      "name": "hacknet-node-25",
-      "level": 200,
-      "ram": 64,
-      "cores": 16,
-      "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 236237771.7138751,
-      "timeOnline": 8309.199999995246
-    },
-    {
-      "index": 26,
-      "name": "hacknet-node-26",
-      "level": 200,
-      "ram": 64,
-      "cores": 16,
-      "cache": null,
-      "production": 28482.98842424152,
-      "totalProduction": 151653655.7634934,
-      "timeOnline": 5337.399999997382
+      "production": 35104.117621975616,
+      "totalProduction": 13996488.108906364,
+      "timeOnline": 412.59999999998524
     }
   ],
   "source": "hacknet-buyer",
   "allowed": true,
   "status": "waiting-money",
-  "message": "Need $10.160b for purchase hacknet node; spendable $8.183b.",
+  "message": "Need $380.429m for purchase hacknet node; spendable $100.829m.",
   "acted": false,
   "purchaseCount": 0,
   "purchases": [],
   "mode": "money",
   "priority": "income",
   "recentActions": [
-    "[7:38:17 PM] 21 Hacknet purchases for $11.876m: upgrade node 26 level by 1 x21.",
-    "[7:38:14 PM] 25 Hacknet purchases for $5.803m: upgrade node 26 level by 1 x25.",
-    "[7:38:11 PM] 25 Hacknet purchases for $2.177m: upgrade node 26 level by 1 x25.",
-    "[7:38:08 PM] 25 Hacknet purchases for $816.587k: upgrade node 26 level by 1 x25.",
-    "[7:38:05 PM] 25 Hacknet purchases for $306.315k: upgrade node 26 level by 1 x25.",
-    "[7:38:02 PM] 25 Hacknet purchases for $114.904k: upgrade node 26 level by 1 x25.",
-    "[7:37:59 PM] 25 Hacknet purchases for $43.102k: upgrade node 26 level by 1 x25.",
-    "[7:37:56 PM] 25 Hacknet purchases for $16.168k: upgrade node 26 level by 1 x25.",
-    "[7:37:53 PM] 25 Hacknet purchases for $5.798b: purchase hacknet node; upgrade node 26 RAM x6; upgrade node 26 cores x15; upgrade node 26 level by 1 x3.",
-    "[6:49:10 PM] 1 Hacknet purchase for $98.229m: upgrade node 25 cores.",
-    "[6:48:46 PM] 20 Hacknet purchases for $11.504m: upgrade node 25 level by 1 x20.",
-    "[6:48:43 PM] 25 Hacknet purchases for $72.262m: upgrade node 25 cores; upgrade node 25 level by 1 x24.",
-    "[6:48:40 PM] 25 Hacknet purchases for $2.355m: upgrade node 25 level by 1 x25.",
-    "[6:48:37 PM] 25 Hacknet purchases for $45.707m: upgrade node 25 cores; upgrade node 25 level by 1 x24.",
-    "[6:48:34 PM] 25 Hacknet purchases for $344.563k: upgrade node 25 level by 1 x25.",
-    "[6:48:31 PM] 25 Hacknet purchases for $30.427m: upgrade node 25 cores; upgrade node 25 level by 1 x24.",
-    "[6:48:28 PM] 25 Hacknet purchases for $20.523m: upgrade node 25 cores; upgrade node 25 level by 1 x24.",
-    "[6:48:25 PM] 25 Hacknet purchases for $29.514m: upgrade node 25 cores x3; upgrade node 25 level by 1 x22.",
-    "[6:48:22 PM] 25 Hacknet purchases for $2.985b: purchase hacknet node; upgrade node 25 RAM x6; upgrade node 25 cores x7; upgrade node 25 level by 1 x11.",
-    "[6:26:54 PM] 21 Hacknet purchases for $11.876m: upgrade node 24 level by 1 x21."
+    "[11:05:55 PM] 1 Hacknet purchase for $79.702m: upgrade node 21 cores.",
+    "[11:05:49 PM] 20 Hacknet purchases for $9.334m: upgrade node 21 level by 1 x20.",
+    "[11:05:46 PM] 25 Hacknet purchases for $4.897m: upgrade node 21 level by 1 x25.",
+    "[11:05:43 PM] 25 Hacknet purchases for $1.837m: upgrade node 21 level by 1 x25.",
+    "[11:05:40 PM] 25 Hacknet purchases for $54.525m: upgrade node 21 cores; upgrade node 21 level by 1 x24.",
+    "[11:05:37 PM] 25 Hacknet purchases for $268.821k: upgrade node 21 level by 1 x25.",
+    "[11:05:34 PM] 25 Hacknet purchases for $36.485m: upgrade node 21 cores; upgrade node 21 level by 1 x24.",
+    "[11:05:31 PM] 25 Hacknet purchases for $39.340k: upgrade node 21 level by 1 x25.",
+    "[11:05:28 PM] 25 Hacknet purchases for $41.212m: upgrade node 21 cores x2; upgrade node 21 level by 1 x23.",
+    "[11:05:25 PM] 25 Hacknet purchases for $243.116m: purchase hacknet node; upgrade node 21 RAM x6; upgrade node 21 cores x10; upgrade node 21 level by 1 x8.",
+    "[11:01:24 PM] 1 Hacknet purchase for $79.702m: upgrade node 20 cores.",
+    "[11:00:54 PM] 1 Hacknet purchase for $79.702m: upgrade node 19 cores.",
+    "[11:00:24 PM] 1 Hacknet purchase for $79.702m: upgrade node 18 cores.",
+    "[10:59:54 PM] 1 Hacknet purchase for $79.702m: upgrade node 17 cores.",
+    "[10:59:24 PM] 1 Hacknet purchase for $79.702m: upgrade node 16 cores.",
+    "[10:58:57 PM] 22 Hacknet purchases for $9.926m: upgrade node 20 level by 1 x22.",
+    "[10:58:54 PM] 25 Hacknet purchases for $4.528m: upgrade node 20 level by 1 x25.",
+    "[10:58:51 PM] 25 Hacknet purchases for $1.698m: upgrade node 20 level by 1 x25.",
+    "[10:58:48 PM] 25 Hacknet purchases for $54.474m: upgrade node 20 cores; upgrade node 20 level by 1 x24.",
+    "[10:58:45 PM] 25 Hacknet purchases for $248.540k: upgrade node 20 level by 1 x25."
   ],
-  "bridgeUpdatedAt": 1783213614443
+  "bridgeUpdatedAt": 1783307540451
 }

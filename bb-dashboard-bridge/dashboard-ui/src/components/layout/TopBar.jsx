@@ -1,5 +1,7 @@
 import {
     FiActivity,
+    FiChevronDown,
+    FiChevronUp,
     FiCommand,
     FiCpu,
     FiDatabase,
@@ -7,17 +9,33 @@ import {
     FiTarget,
     FiZap,
 } from "react-icons/fi";
+import { useState } from "react";
 
 import { formatMoney, formatNumber } from "../../utils/formatters.js";
 import "./TopBar.css";
 
 export default function TopBar({ state, error, commandStatus, onOpenCommandPalette }) {
+    const [collapsed, setCollapsed] = useState(false);
     const player = state?.player ?? {};
     const progression = state?.progression ?? {};
     const daemon = state?.daemon ?? {};
     const bridgeTime = state?.bridgeUpdatedAtText ?? formatTime(state?.bridgeUpdatedAt);
     const gameTime = formatTime(state?.updatedAt);
     const daemonTime = formatTime(state?.daemonUpdatedAt);
+
+    if (collapsed) {
+        return (
+            <button
+                type="button"
+                className="topbar-restore-tab"
+                onClick={() => setCollapsed(false)}
+                title="Show dashboard header"
+            >
+                <FiChevronDown />
+                <span>Header</span>
+            </button>
+        );
+    }
 
     return (
         <header className="topbar">
@@ -81,6 +99,15 @@ export default function TopBar({ state, error, commandStatus, onOpenCommandPalet
             </div>
 
             <div className="topbar-right">
+                <button
+                    type="button"
+                    className="topbar-collapse-button"
+                    onClick={() => setCollapsed(true)}
+                    title="Hide dashboard header"
+                >
+                    <FiChevronUp />
+                </button>
+
                 <div className={`topbar-live ${error ? "topbar-live-error" : ""}`}>
                     {error ? "ERROR" : "LIVE"}
                 </div>

@@ -176,8 +176,8 @@ function runServerPurchaserOnce(ns, policy = {}) {
     return upgradeWeakestServer(
         ns,
         owned,
-        desiredRam,
         safeSpendable,
+        maxRam,
         maxUpgradeCost,
         hasFormulas
     );
@@ -274,8 +274,8 @@ function buyNewServer(
 function upgradeWeakestServer(
     ns,
     owned,
-    desiredRam,
     safeSpendable,
+    maxRam,
     maxUpgradeCost,
     hasFormulas
 ) {
@@ -288,9 +288,19 @@ function upgradeWeakestServer(
         );
     }
 
+    const desiredRam =
+        getBestAffordableUpgradeRam(
+            ns,
+            weakest.name,
+            weakest.ram,
+            safeSpendable,
+            maxRam,
+            maxUpgradeCost
+        );
+
     if (desiredRam <= weakest.ram) {
         return noAction(
-            `Desired RAM ${ns.format.ram(desiredRam)} not larger than weakest ${ns.format.ram(weakest.ram)}.`
+            `No affordable upgrade larger than weakest ${ns.format.ram(weakest.ram)}.`
         );
     }
 
@@ -481,4 +491,59 @@ function applyUsefulRamFloor(
     }
 
     return desiredRam;
+}
+
+function getBestAffordableUpgradeRam(
+    ns,
+    server,
+    currentRam,
+    safeSpendable,
+    maxRam,
+    maxUpgradeCost
+) {
+    const current =
+        Math.max(0, Number(currentRam) || 0);
+    const max =
+        Math.max(current, Number(maxRam) || current);
+    const budget =
+        Math.max(
+            0,
+            Number(safeSpendable) -
+            MIN_SPENDABLE_AFTER_PURCHASE
+        );
+
+    if (current <= 0 || max <= current || budget <= 0) {
+        return current;
+    }
+
+    let targetRam =
+        Math.min(
+            max,
+            current * MAX_UPGRADE_MULTIPLIER
+        );
+
+    while (targetRam > current) {
+        const cost =
+            ns.cloud.getServerUpgradeCost(
+                server,
+                targetRam
+            );
+
+        if (
+            Number.isFinite(cost) &&
+            cost > 0 &&
+            cost <= budget &&
+            (
+                !Number.isFinite(maxUpgradeCost) ||
+                cost <= maxUpgradeCost
+            )
+        ) {
+            return targetRam;
+        }
+
+        targetRam =
+            Math.floor(targetRam / 2);
+    }
+
+    return current;
 }

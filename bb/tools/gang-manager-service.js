@@ -3,7 +3,8 @@ const MODE_FILE = "/data/gang-mode.txt";
 const TASK_OVERRIDE_FILE = "/data/gang-task-overrides.txt";
 const ASCEND_REQUEST_FILE = "/data/gang-ascend-request.txt";
 const ASCEND_STATE_FILE = "/data/gang-ascend-state.txt";
-const DIAGNOSTIC_VERSION = "gang-mode-switch-v10";
+const DIAGNOSTIC_VERSION = "gang-ascend-1-5-v12";
+const ASCENSION_GAIN_THRESHOLD = 1.5;
 const GANG_MODE_BALANCED = "balanced";
 const GANG_MODE_OLD_LOGIC = "old-logic";
 const GANG_MODE_MONEY_ONLY = "money-only";
@@ -225,7 +226,11 @@ async function runGangCycle(ns, options) {
   const manualAscend =
     processManualAscendRequest(ns, names);
   const mode = getGangMode(ns, options.mode);
-  const taskOverrides = getTaskOverrides(ns);
+  const storedTaskOverrides = getTaskOverrides(ns);
+  const taskOverrides =
+    mode === GANG_MODE_CUSTOM
+      ? storedTaskOverrides
+      : {};
   const equipmentBuyer =
     options.buyEquipment
       ? buyGangEquipment(ns, names, options.reserve)
@@ -451,12 +456,6 @@ function ascendGangMembersOldLogic(ns, names, options) {
 }
 
 function shouldAscend(info, result, options) {
-  const current =
-    Math.max(
-      Number(info.str_asc_mult) || 1,
-      Number(info.dex_asc_mult) || 1,
-      Number(info.hack_asc_mult) || 1,
-    );
   const projected =
     Math.max(
       Number(result.str) || 1,
@@ -464,10 +463,7 @@ function shouldAscend(info, result, options) {
       Number(result.hack) || 1,
     );
 
-  if (current >= options.fastAscMult) return false;
-  if (current < 2) return projected >= 1.5;
-  if (current < options.ascMult) return projected >= 1.25;
-  return projected >= 1.15;
+  return projected >= ASCENSION_GAIN_THRESHOLD;
 }
 
 function buildWantedPolicy(info, memberCount) {
@@ -1306,24 +1302,16 @@ function getAscensionReadiness(info, result, options) {
       Number(result?.hack) || 1,
     );
   const threshold =
-    current >= options.fastAscMult
-      ? Infinity
-      : current < 2
-        ? 1.5
-        : current < options.ascMult
-          ? 1.25
-          : 1.15;
+    ASCENSION_GAIN_THRESHOLD;
   const progress =
-    Number.isFinite(threshold)
-      ? Math.max(0, Math.min(1, projected / threshold))
-      : 0;
+    Math.max(0, Math.min(1, projected / threshold));
 
   return {
     current,
     projected,
-    threshold: Number.isFinite(threshold) ? threshold : null,
+    threshold,
     progress,
-    ready: Number.isFinite(threshold) && projected >= threshold,
+    ready: projected >= threshold,
     result: result ?? null,
   };
 }

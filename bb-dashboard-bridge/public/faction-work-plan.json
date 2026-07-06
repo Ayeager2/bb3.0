@@ -1,29 +1,33 @@
 {
-  "updatedAt": 1783202612999,
+  "updatedAt": 1783305321116,
   "active": true,
-  "reason": "Need 105.89k rep with Slum Snakes for Golden Tongue Module.",
+  "reason": "Need 116.88k rep with Slum Snakes for Cranial Signal Processors - Gen IV.",
   "targetFaction": "Slum Snakes",
-  "targetAugmentation": "Golden Tongue Module",
+  "targetAugmentation": "Cranial Signal Processors - Gen IV",
   "targetRep": 125000,
-  "currentRep": 19108.819705745358,
-  "missingRep": 105891.18029425465,
-  "workType": "field",
+  "currentRep": 8118.515148356246,
+  "missingRep": 116881.48485164375,
+  "workType": "hacking",
   "nextGoal": {
-    "name": "Golden Tongue Module",
+    "name": "Cranial Signal Processors - Gen IV",
     "faction": "Slum Snakes",
     "theme": "crime",
-    "price": 125000000,
+    "price": 1100000000,
     "rep": 125000,
-    "factionRep": 19108.819705745358,
+    "factionRep": 7985.028990917131,
     "hasRep": false,
-    "affordable": true,
+    "affordable": false,
     "hasPrereqs": true,
-    "prereqs": [],
+    "prereqs": [
+      "Cranial Signal Processors - Gen III",
+      "Cranial Signal Processors - Gen II",
+      "Cranial Signal Processors - Gen I"
+    ],
     "stats": {
       "hacking_chance": 1,
-      "hacking_speed": 1,
-      "hacking_money": 1,
-      "hacking_grow": 1,
+      "hacking_speed": 1.02,
+      "hacking_money": 1.2,
+      "hacking_grow": 1.25,
       "hacking": 1,
       "hacking_exp": 1,
       "strength": 1,
@@ -34,8 +38,8 @@
       "dexterity_exp": 1,
       "agility": 1,
       "agility_exp": 1,
-      "charisma": 1.1,
-      "charisma_exp": 1.3,
+      "charisma": 1,
+      "charisma_exp": 1,
       "hacknet_node_money": 1,
       "hacknet_node_purchase_cost": 1,
       "hacknet_node_ram_cost": 1,
@@ -53,19 +57,19 @@
       "bladeburner_success_chance": 1
     },
     "statBreakdown": {
-      "hacking": 0,
+      "hacking": 1644.9999999999998,
       "hacking_exp": 0,
       "faction_rep": 0,
       "money": 0,
       "company_rep": 0,
-      "charisma": 1000.0000000000003,
+      "charisma": 0,
       "combat": 0,
       "crime": 0,
       "hacknet": 0,
       "bladeburner": 0,
       "misc": 0
     },
-    "priorityClass": 0,
+    "priorityClass": 4,
     "stagePolicy": {
       "stage": "side",
       "priority": 100,
@@ -78,9 +82,9 @@
     "repeatable": false,
     "favorLoop": null,
     "tags": [
-      "charisma"
+      "hacking"
     ],
-    "score": 1619.933989856912
+    "score": 2307.37812847971
   },
-  "bridgeUpdatedAt": 1783213614459
+  "bridgeUpdatedAt": 1783307540490
 }

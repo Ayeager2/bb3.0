@@ -15,12 +15,13 @@ export default function HacknetMoneyCard({
     const spender = state?.economy?.hashSpender ?? null;
     const nodes = Array.isArray(hacknet?.nodes) ? hacknet.nodes : [];
     const hashPercent = getPercent(hacknet?.hashes?.hashes, hacknet?.hashes?.capacity);
+    const maxNodeProduction = Math.max(0, ...nodes.map(node => Number(node?.production) || 0));
 
     return (
         <Card
             id={id}
             title="Hacknet Hash Forge"
-            size={layoutSize ?? "half"}
+            size={layoutSize ?? "third"}
             collapsed={collapsed}
             onToggle={onToggle}
             onMoveUp={onMoveUp}
@@ -56,38 +57,19 @@ export default function HacknetMoneyCard({
                     <em>{spender?.hashPolicy?.upgradeName ?? spender?.upgradeName ?? "auto"}</em>
                 </div>
 
-                <div className="hacknet-table-wrap">
-                    <table className="hacknet-table">
-                        <thead>
-                            <tr>
-                                <th>Node</th>
-                                <th>Level</th>
-                                <th>RAM</th>
-                                <th>Cores</th>
-                                <th>Cache</th>
-                                <th>Prod</th>
-                                <th>Cap</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {nodes.length === 0 ? (
-                                <tr>
-                                    <td colSpan="7" className="hacknet-empty">No Hacknet nodes yet.</td>
-                                </tr>
-                            ) : nodes.slice(0, 16).map(node => (
-                                <tr key={node.index}>
-                                    <td>{node.name ?? `node-${node.index}`}</td>
-                                    <td>{formatNumber(node.level, 0)}</td>
-                                    <td>{formatRam(node.ram)}</td>
-                                    <td>{formatNumber(node.cores, 0)}</td>
-                                    <td>{node.cache ?? "--"}</td>
-                                    <td>{formatNumber(node.production, 3)}</td>
-                                    <td>{formatNumber(getNodeHashCap(node), 0)}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                {nodes.length === 0 ? (
+                    <div className="hacknet-empty">No Hacknet nodes yet.</div>
+                ) : (
+                    <div className="hacknet-node-grid">
+                        {nodes.slice(0, 16).map(node => (
+                            <HacknetNodeCard
+                                key={node.index}
+                                node={node}
+                                maxProduction={maxNodeProduction}
+                            />
+                        ))}
+                    </div>
+                )}
 
                 <div className="hacknet-footer">
                     <span>{hacknet?.nextAction?.label ?? hacknet?.roi?.bestCandidate?.label ?? "No next action"}</span>
@@ -95,6 +77,47 @@ export default function HacknetMoneyCard({
                 </div>
             </div>
         </Card>
+    );
+}
+
+function HacknetNodeCard({ node, maxProduction }) {
+    const production = Number(node?.production) || 0;
+    const progress = getPercent(production, maxProduction);
+    const strength = getNodeStrength(node);
+    const tone = getNodeTone(strength);
+    const label = node?.name ?? `hacknet-server-${node?.index ?? "?"}`;
+
+    return (
+        <article className={`hacknet-node-card hacknet-node-${tone}`}>
+            <div className="hacknet-node-art-panel">
+                <img
+                    className="hacknet-node-art"
+                    src="/sprites/hacknet/concept/hacknet-node-reference-transparent.png"
+                    alt=""
+                    aria-hidden="true"
+                />
+            </div>
+            <div className="hacknet-node-info">
+                <div className="hacknet-node-title">
+                    <b>{label}</b>
+                    <span>HASH FORGE</span>
+                </div>
+                <div className="hacknet-node-specs">
+                    <span>L {formatNumber(node?.level, 0)}</span>
+                    <span>RAM {formatRam(node?.ram)}</span>
+                    <span>C {formatNumber(node?.cores, 0)}</span>
+                    <span>Cache {node?.cache ?? "--"}</span>
+                </div>
+                <div className="hacknet-node-production">
+                    <b>{formatNumber(production, 3)} h/s</b>
+                    <span>capacity {formatNumber(getNodeHashCap(node), 0)}</span>
+                </div>
+                <div className="hacknet-node-progress" aria-label={`Production progress ${Math.round(progress)} percent`}>
+                    <span style={{ width: `${Math.max(3, progress)}%` }} />
+                </div>
+                <div className="hacknet-node-stage">{Math.round(progress)}% overclock</div>
+            </div>
+        </article>
     );
 }
 
@@ -118,6 +141,21 @@ function getNodeHashCap(node) {
     const cache = Number(node?.cache);
     if (!Number.isFinite(cache) || cache <= 0) return 0;
     return 32 * Math.pow(2, cache);
+}
+
+function getNodeStrength(node) {
+    const level = Number(node?.level) || 0;
+    const ram = Number(node?.ram) || 0;
+    const cores = Number(node?.cores) || 0;
+    const cache = Number(node?.cache) || 0;
+    return level + (Math.log2(Math.max(1, ram)) * 12) + (cores * 18) + (cache * 22);
+}
+
+function getNodeTone(strength) {
+    if (strength >= 620) return "gold";
+    if (strength >= 420) return "yellow";
+    if (strength >= 260) return "green";
+    return "cyan";
 }
 
 function formatRam(value) {

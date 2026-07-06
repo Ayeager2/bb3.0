@@ -257,6 +257,7 @@
 .aug-active-goal {
     display: grid;
     gap: 4px;
+    min-width: 0;
     padding: 9px;
     border: 1px solid rgba(250, 204, 21, .22);
     border-radius: 7px;
@@ -264,7 +265,20 @@
 }
 
 .aug-active-goal b {
+    display: block;
+    min-width: 0;
     color: var(--yellow);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    white-space: normal;
+}
+
+.aug-active-goal span,
+.aug-active-goal em {
+    display: block;
+    min-width: 0;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
 }
 
 .aug-gang-focus {
@@ -456,6 +470,7 @@
     display: grid;
     gap: 8px;
     min-height: 0;
+    min-width: 0;
 }
 
 .aug-drilldown-head {
@@ -747,50 +762,141 @@
     gap: 10px;
 }
 
-.card-third .aug-tree-header {
+.card-third .aug-tree-header,
+.card-quarter .aug-tree-header {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.card-third .aug-inspector {
+.card-third .aug-inspector,
+.card-quarter .aug-inspector {
     padding: 10px;
 }
 
-.card-third .aug-inspector-top b {
+.card-third .aug-inspector-top b,
+.card-quarter .aug-inspector-top b {
     font-size: 15px;
 }
 
-.card-third .aug-inspector-metrics {
+.card-third .aug-inspector-metrics,
+.card-quarter .aug-inspector-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.card-third .aug-list {
+.card-third .aug-list,
+.card-quarter .aug-list {
     max-height: none;
 }
 
-.card-third .aug-row {
+.card-third .aug-row,
+.card-quarter .aug-row {
     grid-template-columns: 1fr;
 }
 
-.card-third .aug-row-status {
+.card-third .aug-row-status,
+.card-quarter .aug-row-status {
     text-align: left;
 }
 
-.card-third .aug-mix-panel {
+.card-third .aug-mix-panel,
+.card-quarter .aug-mix-panel {
     grid-template-columns: minmax(0, 1fr);
 }
 
-.card-third .aug-donut {
+.card-third .aug-donut,
+.card-quarter .aug-donut {
     justify-self: center;
 }
 
-.card-third .aug-mix-legend {
+.card-third .aug-mix-legend,
+.card-quarter .aug-mix-legend {
     grid-template-columns: minmax(0, 1fr);
 }
 
-.card-third .aug-table-row {
+.card-third .aug-table-row,
+.card-quarter .aug-table-row {
     grid-template-columns: minmax(130px, 1fr) minmax(54px, .36fr) minmax(72px, .46fr);
 }
 
-.card-third .aug-table-row span:nth-child(4) {
+.card-third .aug-table-row span:nth-child(4),
+.card-quarter .aug-table-row span:nth-child(4) {
     display: none;
+}
+
+.card-half .aug-tree-card,
+.card-third .aug-tree-card,
+.card-quarter .aug-tree-card {
+    height: 100%;
+    min-height: 0;
+    max-height: none;
+    overflow: auto;
+    padding-right: 4px;
+    scrollbar-color: var(--signal) rgba(2, 6, 23, .72);
+    scrollbar-width: thin;
+}
+
+.card-half .aug-tree-card::-webkit-scrollbar,
+.card-third .aug-tree-card::-webkit-scrollbar,
+.card-quarter .aug-tree-card::-webkit-scrollbar,
+.card-half .aug-table-body::-webkit-scrollbar,
+.card-third .aug-table-body::-webkit-scrollbar,
+.card-quarter .aug-table-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.card-half .aug-tree-card::-webkit-scrollbar-track,
+.card-third .aug-tree-card::-webkit-scrollbar-track,
+.card-quarter .aug-tree-card::-webkit-scrollbar-track,
+.card-half .aug-table-body::-webkit-scrollbar-track,
+.card-third .aug-table-body::-webkit-scrollbar-track,
+.card-quarter .aug-table-body::-webkit-scrollbar-track {
+    border-radius: 999px;
+    background: rgba(2, 6, 23, .68);
+}
+
+.card-half .aug-tree-card::-webkit-scrollbar-thumb,
+.card-third .aug-tree-card::-webkit-scrollbar-thumb,
+.card-quarter .aug-tree-card::-webkit-scrollbar-thumb,
+.card-half .aug-table-body::-webkit-scrollbar-thumb,
+.card-third .aug-table-body::-webkit-scrollbar-thumb,
+.card-quarter .aug-table-body::-webkit-scrollbar-thumb {
+    border: 2px solid rgba(2, 6, 23, .86);
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--signal), var(--green), var(--red));
+}
+
+.card-quarter .aug-gang-focus {
+    grid-template-columns: 1fr;
+    min-height: 0;
+}
+
+.card-quarter .aug-gang-chart,
+.card-quarter .aug-gang-focus .aug-inspector {
+    min-width: 0;
+}
+
+.card-quarter .aug-gang-chart {
+    min-height: 300px;
+}
+
+.card-quarter .aug-mix-panel-large .aug-donut {
+    width: min(260px, 88%);
+}
+
+.card-quarter .aug-gang-focus .aug-inspector {
+    overflow: visible;
+    align-content: start;
+    grid-template-rows: none;
+}
+
+.card-quarter .aug-table {
+    max-height: 260px;
+}
+
+.card-quarter .aug-active-goal {
+    gap: 5px;
+    padding: 8px;
+}
+
+.card-quarter .aug-active-goal b {
+    font-size: 13px;
 }

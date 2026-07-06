@@ -1,5 +1,5 @@
 {
-  "updatedAt": 1783213606781,
+  "updatedAt": 1783307530116,
   "mode": "money",
   "priority": "income",
   "allowBuying": true,
@@ -12,13 +12,13 @@
   "maxPrice": 1000000000000,
   "planReady": false,
   "nextGoal": {
-    "name": "Golden Tongue Module",
+    "name": "Cranial Signal Processors - Gen IV",
     "faction": "Slum Snakes",
-    "price": 125000000,
+    "price": 1100000000,
     "rep": 125000,
-    "factionRep": 19591.638396120037,
+    "factionRep": 26034.22918612193,
     "hasRep": false,
-    "affordable": true,
+    "affordable": false,
     "hasPrereqs": true,
     "stagePolicy": {
       "stage": "side",
@@ -35,5 +35,5 @@
   "planBlockedReason": "Need more rep with Slum Snakes.",
   "status": "blocked",
   "blockedReason": "Need more rep with Slum Snakes.",
-  "bridgeUpdatedAt": 1783213614458
+  "bridgeUpdatedAt": 1783307540490
 }

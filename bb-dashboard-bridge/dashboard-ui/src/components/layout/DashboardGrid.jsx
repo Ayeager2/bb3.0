@@ -323,13 +323,14 @@ function defaultLayout() {
 }
 
 function isAutoVisible(id, bitNode, visible = {}) {
+    if (visible[id] === false) return false;
+    if (visible[id] === true) return true;
+
     if (bitNode === 2) {
         if (id === "gang") return true;
         if (id === "serverTicker") return true;
         if (id === "stockPortfolio") return false;
     }
-
-    if (visible[id] === false) return false;
 
     if (id === "gang" && bitNode !== 2) return visible[id] === true;
 

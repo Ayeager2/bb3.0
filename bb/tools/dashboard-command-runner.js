@@ -111,14 +111,11 @@ async function handleCommand(ns, command) {
                 return;
             }
 
-            ns.write(GANG_MODE_FILE, JSON.stringify({
-                updatedAt: Date.now(),
-                updatedAtText: new Date().toLocaleTimeString(),
-                source: "dashboard-command-runner",
-                mode,
-                label: getGangModeLabel(mode),
-                commandId: command.id,
-            }, null, 2), "w");
+            writeGangMode(ns, mode, command.id);
+
+            if (mode !== "custom") {
+                clearGangTaskOverrides(ns, command.id, mode);
+            }
 
             complete(ns, command, `Gang mode switched to ${getGangModeLabel(mode)}.`, "success");
             return;
@@ -241,6 +238,21 @@ function writeGangMode(ns, mode, commandId) {
         mode,
         label: getGangModeLabel(mode),
         commandId,
+    }, null, 2), "w");
+}
+
+function clearGangTaskOverrides(ns, commandId, mode) {
+    ns.write(GANG_TASK_OVERRIDE_FILE, JSON.stringify({
+        updatedAt: Date.now(),
+        updatedAtText: new Date().toLocaleTimeString(),
+        source: "dashboard-command-runner",
+        overrides: {},
+        lastChange: {
+            member: null,
+            task: null,
+            commandId,
+            reason: `Cleared manual overrides for ${getGangModeLabel(mode)} mode.`,
+        },
     }, null, 2), "w");
 }
 

@@ -1,15 +1,15 @@
 {
-  "updatedAt": 1783213606782,
+  "updatedAt": 1783307530116,
   "singularityEnabled": true,
   "bitNode": 2,
   "hacknetTotals": {
-    "count": 27,
-    "levels": 5400,
-    "ram": 1728,
-    "cores": 432,
+    "count": 22,
+    "levels": 4400,
+    "ram": 1408,
+    "cores": 352,
     "maxRam": 64,
     "maxCores": 16,
-    "production": 769040.6874545214
+    "production": 772290.5876834634
   },
   "joined": [
     "BitRunners",
@@ -20,7 +20,7 @@
     "Netburners",
     "CyberSec"
   ],
-  "hackingLevel": 566,
+  "hackingLevel": 684,
   "profiles": [
     {
       "faction": "CyberSec",
@@ -1494,13 +1494,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -1556,13 +1556,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -1619,13 +1619,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -1682,13 +1682,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": true,
       "ready": false,
@@ -1741,13 +1741,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": true,
       "ready": false,
@@ -1800,13 +1800,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": true,
       "ready": false,
@@ -1859,13 +1859,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": true,
       "ready": false,
@@ -1918,13 +1918,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -1979,13 +1979,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -2040,13 +2040,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -2101,13 +2101,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
@@ -2150,7 +2150,7 @@
       },
       "server": "fulcrumassets",
       "exists": true,
-      "rooted": true,
+      "rooted": false,
       "backdoored": false,
       "hackReady": false,
       "moneyReady": true,
@@ -2162,17 +2162,18 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": false,
       "ready": false,
       "blockers": [
+        "root fulcrumassets",
         "backdoor fulcrumassets",
         "hacking 1000",
         "company rep Fulcrum Secret Technologies"
@@ -2226,13 +2227,13 @@
       "hacknetRamReady": true,
       "hacknetCoresReady": true,
       "hacknetTotals": {
-        "count": 27,
-        "levels": 5400,
-        "ram": 1728,
-        "cores": 432,
+        "count": 22,
+        "levels": 4400,
+        "ram": 1408,
+        "cores": 352,
         "maxRam": 64,
         "maxCores": 16,
-        "production": 769040.6874545214
+        "production": 772290.5876834634
       },
       "joined": true,
       "ready": false,
@@ -2259,7 +2260,7 @@
     "canAutoTravel": true
   },
   "backdoors": {
-    "updatedAt": 1783213606782,
+    "updatedAt": 1783307530116,
     "singularityEnabled": true,
     "autoBackdoor": false,
     "announced": [
@@ -2341,11 +2342,11 @@
           "default": 45
         },
         "exists": true,
-        "rooted": true,
+        "rooted": false,
         "hackReady": false,
         "backdoored": false
       }
     ]
   },
-  "bridgeUpdatedAt": 1783213614460
+  "bridgeUpdatedAt": 1783307540491
 }

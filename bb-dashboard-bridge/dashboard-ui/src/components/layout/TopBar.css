@@ -95,7 +95,55 @@
 }
 
 .topbar-right {
+    display: grid;
+    justify-items: end;
+    gap: 6px;
     text-align: right;
+}
+
+.topbar-collapse-button,
+.topbar-restore-tab {
+    border: 1px solid rgba(0, 229, 255, .28);
+    background:
+        linear-gradient(135deg, rgba(0, 229, 255, .12), rgba(255, 46, 136, .08)),
+        rgba(2, 6, 23, .86);
+    color: var(--cyan);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 900;
+    box-shadow: 0 0 16px rgba(0, 229, 255, .12);
+}
+
+.topbar-collapse-button {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 24px;
+    border-radius: 7px;
+}
+
+.topbar-collapse-button:hover,
+.topbar-restore-tab:hover {
+    border-color: rgba(0, 229, 255, .7);
+    color: white;
+    box-shadow: 0 0 22px rgba(0, 229, 255, .22);
+}
+
+.topbar-restore-tab {
+    position: fixed;
+    top: 18px;
+    right: 0;
+    z-index: 80;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 6px;
+    align-items: center;
+    padding: 9px 10px;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+    color: var(--green);
+    letter-spacing: .08em;
+    text-transform: uppercase;
 }
 
 .topbar-live {
@@ -169,9 +217,14 @@
 @media (max-width: 1200px) {
     .topbar {
         grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px 12px;
     }
 
     .topbar-right {
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        align-items: center;
         text-align: left;
     }
 
@@ -181,7 +234,43 @@
 }
 
 @media (max-width: 720px) {
+    .topbar-title-block {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .topbar-title {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .topbar-command-button {
+        grid-column: 2;
+        grid-row: 1;
+        margin-top: 0;
+    }
+
     .topbar-stat-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .topbar-stat {
+        padding: 7px 8px;
+    }
+
+    .topbar-stat-label {
+        font-size: 8px;
+    }
+
+    .topbar-stat-value {
+        font-size: 11px;
+    }
+
+    .topbar-subtitle,
+    .topbar-command-button kbd {
+        display: none;
     }
 }
