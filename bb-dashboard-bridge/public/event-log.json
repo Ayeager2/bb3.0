@@ -1,191 +1,135 @@
 [
   {
-    "ts": 1783304542163,
+    "ts": 1783469187245,
     "type": "command",
     "level": "success",
     "message": "Dashboard command runner online.",
     "data": null
   },
   {
-    "ts": 1783305113696,
+    "ts": 1783469726072,
     "type": "command",
     "level": "info",
     "message": "Received dashboard command: ascendGangMember",
     "data": null
   },
   {
-    "ts": 1783305113696,
+    "ts": 1783469726072,
     "type": "command",
     "level": "success",
-    "message": "Ascend request queued for Operator-7.",
+    "message": "Ascend request queued for Operator-2.",
     "data": null
   },
   {
-    "ts": 1783305647372,
+    "ts": 1783469728083,
     "type": "command",
     "level": "info",
     "message": "Received dashboard command: ascendGangMember",
     "data": null
   },
   {
-    "ts": 1783305647373,
-    "type": "command",
-    "level": "success",
-    "message": "Ascend request queued for Operator-6.",
-    "data": null
-  },
-  {
-    "ts": 1783305658658,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783305658658,
-    "type": "command",
-    "level": "success",
-    "message": "Gang mode switched to Combat Train Only.",
-    "data": null
-  },
-  {
-    "ts": 1783305667759,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMode",
-    "data": null
-  },
-  {
-    "ts": 1783305667759,
-    "type": "command",
-    "level": "success",
-    "message": "Gang mode switched to Money Only.",
-    "data": null
-  },
-  {
-    "ts": 1783305671777,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305671778,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-6 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305680819,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305680819,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-7 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305703964,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305703965,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-12 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305724056,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305724056,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-8 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305728141,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305728141,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-10 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305903416,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: setGangMemberTask",
-    "data": null
-  },
-  {
-    "ts": 1783305903417,
-    "type": "command",
-    "level": "success",
-    "message": "Operator-3 override set to Train Combat; gang mode switched to Custom.",
-    "data": null
-  },
-  {
-    "ts": 1783305904422,
-    "type": "command",
-    "level": "info",
-    "message": "Received dashboard command: ascendGangMember",
-    "data": null
-  },
-  {
-    "ts": 1783305904423,
+    "ts": 1783469728083,
     "type": "command",
     "level": "success",
     "message": "Ascend request queued for Operator-3.",
     "data": null
   },
   {
-    "ts": 1783305915580,
+    "ts": 1783469730104,
     "type": "command",
     "level": "info",
     "message": "Received dashboard command: ascendGangMember",
     "data": null
   },
   {
-    "ts": 1783305915580,
+    "ts": 1783469730104,
     "type": "command",
     "level": "success",
-    "message": "Ascend request queued for Operator-11.",
+    "message": "Ascend request queued for Operator-5.",
     "data": null
   },
   {
-    "ts": 1783307144166,
+    "ts": 1783469732144,
     "type": "command",
     "level": "info",
-    "message": "Received dashboard command: refreshTopology",
+    "message": "Received dashboard command: ascendGangMember",
     "data": null
   },
   {
-    "ts": 1783307144166,
+    "ts": 1783469732144,
     "type": "command",
     "level": "success",
-    "message": "Triggered topology refresh.",
+    "message": "Ascend request queued for Operator-10.",
+    "data": null
+  },
+  {
+    "ts": 1783469733152,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783469733152,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-9.",
+    "data": null
+  },
+  {
+    "ts": 1783469734183,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783469734183,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-8.",
+    "data": null
+  },
+  {
+    "ts": 1783469735190,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783469735190,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-7.",
+    "data": null
+  },
+  {
+    "ts": 1783469736199,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783469736199,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-6.",
+    "data": null
+  },
+  {
+    "ts": 1783469739235,
+    "type": "command",
+    "level": "info",
+    "message": "Received dashboard command: ascendGangMember",
+    "data": null
+  },
+  {
+    "ts": 1783469739235,
+    "type": "command",
+    "level": "success",
+    "message": "Ascend request queued for Operator-12.",
     "data": null
   }
 ]

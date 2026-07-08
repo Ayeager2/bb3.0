@@ -1,6 +1,15 @@
 import Card from "../shared/Card.jsx";
+import { sendDashboardCommand } from "../../api/dashboardApi.js";
 import { formatMoney, formatNumber } from "../../utils/formatters.js";
 import "./HacknetMoneyCard.css";
+
+const PRODUCTION_TARGETS = [
+    { label: "100K", value: 100_000 },
+    { label: "200K", value: 200_000 },
+    { label: "500K", value: 500_000 },
+    { label: "1M", value: 1_000_000 },
+    { label: "Unlimited", value: 0 },
+];
 
 export default function HacknetMoneyCard({
     state,
@@ -16,6 +25,16 @@ export default function HacknetMoneyCard({
     const nodes = Array.isArray(hacknet?.nodes) ? hacknet.nodes : [];
     const hashPercent = getPercent(hacknet?.hashes?.hashes, hacknet?.hashes?.capacity);
     const maxNodeProduction = Math.max(0, ...nodes.map(node => Number(node?.production) || 0));
+    const selectedProductionTarget = Number(hacknet?.control?.minProduction ?? hacknet?.roi?.minProduction ?? 0) || 0;
+    const productionFloorMet = hacknet?.roi?.productionFloorMet !== false;
+
+    const setProductionTarget = value => {
+        sendDashboardCommand("setHacknetProductionTarget", {
+            productionTarget: String(value),
+        }).catch(error => {
+            console.error(error);
+        });
+    };
 
     return (
         <Card
@@ -49,6 +68,26 @@ export default function HacknetMoneyCard({
 
                 <div className="hacknet-hash-bar">
                     <span style={{ width: `${hashPercent}%` }} />
+                </div>
+
+                <div className="hacknet-production-control">
+                    <div>
+                        <span>Max production</span>
+                        <b>{selectedProductionTarget > 0 ? `${formatNumber(selectedProductionTarget, 0)} h/s` : "Unlimited"}</b>
+                        <em>{selectedProductionTarget > 0 ? (productionFloorMet ? "floor met" : "pushing") : "no floor"}</em>
+                    </div>
+                    <div className="hacknet-production-buttons" aria-label="Hacknet production target">
+                        {PRODUCTION_TARGETS.map(target => (
+                            <button
+                                key={target.label}
+                                type="button"
+                                className={target.value === selectedProductionTarget ? "active" : ""}
+                                onClick={() => setProductionTarget(target.value)}
+                            >
+                                {target.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="hacknet-spender">

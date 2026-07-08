@@ -47,30 +47,10 @@ export default function ServerTickerCard({
                     </div>
                     <div className="server-ticker-status">{acted ? "LIVE" : "IDLE"}</div>
                 </div>
-
-                <div className="server-ticker-main">
-                    <div className="server-ticker-ram">
-                        <b>{formatRam(ram)}</b>
-                        <span>{ticker?.type ?? "server"}</span>
-                    </div>
-                    <div className="server-ticker-cost">
-                        <span>Cost</span>
-                        <b>{formatMoney(ticker?.cost ?? 0)}</b>
-                    </div>
-                    <div className="server-ticker-cost">
-                        <span>Actions</span>
-                        <b>{formatNumber(ticker?.purchaseCount ?? (acted ? 1 : 0), 0)}</b>
-                    </div>
-                </div>
-
                 <div className="server-ticker-fleet">
                     <div className="server-ticker-fleet-row">
                         <span>Fleet</span>
                         <b>{fleet.count ?? 0}/{fleet.limit ?? 0}</b>
-                    </div>
-                    <div className="server-ticker-fleet-row">
-                        <span>RAM Band</span>
-                        <b>{formatRam(fleet.minRam)} - {formatRam(fleet.maxRam)}</b>
                     </div>
                     <div className="server-ticker-fleet-row">
                         <span>Total RAM</span>
@@ -84,31 +64,33 @@ export default function ServerTickerCard({
                     </div>
                 </div>
 
-                <div className="server-ticker-next">
-                    <div className="server-ticker-next-head">
-                        <span>Next Upgrade</span>
-                        <b className={nextAction?.affordable ? "affordable" : "waiting"}>
-                            {nextAction?.affordable ? "READY" : "WAIT"}
-                        </b>
-                    </div>
-                    <div className="server-ticker-next-showcase">
-                        <ServerTile server={featuredServer} featured />
-                        <div className="server-ticker-next-grid">
-                            <Mini label="Server" value={nextAction?.server ?? featuredServer?.name ?? "new"} />
-                            <Mini label="From" value={formatRam(nextAction?.fromRam ?? fleet?.weakest?.ram)} />
-                            <Mini label="To" value={formatRam(nextAction?.ram ?? featuredServer?.ram)} />
-                            <Mini label="Cost" value={formatMoney(nextAction?.cost ?? 0)} />
+                <div className="server-ticker-scroll">
+                    <div className="server-ticker-next">
+                        <div className="server-ticker-next-head">
+                            <span>Next Upgrade</span>
+                            <b className={nextAction?.affordable ? "affordable" : "waiting"}>
+                                {nextAction?.affordable ? "READY" : "WAIT"}
+                            </b>
                         </div>
+                        <div className="server-ticker-next-showcase">
+                            <ServerTile server={featuredServer} featured />
+                            <div className="server-ticker-next-grid">
+                                <Mini label="Server" value={nextAction?.server ?? featuredServer?.name ?? "new"} />
+                                <Mini label="From" value={formatRam(nextAction?.fromRam ?? fleet?.weakest?.ram)} />
+                                <Mini label="To" value={formatRam(nextAction?.ram ?? featuredServer?.ram)} />
+                                <Mini label="Cost" value={formatMoney(nextAction?.cost ?? 0)} />
+                            </div>
+                        </div>
+                        <p>{fleet?.weakest?.name ? `Weakest server: ${fleet.weakest.name}` : "No weakest server telemetry."}</p>
                     </div>
-                    <p>{fleet?.weakest?.name ? `Weakest server: ${fleet.weakest.name}` : "No weakest server telemetry."}</p>
-                </div>
 
-                <div className="server-ticker-grid" aria-label="Cloud server fleet">
-                    {servers.length === 0 ? (
-                        <div className="server-ticker-empty">No cloud fleet telemetry.</div>
-                    ) : servers.slice(0, 25).map(server => (
-                        <ServerTile server={server} key={server.name} />
-                    ))}
+                    <div className="server-ticker-grid" aria-label="Cloud server fleet">
+                        {servers.length === 0 ? (
+                            <div className="server-ticker-empty">No cloud fleet telemetry.</div>
+                        ) : servers.slice(0, 25).map(server => (
+                            <ServerTile server={server} key={server.name} />
+                        ))}
+                    </div>
                 </div>
 
                 <div className="server-ticker-message">

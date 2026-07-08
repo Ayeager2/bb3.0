@@ -1,6 +1,6 @@
 {
-  "updatedAt": 1783307530116,
-  "mode": "money",
+  "updatedAt": 1783470154053,
+  "mode": "exp",
   "priority": "income",
   "allowBuying": true,
   "forceBuy": false,
@@ -10,15 +10,15 @@
   "backgroundFactionReason": null,
   "reserveMoney": 1000000,
   "maxPrice": 1000000000000,
-  "planReady": false,
+  "planReady": true,
   "nextGoal": {
-    "name": "Cranial Signal Processors - Gen IV",
+    "name": "Embedded Netburner Module Core V3 Upgrade",
     "faction": "Slum Snakes",
-    "price": 1100000000,
-    "rep": 125000,
-    "factionRep": 26034.22918612193,
-    "hasRep": false,
-    "affordable": false,
+    "price": 97740749999.99998,
+    "rep": 1750000,
+    "factionRep": 6309370.577103171,
+    "hasRep": true,
+    "affordable": true,
     "hasPrereqs": true,
     "stagePolicy": {
       "stage": "side",
@@ -32,8 +32,15 @@
     "repeatable": false,
     "favorLoop": null
   },
-  "planBlockedReason": "Need more rep with Slum Snakes.",
-  "status": "blocked",
-  "blockedReason": "Need more rep with Slum Snakes.",
-  "bridgeUpdatedAt": 1783307540490
+  "planBlockedReason": "Ready to buy.",
+  "status": "purchased",
+  "blockedReason": "",
+  "purchased": "Embedded Netburner Module Core V3 Upgrade",
+  "purchasedFaction": "Slum Snakes",
+  "livePrice": 97740749999.99998,
+  "liveRepReq": 1750000,
+  "liveFactionRep": 6309370.577103171,
+  "spendable": 111473269511.63684,
+  "bypassMaxPrice": false,
+  "bridgeUpdatedAt": 1783470165245
 }

@@ -3,6 +3,7 @@ import { runHacknetBuyer } from "/lib/daemon/hacknet.js";
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 
 const HACKNET_STATE_FILE = "/data/hacknet-state.txt";
+const HACKNET_CONTROL_FILE = "/data/hacknet-control.txt";
 
 /** @param {NS} ns */
 export async function main(ns) {
@@ -48,7 +49,7 @@ export async function main(ns) {
         (Number(flags["hash-buffer-minutes"]) || 120) * 60;
     const sellForMoneyValue =
         Number(flags["sell-value"]) || 2_000_000;
-    const minProduction =
+    const startupMinProduction =
         Math.max(0, Number(flags["min-production"]) || 0);
     const maxPurchasesPerCycle =
         Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
@@ -67,6 +68,10 @@ export async function main(ns) {
     while (true) {
         const daemonState =
             readJson(ns, STATE_FILE);
+        const control =
+            readHacknetControl(ns, startupMinProduction);
+        const minProduction =
+            control.minProduction;
         const policy =
             daemonState?.spendingPolicy ?? {};
         const allowHacknet =
@@ -88,6 +93,7 @@ export async function main(ns) {
                 mode: daemonState?.mode ?? "unknown",
                 priority: policy.priority ?? "unknown",
                 reserveMoney,
+                control,
             });
 
             await ns.sleep(refreshMs);
@@ -120,6 +126,7 @@ export async function main(ns) {
             purchases: result.purchases ?? [],
             mode: daemonState?.mode ?? "unknown",
             priority: policy.priority ?? "unknown",
+            control,
             recentActions,
         };
 
@@ -227,6 +234,27 @@ function isHacknetBitNode(ns) {
     } catch {
         return false;
     }
+}
+
+function readHacknetControl(ns, startupMinProduction) {
+    const control =
+        readJson(ns, HACKNET_CONTROL_FILE);
+    const rawTarget =
+        control?.productionTarget ??
+        control?.minProduction ??
+        startupMinProduction;
+    const minProduction =
+        Math.max(0, Number(rawTarget) || 0);
+
+    return {
+        updatedAt: control?.updatedAt ?? null,
+        source: control?.source ?? "startup",
+        mode: minProduction > 0 ? "production-floor" : "unlimited",
+        minProduction,
+        label:
+            control?.label ??
+            (minProduction > 0 ? `${ns.format.number(minProduction)} / sec` : "Unlimited"),
+    };
 }
 
 function writeHacknetState(ns, state) {

@@ -1,3 +1,5 @@
+//bb/tools/gang-manager-service.js
+// Gang Manager Service for Bitburner v 1.0.0
 const STATE_FILE = "/data/gang-state.txt";
 const MODE_FILE = "/data/gang-mode.txt";
 const TASK_OVERRIDE_FILE = "/data/gang-task-overrides.txt";
@@ -37,7 +39,7 @@ const WANTED_PENALTY_CRITICAL_FLOOR = 0.50;
 const WANTED_PENALTY_EMERGENCY_FLOOR = 0.25;
 const TERRITORY_TASK = "Territory Warfare";
 const TERRITORY_MIN_MEMBERS = 1;
-const TERRITORY_CLASH_WIN_CHANCE = 0.99;
+const TERRITORY_CLASH_WIN_CHANCE = 0.60;
 const GANG_FACTIONS = [
   "Slum Snakes",
   "Tetrads",
@@ -834,8 +836,6 @@ function buildTerritoryPolicy(ns, names) {
   const safeToClash =
     !complete &&
     enoughMembers &&
-    strikeTeamFullyEquipped &&
-    strikeTeamDurable &&
     winChanceSafe;
   const shouldBuildPower =
     !complete &&
@@ -843,9 +843,11 @@ function buildTerritoryPolicy(ns, names) {
     strikeTeamDurable &&
     !safeToClash;
   const warriorCount =
-    safeToClash || shouldBuildPower
-      ? Math.min(TERRITORY_STRIKE_TEAM_SIZE, memberCount)
-      : 0;
+    safeToClash
+      ? Math.min(1, memberCount)
+      : shouldBuildPower
+        ? Math.min(TERRITORY_STRIKE_TEAM_SIZE, memberCount)
+        : 0;
   const warriorNames =
     strikeTeamNames.slice(0, warriorCount);
   const trainingNames =
@@ -867,7 +869,7 @@ function buildTerritoryPolicy(ns, names) {
       ? "complete"
       : !enoughMembers
         ? "waiting-members"
-        : !strikeTeamDurable
+        : !strikeTeamDurable && !winChanceSafe
           ? "training-strike-team"
           : safeToClash
             ? "clashing"
@@ -880,10 +882,10 @@ function buildTerritoryPolicy(ns, names) {
       ? "Territory is effectively complete."
       : !enoughMembers
         ? `Need ${TERRITORY_MIN_MEMBERS} members before territory warfare.`
-        : !strikeTeamDurable
+        : !strikeTeamDurable && !winChanceSafe
           ? `Top ${TERRITORY_STRIKE_TEAM_SIZE} train until STR and DEF reach ${formatNumber(STRIKE_TEAM_STR_DEF_MIN)}.`
           : safeToClash
-            ? `Clash enabled: all rival gangs are at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%.`
+            ? `Clash enabled: all rival gangs are at least ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%; lowest win chance ${(lowestWinChance * 100).toFixed(1)}%. One top member holds Territory Warfare.`
             : `Building gang power with clashes OFF. Top ${TERRITORY_STRIKE_TEAM_SIZE} are durable; ${topEquipmentReadyCount}/${TERRITORY_STRIKE_TEAM_SIZE} fully equipped. Clashes wait until every rival reaches ${(TERRITORY_CLASH_WIN_CHANCE * 100).toFixed(0)}%+. ${formatTerritoryBlocker(allRivalsChecked, unsafeRivals)}`,
     territory,
     power,

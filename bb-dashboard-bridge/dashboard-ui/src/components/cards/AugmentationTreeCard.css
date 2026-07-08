@@ -9,7 +9,7 @@
     gap: 8px;
 }
 
-.aug-tree-header > div,
+.aug-tree-header>div,
 .aug-metric {
     min-width: 0;
     padding: 9px;
@@ -303,7 +303,7 @@
 .aug-gang-chart {
     display: grid;
     align-items: stretch;
-    padding: 12px;
+    container-type: inline-size;
 }
 
 .aug-mix-panel {
@@ -324,6 +324,7 @@
     align-content: center;
     justify-items: center;
     gap: 18px;
+    min-width: 0;
     min-height: 100%;
     border-color: rgba(255, 56, 100, .18);
     background:
@@ -342,11 +343,9 @@
     border-radius: 999px;
     background:
         radial-gradient(circle, rgba(2, 6, 23, .96) 0 42%, transparent 43%),
-        conic-gradient(
-            var(--red) 0 calc(var(--need) * 1%),
+        conic-gradient(var(--red) 0 calc(var(--need) * 1%),
             var(--yellow) calc(var(--need) * 1%) calc((var(--need) + var(--ready)) * 1%),
-            var(--green) calc((var(--need) + var(--ready)) * 1%) 100%
-        );
+            var(--green) calc((var(--need) + var(--ready)) * 1%) 100%);
     box-shadow:
         0 0 18px rgba(255, 56, 100, .12),
         inset 0 0 12px rgba(0, 0, 0, .42);
@@ -356,7 +355,8 @@
 }
 
 .aug-mix-panel-large .aug-donut {
-    width: min(330px, 78%);
+    width: clamp(180px, 72cqw, 330px);
+    max-width: 100%;
     height: auto;
     aspect-ratio: 1;
     border-width: 2px;
@@ -366,13 +366,13 @@
 }
 
 .aug-mix-panel-large .aug-donut span {
-    font-size: clamp(42px, 7vw, 74px);
+    font-size: clamp(24px, 18cqw, 74px);
     letter-spacing: .02em;
 }
 
 .aug-mix-panel-large .aug-donut em {
-    margin-top: clamp(52px, 8vw, 88px);
-    font-size: clamp(20px, 3vw, 34px);
+    margin-top: clamp(34px, 18cqw, 88px);
+    font-size: clamp(12px, 8cqw, 34px);
     letter-spacing: .18em;
 }
 
@@ -672,6 +672,7 @@
 }
 
 @keyframes augActiveRail {
+
     0%,
     100% {
         opacity: .55;
@@ -875,11 +876,32 @@
 }
 
 .card-quarter .aug-gang-chart {
-    min-height: 300px;
+    min-height: 0;
+    padding: 10px;
+    height: min-content;
+    height: -webkit-fill-available;
 }
 
 .card-quarter .aug-mix-panel-large .aug-donut {
-    width: min(260px, 88%);
+    width: clamp(160px, 70cqw, 240px);
+}
+
+.card-quarter .aug-mix-panel-large {
+    gap: 12px;
+    align-content: start;
+}
+
+.card-quarter .aug-mix-panel-large .aug-mix-legend {
+    width: 100%;
+    grid-template-columns: 1fr;
+}
+
+.card-quarter .aug-mix-panel-large .aug-mix-segment {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
 }
 
 .card-quarter .aug-gang-focus .aug-inspector {
@@ -899,4 +921,32 @@
 
 .card-quarter .aug-active-goal b {
     font-size: 13px;
+}
+
+@media (max-width: 560px) {
+    .aug-gang-chart {
+        padding: 10px;
+    }
+
+    .aug-mix-panel-large {
+        gap: 12px;
+        align-content: start;
+    }
+
+    .aug-mix-panel-large .aug-donut {
+        width: clamp(150px, 72cqw, 230px);
+    }
+
+    .aug-mix-panel-large .aug-mix-legend {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    .aug-mix-panel-large .aug-mix-segment {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+    }
 }

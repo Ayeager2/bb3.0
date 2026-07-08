@@ -7,6 +7,7 @@ const STATUS_FILE = "/data/ui/dashboard-command-status.txt";
 const GANG_MODE_FILE = "/data/gang-mode.txt";
 const GANG_TASK_OVERRIDE_FILE = "/data/gang-task-overrides.txt";
 const GANG_ASCEND_REQUEST_FILE = "/data/gang-ascend-request.txt";
+const HACKNET_CONTROL_FILE = "/data/hacknet-control.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -182,6 +183,30 @@ async function handleCommand(ns, command) {
             return;
         }
 
+        if (name === "setHacknetProductionTarget") {
+            const target =
+                normalizeHacknetProductionTarget(command.productionTarget ?? command.target ?? command.mode);
+
+            if (!target) {
+                fail(ns, command, "Hacknet production command missing valid target.");
+                return;
+            }
+
+            ns.write(HACKNET_CONTROL_FILE, JSON.stringify({
+                updatedAt: Date.now(),
+                updatedAtText: new Date().toLocaleTimeString(),
+                source: "dashboard-command-runner",
+                productionTarget: target.value,
+                minProduction: target.value,
+                mode: target.value > 0 ? "production-floor" : "unlimited",
+                label: target.label,
+                commandId: command.id,
+            }, null, 2), "w");
+
+            complete(ns, command, `Hacknet production target set to ${target.label}.`, "success");
+            return;
+        }
+
         if (name === "clearEvents") {
             ns.write("/data/ui/event-log.txt", "", "w");
 
@@ -220,6 +245,47 @@ function normalizeGangMode(mode) {
     if (["combat", "combat-train", "combat-train-only", "train-combat", "train-combat-only"].includes(text)) return "combat-train-only";
     if (["custom", "manual", "override", "overrides"].includes(text)) return "custom";
     return null;
+}
+
+function normalizeHacknetProductionTarget(value) {
+    const text = String(value ?? "").trim().toLowerCase();
+
+    if (!text || ["unlimited", "unlimit", "none", "off", "0"].includes(text)) {
+        return {
+            value: 0,
+            label: "Unlimited",
+        };
+    }
+
+    const shortcuts = {
+        "100k": 100_000,
+        "100000": 100_000,
+        "200k": 200_000,
+        "200000": 200_000,
+        "500k": 500_000,
+        "500000": 500_000,
+        "1m": 1_000_000,
+        "1000k": 1_000_000,
+        "1000000": 1_000_000,
+    };
+
+    const valueNumber =
+        shortcuts[text] ??
+        Number(text.replace(/,/g, ""));
+
+    if (!Number.isFinite(valueNumber) || valueNumber < 0) return null;
+
+    return {
+        value: Math.floor(valueNumber),
+        label: `${formatCompactNumber(valueNumber)} / sec`,
+    };
+}
+
+function formatCompactNumber(value) {
+    const n = Number(value) || 0;
+    if (n >= 1_000_000) return `${n / 1_000_000}m`;
+    if (n >= 1_000) return `${n / 1_000}k`;
+    return `${n}`;
 }
 
 function getGangModeLabel(mode) {

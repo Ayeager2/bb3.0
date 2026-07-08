@@ -85,6 +85,7 @@ app.post("/command", async (req, res) => {
         "setGangMode",
         "setGangMemberTask",
         "ascendGangMember",
+        "setHacknetProductionTarget",
         "clearEvents",
         "debugSnapshot",
         "eventTest",
@@ -102,6 +103,7 @@ app.post("/command", async (req, res) => {
         mode: sanitizeCommandText(req.body?.mode),
         member: sanitizeCommandText(req.body?.member),
         task: sanitizeCommandText(req.body?.task),
+        productionTarget: sanitizeCommandText(req.body?.productionTarget),
         args: sanitizeCommandArgs(req.body?.args),
     };
 

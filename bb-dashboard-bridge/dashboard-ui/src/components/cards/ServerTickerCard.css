@@ -255,6 +255,10 @@
     font-size: 11px;
 }
 
+.server-ticker-scroll {
+    min-height: 0;
+}
+
 .server-ticker-grid {
     margin-top: 12px;
     display: grid;
@@ -267,30 +271,45 @@
     scrollbar-width: thin;
 }
 
-.card-half[data-card-id="serverTicker"] .server-ticker-grid,
-.card-third[data-card-id="serverTicker"] .server-ticker-grid,
-.card-quarter[data-card-id="serverTicker"] .server-ticker-grid {
+.card-half[data-card-id="serverTicker"] .server-ticker-scroll,
+.card-third[data-card-id="serverTicker"] .server-ticker-scroll,
+.card-quarter[data-card-id="serverTicker"] .server-ticker-scroll {
     min-height: 0;
     max-height: none;
     flex: 1 1 auto;
+    overflow: auto;
+    padding-right: 2px;
+    scrollbar-color: var(--cyan) rgba(2, 6, 23, .72);
+    scrollbar-width: thin;
+}
+
+.card-half[data-card-id="serverTicker"] .server-ticker-grid,
+.card-third[data-card-id="serverTicker"] .server-ticker-grid,
+.card-quarter[data-card-id="serverTicker"] .server-ticker-grid {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
 }
 
 .card-quarter[data-card-id="serverTicker"] .server-ticker-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.server-ticker-grid::-webkit-scrollbar {
+.server-ticker-grid::-webkit-scrollbar,
+.server-ticker-scroll::-webkit-scrollbar {
     width: 10px;
 }
 
-.server-ticker-grid::-webkit-scrollbar-track {
+.server-ticker-grid::-webkit-scrollbar-track,
+.server-ticker-scroll::-webkit-scrollbar-track {
     border: 1px solid rgba(0, 229, 255, .12);
     border-radius: 999px;
     background:
         linear-gradient(180deg, rgba(2, 6, 23, .78), rgba(15, 23, 42, .64));
 }
 
-.server-ticker-grid::-webkit-scrollbar-thumb {
+.server-ticker-grid::-webkit-scrollbar-thumb,
+.server-ticker-scroll::-webkit-scrollbar-thumb {
     border: 2px solid rgba(2, 6, 23, .86);
     border-radius: 999px;
     background:
@@ -298,7 +317,8 @@
     box-shadow: 0 0 12px rgba(0, 229, 255, .35);
 }
 
-.server-ticker-grid::-webkit-scrollbar-thumb:hover {
+.server-ticker-grid::-webkit-scrollbar-thumb:hover,
+.server-ticker-scroll::-webkit-scrollbar-thumb:hover {
     background:
         linear-gradient(180deg, var(--yellow), var(--cyan), var(--green));
 }

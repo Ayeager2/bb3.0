@@ -9,7 +9,7 @@
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-card {
     height: 100%;
     min-height: 0;
-    grid-template-rows: auto auto auto auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto auto auto minmax(0, 1fr) auto;
 }
 
 .hacknet-hero {
@@ -136,6 +136,74 @@
     border-radius: inherit;
     background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple));
     box-shadow: 0 0 15px rgba(0, 255, 156, .28);
+}
+
+.hacknet-production-control {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid rgba(0, 229, 255, .14);
+    border-radius: 7px;
+    background:
+        linear-gradient(90deg, rgba(0, 229, 255, .07), rgba(255, 159, 26, .05)),
+        rgba(2, 6, 23, .48);
+}
+
+.hacknet-production-control span,
+.hacknet-production-control em {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+
+.hacknet-production-control b {
+    display: block;
+    margin-top: 3px;
+    color: var(--cyan);
+    font-size: 15px;
+    line-height: 1.1;
+}
+
+.hacknet-production-control em {
+    margin-top: 3px;
+    color: var(--yellow);
+}
+
+.hacknet-production-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.hacknet-production-buttons button {
+    min-width: 52px;
+    padding: 6px 8px;
+    border: 1px solid rgba(148, 163, 184, .22);
+    border-radius: 999px;
+    background: rgba(2, 6, 23, .64);
+    color: var(--muted);
+    font: inherit;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.hacknet-production-buttons button:hover,
+.hacknet-production-buttons button:focus-visible,
+.hacknet-production-buttons button.active {
+    border-color: var(--cyan);
+    background: rgba(0, 229, 255, .12);
+    color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0, 229, 255, .18);
 }
 
 .hacknet-spender {
@@ -450,6 +518,14 @@
 
     .hacknet-spender {
         grid-template-columns: 1fr;
+    }
+
+    .hacknet-production-control {
+        grid-template-columns: 1fr;
+    }
+
+    .hacknet-production-buttons {
+        justify-content: flex-start;
     }
 
     .hacknet-node-grid {
