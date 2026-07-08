@@ -9,7 +9,8 @@ import {
     FiX,
     FiHelpCircle,
     FiDollarSign,
-    FiShoppingCart
+    FiShoppingCart,
+    FiUser,
 } from "react-icons/fi";
 
 import CoreStateView from "../views/CoreStateView.jsx";
@@ -22,11 +23,13 @@ import EventFeedView from "../events/EventFeedView.jsx";
 import DaemonReasoningView from "../views/DaemonReasoningView.jsx";
 import BN9EconomyView from "../views/BN9EconomyView.jsx";
 import BuyerLogView from "../views/BuyerLogView.jsx";
+import CharacterActionsView from "../views/CharacterActionsView.jsx";
 
 import "./RightInspectorDrawer.css";
 
 const TABS = [
     { id: "core", label: "Core", icon: <FiCpu /> },
+    { id: "character", label: "Character", icon: <FiUser /> },
     { id: "victory", label: "Victory", icon: <FiFlag /> },
     { id: "policy", label: "Policy", icon: <FiSettings /> },
     { id: "services", label: "Services", icon: <FiServer /> },
@@ -105,6 +108,14 @@ export default function RightInspectorDrawer({
                         <InspectorStack>
                             <InspectorSection title="Victory Plan">
                                 <VictoryPlanView state={state} />
+                            </InspectorSection>
+                        </InspectorStack>
+                    )}
+
+                    {activeTab === "character" && (
+                        <InspectorStack>
+                            <InspectorSection title="Character Actions">
+                                <CharacterActionsView state={state} />
                             </InspectorSection>
                         </InspectorStack>
                     )}

@@ -1,3 +1,5 @@
+import { describeCharacterActionOverride, readCharacterActionOverride } from "/lib/daemon/character-action-override.js";
+
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 const STATE_FILE = "/data/final-level-study-state.txt";
 const UNIVERSITY = "Rothman University";
@@ -28,6 +30,7 @@ function runStudyCycle(ns, focus) {
   const daemonState = readJson(ns, DAEMON_STATE_FILE);
   const progression = daemonState?.factionProgression ?? {};
   const currentWork = getCurrentWork(ns);
+  const characterOverride = readCharacterActionOverride(ns);
   const hacking = ns.getHackingLevel();
   const hasRedPill = hasInstalledRedPill(ns, progression);
   const worldHackRequired = getWorldHackRequirement(ns, progression);
@@ -35,6 +38,19 @@ function runStudyCycle(ns, focus) {
     hasRedPill &&
     worldHackRequired > 0 &&
     hacking < worldHackRequired;
+
+  if (characterOverride?.enabled === true) {
+    return {
+      status: "paused-character-override",
+      bitNode,
+      hacking,
+      targetLevel: worldHackRequired,
+      hasRedPill,
+      currentWork: summarizeWork(currentWork),
+      characterOverride,
+      reason: describeCharacterActionOverride(characterOverride),
+    };
+  }
 
   if (!shouldStudy) {
     return {

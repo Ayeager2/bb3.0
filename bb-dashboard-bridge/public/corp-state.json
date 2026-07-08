@@ -1,0 +1,8 @@
+{
+  "source": "corp-manager-service",
+  "status": "unavailable",
+  "message": "Could not read /data/corp-state.txt. Is /tools/corp-manager-service.js running?",
+  "corporation": null,
+  "actions": [],
+  "bridgeUpdatedAt": 1783544833784
+}

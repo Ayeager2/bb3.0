@@ -8,30 +8,26 @@ const PRODUCTION_TARGETS = [
     { label: "200K", value: 200_000 },
     { label: "500K", value: 500_000 },
     { label: "1M", value: 1_000_000 },
-    { label: "Unlimited", value: 0 },
+    { label: "MAX", value: 0 },
 ];
 
-export default function HacknetMoneyCard({
-    state,
-    id,
-    collapsed,
-    onToggle,
-    onMoveUp,
-    onMoveDown,
-    layoutSize,
-}) {
+const PURCHASE_BATCH = 10;
+
+export default function HacknetMoneyCard({ state, id, collapsed, onToggle, onMoveUp, onMoveDown, layoutSize }) {
     const hacknet = state?.economy?.hacknet ?? null;
     const spender = state?.economy?.hashSpender ?? null;
     const nodes = Array.isArray(hacknet?.nodes) ? hacknet.nodes : [];
     const hashPercent = getPercent(hacknet?.hashes?.hashes, hacknet?.hashes?.capacity);
-    const maxNodeProduction = Math.max(0, ...nodes.map(node => Number(node?.production) || 0));
+    const maxNodeProduction = Math.max(0, ...nodes.map((node) => Number(node?.production) || 0));
     const selectedProductionTarget = Number(hacknet?.control?.minProduction ?? hacknet?.roi?.minProduction ?? 0) || 0;
     const productionFloorMet = hacknet?.roi?.productionFloorMet !== false;
+    const hashSummary = `${formatNumber(hacknet?.hashes?.hashes ?? 0, 0)} / ${formatNumber(hacknet?.hashes?.capacity ?? 0, 0)}`;
 
-    const setProductionTarget = value => {
+    const setProductionTarget = (value) => {
         sendDashboardCommand("setHacknetProductionTarget", {
             productionTarget: String(value),
-        }).catch(error => {
+            purchaseBatch: String(PURCHASE_BATCH),
+        }).catch((error) => {
             console.error(error);
         });
     };
@@ -50,11 +46,16 @@ export default function HacknetMoneyCard({
                 <div className="hacknet-hero">
                     <div>
                         <div className="hacknet-kicker">Hash Money Maker</div>
-                        <div className="hacknet-status">{hacknet?.status ?? "offline"}</div>
+                        <div className="hacknet-status-row">
+                            <div className="hacknet-status">{hacknet?.status ?? "offline"}</div>
+                            <span>{formatFreshness(hacknet?.updatedAt)}</span>
+                        </div>
                         <div className="hacknet-message">{hacknet?.message ?? "Waiting for Hacknet telemetry."}</div>
                     </div>
                     <div className="hacknet-node-count">
-                        <b>{hacknet?.nodeCount ?? nodes.length}/{hacknet?.maxNodes ?? 0}</b>
+                        <b>
+                            {hacknet?.nodeCount ?? nodes.length}/{hacknet?.maxNodes ?? 0}
+                        </b>
                         <span>nodes</span>
                     </div>
                 </div>
@@ -62,22 +63,31 @@ export default function HacknetMoneyCard({
                 <div className="hacknet-metrics">
                     <Metric label="Production" value={`${formatNumber(hacknet?.totalProduction ?? 0, 3)} h/s`} tone="green" />
                     <Metric label="Hash Value" value={formatMoney(hacknet?.roi?.sellForMoneyValue ?? 0)} tone="yellow" />
-                    <Metric label="Hashes" value={`${formatNumber(hacknet?.hashes?.hashes ?? 0, 0)} / ${formatNumber(hacknet?.hashes?.capacity ?? 0, 0)}`} tone="cyan" />
+                    <Metric label="Hashes" value={hashSummary} tone="cyan" />
                     <Metric label="Spendable" value={formatMoney(hacknet?.spendable ?? 0)} tone="purple" />
                 </div>
 
-                <div className="hacknet-hash-bar">
-                    <span style={{ width: `${hashPercent}%` }} />
+                <div className="hacknet-hash-meter">
+                    <div className="hacknet-hash-bar">
+                        <span style={{ width: `${hashPercent}%` }} />
+                    </div>
+                    <b>{Math.round(hashPercent)}%</b>
                 </div>
 
                 <div className="hacknet-production-control">
                     <div>
                         <span>Max production</span>
                         <b>{selectedProductionTarget > 0 ? `${formatNumber(selectedProductionTarget, 0)} h/s` : "Unlimited"}</b>
-                        <em>{selectedProductionTarget > 0 ? (productionFloorMet ? "floor met" : "pushing") : "no floor"}</em>
+                        <em>
+                            {selectedProductionTarget > 0
+                                ? productionFloorMet
+                                    ? "floor met"
+                                    : `batch ${hacknet?.control?.purchaseBatch ?? PURCHASE_BATCH}`
+                                : "no floor"}
+                        </em>
                     </div>
                     <div className="hacknet-production-buttons" aria-label="Hacknet production target">
-                        {PRODUCTION_TARGETS.map(target => (
+                        {PRODUCTION_TARGETS.map((target) => (
                             <button
                                 key={target.label}
                                 type="button"
@@ -100,19 +110,15 @@ export default function HacknetMoneyCard({
                     <div className="hacknet-empty">No Hacknet nodes yet.</div>
                 ) : (
                     <div className="hacknet-node-grid">
-                        {nodes.slice(0, 16).map(node => (
-                            <HacknetNodeCard
-                                key={node.index}
-                                node={node}
-                                maxProduction={maxNodeProduction}
-                            />
+                        {nodes.slice(0, 16).map((node) => (
+                            <HacknetNodeCard key={node.index} node={node} maxProduction={maxNodeProduction} />
                         ))}
                     </div>
                 )}
 
                 <div className="hacknet-footer">
                     <span>{hacknet?.nextAction?.label ?? hacknet?.roi?.bestCandidate?.label ?? "No next action"}</span>
-                    <b>{formatFreshness(hacknet?.updatedAt)}</b>
+                    <b>{formatMoney(hacknet?.nextAction?.cost ?? hacknet?.roi?.bestCandidate?.cost ?? 0)}</b>
                 </div>
             </div>
         </Card>
@@ -129,17 +135,14 @@ function HacknetNodeCard({ node, maxProduction }) {
     return (
         <article className={`hacknet-node-card hacknet-node-${tone}`}>
             <div className="hacknet-node-art-panel">
-                <img
-                    className="hacknet-node-art"
-                    src="/sprites/hacknet/concept/hacknet-node-reference-transparent.png"
-                    alt=""
-                    aria-hidden="true"
-                />
+                <div className="hacknet-node-sprite" aria-hidden="true">
+                    <span />
+                </div>
             </div>
             <div className="hacknet-node-info">
                 <div className="hacknet-node-title">
                     <b>{label}</b>
-                    <span>HASH FORGE</span>
+                    <span>{tone}</span>
                 </div>
                 <div className="hacknet-node-specs">
                     <span>L {formatNumber(node?.level, 0)}</span>
@@ -187,7 +190,7 @@ function getNodeStrength(node) {
     const ram = Number(node?.ram) || 0;
     const cores = Number(node?.cores) || 0;
     const cache = Number(node?.cache) || 0;
-    return level + (Math.log2(Math.max(1, ram)) * 12) + (cores * 18) + (cache * 22);
+    return level + Math.log2(Math.max(1, ram)) * 12 + cores * 18 + cache * 22;
 }
 
 function getNodeTone(strength) {

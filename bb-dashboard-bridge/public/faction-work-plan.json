@@ -1,12 +1,6 @@
 {
-  "updatedAt": 1783470154343,
-  "active": false,
-  "reason": "Slum Snakes already has enough rep for PC Direct-Neural Interface NeuroNet Injector.",
-  "targetFaction": "Slum Snakes",
-  "targetAugmentation": "PC Direct-Neural Interface NeuroNet Injector",
-  "targetRep": 1500000,
-  "currentRep": 6309370.577103171,
-  "missingRep": 0,
-  "workType": null,
-  "bridgeUpdatedAt": 1783470165245
+  "source": "faction-work-plan",
+  "status": "unavailable",
+  "message": "Could not read /data/faction-work-plan.txt. Is /tools/faction-work-service.js running?",
+  "bridgeUpdatedAt": 1783544833779
 }

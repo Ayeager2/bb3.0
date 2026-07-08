@@ -1,0 +1,7 @@
+{
+  "source": "character-action-override-service",
+  "status": "unavailable",
+  "message": "Could not read /data/character-action-override-state.txt. Is /tools/character-action-override-service.js running?",
+  "enabled": false,
+  "bridgeUpdatedAt": 1783544833783
+}

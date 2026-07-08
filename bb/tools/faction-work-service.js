@@ -1,6 +1,7 @@
 import { STATE_FILE } from "/lib/daemon/config.js";
 import { buildFactionWorkPlan } from "/lib/daemon/faction-work.js";
 import { clearStaleFactionPlans } from "/lib/daemon/faction-plan-cleanup.js";
+import { describeCharacterActionOverride, readCharacterActionOverride } from "/lib/daemon/character-action-override.js";
 
 const LAST_WORK_FILE = "/data/faction-work-last.txt";
 const FACTION_DONATION_PLAN_FILE = "/data/faction-donation-plan.txt";
@@ -25,6 +26,20 @@ export async function main(ns) {
         const plan = buildFactionWorkPlan(ns);
         const donationPlan = readJson(ns, FACTION_DONATION_PLAN_FILE);
         const currentWork = getCurrentWork(ns);
+        const characterOverride = readCharacterActionOverride(ns);
+
+        if (characterOverride?.enabled === true) {
+            writeServiceState(ns, {
+                status: "paused-character-override",
+                allowWork: false,
+                reason: describeCharacterActionOverride(characterOverride),
+                plan,
+                currentWork,
+                characterOverride,
+            });
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
         if (!plan.active && isFactionWork(currentWork)) {
             stopCurrentWork(ns);

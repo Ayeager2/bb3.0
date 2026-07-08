@@ -1,24 +1,43 @@
 .hacknet-card {
     display: grid;
-    gap: 12px;
+    gap: 10px;
     min-height: 220px;
 }
 
-.card-half[data-card-id="hacknetMoney"] .hacknet-card,
-.card-third[data-card-id="hacknetMoney"] .hacknet-card,
-.card-quarter[data-card-id="hacknetMoney"] .hacknet-card {
-    height: 100%;
+.card[data-card-id="hacknetMoney"]:not(.card-collapsed) .card-body {
     min-height: 0;
-    grid-template-rows: auto auto auto auto auto minmax(0, 1fr) auto;
+    flex: 1 1 auto;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding-right: 4px;
+    scrollbar-gutter: stable;
+}
+
+.card[data-card-id="hacknetMoney"]:not(.card-collapsed) .hacknet-card {
+    min-height: max-content;
+}
+
+.card[data-card-id="hacknetMoney"] .card-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card[data-card-id="hacknetMoney"] .card-body::-webkit-scrollbar-track {
+    background: rgba(2, 6, 23, .72);
+    border-radius: 999px;
+}
+
+.card[data-card-id="hacknetMoney"] .card-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 229, 255, .75), rgba(0, 255, 156, .65));
+    border-radius: 999px;
 }
 
 .hacknet-hero {
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
     overflow: hidden;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid rgba(0, 255, 156, .2);
     border-radius: 8px;
     background:
@@ -47,6 +66,7 @@
 
 .hacknet-kicker,
 .hacknet-message,
+.hacknet-status-row span,
 .hacknet-node-count span,
 .hacknet-metric span,
 .hacknet-footer {
@@ -56,12 +76,24 @@
     text-transform: uppercase;
 }
 
+.hacknet-status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+}
+
+.hacknet-status-row span {
+    color: var(--green);
+}
+
 .hacknet-status {
     margin-top: 4px;
     color: var(--green);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 900;
     text-transform: uppercase;
+    line-height: 1.05;
 }
 
 .hacknet-message {
@@ -78,7 +110,7 @@
 .hacknet-node-count b {
     display: block;
     color: var(--cyan);
-    font-size: 28px;
+    font-size: 24px;
     line-height: 1;
 }
 
@@ -90,7 +122,7 @@
 
 .hacknet-metric {
     min-width: 0;
-    padding: 9px;
+    padding: 8px;
     border: 1px solid rgba(255, 255, 255, .1);
     border-radius: 7px;
     background: rgba(2, 6, 23, .54);
@@ -122,6 +154,19 @@
     color: var(--purple);
 }
 
+.hacknet-hash-meter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.hacknet-hash-meter b {
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 900;
+}
+
 .hacknet-hash-bar {
     height: 8px;
     overflow: hidden;
@@ -140,10 +185,10 @@
 
 .hacknet-production-control {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(150px, .55fr) minmax(240px, 1fr);
     gap: 10px;
     align-items: center;
-    padding: 8px;
+    padding: 9px;
     border: 1px solid rgba(0, 229, 255, .14);
     border-radius: 7px;
     background:
@@ -176,14 +221,13 @@
 }
 
 .hacknet-production-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
 }
 
 .hacknet-production-buttons button {
-    min-width: 52px;
+    min-width: 0;
     padding: 6px 8px;
     border: 1px solid rgba(148, 163, 184, .22);
     border-radius: 999px;
@@ -208,7 +252,7 @@
 
 .hacknet-spender {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
     gap: 8px;
     align-items: center;
     padding: 8px;
@@ -248,14 +292,11 @@
 
 .hacknet-node-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 8px;
     align-items: stretch;
-    max-height: 420px;
-    overflow: auto;
-    padding-right: 4px;
-    scrollbar-color: var(--green) rgba(2, 6, 23, .72);
-    scrollbar-width: thin;
+    overflow: visible;
+    padding-right: 0;
 }
 
 .card-half[data-card-id="hacknetMoney"] .hacknet-node-grid,
@@ -269,40 +310,16 @@
     grid-template-columns: 1fr;
 }
 
-.hacknet-node-grid::-webkit-scrollbar {
-    width: 10px;
-}
-
-.hacknet-node-grid::-webkit-scrollbar-track {
-    border: 1px solid rgba(0, 229, 255, .12);
-    border-radius: 999px;
-    background:
-        linear-gradient(180deg, rgba(2, 6, 23, .78), rgba(15, 23, 42, .64));
-}
-
-.hacknet-node-grid::-webkit-scrollbar-thumb {
-    border: 2px solid rgba(2, 6, 23, .86);
-    border-radius: 999px;
-    background:
-        linear-gradient(180deg, var(--green), var(--cyan), #ff9f1a);
-    box-shadow: 0 0 12px rgba(0, 255, 156, .35);
-}
-
-.hacknet-node-grid::-webkit-scrollbar-thumb:hover {
-    background:
-        linear-gradient(180deg, var(--yellow), var(--green), var(--cyan));
-}
-
 .hacknet-node-card {
     --node-accent: var(--cyan);
     --node-glow: rgba(0, 229, 255, .25);
     position: relative;
     display: grid;
-    grid-template-columns: minmax(130px, 34%) minmax(0, 1fr);
-    gap: 14px;
-    min-height: 174px;
+    grid-template-columns: 118px minmax(0, 1fr);
+    gap: 11px;
+    min-height: 150px;
     overflow: hidden;
-    padding: 12px;
+    padding: 9px;
     border: 1px solid color-mix(in srgb, var(--node-accent) 68%, transparent);
     border-radius: 8px;
     background:
@@ -313,9 +330,9 @@
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-card {
-    grid-template-columns: minmax(104px, 30%) minmax(0, 1fr);
-    gap: 10px;
-    min-height: 156px;
+    grid-template-columns: 104px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 136px;
     padding: 8px;
 }
 
@@ -353,7 +370,7 @@
 .hacknet-node-art-panel {
     display: grid;
     min-width: 0;
-    min-height: 144px;
+    min-height: 132px;
     place-items: center;
     overflow: hidden;
     border: 1px solid color-mix(in srgb, var(--node-accent) 64%, transparent);
@@ -368,24 +385,37 @@
     min-height: 118px;
 }
 
-.hacknet-node-art {
-    width: min(100%, 178px);
-    max-height: 146px;
-    object-fit: contain;
+.hacknet-node-sprite {
+    width: min(100%, 100px);
+    aspect-ratio: 2 / 3;
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
     image-rendering: pixelated;
     filter: drop-shadow(0 0 10px var(--node-glow));
 }
 
-.card-quarter[data-card-id="hacknetMoney"] .hacknet-node-art {
-    width: min(100%, 124px);
-    max-height: 112px;
+.hacknet-node-sprite span {
+    position: absolute;
+    inset: 0;
+    width: 400%;
+    background-image: url("/sprites/hacknet/concept/hacknet-hash-forge-sheet-normalized.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: 0 50%;
+    image-rendering: pixelated;
+    animation: hacknet-forge-pulse 1.6s infinite;
+}
+
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-node-sprite {
+    width: min(100%, 90px);
 }
 
 .hacknet-node-info {
     display: grid;
     min-width: 0;
     align-content: center;
-    gap: 10px;
+    gap: 7px;
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-info {
@@ -403,20 +433,20 @@
 .hacknet-node-title b {
     overflow: hidden;
     color: var(--cyan);
-    font-size: 20px;
+    font-size: 15px;
     line-height: 1.05;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-title b {
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .hacknet-node-title span,
 .hacknet-node-stage {
     color: var(--yellow);
-    font-size: 11px;
+    font-size: 9px;
     font-weight: 900;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -429,18 +459,19 @@
 
 .hacknet-node-specs {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, auto));
-    gap: 8px 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
     justify-content: start;
     color: var(--node-accent);
-    font-size: 13px;
+    font-size: 10px;
     font-weight: 900;
     text-transform: uppercase;
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-specs {
-    gap: 5px 8px;
-    font-size: 11px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    font-size: 9px;
 }
 
 .hacknet-node-production {
@@ -450,12 +481,12 @@
 
 .hacknet-node-production b {
     color: var(--green);
-    font-size: 32px;
+    font-size: 20px;
     line-height: 1;
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-production b {
-    font-size: 19px;
+    font-size: 16px;
 }
 
 .card-quarter[data-card-id="hacknetMoney"] .hacknet-node-production span {
@@ -464,12 +495,12 @@
 
 .hacknet-node-production span {
     color: var(--muted);
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 800;
 }
 
 .hacknet-node-progress {
-    height: 10px;
+    height: 7px;
     overflow: hidden;
     border: 1px solid rgba(0, 229, 255, .16);
     border-radius: 999px;
@@ -493,10 +524,39 @@
 }
 
 .hacknet-footer {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
     line-height: 1.4;
+}
+
+.card-third[data-card-id="hacknetMoney"] .hacknet-metrics,
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-third[data-card-id="hacknetMoney"] .hacknet-production-control,
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-production-control {
+    grid-template-columns: 1fr;
+}
+
+.card-third[data-card-id="hacknetMoney"] .hacknet-production-buttons,
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-production-buttons {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-hero {
+    grid-template-columns: 1fr;
+}
+
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-node-count {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.card-quarter[data-card-id="hacknetMoney"] .hacknet-spender {
+    grid-template-columns: 1fr;
 }
 
 .hacknet-footer span {
@@ -530,23 +590,44 @@
 
     .hacknet-node-grid {
         grid-template-columns: 1fr;
-        max-height: 520px;
     }
 
     .hacknet-node-card {
-        grid-template-columns: 1fr;
+        grid-template-columns: 108px minmax(0, 1fr);
+        min-height: 142px;
     }
 
     .hacknet-node-art-panel {
-        min-height: 180px;
+        min-height: 126px;
     }
 
-    .hacknet-node-art {
-        width: min(100%, 220px);
-        max-height: 174px;
+    .hacknet-node-sprite {
+        width: min(100%, 94px);
     }
 
     .hacknet-node-specs {
         grid-template-columns: repeat(2, minmax(0, auto));
+    }
+}
+
+@keyframes hacknet-forge-pulse {
+    0%,
+    24.99% {
+        transform: translateX(0);
+    }
+
+    25%,
+    49.99% {
+        transform: translateX(-25%);
+    }
+
+    50%,
+    74.99% {
+        transform: translateX(-50%);
+    }
+
+    75%,
+    100% {
+        transform: translateX(-75%);
     }
 }

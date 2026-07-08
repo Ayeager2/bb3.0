@@ -29,59 +29,35 @@ export async function main(ns) {
         ["terminal", false],
     ]);
 
-    const refreshMs =
-        Number(flags.refresh) || 5000;
-    const targetNodes =
-        Number(flags.nodes) || 0;
-    const targetLevel =
-        Number(flags.level) || 0;
-    const targetRam =
-        Number(flags.ram) || 0;
-    const targetCores =
-        Number(flags.cores) || 0;
-    const targetCache =
-        Number(flags.cache) || 0;
-    const fallbackReserve =
-        Number(flags.reserve) || 0;
-    const maxPaybackSeconds =
-        getMaxPaybackSeconds(flags["max-payback"]);
-    const hashBufferSeconds =
-        (Number(flags["hash-buffer-minutes"]) || 120) * 60;
-    const sellForMoneyValue =
-        Number(flags["sell-value"]) || 2_000_000;
-    const startupMinProduction =
-        Math.max(0, Number(flags["min-production"]) || 0);
-    const maxPurchasesPerCycle =
-        Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
-    const usePolicyReserve =
-        flags["use-policy-reserve"] === true;
-    const force =
-        flags.force === true;
-    const debug =
-        flags.debug === true;
-    const toast =
-        flags.toast === true;
-    const terminal =
-        flags.terminal === true;
+    const refreshMs = Number(flags.refresh) || 5000;
+    const targetNodes = Number(flags.nodes) || 0;
+    const targetLevel = Number(flags.level) || 0;
+    const targetRam = Number(flags.ram) || 0;
+    const targetCores = Number(flags.cores) || 0;
+    const targetCache = Number(flags.cache) || 0;
+    const fallbackReserve = Number(flags.reserve) || 0;
+    const maxPaybackSeconds = getMaxPaybackSeconds(flags["max-payback"]);
+    const hashBufferSeconds = (Number(flags["hash-buffer-minutes"]) || 120) * 60;
+    const sellForMoneyValue = Number(flags["sell-value"]) || 2_000_000;
+    const startupMinProduction = Math.max(0, Number(flags["min-production"]) || 0);
+    const maxPurchasesPerCycle = Math.max(1, Math.floor(Number(flags["max-purchases"]) || 1));
+    const usePolicyReserve = flags["use-policy-reserve"] === true;
+    const force = flags.force === true;
+    const debug = flags.debug === true;
     const recentActions = [];
 
     while (true) {
-        const daemonState =
-            readJson(ns, STATE_FILE);
-        const control =
-            readHacknetControl(ns, startupMinProduction);
-        const minProduction =
-            control.minProduction;
-        const policy =
-            daemonState?.spendingPolicy ?? {};
-        const allowHacknet =
-            policy.allowHacknet === true ||
-            force === true ||
-            isHacknetBitNode(ns);
-        const reserveMoney =
-            usePolicyReserve && Number.isFinite(policy.reserveMoney)
-                ? policy.reserveMoney
-                : fallbackReserve;
+        const daemonState = readJson(ns, STATE_FILE);
+        const control = readHacknetControl(ns, startupMinProduction);
+        const minProduction = control.minProduction;
+        const purchaseBatch = control.purchaseBatch;
+        const cyclePurchaseLimit =
+            minProduction > 0
+                ? Math.min(maxPurchasesPerCycle, purchaseBatch)
+                : maxPurchasesPerCycle;
+        const policy = daemonState?.spendingPolicy ?? {};
+        const allowHacknet = policy.allowHacknet === true || force === true || isHacknetBitNode(ns);
+        const reserveMoney = usePolicyReserve && Number.isFinite(policy.reserveMoney) ? policy.reserveMoney : fallbackReserve;
 
         if (!allowHacknet) {
             writeHacknetState(ns, {
@@ -100,20 +76,20 @@ export async function main(ns) {
             continue;
         }
 
-        const result =
-            runHacknetBuyer(ns, {
-                targetNodes,
-                targetLevel,
-                targetRam,
-                targetCores,
-                targetCache,
-                reserveMoney,
-                maxPaybackSeconds,
-                hashBufferSeconds,
-                sellForMoneyValue,
-                minProduction,
-                maxPurchasesPerCycle,
-            });
+        const result = runHacknetBuyer(ns, {
+            targetNodes,
+            targetLevel,
+            targetRam,
+            targetCores,
+            targetCache,
+            reserveMoney,
+            maxPaybackSeconds,
+            hashBufferSeconds,
+            sellForMoneyValue,
+            minProduction,
+            purchaseBatch,
+            maxPurchasesPerCycle: cyclePurchaseLimit,
+        });
 
         const state = {
             ...result.state,
@@ -151,10 +127,11 @@ export async function main(ns) {
             ns.print(`Spendable: ${ns.format.number(state.spendable)}`);
             ns.print(`ROI gate: ${ns.format.number(state.roi?.maxPaybackSeconds ?? maxPaybackSeconds)}s`);
             ns.print(`Hash sell value: $${ns.format.number(state.roi?.sellForMoneyValue ?? sellForMoneyValue)}`);
-            ns.print(`Max buys/cycle: ${maxPurchasesPerCycle}`);
+            ns.print(`Max buys/cycle: ${cyclePurchaseLimit}`);
+            ns.print(`Production batch: ${purchaseBatch}`);
             ns.print(
                 `Cache buffer: ${formatDuration(state.cachePolicy?.hashBufferSeconds ?? hashBufferSeconds)} | ` +
-                `${ns.format.number(state.hashes?.capacity ?? 0)} cap`
+                    `${ns.format.number(state.hashes?.capacity ?? 0)} cap`,
             );
 
             if (state.nextAction) {
@@ -174,8 +151,7 @@ export async function main(ns) {
         }
 
         if (result.acted === true) {
-            const message =
-                `[HACKNET] ${result.message}`;
+            const message = `[HACKNET] ${result.message}`;
 
             // if (toast) {
             //     ns.toast(result.message, "success", 3000);
@@ -210,8 +186,7 @@ function addRecentAction(recentActions, message) {
 }
 
 function formatDuration(seconds) {
-    const n =
-        Math.max(0, Number(seconds) || 0);
+    const n = Math.max(0, Number(seconds) || 0);
 
     if (!Number.isFinite(n)) return "unlimited";
 
@@ -237,23 +212,17 @@ function isHacknetBitNode(ns) {
 }
 
 function readHacknetControl(ns, startupMinProduction) {
-    const control =
-        readJson(ns, HACKNET_CONTROL_FILE);
-    const rawTarget =
-        control?.productionTarget ??
-        control?.minProduction ??
-        startupMinProduction;
-    const minProduction =
-        Math.max(0, Number(rawTarget) || 0);
+    const control = readJson(ns, HACKNET_CONTROL_FILE);
+    const rawTarget = control?.productionTarget ?? control?.minProduction ?? startupMinProduction;
+    const minProduction = Math.max(0, Number(rawTarget) || 0);
 
     return {
         updatedAt: control?.updatedAt ?? null,
         source: control?.source ?? "startup",
         mode: minProduction > 0 ? "production-floor" : "unlimited",
         minProduction,
-        label:
-            control?.label ??
-            (minProduction > 0 ? `${ns.format.number(minProduction)} / sec` : "Unlimited"),
+        purchaseBatch: Math.max(1, Math.floor(Number(control?.purchaseBatch) || 10)),
+        label: control?.label ?? (minProduction > 0 ? `${ns.format.number(minProduction)} / sec` : "Unlimited"),
     };
 }
 

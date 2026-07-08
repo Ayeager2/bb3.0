@@ -290,6 +290,7 @@ function FactionInspector({
             {activeSegment ? (
                 <AugmentationDrilldown
                     title={activeSegment.label}
+                    segmentId={activeSegment.id}
                     rows={drilldownRows}
                     onClose={forceDrilldown ? null : () => setDrilldown(null)}
                 />
@@ -380,9 +381,9 @@ function getDonutSegmentId(event, segments) {
     return segments.at(-1)?.id ?? "needed";
 }
 
-function AugmentationDrilldown({ title, rows, onClose }) {
+function AugmentationDrilldown({ title, segmentId, rows, onClose }) {
     return (
-        <div className="aug-drilldown">
+        <div className={`aug-drilldown aug-drilldown-${segmentId}`}>
             <div className="aug-drilldown-head">
                 <div>
                     <span>Drilldown</span>

@@ -1,6 +1,7 @@
 import { logPurchase } from "/lib/daemon/purchase-log.js";
 const STATE_FILE = "/data/daemon-state.txt";
 const STOCK_TRADER_STATE_FILE = "/data/stock-trader-state.txt";
+const STOCK_CONTROL_FILE = "/data/stock-control.txt";
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -38,7 +39,23 @@ export async function main(ns) {
     fourSTixPurchaseMoney: 25_000_000_000,
   };
 
+  const previousState = readStockTraderState(ns);
   const priceHistory = new Map();
+  const trendMemory = new Map();
+
+  for (const row of previousState?.rows ?? []) {
+    const sym = row?.sym;
+    const price = Number(row?.price);
+    const trend = Number(row?.trend);
+
+    if (sym && Number.isFinite(price) && price > 0) {
+      priceHistory.set(sym, [price]);
+    }
+
+    if (sym && Number.isFinite(trend)) {
+      trendMemory.set(sym, trend);
+    }
+  }
 
   const state = {
     started: Date.now(),
@@ -67,18 +84,11 @@ export async function main(ns) {
     lastAction: "Starting daemon-controlled stock trader...",
   };
 
-  let lastAccessCheck = 0;
   let lastStateRefresh = 0;
-  let access = getAccess(ns);
   let daemonState = {};
 
   while (true) {
     const now = Date.now();
-
-    if (now - lastAccessCheck > CONFIG.accessCheckMs) {
-      access = getAccess(ns);
-      lastAccessCheck = now;
-    }
 
     if (now - lastStateRefresh > CONFIG.stateRefreshMs) {
       daemonState = readDaemonState(ns);
@@ -86,8 +96,10 @@ export async function main(ns) {
     }
 
     const spendingPolicy = daemonState?.spendingPolicy ?? {};
+    const stockControl = readStockControl(ns);
     const daemonPriority = spendingPolicy.priority ?? "unknown";
-    const daemonAllowed = spendingPolicy.allowStockTrading !== false;
+    const manualStockEnabled = stockControl?.enabled === true;
+    const daemonAllowed = manualStockEnabled || spendingPolicy.allowStockTrading !== false;
     const resetPrep = daemonPriority === "reset-prep";
 
     const reserveMoney = Number.isFinite(spendingPolicy.reserveMoney)
@@ -100,13 +112,14 @@ export async function main(ns) {
       resetPrep,
       reserveMoney,
     });
-    access = marketAccess.access;
+    const access = marketAccess.access;
 
     if (!access.hasTix) {
       state.cycles++;
       state.mode = getModeName(access);
       state.daemonPriority = daemonPriority;
       state.daemonAllowed = daemonAllowed;
+      state.manualOverride = manualStockEnabled;
       state.daemonReserve = reserveMoney;
       state.resetPrep = resetPrep;
       state.status = getStockStatus(access, {
@@ -172,7 +185,8 @@ export async function main(ns) {
 
       updateHistory(priceHistory, sym, price, CONFIG.historyLimit);
 
-      const trend = getTrend(priceHistory.get(sym));
+      const trend = getTrend(priceHistory.get(sym), trendMemory.get(sym) ?? 0);
+      trendMemory.set(sym, trend);
       const hasPosition = shares > 0;
 
       let forecast = null;
@@ -367,6 +381,7 @@ export async function main(ns) {
     state.mode = getModeName(access);
     state.daemonPriority = daemonPriority;
     state.daemonAllowed = daemonAllowed;
+    state.manualOverride = manualStockEnabled;
     state.daemonReserve = reserveMoney;
     state.resetPrep = resetPrep;
     state.status = getStockStatus(access, {
@@ -605,10 +620,32 @@ function readDaemonState(ns) {
   }
 }
 
+function readStockTraderState(ns) {
+  try {
+    if (!ns.fileExists(STOCK_TRADER_STATE_FILE, "home")) return {};
+    const raw = ns.read(STOCK_TRADER_STATE_FILE);
+    if (!raw.trim()) return {};
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
+}
+
 function logTrade(state, message) {
   state.lastAction = message;
   state.recentActions.unshift(`[${new Date().toLocaleTimeString()}] ${message}`);
   state.recentActions = state.recentActions.slice(0, 20);
+}
+
+function readStockControl(ns) {
+  try {
+    if (!ns.fileExists(STOCK_CONTROL_FILE, "home")) return {};
+    const raw = ns.read(STOCK_CONTROL_FILE);
+    if (!raw.trim()) return {};
+    return JSON.parse(raw);
+  } catch {
+    return {};
+  }
 }
 
 function writeStockTraderState(ns, state) {
@@ -823,7 +860,8 @@ function shorten(value, maxLength) {
 }
 
 function stripAnsi(value) {
-  return String(value ?? "").replace(/\u001b\[[0-9;]*m/g, "");
+  const escapeChar = String.fromCharCode(27);
+  return String(value ?? "").replace(new RegExp(`${escapeChar}\\[[0-9;]*m`, "g"), "");
 }
 
 function getAccess(ns) {
@@ -835,7 +873,7 @@ function getAccess(ns) {
   try {
     hasWse = ns.stock.hasWseAccount();
   } catch {
-    hasWse = false;
+    // Bitburner throws when this stock API is unavailable.
   }
 
   try {
@@ -845,14 +883,14 @@ function getAccess(ns) {
       ns.stock.getPosition("ECP");
       hasTix = true;
     } catch {
-      hasTix = false;
+      // TIX access is not available yet.
     }
   }
 
   try {
     has4SData = ns.stock.has4SData();
   } catch {
-    has4SData = false;
+    // 4S market data is not available yet.
   }
 
   try {
@@ -862,7 +900,7 @@ function getAccess(ns) {
       ns.stock.getForecast("ECP");
       has4S = true;
     } catch {
-      has4S = false;
+      // 4S TIX API access is not available yet.
     }
   }
 
@@ -881,6 +919,8 @@ function updateHistory(priceHistory, sym, price, limit) {
   }
 
   const history = priceHistory.get(sym);
+  if (history.at(-1) === price) return;
+
   history.push(price);
 
   while (history.length > limit) {
@@ -888,13 +928,15 @@ function updateHistory(priceHistory, sym, price, limit) {
   }
 }
 
-function getTrend(history) {
-  if (!history || history.length < 2) return 0;
+function getTrend(history, fallback = 0) {
+  if (!history || history.length < 2) return fallback;
 
   const first = history[0];
   const last = history[history.length - 1];
+  if (!Number.isFinite(first) || first <= 0 || !Number.isFinite(last)) return fallback;
 
-  return (last - first) / first;
+  const trend = (last - first) / first;
+  return trend === 0 ? fallback : trend;
 }
 
 function buyStock(ns, sym, ask, maxShares, buyBudget, maxSpendPercent, commission) {

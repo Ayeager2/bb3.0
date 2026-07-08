@@ -2,5 +2,5 @@
   "source": "hacknet-hash-spender",
   "status": "unavailable",
   "message": "Could not read /data/hacknet-hash-spender-state.txt. Is /economy/hacknet-hash-spender-service.js running?",
-  "bridgeUpdatedAt": 1783470165236
+  "bridgeUpdatedAt": 1783544833773
 }

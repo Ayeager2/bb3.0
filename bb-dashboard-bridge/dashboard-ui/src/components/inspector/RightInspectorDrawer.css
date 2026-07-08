@@ -82,7 +82,7 @@
 
 .right-inspector-tabs {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
     border-bottom: 1px solid rgba(0, 229, 255, .14);
 }
 
@@ -183,8 +183,4 @@
     margin-top: 12px;
     padding-top: 12px;
     border-top: 1px solid rgba(0, 229, 255, .12);
-}
-
-.right-inspector-tabs {
-    grid-template-columns: repeat(7, 1fr);
 }

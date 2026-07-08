@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { FiCpu, FiGitBranch, FiServer, FiSettings, FiTrendingUp, FiUsers, FiZap } from "react-icons/fi";
+import { FiBriefcase, FiCpu, FiGitBranch, FiServer, FiSettings, FiTrendingUp, FiUsers, FiZap } from "react-icons/fi";
 
 import NetworkTopologyCard from "../cards/NetworkTopologyCard.jsx";
 import ServerTickerCard from "../cards/ServerTickerCard.jsx";
@@ -7,22 +7,16 @@ import StockPortfolioCard from "../cards/StockPortfolioCard.jsx";
 import HacknetMoneyCard from "../cards/HacknetMoneyCard.jsx";
 import AugmentationTreeCard from "../cards/AugmentationTreeCard.jsx";
 import GangCard from "../cards/GangCard.jsx";
+import CorporationCommandCard from "../cards/CorporationCommandCard.jsx";
 import DashboardControlPanel from "../settings/DashboardControlPanel.jsx";
 
 const DEFAULT_CARD_ORDER = [
+    "corporationCommand",
     "gang",
     "hacknetMoney",
     "serverTicker",
     "augmentationTree",
     "stockPortfolio",
-    "networkTopology",
-];
-
-const BN2_CARD_ORDER = [
-    "gang",
-    "serverTicker",
-    "hacknetMoney",
-    "augmentationTree",
     "networkTopology",
 ];
 
@@ -40,6 +34,7 @@ const CARD_REGISTRY = {
     stockPortfolio: { title: "Stock Checker", component: StockPortfolioCard, icon: FiTrendingUp },
     hacknetMoney: { title: "Hacknet Hash Forge", component: HacknetMoneyCard, icon: FiCpu },
     augmentationTree: { title: "Augmentation Status", component: AugmentationTreeCard, icon: FiZap },
+    corporationCommand: { title: "Corporation Command", component: CorporationCommandCard, icon: FiBriefcase },
 };
 
 export default function DashboardGrid({
@@ -70,19 +65,10 @@ export default function DashboardGrid({
 
     const orderedCards = useMemo(() => {
         const bitNode = Number(state?.bitnode?.number);
-        const isBn2 = bitNode === 2;
         const isBn9 = Number(state?.bitnode?.number) === 9;
-        const order =
-            isBn2
-                ? [
-                    ...BN2_CARD_ORDER,
-                    ...layout.order.filter(id => !BN2_CARD_ORDER.includes(id)),
-                ]
-                : layout.order;
 
-        return order
+        return layout.order
             .filter(id => CARD_REGISTRY[id])
-            .filter(id => !(isBn2 && id === "stockPortfolio"))
             .filter(id => !(isBn9 && id === "serverTicker"))
             .filter(id => isAutoVisible(id, bitNode, layout.visible));
     }, [layout.order, layout.visible, state?.bitnode?.number]);
@@ -291,7 +277,7 @@ function loadLayout() {
         if (!saved?.order) throw new Error("No saved layout.");
 
         const mergedOrder = [
-            ...saved.order.filter(id => DEFAULT_CARD_ORDER.includes(id)),
+            ...saved.order.filter(id => CARD_REGISTRY[id]),
             ...DEFAULT_CARD_ORDER.filter(id => !saved.order.includes(id)),
         ];
 

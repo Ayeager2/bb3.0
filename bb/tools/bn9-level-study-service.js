@@ -1,3 +1,5 @@
+import { describeCharacterActionOverride, readCharacterActionOverride } from "/lib/daemon/character-action-override.js";
+
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
 const STATE_FILE = "/data/bn9-level-study-state.txt";
 const DEFAULT_REFRESH_MS = 5000;
@@ -27,10 +29,25 @@ export async function main(ns) {
             daemonState?.factionProgression ?? {};
         const currentWork =
             getCurrentWork(ns);
+        const characterOverride =
+            readCharacterActionOverride(ns);
         const shouldStudy =
             bitNode === 9 &&
             progression.currentBlocker === "hacking-level" &&
             progression.expPolicy?.shouldLevelNow === true;
+
+        if (characterOverride?.enabled === true) {
+            writeState(ns, {
+                status: "paused-character-override",
+                bitNode,
+                currentWork: summarizeWork(currentWork),
+                blocker: progression.currentBlocker ?? "none",
+                characterOverride,
+                reason: describeCharacterActionOverride(characterOverride),
+            });
+            await ns.sleep(refreshMs);
+            continue;
+        }
 
         if (!shouldStudy) {
             writeState(ns, {

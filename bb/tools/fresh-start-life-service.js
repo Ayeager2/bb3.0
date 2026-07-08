@@ -1,4 +1,6 @@
 // /tools/fresh-start-life-service.js
+import { describeCharacterActionOverride, readCharacterActionOverride } from "/lib/daemon/character-action-override.js";
+
 const STATE_FILE = "/data/fresh-start-life-state.txt";
 const COMPLETE_FILE = "/data/fresh-start-life-complete.txt";
 const DAEMON_STATE_FILE = "/data/daemon-state.txt";
@@ -93,12 +95,31 @@ export async function main(ns) {
         const daemonState = readJson(ns, DAEMON_STATE_FILE);
         const factionPlan = readJson(ns, FACTION_WORK_PLAN_FILE);
         const currentWork = getCurrentWork(ns);
+        const characterOverride = readCharacterActionOverride(ns);
         const handoff = getHandoffState(ns, daemonState, factionPlan, {
             money,
             homeRam,
             stopMoney,
             stopHomeRam,
         });
+
+        if (characterOverride?.enabled === true) {
+            writeState(ns, {
+                status: "paused-character-override",
+                stage: "manual",
+                bitNode,
+                hacking,
+                money,
+                homeRam,
+                currentWork: summarizeWork(currentWork),
+                handoff,
+                characterOverride,
+                reason: describeCharacterActionOverride(characterOverride),
+            });
+            await ns.sleep(refreshMs);
+            continue;
+        }
+
         if (handoff.ready || currentWork?.type === "FACTION") {
             complete(ns, {
                 status: "complete",
@@ -314,9 +335,7 @@ function hasSingularity(ns) {
 }
 
 function getSingularityDiagnostics(ns) {
-    return !!(
-        ns.singularity
-    )
+    return ns.singularity
         ? {
             hasSingularityObject: true,
             universityCourse: typeof ns.singularity.universityCourse === "function",

@@ -1,6 +1,7 @@
 .stock-card {
     display: grid;
     gap: 12px;
+    min-height: 0;
 }
 
 .stock-card-top {
@@ -11,7 +12,7 @@
 
 .stock-status {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
     align-items: center;
     gap: 10px;
     border: 1px solid rgba(0, 229, 255, .16);
@@ -36,6 +37,39 @@
     font-size: 12px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.stock-status button {
+    min-height: 28px;
+    border: 1px solid rgba(0, 255, 156, .34);
+    border-radius: 6px;
+    background: rgba(0, 255, 156, .08);
+    color: var(--green);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.stock-command-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    gap: 6px;
+    justify-content: end;
+}
+
+.stock-command-buttons button:last-child {
+    border-color: rgba(255, 45, 125, .42);
+    color: var(--pink);
+    background: rgba(255, 45, 125, .09);
+}
+
+.stock-status button:hover {
+    color: white;
+    border-color: var(--green);
+    box-shadow: 0 0 12px rgba(0, 255, 156, .18);
 }
 
 .stock-status-live span {
@@ -162,6 +196,87 @@
     text-align: center !important;
 }
 
+.stock-compact-list {
+    display: none;
+    min-height: 0;
+    gap: 8px;
+}
+
+.stock-compact-row {
+    display: grid;
+    grid-template-columns: minmax(62px, .65fr) minmax(92px, 1fr) repeat(2, minmax(58px, .55fr)) minmax(82px, .85fr);
+    align-items: center;
+    gap: 7px;
+    min-height: 54px;
+    padding: 8px;
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 7px;
+    background:
+        linear-gradient(90deg, rgba(0, 229, 255, .06), transparent 45%),
+        rgba(2, 6, 23, .58);
+}
+
+.stock-compact-main,
+.stock-compact-price,
+.stock-compact-mini,
+.stock-compact-profit {
+    min-width: 0;
+}
+
+.stock-compact-main b {
+    display: block;
+    overflow: hidden;
+    color: var(--cyan);
+    font-size: 15px;
+    letter-spacing: .06em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-compact-main span,
+.stock-compact-price span,
+.stock-compact-mini span,
+.stock-compact-profit span {
+    display: block;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.stock-compact-price b,
+.stock-compact-mini b,
+.stock-compact-profit b {
+    display: block;
+    margin-top: 3px;
+    overflow: hidden;
+    color: var(--text);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stock-compact-win .stock-compact-profit b {
+    color: var(--green);
+}
+
+.stock-compact-loss .stock-compact-profit b {
+    color: var(--red);
+}
+
+.stock-empty-panel {
+    border: 1px solid rgba(0, 229, 255, .12);
+    border-radius: 7px;
+    padding: 12px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+}
+
 .stock-footer {
     display: flex;
     justify-content: space-between;
@@ -184,5 +299,215 @@
 @media (max-width: 900px) {
     .stock-card-top {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-card,
+.card-quarter[data-card-id="stockPortfolio"] .stock-card {
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    height: 100%;
+    overflow: hidden;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .card-body {
+    overflow: hidden;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-card {
+    gap: 9px;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-status,
+.card-quarter[data-card-id="stockPortfolio"] .stock-status {
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-status {
+    padding: 8px;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-command-buttons,
+.card-quarter[data-card-id="stockPortfolio"] .stock-command-buttons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-status b,
+.card-quarter[data-card-id="stockPortfolio"] .stock-status b {
+    white-space: normal;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-card-top,
+.card-quarter[data-card-id="stockPortfolio"] .stock-card-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-card-top {
+    gap: 6px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-metric {
+    padding: 7px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-metric span {
+    font-size: 9px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-metric b {
+    font-size: 12px;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-table-wrap,
+.card-quarter[data-card-id="stockPortfolio"] .stock-table-wrap {
+    display: none;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-compact-list,
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-list {
+    display: grid;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-list {
+    gap: 7px;
+    align-content: start;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 229, 255, .7) rgba(2, 6, 23, .7);
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-list::-webkit-scrollbar-track {
+    background: rgba(2, 6, 23, .72);
+    border-radius: 999px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 229, 255, .75), rgba(0, 255, 156, .65));
+    border-radius: 999px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-row {
+    grid-template-areas:
+        "main price"
+        "trend forecast"
+        "profit profit";
+    grid-template-columns: minmax(0, 1fr) minmax(86px, .8fr);
+    grid-template-rows: auto auto minmax(28px, auto);
+    gap: 7px 8px;
+    min-height: 148px;
+    align-items: start;
+    overflow: visible;
+    padding: 8px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-main {
+    grid-area: main;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-price {
+    grid-area: price;
+    text-align: right;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-mini {
+    display: grid;
+    align-content: start;
+    min-width: 0;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-mini:nth-of-type(3) {
+    grid-area: trend;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-mini:nth-of-type(4) {
+    grid-area: forecast;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-profit {
+    grid-area: profit;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-height: 28px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, .06);
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-main b {
+    font-size: 14px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-price b,
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-mini b,
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-profit b {
+    font-size: 10px;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-compact-profit b {
+    margin-top: 0;
+}
+
+.card-third[data-card-id="stockPortfolio"] .stock-footer,
+.card-quarter[data-card-id="stockPortfolio"] .stock-footer {
+    align-items: flex-start;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-footer {
+    display: grid;
+}
+
+.card-quarter[data-card-id="stockPortfolio"] .stock-footer span {
+    white-space: normal;
+}
+
+@media (max-width: 900px) {
+    .stock-table-wrap {
+        display: none;
+    }
+
+    .stock-compact-list {
+        display: grid;
+    }
+
+    .stock-status {
+        grid-template-columns: 1fr;
+    }
+
+    .stock-command-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: stretch;
+    }
+
+    .stock-status b,
+    .stock-footer span {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 520px) {
+    .stock-card-top,
+    .stock-compact-row {
+        grid-template-columns: 1fr;
+    }
+
+    .stock-compact-price,
+    .stock-compact-profit {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    .stock-compact-price b,
+    .stock-compact-profit b {
+        margin-top: 0;
     }
 }

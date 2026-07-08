@@ -229,6 +229,10 @@ function getServiceGate(ns, service, daemonState) {
         return block("script missing", diagnostics);
     }
 
+    if (service.id === "stock-trader" && isStockTradingManuallyDisabled(ns)) {
+        return block("stock trading disabled by dashboard control", diagnostics);
+    }
+
     if (
         service.policyFlag &&
         daemonState?.spendingPolicy?.[service.policyFlag] !== true
@@ -528,6 +532,21 @@ function isScriptRunningOnHost(ns, script, host = "home") {
     try {
         return ns.ps(host)
             .some(proc => normalizePath(proc.filename) === normalizePath(script));
+    } catch {
+        return false;
+    }
+}
+
+function isStockTradingManuallyDisabled(ns) {
+    const controlFile = "/data/stock-control.txt";
+
+    try {
+        if (!ns.fileExists(controlFile, "home")) return false;
+        const raw = ns.read(controlFile);
+        if (!raw.trim()) return false;
+        const control = JSON.parse(raw);
+
+        return control?.mode === "manual" && control?.enabled === false;
     } catch {
         return false;
     }

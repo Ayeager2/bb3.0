@@ -1,55 +1,37 @@
-const DEFAULT_TARGET_NODES = 0;
-const DEFAULT_TARGET_LEVEL = 0;
-const DEFAULT_TARGET_RAM = 0;
-const DEFAULT_TARGET_CORES = 0;
-const DEFAULT_TARGET_CACHE = 0;
 const DEFAULT_MAX_PAYBACK_SECONDS = 60 * 60;
 const DEFAULT_HASH_BUFFER_SECONDS = 2 * 60 * 60;
 const DEFAULT_SELL_FOR_MONEY_VALUE = 2_000_000;
 
 export function buildHacknetState(ns, options = {}) {
-    const targetNodes =
-        getTargetNodes(ns, options.targetNodes);
-    const targetLevel =
-        getTargetLevel(ns, options.targetLevel);
-    const targetRam =
-        getTargetRam(ns, options.targetRam);
-    const targetCores =
-        getTargetCores(ns, options.targetCores);
-    const targetCache =
-        getTargetCache(ns, options.targetCache);
-    const hashBufferSeconds =
-        Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
-    const sellForMoneyValue =
-        Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
-    const minProduction =
-        Math.max(0, Number(options.minProduction) || 0);
-    const reserveMoney =
-        Number(options.reserveMoney) || 0;
-    const money =
-        ns.getPlayer().money;
-    const spendable =
-        Math.max(0, money - reserveMoney);
-    const nodes =
-        getHacknetNodes(ns);
-    const totalProduction =
-        nodes.reduce((sum, node) => sum + node.production, 0);
-    const actionPlan =
-        getHacknetActionPlan(ns, {
-            targetNodes,
-            targetLevel,
-            targetRam,
-            targetCores,
-            targetCache,
-            maxPaybackSeconds: options.maxPaybackSeconds,
-            hashBufferSeconds,
-            sellForMoneyValue,
-            minProduction,
-            spendable,
-            totalProduction,
-        });
-    const nextAction =
-        actionPlan.nextAction;
+    const targetNodes = getTargetNodes(ns, options.targetNodes);
+    const targetLevel = getTargetLevel(ns, options.targetLevel);
+    const targetRam = getTargetRam(ns, options.targetRam);
+    const targetCores = getTargetCores(ns, options.targetCores);
+    const targetCache = getTargetCache(ns, options.targetCache);
+    const hashBufferSeconds = Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
+    const sellForMoneyValue = Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
+    const minProduction = Math.max(0, Number(options.minProduction) || 0);
+    const purchaseBatch = getPurchaseBatch(options.purchaseBatch);
+    const reserveMoney = Number(options.reserveMoney) || 0;
+    const money = ns.getPlayer().money;
+    const spendable = Math.max(0, money - reserveMoney);
+    const nodes = getHacknetNodes(ns);
+    const totalProduction = nodes.reduce((sum, node) => sum + node.production, 0);
+    const actionPlan = getHacknetActionPlan(ns, {
+        targetNodes,
+        targetLevel,
+        targetRam,
+        targetCores,
+        targetCache,
+        maxPaybackSeconds: options.maxPaybackSeconds,
+        hashBufferSeconds,
+        sellForMoneyValue,
+        minProduction,
+        purchaseBatch,
+        spendable,
+        totalProduction,
+    });
+    const nextAction = actionPlan.nextAction;
 
     return {
         updatedAt: Date.now(),
@@ -64,15 +46,13 @@ export function buildHacknetState(ns, options = {}) {
         reserveMoney,
         spendable,
         totalProduction,
-        totalProduced:
-            nodes.reduce((sum, node) => sum + node.totalProduction, 0),
+        totalProduced: nodes.reduce((sum, node) => sum + node.totalProduction, 0),
         hashes: getHashState(ns),
         cachePolicy: {
             targetCache,
             hashBufferSeconds,
             desiredCapacity: totalProduction * hashBufferSeconds,
-            capacityGap:
-                Math.max(0, (totalProduction * hashBufferSeconds) - safeHashCapacity(ns)),
+            capacityGap: Math.max(0, totalProduction * hashBufferSeconds - safeHashCapacity(ns)),
             nextAction: summarizeAction(actionPlan.cacheCandidate),
         },
         roi: {
@@ -80,62 +60,49 @@ export function buildHacknetState(ns, options = {}) {
                 minProduction > 0 && totalProduction < minProduction
                     ? "production-floor-aggressive"
                     : getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY
-                    ? "aggressive-cheapest-affordable"
-                    : "payback-seconds",
-            unlimitedPayback:
-                getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY,
-            maxPaybackSeconds:
-                getSerializablePaybackSeconds(options.maxPaybackSeconds),
+                      ? "aggressive-cheapest-affordable"
+                      : "payback-seconds",
+            unlimitedPayback: getMaxPaybackSeconds(options.maxPaybackSeconds) === Number.POSITIVE_INFINITY,
+            maxPaybackSeconds: getSerializablePaybackSeconds(options.maxPaybackSeconds),
             sellForMoneyValue,
             minProduction,
-            productionFloorMet:
-                minProduction <= 0 || totalProduction >= minProduction,
-            productionFloorGap:
-                Math.max(0, minProduction - totalProduction),
+            purchaseBatch,
+            productionFloorMet: minProduction <= 0 || totalProduction >= minProduction,
+            productionFloorGap: Math.max(0, minProduction - totalProduction),
             hashMoneyValue: getHashMoneyValue(ns, sellForMoneyValue),
             homeCompetition: getHomeUpgradeCompetition(ns),
             bestCandidate: summarizeAction(actionPlan.bestCandidate),
-            blockedByPayback:
-                nextAction === null &&
-                actionPlan.bestCandidate !== null,
+            blockedByPayback: nextAction === null && actionPlan.bestCandidate !== null,
         },
-        complete:
-            nextAction === null &&
-            actionPlan.bestCandidate === null,
+        complete: nextAction === null && actionPlan.bestCandidate === null,
         nextAction: summarizeAction(nextAction),
-        canAffordNext:
-            nextAction !== null &&
-            spendable >= nextAction.cost,
+        canAffordNext: nextAction !== null && spendable >= nextAction.cost,
         nodes,
     };
 }
 
 export function runHacknetBuyer(ns, options = {}) {
-    const maxPurchasesPerCycle =
-        Math.max(1, Math.floor(Number(options.maxPurchasesPerCycle) || 1));
+    const maxPurchasesPerCycle = Math.max(1, Math.floor(Number(options.maxPurchasesPerCycle) || 1));
     const purchases = [];
-    let lastState =
-        buildHacknetState(ns, options);
-    let lastActionPlan =
-        null;
+    let lastState = buildHacknetState(ns, options);
+    let lastActionPlan = null;
 
     while (purchases.length < maxPurchasesPerCycle) {
-        const actionPlan =
-            getHacknetActionPlan(ns, {
-                targetNodes: lastState.targetNodes,
-                targetLevel: lastState.targetLevel,
-                targetRam: lastState.targetRam,
-                targetCores: lastState.targetCores,
-                targetCache: lastState.targetCache,
-                maxPaybackSeconds: options.maxPaybackSeconds,
-                hashBufferSeconds: lastState.cachePolicy?.hashBufferSeconds,
-                sellForMoneyValue: lastState.roi?.sellForMoneyValue,
-                minProduction: options.minProduction,
-                spendable: lastState.spendable,
-                totalProduction: lastState.totalProduction,
-            });
-        const action =
-            actionPlan.nextAction;
+        const actionPlan = getHacknetActionPlan(ns, {
+            targetNodes: lastState.targetNodes,
+            targetLevel: lastState.targetLevel,
+            targetRam: lastState.targetRam,
+            targetCores: lastState.targetCores,
+            targetCache: lastState.targetCache,
+            maxPaybackSeconds: options.maxPaybackSeconds,
+            hashBufferSeconds: lastState.cachePolicy?.hashBufferSeconds,
+            sellForMoneyValue: lastState.roi?.sellForMoneyValue,
+            minProduction: options.minProduction,
+            purchaseBatch: options.purchaseBatch,
+            spendable: lastState.spendable,
+            totalProduction: lastState.totalProduction,
+        });
+        const action = actionPlan.nextAction;
 
         lastActionPlan = actionPlan;
 
@@ -145,12 +112,10 @@ export function runHacknetBuyer(ns, options = {}) {
         const before = ns.getPlayer().money;
         const ok = action.run();
         const after = ns.getPlayer().money;
-        const actualCost =
-            Math.max(0, before - after);
+        const actualCost = Math.max(0, before - after);
 
         if (ok !== true) {
-            const failedState =
-                buildHacknetState(ns, options);
+            const failedState = buildHacknetState(ns, options);
 
             return {
                 acted: purchases.length > 0,
@@ -163,10 +128,7 @@ export function runHacknetBuyer(ns, options = {}) {
                 moneyAfter: after,
                 purchases,
                 purchaseCount: purchases.length,
-                message:
-                    purchases.length > 0
-                        ? formatPurchaseSummary(ns, purchases)
-                        : `Failed to run ${action.label}.`,
+                message: purchases.length > 0 ? formatPurchaseSummary(ns, purchases) : `Failed to run ${action.label}.`,
                 action: summarizeAction(action),
                 state: {
                     ...failedState,
@@ -182,22 +144,17 @@ export function runHacknetBuyer(ns, options = {}) {
             type: action.type,
             index: action.index,
             item: action.label,
-            cost:
-                actualCost > 0
-                    ? actualCost
-                    : action.cost,
+            cost: actualCost > 0 ? actualCost : action.cost,
             moneyBefore: before,
             moneyAfter: after,
             action: summarizeAction(action),
         });
 
-        lastState =
-            buildHacknetState(ns, options);
+        lastState = buildHacknetState(ns, options);
     }
 
     if (purchases.length > 0) {
-        const afterState =
-            buildHacknetState(ns, options);
+        const afterState = buildHacknetState(ns, options);
 
         return {
             acted: true,
@@ -216,10 +173,10 @@ export function runHacknetBuyer(ns, options = {}) {
         };
     }
 
-    const state =
-        lastState;
+    const state = lastState;
     const actionPlan =
-        lastActionPlan ?? getHacknetActionPlan(ns, {
+        lastActionPlan ??
+        getHacknetActionPlan(ns, {
             targetNodes: state.targetNodes,
             targetLevel: state.targetLevel,
             targetRam: state.targetRam,
@@ -229,15 +186,14 @@ export function runHacknetBuyer(ns, options = {}) {
             hashBufferSeconds: state.cachePolicy?.hashBufferSeconds,
             sellForMoneyValue: state.roi?.sellForMoneyValue,
             minProduction: options.minProduction,
+            purchaseBatch: options.purchaseBatch,
             spendable: state.spendable,
             totalProduction: state.totalProduction,
         });
-    const action =
-        actionPlan.nextAction;
+    const action = actionPlan.nextAction;
 
     if (!action) {
-        const bestCandidate =
-            summarizeAction(actionPlan.bestCandidate);
+        const bestCandidate = summarizeAction(actionPlan.bestCandidate);
 
         return {
             acted: false,
@@ -252,26 +208,21 @@ export function runHacknetBuyer(ns, options = {}) {
     return {
         acted: false,
         status: "waiting-money",
-        message:
-            `Need ${formatMoney(ns, action.cost)} for ${action.label}; ` +
-            `spendable ${formatMoney(ns, state.spendable)}.`,
+        message: `Need ${formatMoney(ns, action.cost)} for ${action.label}; ` + `spendable ${formatMoney(ns, state.spendable)}.`,
         action: summarizeAction(action),
         state,
     };
 }
 
 function formatPurchaseSummary(ns, purchases) {
-    const totalCost =
-        purchases.reduce((sum, item) => sum + item.cost, 0);
-    const labels =
-        summarizePurchaseLabels(purchases);
+    const totalCost = purchases.reduce((sum, item) => sum + item.cost, 0);
+    const labels = summarizePurchaseLabels(purchases);
 
     return `${purchases.length} Hacknet purchase${purchases.length === 1 ? "" : "s"} for ${formatMoney(ns, totalCost)}: ${labels}.`;
 }
 
 function summarizePurchaseLabels(purchases) {
-    const counts =
-        new Map();
+    const counts = new Map();
 
     for (const purchase of purchases) {
         counts.set(purchase.item, (counts.get(purchase.item) ?? 0) + 1);
@@ -279,7 +230,7 @@ function summarizePurchaseLabels(purchases) {
 
     return [...counts.entries()]
         .slice(0, 4)
-        .map(([label, count]) => count > 1 ? `${label} x${count}` : label)
+        .map(([label, count]) => (count > 1 ? `${label} x${count}` : label))
         .join("; ");
 }
 
@@ -288,37 +239,37 @@ export function getNextHacknetAction(ns, options = {}) {
 }
 
 export function getHacknetActionPlan(ns, options = {}) {
-    const targetNodes =
-        getTargetNodes(ns, options.targetNodes);
-    const targetLevel =
-        getTargetLevel(ns, options.targetLevel);
-    const targetRam =
-        getTargetRam(ns, options.targetRam);
-    const targetCores =
-        getTargetCores(ns, options.targetCores);
-    const targetCache =
-        getTargetCache(ns, options.targetCache);
-    const maxPaybackSeconds =
-        getMaxPaybackSeconds(options.maxPaybackSeconds);
-    const hashBufferSeconds =
-        Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
-    const sellForMoneyValue =
-        Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
-    const minProduction =
-        Math.max(0, Number(options.minProduction) || 0);
-    const spendable =
-        Math.max(0, Number(options.spendable) || 0);
-    const nodeCount =
-        ns.hacknet.numNodes();
-    const productionModel =
-        buildProductionModel(ns);
-    const totalProduction =
-        Number.isFinite(options.totalProduction)
-            ? Number(options.totalProduction)
-            : productionModel.nodes.reduce((sum, node) => sum + node.production, 0);
+    const targetNodes = getTargetNodes(ns, options.targetNodes);
+    const targetLevel = getTargetLevel(ns, options.targetLevel);
+    const targetRam = getTargetRam(ns, options.targetRam);
+    const targetCores = getTargetCores(ns, options.targetCores);
+    const targetCache = getTargetCache(ns, options.targetCache);
+    const maxPaybackSeconds = getMaxPaybackSeconds(options.maxPaybackSeconds);
+    const hashBufferSeconds = Number(options.hashBufferSeconds) || DEFAULT_HASH_BUFFER_SECONDS;
+    const sellForMoneyValue = Number(options.sellForMoneyValue) || DEFAULT_SELL_FOR_MONEY_VALUE;
+    const minProduction = Math.max(0, Number(options.minProduction) || 0);
+    const purchaseBatch = getPurchaseBatch(options.purchaseBatch);
+    const spendable = Math.max(0, Number(options.spendable) || 0);
+    const nodeCount = ns.hacknet.numNodes();
+    const productionModel = buildProductionModel(ns);
+    const totalProduction = Number.isFinite(options.totalProduction)
+        ? Number(options.totalProduction)
+        : productionModel.nodes.reduce((sum, node) => sum + node.production, 0);
+    const belowProductionFloor = minProduction > 0 && totalProduction < minProduction;
+    const productionFloorMet = minProduction > 0 && totalProduction >= minProduction;
+    const nodeBatchTarget = belowProductionFloor
+        ? getProductionFloorNodeTarget(productionModel.nodes, {
+              nodeCount,
+              maxNodes: targetNodes,
+              batchSize: purchaseBatch,
+              targetLevel,
+              targetRam,
+              targetCores,
+          })
+        : targetNodes;
     const actions = [];
 
-    if (nodeCount < targetNodes) {
+    if (!productionFloorMet && nodeCount < nodeBatchTarget) {
         actions.push({
             type: "node",
             label: "purchase hacknet node",
@@ -332,8 +283,7 @@ export function getHacknetActionPlan(ns, options = {}) {
         const node = ns.hacknet.getNodeStats(i);
 
         if (node.level < targetLevel) {
-            const amount =
-                1;
+            const amount = 1;
 
             actions.push({
                 type: "level",
@@ -341,11 +291,15 @@ export function getHacknetActionPlan(ns, options = {}) {
                 amount,
                 label: `upgrade node ${i} level by ${amount}`,
                 cost: ns.hacknet.getLevelUpgradeCost(i, amount),
-                productionGain: estimateUpgradeProductionGain(node, {
-                    level: node.level + amount,
-                    ram: node.ram,
-                    cores: node.cores,
-                }, productionModel),
+                productionGain: estimateUpgradeProductionGain(
+                    node,
+                    {
+                        level: node.level + amount,
+                        ram: node.ram,
+                        cores: node.cores,
+                    },
+                    productionModel,
+                ),
                 run: () => ns.hacknet.upgradeLevel(i, amount),
             });
         }
@@ -357,11 +311,15 @@ export function getHacknetActionPlan(ns, options = {}) {
                 amount: 1,
                 label: `upgrade node ${i} RAM`,
                 cost: ns.hacknet.getRamUpgradeCost(i, 1),
-                productionGain: estimateUpgradeProductionGain(node, {
-                    level: node.level,
-                    ram: node.ram * 2,
-                    cores: node.cores,
-                }, productionModel),
+                productionGain: estimateUpgradeProductionGain(
+                    node,
+                    {
+                        level: node.level,
+                        ram: node.ram * 2,
+                        cores: node.cores,
+                    },
+                    productionModel,
+                ),
                 run: () => ns.hacknet.upgradeRam(i, 1),
             });
         }
@@ -373,69 +331,59 @@ export function getHacknetActionPlan(ns, options = {}) {
                 amount: 1,
                 label: `upgrade node ${i} cores`,
                 cost: ns.hacknet.getCoreUpgradeCost(i, 1),
-                productionGain: estimateUpgradeProductionGain(node, {
-                    level: node.level,
-                    ram: node.ram,
-                    cores: node.cores + 1,
-                }, productionModel),
+                productionGain: estimateUpgradeProductionGain(
+                    node,
+                    {
+                        level: node.level,
+                        ram: node.ram,
+                        cores: node.cores + 1,
+                    },
+                    productionModel,
+                ),
                 run: () => ns.hacknet.upgradeCore(i, 1),
             });
         }
     }
 
-    const cacheCandidate =
-        getCacheCandidate(ns, {
-            targetCache,
-            hashBufferSeconds,
-            totalProduction,
-            spendable,
-        });
-    const hashMoneyValue =
-        getHashMoneyValue(ns, sellForMoneyValue);
-    const unlimitedPayback =
-        maxPaybackSeconds === Number.POSITIVE_INFINITY;
-    const belowProductionFloor =
-        minProduction > 0 &&
-        totalProduction < minProduction;
+    const cacheCandidate = getCacheCandidate(ns, {
+        targetCache,
+        hashBufferSeconds,
+        totalProduction,
+        spendable,
+    });
+    const hashMoneyValue = getHashMoneyValue(ns, sellForMoneyValue);
+    const unlimitedPayback = maxPaybackSeconds === Number.POSITIVE_INFINITY;
+    if (productionFloorMet) {
+        return {
+            nextAction: null,
+            productionAction: null,
+            cacheCandidate: null,
+            bestCandidate: null,
+            candidates: [],
+            maxPaybackSeconds,
+            minProduction,
+            purchaseBatch,
+            nodeBatchTarget,
+            belowProductionFloor: false,
+            productionFloorMet: true,
+        };
+    }
 
     const rawCandidates = actions
-        .filter(action =>
-            Number.isFinite(action.cost) &&
-            action.cost >= 0
-        )
-        .map(action => annotateRoi(action, hashMoneyValue))
+        .filter((action) => Number.isFinite(action.cost) && action.cost >= 0)
+        .map((action) => annotateRoi(action, hashMoneyValue))
         .sort((a, b) => a.cost - b.cost);
     const candidates = rawCandidates
-        .filter(action =>
-            Number.isFinite(action.productionGain) &&
-            action.productionGain > 0
-        )
+        .filter((action) => Number.isFinite(action.productionGain) && action.productionGain > 0)
         .sort((a, b) => a.paybackSeconds - b.paybackSeconds);
-    const bestCandidate =
-        unlimitedPayback || belowProductionFloor
-            ? rawCandidates[0] ?? null
-            : candidates[0] ?? null;
-    const affordableAction =
-        getCheapestAffordableAction(rawCandidates, spendable);
+    const bestCandidate = unlimitedPayback || belowProductionFloor ? (rawCandidates[0] ?? null) : (candidates[0] ?? null);
+    const affordableAction = getCheapestAffordableAction(rawCandidates, spendable);
     const nextAction =
         affordableAction ??
-        (
-            unlimitedPayback
-                || belowProductionFloor
-                ? rawCandidates[0] ?? null
-                : candidates
-                    .filter(action =>
-                        action.paybackSeconds <= maxPaybackSeconds ||
-                        nodeCount === 0
-                    )[0] ?? null
-        );
-    const selectedAction =
-        nextAction ??
-        (
-            cacheCandidate?.affordable === true
-                ? cacheCandidate
-                : null
-        );
+        (unlimitedPayback || belowProductionFloor
+            ? (rawCandidates[0] ?? null)
+            : (candidates.filter((action) => action.paybackSeconds <= maxPaybackSeconds || nodeCount === 0)[0] ?? null));
+    const selectedAction = nextAction ?? (cacheCandidate?.affordable === true ? cacheCandidate : null);
 
     return {
         nextAction: selectedAction,
@@ -445,17 +393,49 @@ export function getHacknetActionPlan(ns, options = {}) {
         candidates: candidates.map(summarizeAction),
         maxPaybackSeconds,
         minProduction,
+        purchaseBatch,
+        nodeBatchTarget,
         belowProductionFloor,
+        productionFloorMet: false,
     };
 }
 
+function getProductionFloorNodeTarget(nodes, options) {
+    const maxNodes = Math.max(0, Number(options.maxNodes) || 0);
+    const nodeCount = Math.max(0, Number(options.nodeCount) || 0);
+    const batchSize = getPurchaseBatch(options.batchSize);
+
+    if (maxNodes <= 0) return 0;
+    if (nodeCount === 0) return Math.min(batchSize, maxNodes);
+
+    const currentBatchCeiling = Math.min(maxNodes, Math.max(batchSize, Math.ceil(nodeCount / batchSize) * batchSize));
+    if (nodeCount < currentBatchCeiling) return currentBatchCeiling;
+
+    if (isProductionBatchFullyUpgraded(nodes, options)) {
+        return Math.min(maxNodes, currentBatchCeiling + batchSize);
+    }
+
+    return currentBatchCeiling;
+}
+
+function isProductionBatchFullyUpgraded(nodes, options) {
+    if (nodes.length === 0) return true;
+
+    return nodes.every((node) => node.level >= options.targetLevel && node.ram >= options.targetRam && node.cores >= options.targetCores);
+}
+
+function getPurchaseBatch(value) {
+    const n = Math.floor(Number(value) || 10);
+
+    return Math.max(1, Math.min(1000, n));
+}
+
 function getCheapestAffordableAction(actions, spendable) {
-    return actions
-        .filter(action => spendable >= action.cost)
-        .sort((a, b) =>
-            getActionAggressionPriority(a) - getActionAggressionPriority(b) ||
-            b.cost - a.cost
-        )[0] ?? null;
+    return (
+        actions
+            .filter((action) => spendable >= action.cost)
+            .sort((a, b) => getActionAggressionPriority(a) - getActionAggressionPriority(b) || b.cost - a.cost)[0] ?? null
+    );
 }
 
 function getActionAggressionPriority(action) {
@@ -471,20 +451,16 @@ function getActionAggressionPriority(action) {
 }
 
 function getCacheCandidate(ns, options) {
-    const desiredCapacity =
-        Math.max(0, options.totalProduction * options.hashBufferSeconds);
-    const currentCapacity =
-        safeHashCapacity(ns);
+    const desiredCapacity = Math.max(0, options.totalProduction * options.hashBufferSeconds);
+    const currentCapacity = safeHashCapacity(ns);
 
     if (desiredCapacity <= currentCapacity) return null;
 
     const actions = [];
-    const nodeCount =
-        ns.hacknet.numNodes();
+    const nodeCount = ns.hacknet.numNodes();
 
     for (let i = 0; i < nodeCount; i++) {
-        const node =
-            ns.hacknet.getNodeStats(i);
+        const node = ns.hacknet.getNodeStats(i);
 
         if (Number(node.cache) >= options.targetCache) continue;
 
@@ -508,10 +484,7 @@ function getCacheCandidate(ns, options) {
         });
     }
 
-    const action =
-        actions
-            .filter(x => Number.isFinite(x.cost) && x.cost >= 0)
-            .sort((a, b) => a.cost - b.cost)[0] ?? null;
+    const action = actions.filter((x) => Number.isFinite(x.cost) && x.cost >= 0).sort((a, b) => a.cost - b.cost)[0] ?? null;
 
     if (!action) return null;
 
@@ -529,19 +502,14 @@ function getMaxPaybackSeconds(value) {
 }
 
 function getSerializablePaybackSeconds(value) {
-    const seconds =
-        getMaxPaybackSeconds(value);
+    const seconds = getMaxPaybackSeconds(value);
 
-    return Number.isFinite(seconds)
-        ? seconds
-        : null;
+    return Number.isFinite(seconds) ? seconds : null;
 }
 
 function getTargetNodes(ns, value) {
-    const max =
-        ns.hacknet.maxNumNodes();
-    const n =
-        Number(value);
+    const max = ns.hacknet.maxNumNodes();
+    const n = Number(value);
 
     if (!Number.isFinite(n) || n <= 0) {
         return max;
@@ -551,8 +519,7 @@ function getTargetNodes(ns, value) {
 }
 
 function getTargetLevel(ns, value) {
-    const n =
-        Number(value);
+    const n = Number(value);
 
     if (Number.isFinite(n) && n > 0) return n;
 
@@ -560,38 +527,25 @@ function getTargetLevel(ns, value) {
 }
 
 function getTargetRam(ns, value) {
-    const n =
-        Number(value);
+    const n = Number(value);
 
-    const cap =
-        getHacknetCap(ns, "MaxRam", 8192);
+    const cap = getHacknetCap(ns, "MaxRam", 8192);
     if (Number.isFinite(n) && n > 0) return Math.min(n, cap);
 
     return cap;
 }
 
 function getTargetCores(ns, value) {
-    const n =
-        Number(value);
+    const n = Number(value);
 
-    const cap =
-        getHacknetCap(ns, "MaxCores", 128);
+    const cap = getHacknetCap(ns, "MaxCores", 128);
     if (Number.isFinite(n) && n > 0) return Math.min(n, cap);
 
     return cap;
 }
 
-function getCurrentBitNode(ns) {
-    try {
-        return ns.getResetInfo()?.currentNode ?? ns.getPlayer()?.bitNodeN ?? 1;
-    } catch {
-        return 1;
-    }
-}
-
 function getTargetCache(ns, value) {
-    const n =
-        Number(value);
+    const n = Number(value);
 
     if (Number.isFinite(n) && n > 0) return n;
 
@@ -600,14 +554,10 @@ function getTargetCache(ns, value) {
 
 function getHacknetCap(ns, key, fallback) {
     try {
-        const constants =
-            ns.formulas?.hacknetServers?.constants?.();
-        const value =
-            constants?.[key];
+        const constants = ns.formulas?.hacknetServers?.constants?.();
+        const value = constants?.[key];
 
-        return Number.isFinite(value) && value > 0
-            ? value
-            : fallback;
+        return Number.isFinite(value) && value > 0 ? value : fallback;
     } catch {
         return fallback;
     }
@@ -622,43 +572,27 @@ function formatDuration(seconds) {
 }
 
 function annotateRoi(action, hashMoneyValue) {
-    const moneyPerSecond =
-        action.productionGain * hashMoneyValue;
-    const paybackSeconds =
-        moneyPerSecond > 0
-            ? action.cost / moneyPerSecond
-            : Number.POSITIVE_INFINITY;
+    const moneyPerSecond = action.productionGain * hashMoneyValue;
+    const paybackSeconds = moneyPerSecond > 0 ? action.cost / moneyPerSecond : Number.POSITIVE_INFINITY;
 
     return {
         ...action,
         hashMoneyValue,
         moneyPerSecond,
         paybackSeconds,
-        roi:
-            action.cost > 0
-                ? moneyPerSecond / action.cost
-                : 0,
+        roi: action.cost > 0 ? moneyPerSecond / action.cost : 0,
     };
 }
 
 function buildProductionModel(ns) {
-    const nodes =
-        getHacknetNodes(ns);
-    const modelSum =
-        nodes.reduce((sum, node) => sum + modelProduction(node), 0);
-    const actualSum =
-        nodes.reduce((sum, node) => sum + node.production, 0);
-    const scale =
-        modelSum > 0
-            ? actualSum / modelSum
-            : 1;
+    const nodes = getHacknetNodes(ns);
+    const modelSum = nodes.reduce((sum, node) => sum + modelProduction(node), 0);
+    const actualSum = nodes.reduce((sum, node) => sum + node.production, 0);
+    const scale = modelSum > 0 ? actualSum / modelSum : 1;
 
     return {
         nodes,
-        scale:
-            Number.isFinite(scale) && scale > 0
-                ? scale
-                : 1,
+        scale: Number.isFinite(scale) && scale > 0 ? scale : 1,
     };
 }
 
@@ -667,19 +601,13 @@ function estimateNewNodeProduction(model) {
         return scaledModelProduction({ level: 1, ram: 1, cores: 1 }, model);
     }
 
-    return Math.max(
-        scaledModelProduction({ level: 1, ram: 1, cores: 1 }, model),
-        Math.min(...model.nodes.map(node => node.production)) * 0.25
-    );
+    return Math.max(scaledModelProduction({ level: 1, ram: 1, cores: 1 }, model), Math.min(...model.nodes.map((node) => node.production)) * 0.25);
 }
 
 function estimateUpgradeProductionGain(current, next, model) {
-    const currentModel =
-        scaledModelProduction(current, model);
-    const nextModel =
-        scaledModelProduction(next, model);
-    const modelDelta =
-        Math.max(0, nextModel - currentModel);
+    const currentModel = scaledModelProduction(current, model);
+    const nextModel = scaledModelProduction(next, model);
+    const modelDelta = Math.max(0, nextModel - currentModel);
 
     if (currentModel > 0 && current.production > 0) {
         return current.production * (modelDelta / currentModel);
@@ -693,39 +621,29 @@ function scaledModelProduction(stats, model) {
 }
 
 function modelProduction(stats) {
-    const level =
-        Math.max(1, Number(stats.level) || 1);
-    const ram =
-        Math.max(1, Number(stats.ram) || 1);
-    const cores =
-        Math.max(1, Number(stats.cores) || 1);
+    const level = Math.max(1, Number(stats.level) || 1);
+    const ram = Math.max(1, Number(stats.ram) || 1);
+    const cores = Math.max(1, Number(stats.cores) || 1);
 
-    return (
-        level *
-        Math.pow(1.035, ram - 1) *
-        ((cores + 5) / 6)
-    );
+    return level * Math.pow(1.035, ram - 1) * ((cores + 5) / 6);
 }
 
 function getHacknetNodes(ns) {
-    return Array.from(
-        { length: ns.hacknet.numNodes() },
-        (_, index) => {
-            const stats = ns.hacknet.getNodeStats(index);
+    return Array.from({ length: ns.hacknet.numNodes() }, (_, index) => {
+        const stats = ns.hacknet.getNodeStats(index);
 
-            return {
-                index,
-                name: stats.name,
-                level: stats.level,
-                ram: stats.ram,
-                cores: stats.cores,
-                cache: stats.cache ?? null,
-                production: stats.production,
-                totalProduction: stats.totalProduction,
-                timeOnline: stats.timeOnline,
-            };
-        }
-    );
+        return {
+            index,
+            name: stats.name,
+            level: stats.level,
+            ram: stats.ram,
+            cores: stats.cores,
+            cache: stats.cache ?? null,
+            production: stats.production,
+            totalProduction: stats.totalProduction,
+            timeOnline: stats.timeOnline,
+        };
+    });
 }
 
 function getHashState(ns) {
@@ -774,8 +692,7 @@ function summarizeAction(action) {
 
 function getHashMoneyValue(ns, sellForMoneyValue = DEFAULT_SELL_FOR_MONEY_VALUE) {
     try {
-        const cost =
-            ns.hacknet.hashCost("Sell for Money");
+        const cost = ns.hacknet.hashCost("Sell for Money");
 
         if (Number.isFinite(cost) && cost > 0) {
             return sellForMoneyValue / cost;
@@ -827,7 +744,5 @@ function safeHomeCores(ns) {
 }
 
 function formatMoney(ns, value) {
-    return ns.format?.number
-        ? `$${ns.format.number(value)}`
-        : `$${Number(value).toFixed(0)}`;
+    return ns.format?.number ? `$${ns.format.number(value)}` : `$${Number(value).toFixed(0)}`;
 }

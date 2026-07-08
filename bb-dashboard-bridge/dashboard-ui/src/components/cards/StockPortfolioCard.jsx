@@ -1,4 +1,5 @@
 import Card from "../shared/Card.jsx";
+import { sendDashboardCommand } from "../../api/dashboardApi.js";
 import { formatMoney, formatNumber } from "../../utils/formatters.js";
 import "./StockPortfolioCard.css";
 
@@ -22,6 +23,18 @@ export default function StockPortfolioCard({
             ? "Stock telemetry is stale; trader may not be running."
             : stock?.statusMessage ?? stock?.marketAccess?.blockedReason ?? stock?.lastAction ?? "Waiting for stock trader.";
 
+    const startTrading = () => {
+        sendDashboardCommand("startStockTrading").catch(error => {
+            console.error(error);
+        });
+    };
+
+    const stopTrading = () => {
+        sendDashboardCommand("stopStockTrading").catch(error => {
+            console.error(error);
+        });
+    };
+
     return (
         <Card
             id={id}
@@ -36,6 +49,14 @@ export default function StockPortfolioCard({
                 <div className={`stock-status ${stock?.daemonAllowed === false || isStale ? "stock-status-warn" : "stock-status-live"}`}>
                     <span>{stock?.status ?? (stock ? "online" : "offline")}</span>
                     <b>{statusMessage}</b>
+                    <div className="stock-command-buttons">
+                        <button type="button" onClick={startTrading} title="Enable stock buying service">
+                            Start Buying
+                        </button>
+                        <button type="button" onClick={stopTrading} title="Sell all stock positions and stop stock buying">
+                            Stop Buying
+                        </button>
+                    </div>
                 </div>
 
                 <div className="stock-card-top">
@@ -50,6 +71,14 @@ export default function StockPortfolioCard({
                     <Badge label="TIX" active={access.hasTix} />
                     <Badge label="4S UI" active={access.has4SData} />
                     <Badge label="4S API" active={access.has4S} />
+                </div>
+
+                <div className="stock-compact-list">
+                    {displayRows.length === 0 ? (
+                        <div className="stock-empty-panel">No stock telemetry yet.</div>
+                    ) : displayRows.map(row => (
+                        <CompactStockRow key={row.sym} row={row} />
+                    ))}
                 </div>
 
                 <div className="stock-table-wrap">
@@ -89,6 +118,40 @@ export default function StockPortfolioCard({
                 </div>
             </div>
         </Card>
+    );
+}
+
+function CompactStockRow({ row }) {
+    const profit = Number(row.profit);
+    const forecast = row.forecast === null || row.forecast === undefined ? "--" : formatPercent(row.forecast);
+
+    return (
+        <div className={`stock-compact-row ${profit >= 0 ? "stock-compact-win" : "stock-compact-loss"}`}>
+            <div className="stock-compact-main">
+                <b>{row.sym}</b>
+                <span>{formatNumber(row.shares, 0)} sh</span>
+            </div>
+
+            <div className="stock-compact-price">
+                <span>Price</span>
+                <b>{formatMoney(row.price)}</b>
+            </div>
+
+            <div className="stock-compact-mini">
+                <span>Trend</span>
+                <b>{formatSignedPercent(row.trend)}</b>
+            </div>
+
+            <div className="stock-compact-mini">
+                <span>Fcst</span>
+                <b>{forecast}</b>
+            </div>
+
+            <div className="stock-compact-profit">
+                <span>P/L</span>
+                <b>{formatMoney(row.profit)}</b>
+            </div>
+        </div>
     );
 }
 

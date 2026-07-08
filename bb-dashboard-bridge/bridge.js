@@ -42,6 +42,10 @@ const BITBURNER_FACTION_STATE_FILE = "/data/faction-state.txt";
 const OUT_FACTION_STATE_FILE = path.join(OUT_DIR, "faction-state.json");
 const BITBURNER_GANG_STATE_FILE = "/data/gang-state.txt";
 const OUT_GANG_STATE_FILE = path.join(OUT_DIR, "gang-state.json");
+const BITBURNER_CHARACTER_ACTION_STATE_FILE = "/data/character-action-override-state.txt";
+const OUT_CHARACTER_ACTION_STATE_FILE = path.join(OUT_DIR, "character-action-override-state.json");
+const BITBURNER_CORP_STATE_FILE = "/data/corp-state.txt";
+const OUT_CORP_STATE_FILE = path.join(OUT_DIR, "corp-state.json");
 
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -69,7 +73,7 @@ function sanitizeCommandArgs(value) {
 
     return value
         .slice(0, 12)
-        .map(item => sanitizeCommandText(item))
+        .map((item) => sanitizeCommandText(item))
         .filter(Boolean);
 }
 
@@ -86,6 +90,13 @@ app.post("/command", async (req, res) => {
         "setGangMemberTask",
         "ascendGangMember",
         "setHacknetProductionTarget",
+        "setCharacterAction",
+        "clearCharacterActionOverride",
+        "buyMaxNeuroFlux",
+        "donateFactionRep",
+        "startStockTrading",
+        "stopStockTrading",
+        "startDarknetService",
         "clearEvents",
         "debugSnapshot",
         "eventTest",
@@ -104,6 +115,18 @@ app.post("/command", async (req, res) => {
         member: sanitizeCommandText(req.body?.member),
         task: sanitizeCommandText(req.body?.task),
         productionTarget: sanitizeCommandText(req.body?.productionTarget),
+        purchaseBatch: sanitizeCommandText(req.body?.purchaseBatch),
+        action: sanitizeCommandText(req.body?.action),
+        focus: sanitizeCommandText(req.body?.focus),
+        faction: sanitizeCommandText(req.body?.faction),
+        workType: sanitizeCommandText(req.body?.workType),
+        crime: sanitizeCommandText(req.body?.crime),
+        course: sanitizeCommandText(req.body?.course),
+        university: sanitizeCommandText(req.body?.university),
+        city: sanitizeCommandText(req.body?.city),
+        gym: sanitizeCommandText(req.body?.gym),
+        stat: sanitizeCommandText(req.body?.stat),
+        donationAmount: sanitizeCommandText(req.body?.donationAmount ?? req.body?.amount),
         args: sanitizeCommandArgs(req.body?.args),
     };
 
@@ -312,15 +335,7 @@ app.get("/test-theme/:accent", (req, res) => {
             reason: `Theme test lane policy: ${accent}`,
         },
         widgets: {
-            visible: [
-                "daemonHeader",
-                "coreState",
-                "targetIntel",
-                "playerStats",
-                "policy",
-                "serverSummary",
-                "laneAllocation",
-            ],
+            visible: ["daemonHeader", "coreState", "targetIntel", "playerStats", "policy", "serverSummary", "laneAllocation"],
             emphasized: ["targetIntel"],
             hidden: [],
         },
@@ -329,7 +344,6 @@ app.get("/test-theme/:accent", (req, res) => {
             accent,
             dangerLevel: accent.includes("danger") || accent.includes("reset") ? "high" : "normal",
         },
-
     };
 
     fs.writeFileSync(OUT_FILE, JSON.stringify(fake, null, 2));
@@ -342,15 +356,13 @@ app.get("/live", async (_req, res) => {
     res.json({ ok: true, mode: "live" });
 });
 
-
-
 const wss = new WebSocketServer({ port: REMOTE_API_PORT });
 
-wss.on("connection", socket => {
+wss.on("connection", (socket) => {
     console.log("[BITBURNER] Connected");
     bitburnerSocket = socket;
 
-    socket.on("message", raw => {
+    socket.on("message", (raw) => {
         let msg;
 
         try {
@@ -380,7 +392,7 @@ async function pollCommandStatus() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_COMMAND_STATUS_FILE,
-            server: "home"
+            server: "home",
         });
 
         const parsed = JSON.parse(content || "{}");
@@ -390,12 +402,16 @@ async function pollCommandStatus() {
     } catch {
         fs.writeFileSync(
             OUT_COMMAND_STATUS_FILE,
-            JSON.stringify({
-                running: false,
-                status: "unavailable",
-                message: "Could not read command runner status.",
-                bridgeUpdatedAt: Date.now(),
-            }, null, 2)
+            JSON.stringify(
+                {
+                    running: false,
+                    status: "unavailable",
+                    message: "Could not read command runner status.",
+                    bridgeUpdatedAt: Date.now(),
+                },
+                null,
+                2,
+            ),
         );
     }
 }
@@ -407,12 +423,14 @@ function rpc(method, params) {
 
     const id = rpcId++;
 
-    bitburnerSocket.send(JSON.stringify({
-        jsonrpc: "2.0",
-        id,
-        method,
-        params
-    }));
+    bitburnerSocket.send(
+        JSON.stringify({
+            jsonrpc: "2.0",
+            id,
+            method,
+            params,
+        }),
+    );
 
     return new Promise((resolve, reject) => {
         pending.set(id, { resolve, reject });
@@ -432,7 +450,7 @@ async function pollDashboardState() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_STATE_FILE,
-            server: "home"
+            server: "home",
         });
 
         const parsed = normalizeDashboardState(JSON.parse(content));
@@ -447,9 +465,9 @@ async function pollDashboardState() {
 
         console.log(
             `[STATE] ${new Date().toLocaleTimeString()} ` +
-            `BN${parsed?.bitnode?.number ?? "?"} ` +
-            `${parsed?.progression?.mode ?? "?"} ` +
-            `${parsed?.daemon?.target ?? "no-target"}`
+                `BN${parsed?.bitnode?.number ?? "?"} ` +
+                `${parsed?.progression?.mode ?? "?"} ` +
+                `${parsed?.daemon?.target ?? "no-target"}`,
         );
     } catch (error) {
         console.log(`[STATE] ${String(error?.message ?? error)}`);
@@ -457,12 +475,7 @@ async function pollDashboardState() {
 }
 
 function normalizeDashboardState(state = {}) {
-    const plan =
-        state?.targetAnalysis?.plan ??
-        state?.strategicTargetPlan ??
-        state?.targetPlan ??
-        state?.controller?.strategicTargetPlan ??
-        {};
+    const plan = state?.targetAnalysis?.plan ?? state?.strategicTargetPlan ?? state?.targetPlan ?? state?.controller?.strategicTargetPlan ?? {};
 
     const target = state?.target?.name ?? state?.daemon?.target ?? plan?.target ?? null;
 
@@ -490,6 +503,8 @@ function normalizeDashboardState(state = {}) {
         ...state,
         economy,
         gang: readLocalJson(OUT_GANG_STATE_FILE, null),
+        characterOverride: readLocalJson(OUT_CHARACTER_ACTION_STATE_FILE, null),
+        corporation: readLocalJson(OUT_CORP_STATE_FILE, null),
         augmentationIntel,
         strategicTargetPlan: state?.strategicTargetPlan ?? plan,
         targetAnalysis: normalizeTargetAnalysis({
@@ -502,11 +517,7 @@ function normalizeDashboardState(state = {}) {
                 state?.controller?.strategicTargetReason ??
                 plan?.reason ??
                 null,
-            targetStability:
-                state?.targetAnalysis?.targetStability ??
-                state?.targetStability ??
-                plan?.targetStability ??
-                {},
+            targetStability: state?.targetAnalysis?.targetStability ?? state?.targetStability ?? plan?.targetStability ?? {},
             plan,
         }),
     };
@@ -538,11 +549,12 @@ function normalizeTargetAnalysis({ existing = {}, target, targetReason, targetSt
         targetStability: targetStability ?? {},
         bestCandidate: normalizeTargetCandidate(existing?.bestCandidate ?? plan?.bestCandidate),
         currentCandidate: normalizeTargetCandidate(existing?.currentCandidate ?? plan?.currentCandidate),
-        candidates: Array.isArray(existing?.candidates) && existing.candidates.length > 0
-            ? existing.candidates.slice(0, 5).map(normalizeTargetCandidate)
-            : Array.isArray(plan?.candidates)
-                ? plan.candidates.slice(0, 5).map(normalizeTargetCandidate)
-                : [],
+        candidates:
+            Array.isArray(existing?.candidates) && existing.candidates.length > 0
+                ? existing.candidates.slice(0, 5).map(normalizeTargetCandidate)
+                : Array.isArray(plan?.candidates)
+                  ? plan.candidates.slice(0, 5).map(normalizeTargetCandidate)
+                  : [],
     };
 }
 
@@ -575,14 +587,14 @@ async function pollEventLog() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_EVENT_FILE,
-            server: "home"
+            server: "home",
         });
 
         const events = String(content || "")
             .split("\n")
-            .map(line => line.trim())
+            .map((line) => line.trim())
             .filter(Boolean)
-            .map(line => JSON.parse(line));
+            .map((line) => JSON.parse(line));
 
         fs.writeFileSync(OUT_EVENT_FILE, JSON.stringify(events, null, 2));
     } catch {
@@ -596,7 +608,7 @@ async function pollNetworkTopology() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_TOPOLOGY_FILE,
-            server: "home"
+            server: "home",
         });
 
         const parsed = JSON.parse(content || "{}");
@@ -606,15 +618,19 @@ async function pollNetworkTopology() {
     } catch {
         fs.writeFileSync(
             OUT_TOPOLOGY_FILE,
-            JSON.stringify({
-                source: "network-topology",
-                status: "unavailable",
-                message: `Could not read ${BITBURNER_TOPOLOGY_FILE}. Is /tools/network-topology-writer.js running?`,
-                updatedAt: Date.now(),
-                bridgeUpdatedAt: Date.now(),
-                nodes: [],
-                edges: [],
-            }, null, 2)
+            JSON.stringify(
+                {
+                    source: "network-topology",
+                    status: "unavailable",
+                    message: `Could not read ${BITBURNER_TOPOLOGY_FILE}. Is /tools/network-topology-writer.js running?`,
+                    updatedAt: Date.now(),
+                    bridgeUpdatedAt: Date.now(),
+                    nodes: [],
+                    edges: [],
+                },
+                null,
+                2,
+            ),
         );
     }
 }
@@ -625,7 +641,7 @@ async function pollDaemonReasoning() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_REASONING_FILE,
-            server: "home"
+            server: "home",
         });
 
         const parsed = JSON.parse(content || "{}");
@@ -635,13 +651,17 @@ async function pollDaemonReasoning() {
     } catch {
         fs.writeFileSync(
             OUT_REASONING_FILE,
-            JSON.stringify({
-                schemaVersion: 1,
-                updatedAt: Date.now(),
-                summary: "Could not read daemon reasoning.",
-                items: [],
-                bridgeUpdatedAt: Date.now(),
-            }, null, 2)
+            JSON.stringify(
+                {
+                    schemaVersion: 1,
+                    updatedAt: Date.now(),
+                    summary: "Could not read daemon reasoning.",
+                    items: [],
+                    bridgeUpdatedAt: Date.now(),
+                },
+                null,
+                2,
+            ),
         );
     }
 }
@@ -652,7 +672,7 @@ async function pollDaemonReasoningHistory() {
     try {
         const content = await rpc("getFile", {
             filename: BITBURNER_REASONING_HISTORY_FILE,
-            server: "home"
+            server: "home",
         });
 
         const parsed = JSON.parse(content || "[]");
@@ -669,7 +689,7 @@ async function pollJsonFile(bitburnerFile, outFile, fallback) {
     try {
         const content = await rpc("getFile", {
             filename: bitburnerFile,
-            server: "home"
+            server: "home",
         });
 
         const parsed = JSON.parse(content || "{}");
@@ -679,10 +699,14 @@ async function pollJsonFile(bitburnerFile, outFile, fallback) {
     } catch {
         fs.writeFileSync(
             outFile,
-            JSON.stringify({
-                ...fallback,
-                bridgeUpdatedAt: Date.now(),
-            }, null, 2)
+            JSON.stringify(
+                {
+                    ...fallback,
+                    bridgeUpdatedAt: Date.now(),
+                },
+                null,
+                2,
+            ),
         );
     }
 }
@@ -696,26 +720,29 @@ async function pollPurchaseLog() {
             readBitburnerFile(BITBURNER_PURCHASE_LEDGER_FILE),
         ]);
 
-        const parsed =
-            normalizePurchaseLog({
-                sessionContent,
-                ledgerContent,
-            });
+        const parsed = normalizePurchaseLog({
+            sessionContent,
+            ledgerContent,
+        });
 
         fs.writeFileSync(OUT_PURCHASE_LOG_FILE, JSON.stringify(parsed, null, 2));
     } catch {
         fs.writeFileSync(
             OUT_PURCHASE_LOG_FILE,
-            JSON.stringify({
-                source: "purchase-log",
-                status: "unavailable",
-                message: `Could not read ${BITBURNER_PURCHASE_LOG_FILE}. Purchases will appear after the next buyer logs an action.`,
-                updatedAt: Date.now(),
-                entries: [],
-                totals: { spent: 0, count: 0 },
-                byCategory: [],
-                bySource: [],
-            }, null, 2)
+            JSON.stringify(
+                {
+                    source: "purchase-log",
+                    status: "unavailable",
+                    message: `Could not read ${BITBURNER_PURCHASE_LOG_FILE}. Purchases will appear after the next buyer logs an action.`,
+                    updatedAt: Date.now(),
+                    entries: [],
+                    totals: { spent: 0, count: 0 },
+                    byCategory: [],
+                    bySource: [],
+                },
+                null,
+                2,
+            ),
         );
     }
 }
@@ -724,7 +751,7 @@ async function readBitburnerFile(filename) {
     try {
         return await rpc("getFile", {
             filename,
-            server: "home"
+            server: "home",
         });
     } catch {
         return "";
@@ -732,18 +759,11 @@ async function readBitburnerFile(filename) {
 }
 
 function normalizePurchaseLog({ sessionContent = "", ledgerContent = "" } = {}) {
-    const sessionEntries =
-        parsePurchaseLines(sessionContent);
-    const ledgerEntries =
-        parsePurchaseLines(ledgerContent);
-    const lifetimeEntries =
-        ledgerEntries.length > 0
-            ? mergePurchaseEntries(ledgerEntries, sessionEntries)
-            : sessionEntries;
-    const totals =
-        summarizePurchases(lifetimeEntries);
-    const sessionTotals =
-        summarizePurchases(sessionEntries);
+    const sessionEntries = parsePurchaseLines(sessionContent);
+    const ledgerEntries = parsePurchaseLines(ledgerContent);
+    const lifetimeEntries = ledgerEntries.length > 0 ? mergePurchaseEntries(ledgerEntries, sessionEntries) : sessionEntries;
+    const totals = summarizePurchases(lifetimeEntries);
+    const sessionTotals = summarizePurchases(sessionEntries);
 
     return {
         source: "purchase-log",
@@ -768,22 +788,20 @@ function normalizePurchaseLog({ sessionContent = "", ledgerContent = "" } = {}) 
 function parsePurchaseLines(content = "") {
     return String(content)
         .split(/\r?\n/)
-        .map(line => line.trim())
+        .map((line) => line.trim())
         .filter(Boolean)
-        .map(line => safeParseJson(line))
+        .map((line) => safeParseJson(line))
         .filter(Boolean)
         .map(normalizePurchaseEntry)
         .sort((a, b) => Number(b.time) - Number(a.time));
 }
 
 function mergePurchaseEntries(primary = [], secondary = []) {
-    const seen =
-        new Set();
+    const seen = new Set();
     const merged = [];
 
     for (const entry of [...primary, ...secondary]) {
-        const key =
-            entry.id ?? `${entry.time}-${entry.source}-${entry.type}-${entry.item}-${entry.cost}`;
+        const key = entry.id ?? `${entry.time}-${entry.source}-${entry.type}-${entry.item}-${entry.cost}`;
         if (seen.has(key)) continue;
         seen.add(key);
         merged.push(entry);
@@ -801,10 +819,8 @@ function safeParseJson(line) {
 }
 
 function normalizePurchaseEntry(entry = {}) {
-    const cost =
-        Number(entry.cost);
-    const category =
-        entry.category ?? inferPurchaseCategory(entry);
+    const cost = Number(entry.cost);
+    const category = entry.category ?? inferPurchaseCategory(entry);
 
     return {
         ...entry,
@@ -815,12 +831,9 @@ function normalizePurchaseEntry(entry = {}) {
 }
 
 function inferPurchaseCategory(entry = {}) {
-    const source =
-        String(entry.source ?? "").toLowerCase();
-    const type =
-        String(entry.type ?? "").toLowerCase();
-    const item =
-        String(entry.item ?? "").toLowerCase();
+    const source = String(entry.source ?? "").toLowerCase();
+    const type = String(entry.type ?? "").toLowerCase();
+    const item = String(entry.item ?? "").toLowerCase();
 
     if (source.includes("augment") || type.includes("augment")) return "augmentations";
     if (source.includes("hacknet") || type.includes("hacknet") || item.includes("hacknet")) return "hacknet";
@@ -834,8 +847,7 @@ function inferPurchaseCategory(entry = {}) {
 }
 
 function summarizePurchases(entries) {
-    const spent =
-        entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
+    const spent = entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
 
     return {
         spent,
@@ -846,16 +858,12 @@ function summarizePurchases(entries) {
 }
 
 function groupPurchases(entries, key) {
-    const groups =
-        new Map();
-    const totalSpent =
-        entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
+    const groups = new Map();
+    const totalSpent = entries.reduce((sum, entry) => sum + Math.max(0, Number(entry.cost) || 0), 0);
 
     for (const entry of entries) {
-        const id =
-            String(entry[key] ?? "unknown");
-        const current =
-            groups.get(id) ?? { id, label: id, spent: 0, count: 0 };
+        const id = String(entry[key] ?? "unknown");
+        const current = groups.get(id) ?? { id, label: id, spent: 0, count: 0 };
 
         current.spent += Math.max(0, Number(entry.cost) || 0);
         current.count += 1;
@@ -863,7 +871,7 @@ function groupPurchases(entries, key) {
     }
 
     return [...groups.values()]
-        .map(group => ({
+        .map((group) => ({
             ...group,
             percent: totalSpent > 0 ? group.spent / totalSpent : 0,
         }))
@@ -927,6 +935,19 @@ async function pollEconomyTelemetry() {
             inGang: false,
             members: [],
             assignments: [],
+        }),
+        pollJsonFile(BITBURNER_CHARACTER_ACTION_STATE_FILE, OUT_CHARACTER_ACTION_STATE_FILE, {
+            source: "character-action-override-service",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_CHARACTER_ACTION_STATE_FILE}. Is /tools/character-action-override-service.js running?`,
+            enabled: false,
+        }),
+        pollJsonFile(BITBURNER_CORP_STATE_FILE, OUT_CORP_STATE_FILE, {
+            source: "corp-manager-service",
+            status: "unavailable",
+            message: `Could not read ${BITBURNER_CORP_STATE_FILE}. Is /tools/corp-manager-service.js running?`,
+            corporation: null,
+            actions: [],
         }),
     ]);
 }

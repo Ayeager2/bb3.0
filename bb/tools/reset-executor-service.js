@@ -4,6 +4,10 @@ import {
     buildResetPlan,
     writeResetPlan,
 } from "/lib/daemon/reset-planner.js";
+import {
+    describeStockLiquidation,
+    liquidateAllStocks,
+} from "/lib/daemon/stock-liquidation.js";
 
 const STARTUP_SCRIPT = "/startup.js";
 
@@ -47,6 +51,9 @@ export async function main(ns) {
 
         ns.tprint(`[RESET] Installing augmentations. Startup will run ${nextScript}.`);
         ns.toast(`Installing augmentations -> ${nextScript}`, "warning", 10000);
+
+        const liquidation = liquidateAllStocks(ns, "reset-executor-service");
+        ns.tprint(`[RESET] ${describeStockLiquidation(liquidation)}`);
 
         await ns.sleep(1000);
         ns.singularity.installAugmentations(nextScript);

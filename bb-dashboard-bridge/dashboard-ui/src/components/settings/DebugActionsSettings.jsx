@@ -21,6 +21,11 @@ const ACTIONS = [
         description: "Writes a test event into the event feed.",
     },
     {
+        command: "startDarknetService",
+        title: "Start Darknet Service",
+        description: "Starts darknet credential, cache, phishing, and worker automation.",
+    },
+    {
         command: "clearEvents",
         title: "Clear Events",
         description: "Clears the Bitburner UI event log.",
