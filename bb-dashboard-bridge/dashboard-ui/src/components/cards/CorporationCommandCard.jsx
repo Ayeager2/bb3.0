@@ -13,7 +13,6 @@ import {
 import Card from "../shared/Card.jsx";
 import "./CorporationCommandCard.css";
 
-const SPRITE_URL = "/assets/corp-growth-sprite.png";
 const STAGES = [
     "Startup",
     "Small Office",
@@ -22,6 +21,19 @@ const STAGES = [
     "2 Businesses",
     "3 Businesses",
 ];
+
+const STAGE_IMAGES = STAGES.map((_, index) => `/assets/corp-growth-stages/corp-growth-stage-${index + 1}.png`);
+
+const RAMP_FLOW = [
+    { key: "agriculture-main-startup", label: "Sector-12 Seed" },
+    { key: "waiting-round-1-offer", label: "Round 1 Offer" },
+    { key: "agriculture-round-1", label: "Round 1 Build" },
+    { key: "agriculture-expand-city", label: "City Expansion" },
+    { key: "waiting-round-2-offer", label: "Round 2 Offer" },
+    { key: "tobacco-growth", label: "Tobacco Growth" },
+];
+
+const CITY_ORDER = ["Sector-12", "Aevum", "Chongqing", "New Tokyo", "Ishima", "Volhaven"];
 
 const FALLBACK_DIVISIONS = [
     { name: "Agriculture", type: "Agriculture", product: "Food", tone: "green" },
@@ -40,12 +52,16 @@ export default function CorporationCommandCard({
     layoutSize,
 }) {
     const corpState = state?.corporation ?? null;
-    const corp = corpState?.corporation ?? {};
+    const corp = normalizeCorporation(corpState);
     const divisions = buildDivisions(corpState);
     const stageIndex = getStageIndex(corpState, divisions);
     const actions = buildActions(corpState);
     const alerts = buildAlerts(corpState, divisions);
     const acquisitions = buildAcquisitions(corp, divisions);
+    const ramp = getRampSummary(corpState, divisions);
+    const stageFlow = buildStageFlow(corpState);
+    const waveSummary = buildMaterialWaveSummary(corpState);
+    const citySummary = getCitySummary(corpState);
 
     return (
         <Card
@@ -65,13 +81,13 @@ export default function CorporationCommandCard({
                         </div>
                         <div>
                             <div className="corp-brand-name">{corp.name ?? "Anna Corp"}</div>
-                            <div className="corp-brand-subtitle">{corpState?.stage ?? "Bitburner Corporation"}</div>
+                            <div className="corp-brand-subtitle">{ramp.subtitle}</div>
                         </div>
                     </div>
 
-                    <Metric label="Valuation" value={formatCompactMoney(corp.valuation ?? estimateValuation(corp))} trend="+3.21%" tone="cyan" />
-                    <Metric label="Profit / sec" value={formatCompactMoney(corp.profit ?? 0)} trend="+1.86%" tone="green" />
-                    <Metric label="Funds" value={formatCompactMoney(corp.funds ?? 0)} trend="+12.45%" tone="yellow" />
+                    <Metric label="Valuation" value={formatCompactMoney(corp.valuation ?? estimateValuation(corp))} trend={ramp.stageLabel} tone="cyan" />
+                    <Metric label="Profit / sec" value={formatCompactMoney(corp.profit ?? 0)} trend={corp.profit >= 0 ? "profit online" : "cash drain"} tone={corp.profit >= 0 ? "green" : "pink"} />
+                    <Metric label="Funds" value={formatCompactMoney(corp.funds ?? 0)} trend={ramp.statusLabel} tone="yellow" />
                     <InvestmentMetric offer={corpState?.investmentOffer} />
 
                     <div className="corp-command-clock">
@@ -89,13 +105,14 @@ export default function CorporationCommandCard({
                                     key={label}
                                     className={`corp-stage ${index === stageIndex ? "active" : ""}`}
                                 >
-                                    <div
-                                        className="corp-stage-art"
-                                        style={{
-                                            backgroundImage: `url(${SPRITE_URL})`,
-                                            backgroundPosition: `${(index / (STAGES.length - 1)) * 100}% 50%`,
-                                        }}
-                                    />
+                                    <div className="corp-stage-art">
+                                        <img
+                                            alt=""
+                                            className="corp-stage-art-image"
+                                            draggable="false"
+                                            src={STAGE_IMAGES[index]}
+                                        />
+                                    </div>
                                     <div className="corp-stage-label">
                                         <b>{index + 1}</b>
                                         <span>{label}</span>
@@ -114,13 +131,57 @@ export default function CorporationCommandCard({
                     </div>
 
                     <aside className="corp-side-panel">
-                        <PanelTitle title="Action Queue" meta={`${actions.length}/10`} />
-                        <div className="corp-action-list">
+                        <PanelTitle title="Ramp Status" meta={corpState?.updatedAtText ?? "waiting"} />
+                        <div className="corp-status-strip">
+                            <span>{corpState?.status ?? "unknown"}</span>
+                            <b>{corpState?.message ?? "No corporation telemetry yet."}</b>
+                        </div>
+
+                        <div className="corp-stage-flow">
+                            {stageFlow.map((step) => (
+                                <div key={step.key} className={`corp-stage-step ${step.state}`}>
+                                    <i />
+                                    <span>{step.label}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="corp-ramp-facts">
+                            <div>
+                                <span>Active Cities</span>
+                                <b>{citySummary.activeCount}/6</b>
+                            </div>
+                            <div>
+                                <span>Next City</span>
+                                <b>{citySummary.nextCity}</b>
+                            </div>
+                            <div>
+                                <span>Offer</span>
+                                <b>{formatInvestmentOffer(corpState?.investmentOffer)}</b>
+                            </div>
+                        </div>
+
+                        {waveSummary.length > 0 ? (
+                            <div className="corp-wave-grid">
+                                {waveSummary.map((wave) => (
+                                    <div key={wave.key} className={`corp-wave ${wave.complete ? "complete" : "pending"}`}>
+                                        <span>{wave.label}</span>
+                                        <b>{wave.complete ? "Complete" : `${wave.missingCount} missing`}</b>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : null}
+
+                        <div className="corp-action-log">
+                            <div className="corp-log-title">
+                                <span>Recent Script Log</span>
+                                <b>{actions.length}</b>
+                            </div>
                             {actions.map((action, index) => (
                                 <div key={`${action}-${index}`} className="corp-action-row">
                                     <FiCpu />
                                     <span>{action}</span>
-                                    <b>{formatQueueTime(index)}</b>
+                                    <b>{index === 0 ? "now" : `${index + 1} ago`}</b>
                                 </div>
                             ))}
                         </div>
@@ -221,7 +282,7 @@ function Metric({ label, value, trend, tone }) {
         <div className={`corp-top-metric tone-${tone}`}>
             <span>{label}</span>
             <b>{value}</b>
-            <em>{trend} ▲</em>
+            <em>{trend}</em>
         </div>
     );
 }
@@ -279,38 +340,53 @@ function QuickAction({ icon, label, detail, tone }) {
 }
 
 function buildDivisions(corpState) {
-    const known = [
-        normalizeDivision(corpState?.agriculture, FALLBACK_DIVISIONS[0]),
-        normalizeDivision(corpState?.tobacco, FALLBACK_DIVISIONS[1]),
-    ].filter(Boolean);
+    const actions = Array.isArray(corpState?.actions) ? corpState.actions : [];
+    const known = [];
     const names = Array.isArray(corpState?.corporation?.divisions) ? corpState.corporation.divisions : [];
+
+    if (corpState?.agriculture) {
+        known.push(normalizeDivision(corpState.agriculture, FALLBACK_DIVISIONS[0], actions));
+    }
+
+    if (corpState?.tobacco) {
+        known.push(normalizeDivision(corpState.tobacco, FALLBACK_DIVISIONS[1], actions));
+    }
 
     for (const name of names) {
         if (known.some(division => division.name === name)) continue;
         const fallback = FALLBACK_DIVISIONS[known.length] ?? { name, type: name, product: "Product", tone: "cyan" };
-        known.push(normalizeDivision({ name, type: name }, fallback));
+        known.push(normalizeDivision({ name, type: name }, fallback, actions));
     }
 
-    return known.length > 0 ? known : FALLBACK_DIVISIONS.map(normalizeFallbackDivision);
+    if (known.length > 0) {
+        const corp = normalizeCorporation(corpState);
+        return known.map(division => ({
+            ...division,
+            profit: division.profit || (known.length === 1 ? corp.profit : 0),
+        }));
+    }
+
+    return corpState ? [] : FALLBACK_DIVISIONS.map(normalizeFallbackDivision);
 }
 
-function normalizeDivision(division, fallback) {
+function normalizeDivision(division, fallback, actions = []) {
     if (!division && !fallback) return null;
 
     const offices = Array.isArray(division?.offices) ? division.offices : [];
     const products = Array.isArray(division?.products) ? division.products : [];
     const name = division?.name ?? fallback.name;
+    const actionCities = getCitiesFromActions(actions, name);
 
     return {
         name,
         type: division?.type ?? fallback.type,
         product: products[0] ?? fallback.product,
         tone: fallback.tone,
-        cities: Math.max(offices.length, name ? 1 : 0),
+        cities: Math.max(offices.length, actionCities.length, name ? 1 : 0),
         employees: offices.reduce((sum, office) => sum + (Number(office.employees) || 0), 0),
         morale: getDivisionPercent(division, "morale", 72 + (name.length % 19)),
         energy: getDivisionPercent(division, "energy", 64 + (name.length % 24)),
-        status: products.length > 0 ? "Stable" : offices.length >= 6 ? "Expanding" : "Building",
+        status: products.length > 0 ? "Stable" : offices.length >= 6 || actionCities.length >= 6 ? "Ramping" : "Building",
         profit: Number(division?.profit ?? division?.revenue ?? 0),
     };
 }
@@ -332,28 +408,97 @@ function getStageIndex(corpState, divisions) {
 
     const divisionCount = divisions.length;
     const acquired = Math.max(0, divisionCount - 1);
+    const cityCount = divisions.reduce((max, division) => Math.max(max, Number(division.cities) || 0), 0);
+    const status = String(corpState?.status ?? "").toLowerCase();
 
     if (acquired >= 3) return 5;
     if (acquired >= 2) return 4;
     if (divisionCount >= 2) return 3;
-    if (divisionCount >= 1) return 2;
+    if (cityCount >= 6 || status.includes("ramp")) return 2;
+    if (divisionCount >= 1) return 1;
     return 1;
 }
 
 function buildActions(corpState) {
-    const actions = Array.isArray(corpState?.actions) ? corpState.actions.slice(-4).reverse() : [];
+    const actions = Array.isArray(corpState?.actions) ? corpState.actions.slice(-7).reverse() : [];
     if (actions.length > 0) return actions;
 
     return [
-        "Expand Agriculture Office",
-        "Hire Employees",
-        "Make Product",
-        "Review Investment Offer",
+        corpState?.message ?? "Waiting for corporation telemetry.",
     ];
+}
+
+function buildStageFlow(corpState) {
+    const activeIndex = getStageFlowIndex(corpState?.stage);
+
+    return RAMP_FLOW.map((step, index) => ({
+        ...step,
+        state: index < activeIndex ? "complete" : index === activeIndex ? "active" : "pending",
+    }));
+}
+
+function getStageFlowIndex(stage) {
+    const normalized = String(stage ?? "").toLowerCase();
+    if (normalized === "agriculture-startup" || normalized === "agriculture-main-startup") return 0;
+    if (normalized === "waiting-round-1-offer" || normalized === "accept-round-1") return 1;
+    if (normalized === "agriculture-round-1") return 2;
+    if (normalized === "agriculture-expand-city") return 3;
+    if (normalized === "waiting-round-2-offer" || normalized === "accept-round-2") return 4;
+    if (normalized.includes("tobacco")) return 5;
+    if (normalized.includes("recover")) return 0;
+    return 0;
+}
+
+function buildMaterialWaveSummary(corpState) {
+    const waves = corpState?.materialWave;
+    if (!waves || typeof waves !== "object") return [];
+
+    const labels = {
+        agricultureMainStartup: "Sector-12 Boosters",
+        agricultureStartup: "Legacy Startup",
+        agricultureRound1: "Round 1 Materials",
+        agricultureRound2: "Round 2 Materials",
+    };
+
+    return Object.entries(waves)
+        .filter(([, value]) => value && typeof value === "object")
+        .map(([key, value]) => ({
+            key,
+            label: labels[key] ?? splitCamel(key),
+            complete: Boolean(value.complete),
+            missingCount: Array.isArray(value.missing) ? value.missing.length : 0,
+        }));
+}
+
+function getCitySummary(corpState) {
+    const offices = Array.isArray(corpState?.agriculture?.offices) ? corpState.agriculture.offices : [];
+    const activeCities = offices
+        .map(office => office?.city)
+        .filter(Boolean);
+    const activeSet = new Set(activeCities);
+    const nextCity = CITY_ORDER.find(city => !activeSet.has(city)) ?? "All Open";
+
+    return {
+        activeCount: activeSet.size,
+        nextCity,
+    };
 }
 
 function buildAlerts(corpState, divisions) {
     const alerts = [];
+    const corp = normalizeCorporation(corpState);
+
+    if (!corpState?.corporation) {
+        alerts.push({ label: "Corporation Not Created", value: "Waiting", tone: "warn" });
+    }
+
+    if (corp.profit < 0) {
+        alerts.push({ label: "Profit Below Zero", value: formatCompactMoney(corp.profit), tone: "danger" });
+    }
+
+    if (corpState?.status) {
+        alerts.push({ label: corpState.status, value: corpState?.source ?? "corp", tone: corp.profit >= 0 ? "info" : "warn" });
+    }
 
     for (const division of divisions) {
         if (division.energy < 65) alerts.push({ label: `${division.name}: Low Energy`, value: `${Math.round(division.energy)}%`, tone: "danger" });
@@ -404,10 +549,72 @@ function getProfitMargin(corp) {
     return profit / revenue;
 }
 
+function normalizeCorporation(corpState) {
+    const raw = corpState?.corporation ?? {};
+    const revenue = Number(raw.revenue ?? 0);
+    const expenses = Number(raw.expenses ?? 0);
+    const rawProfit = Number(raw.profit);
+    const profit = Number.isFinite(rawProfit) ? rawProfit : revenue - expenses;
+
+    return {
+        ...raw,
+        funds: Number(raw.funds ?? 0),
+        revenue,
+        expenses,
+        profit: Number.isFinite(profit) ? profit : 0,
+    };
+}
+
+function getRampSummary(corpState, divisions) {
+    const status = String(corpState?.status ?? "offline");
+    const stage = getStageIndex(corpState, divisions) + 1;
+    const cityCount = divisions.reduce((max, division) => Math.max(max, Number(division.cities) || 0), 0);
+    const source = String(corpState?.source ?? "corp");
+
+    return {
+        subtitle: `${source} / ${status}`,
+        stageLabel: `stage ${stage}/6`,
+        statusLabel: cityCount > 0 ? `${cityCount}/6 cities` : status,
+    };
+}
+
+function getCitiesFromActions(actions = [], divisionName = "") {
+    if (!Array.isArray(actions) || actions.length === 0) return [];
+
+    const cities = new Set();
+    const cityNames = ["Sector-12", "Aevum", "Chongqing", "New Tokyo", "Ishima", "Volhaven"];
+    const divisionNeedle = String(divisionName || "").toLowerCase();
+
+    for (const action of actions) {
+        const text = String(action || "");
+        if (divisionNeedle && !text.toLowerCase().includes(divisionNeedle)) continue;
+
+        for (const city of cityNames) {
+            if (text.includes(city)) cities.add(city);
+        }
+    }
+
+    return [...cities];
+}
+
 function getInvestmentPercent(offer) {
     const round = Number(offer?.round ?? 0);
     if (!Number.isFinite(round) || round <= 0) return 0;
     return Math.max(16, Math.min(92, round * 18));
+}
+
+function formatInvestmentOffer(offer) {
+    if (!offer) return "Waiting";
+    const round = offer?.round ? `R${offer.round}` : "Offer";
+    const funds = formatCompactMoney(offer?.funds ?? 0);
+    return `${round} ${funds}`;
+}
+
+function splitCamel(value) {
+    return String(value)
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, char => char.toUpperCase());
 }
 
 function estimateValuation(corp) {
@@ -438,6 +645,3 @@ function formatPercent(value) {
     return `${(n * 100).toFixed(1)}%`;
 }
 
-function formatQueueTime(index) {
-    return `00:${String(8 + index * 7).padStart(2, "0")}:${String(21 + index * 6).padStart(2, "0")}`;
-}

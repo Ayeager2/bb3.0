@@ -3,5 +3,5 @@
   "status": "unavailable",
   "message": "Could not read /data/hacknet-state.txt. Is /economy/hacknet-buyer-service.js running?",
   "nodes": [],
-  "bridgeUpdatedAt": 1783544833772
+  "bridgeUpdatedAt": 1783899530598
 }

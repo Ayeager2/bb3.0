@@ -1,6 +1,13 @@
 {
-  "running": false,
-  "status": "unavailable",
-  "message": "Could not read command runner status.",
-  "bridgeUpdatedAt": 1783544833658
+  "schemaVersion": 1,
+  "updatedAt": 1783899082587,
+  "running": true,
+  "status": "ready",
+  "command": "ascendGangMember",
+  "commandId": "1783899487003-6bdd3e93f516f",
+  "startedAt": 1783899487966,
+  "message": "Dashboard command runner heartbeat.",
+  "completedAt": 1783899487967,
+  "lastHeartbeatAt": 1783899510142,
+  "bridgeUpdatedAt": 1783899529519
 }

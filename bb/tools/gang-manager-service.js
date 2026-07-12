@@ -20,6 +20,7 @@ const GANG_MODES = [
   GANG_MODE_CUSTOM,
 ];
 const GANG_TICKS_PER_SECOND = 5;
+const GANG_KARMA_REQUIREMENT = -54_000;
 
 const MEMBER_NAME_PREFIX = "Operator";
 const STRIKE_TEAM_NAMES = [
@@ -107,8 +108,8 @@ export async function main(ns) {
 
     if (debug) {
       ns.clearLog();
-      ns.print("BN2 Gang Manager");
-      ns.print("===============");
+      ns.print("Gang Manager");
+      ns.print("============");
       ns.print(`Status: ${state.status}`);
       ns.print(`Message: ${state.message}`);
       ns.print(`Members: ${state.memberCount}`);
@@ -201,10 +202,6 @@ function writeAscendState(ns, state) {
 async function runGangCycle(ns, options) {
   cycleCache = createCycleCache();
 
-  if (getCurrentBitNode(ns) !== 2) {
-    return baseState("blocked", "Gang manager is only enabled for BN2.", {});
-  }
-
   if (!ns.gang) {
     return baseState("blocked", "Gang API is unavailable.", {});
   }
@@ -217,8 +214,18 @@ async function runGangCycle(ns, options) {
       safeCreateGang(ns, options.faction);
 
     if (!created) {
+      const karma = safeKarma(ns);
+      const karmaNeeded = Math.max(0, karma - GANG_KARMA_REQUIREMENT);
+
       return baseState("waiting-gang", `Waiting until ${options.faction} gang can be created.`, {
+        bitNode: getCurrentBitNode(ns),
+        faction: options.faction,
+        inGang: false,
         money: ns.getPlayer().money,
+        karma,
+        karmaRequirement: GANG_KARMA_REQUIREMENT,
+        karmaNeeded,
+        createEnabled: options.create === true,
       });
     }
   }
@@ -1370,6 +1377,14 @@ function safeCreateGang(ns, faction) {
     return ns.gang.createGang(faction);
   } catch {
     return false;
+  }
+}
+
+function safeKarma(ns) {
+  try {
+    return Number(ns.heart?.break?.()) || 0;
+  } catch {
+    return 0;
   }
 }
 

@@ -4,5 +4,5 @@
   "message": "Could not read /data/augmentation-state.txt. Is /tools/augmentation-data-builder.js running?",
   "factions": [],
   "uniqueAugmentations": [],
-  "bridgeUpdatedAt": 1783544833775
+  "bridgeUpdatedAt": 1783899530603
 }

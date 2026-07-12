@@ -233,6 +233,10 @@ function getServiceGate(ns, service, daemonState) {
         return block("stock trading disabled by dashboard control", diagnostics);
     }
 
+    if (service.id === "gang-manager" && !hasGangServiceAccess(ns)) {
+        return block("requires Gang API access, BN2, an existing gang, or Source-File 2", diagnostics);
+    }
+
     if (
         service.policyFlag &&
         daemonState?.spendingPolicy?.[service.policyFlag] !== true
@@ -535,6 +539,103 @@ function isScriptRunningOnHost(ns, script, host = "home") {
     } catch {
         return false;
     }
+}
+
+function hasGangServiceAccess(ns) {
+    if (!ns.gang) return false;
+    if (getCurrentBitNode(ns) === 2) return true;
+
+    try {
+        if (ns.gang.inGang?.() === true) return true;
+    } catch {
+        // Fall through to Source-File checks.
+    }
+
+    return getOwnedSourceFileLevel(ns, 2) > 0;
+}
+
+function getOwnedSourceFileLevel(ns, sourceFileNumber) {
+    const sources = [];
+
+    try {
+        sources.push(ns.getOwnedSourceFiles?.());
+    } catch {
+        // API availability depends on the current BitNode/source files.
+    }
+
+    try {
+        sources.push(ns.singularity?.getOwnedSourceFiles?.());
+    } catch {
+        // Singularity can be unavailable early.
+    }
+
+    try {
+        const resetInfo = ns.getResetInfo?.();
+        sources.push(resetInfo?.ownedSF, resetInfo?.ownedSourceFiles, resetInfo?.sourceFiles);
+    } catch {
+        // Reset info shape has changed across Bitburner versions.
+    }
+
+    for (const source of sources) {
+        const level = findSourceFileLevel(source, sourceFileNumber);
+        if (level > 0) return level;
+    }
+
+    return 0;
+}
+
+function findSourceFileLevel(sourceFiles, sourceFileNumber) {
+    if (!sourceFiles) return 0;
+
+    if (Array.isArray(sourceFiles)) {
+        return sourceFiles.reduce((best, sourceFile) => {
+            const entry = normalizeSourceFile(sourceFile);
+            if (entry.n !== sourceFileNumber) return best;
+            return Math.max(best, entry.lvl);
+        }, 0);
+    }
+
+    const directLevel = Number(sourceFiles[sourceFileNumber]);
+    if (Number.isFinite(directLevel)) return directLevel;
+
+    return Object.entries(sourceFiles).reduce((best, [key, value]) => {
+        const entry = normalizeSourceFile(
+            value && typeof value === "object" ? { n: key, ...value } : { n: key, lvl: value },
+        );
+        if (entry.n !== sourceFileNumber) return best;
+        return Math.max(best, entry.lvl);
+    }, 0);
+}
+
+function normalizeSourceFile(sourceFile) {
+    if (Array.isArray(sourceFile)) {
+        return {
+            n: Number(sourceFile[0]),
+            lvl: Number(sourceFile[1]),
+        };
+    }
+
+    return {
+        n: Number(
+            sourceFile?.n ??
+                sourceFile?.number ??
+                sourceFile?.bitNode ??
+                sourceFile?.bitnode ??
+                sourceFile?.sourceFile ??
+                sourceFile?.sourceFileNumber ??
+                sourceFile?.id ??
+                0,
+        ),
+        lvl: Number(
+            sourceFile?.lvl ??
+                sourceFile?.level ??
+                sourceFile?.levelOwned ??
+                sourceFile?.sfLevel ??
+                sourceFile?.sourceFileLevel ??
+                sourceFile?.value ??
+                0,
+        ),
+    };
 }
 
 function isStockTradingManuallyDisabled(ns) {

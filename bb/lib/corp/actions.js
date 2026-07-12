@@ -10,6 +10,8 @@ import {
   getMaterial,
   getOffice,
   getProduct,
+  getUnlockCost,
+  getUpgradeCost,
   getUpgradeLevel,
   hasUnlock,
   hasCity,
@@ -40,40 +42,166 @@ export function runCorporationCycle(ns, options = {}) {
     }
   }
 
-  ensureAgriculture(ns, cfg, actions);
+  ensureAgricultureCore(ns, cfg, actions);
+  ensureStrategicUnlocks(ns, cfg, actions);
+
+  const corporation = getCorporation(ns);
+  if (Number(corporation?.funds) < 0) {
+    stabilizeAgriculture(ns, cfg, actions);
+    return state('recovering', 'Corporation funds are negative; stopped Agriculture buying and reset sales.', cfg, actions, {
+      stage: 'recovery',
+      corporation: summarizeCorporation(ns),
+      agriculture: summarizeDivision(ns, cfg.agriculture, cfg),
+      tobacco: summarizeDivision(ns, cfg.tobacco, cfg),
+      investmentOffer: getInvestmentOffer(ns),
+    });
+  }
 
   const offer = getInvestmentOffer(ns);
+  const mainStartupStatus = getMaterialWaveStatus(
+    ns,
+    cfg.agriculture,
+    [cfg.mainCity],
+    cfg.agricultureStartupMaterials,
+  );
+  const activeAgricultureCities = getAgricultureCities(ns, cfg);
   const startupStatus = getMaterialWaveStatus(
     ns,
     cfg.agriculture,
-    cfg.cities,
+    activeAgricultureCities,
     cfg.agricultureStartupMaterials,
   );
+  const nextExpansionCity = getNextExpansionCity(ns, cfg);
   const round1Status = getMaterialWaveStatus(
     ns,
     cfg.agriculture,
-    cfg.cities,
+    activeAgricultureCities,
     cfg.agricultureRound1Materials,
   );
-  const stage = chooseStage(ns, cfg, offer, startupStatus, round1Status);
 
-  if (stage === 'agriculture-startup') {
-    ensureMaterialWave(ns, cfg.agriculture, cfg.cities, cfg.agricultureStartupMaterials, actions);
-    ensureUpgradeTargets(ns, cfg.startupUpgradeTargets, actions);
+  if (hasUnhealthyOffice(ns, cfg.agriculture, activeAgricultureCities, cfg)) {
+    maintainAgricultureSales(ns, cfg, activeAgricultureCities, actions);
+    return state('recovering', 'Agriculture office morale/energy is low; running office care before more build spending.', cfg, actions, {
+      stage: 'office-recovery',
+      corporation: summarizeCorporation(ns),
+      agriculture: summarizeDivision(ns, cfg.agriculture, cfg),
+      tobacco: summarizeDivision(ns, cfg.tobacco, cfg),
+      investmentOffer: offer,
+      materialWave: {
+        agricultureStartup: startupStatus,
+        agricultureMainStartup: mainStartupStatus,
+        agricultureRound1: round1Status,
+        agricultureRound2: getMaterialWaveStatus(
+          ns,
+          cfg.agriculture,
+          activeAgricultureCities,
+          cfg.agricultureRound2Materials,
+        ),
+      },
+    });
+  }
+
+  if (
+    Number(corporation?.funds) < (Number(cfg.cashRecoveryFloor) || 0) &&
+    Number(offer?.round) <= 1 &&
+    Number(offer?.funds) >= (Number(cfg.emergencyFirstOffer) || Infinity)
+  ) {
+    safeCall(() => corp.acceptInvestmentOffer(), false);
+    actions.push(`Accepted emergency first investment offer ${formatActionMoney(ns, offer?.funds)} for cash recovery.`);
+    return state('running', 'Accepted emergency first investment offer for cash recovery.', cfg, actions, {
+      stage: 'accept-emergency-round-1',
+      corporation: summarizeCorporation(ns),
+      agriculture: summarizeDivision(ns, cfg.agriculture, cfg),
+      tobacco: summarizeDivision(ns, cfg.tobacco, cfg),
+      investmentOffer: getInvestmentOffer(ns),
+      materialWave: {
+        agricultureStartup: startupStatus,
+        agricultureMainStartup: mainStartupStatus,
+        agricultureRound1: round1Status,
+        agricultureRound2: getMaterialWaveStatus(
+          ns,
+          cfg.agriculture,
+          activeAgricultureCities,
+          cfg.agricultureRound2Materials,
+        ),
+      },
+    });
+  }
+
+  if (Number(corporation?.funds) < (Number(cfg.cashRecoveryFloor) || 0)) {
+    maintainAgricultureSales(ns, cfg, activeAgricultureCities, actions);
+    return state('recovering', 'Corporation cash is low; paused build spending and selling down Agriculture inventory.', cfg, actions, {
+      stage: 'cash-recovery',
+      corporation: summarizeCorporation(ns),
+      agriculture: summarizeDivision(ns, cfg.agriculture, cfg),
+      tobacco: summarizeDivision(ns, cfg.tobacco, cfg),
+      investmentOffer: offer,
+      materialWave: {
+        agricultureStartup: startupStatus,
+        agricultureMainStartup: mainStartupStatus,
+        agricultureRound1: round1Status,
+        agricultureRound2: getMaterialWaveStatus(
+          ns,
+          cfg.agriculture,
+          activeAgricultureCities,
+          cfg.agricultureRound2Materials,
+        ),
+      },
+    });
+  }
+
+  if (Number(corporation?.funds) < (Number(cfg.cashStabilizeFloor) || 0)) {
+    maintainAgricultureSales(ns, cfg, activeAgricultureCities, actions, { stabilize: true });
+    return state('recovering', 'Corporation cash is stabilizing; running lean Agriculture until funds recover.', cfg, actions, {
+      stage: 'cash-stabilize',
+      corporation: summarizeCorporation(ns),
+      agriculture: summarizeDivision(ns, cfg.agriculture, cfg),
+      tobacco: summarizeDivision(ns, cfg.tobacco, cfg),
+      investmentOffer: offer,
+      materialWave: {
+        agricultureStartup: startupStatus,
+        agricultureMainStartup: mainStartupStatus,
+        agricultureRound1: round1Status,
+        agricultureRound2: getMaterialWaveStatus(
+          ns,
+          cfg.agriculture,
+          activeAgricultureCities,
+          cfg.agricultureRound2Materials,
+        ),
+      },
+    });
+  }
+
+  const stage = chooseStage(ns, cfg, offer, mainStartupStatus, startupStatus, round1Status, nextExpansionCity);
+
+  if (stage === 'agriculture-main-startup') {
+    ensureMaterialWave(ns, cfg.agriculture, [cfg.mainCity], cfg.agricultureStartupMaterials, actions);
+    ensureUpgradeTargets(ns, cfg, cfg.startupUpgradeTargets, actions);
+  } else if (stage === 'agriculture-expand-city') {
+    ensureAgricultureCity(ns, cfg, nextExpansionCity, actions);
+    ensureMaterialWave(ns, cfg.agriculture, [nextExpansionCity], cfg.agricultureStartupMaterials, actions);
+    ensureUpgradeTargets(ns, cfg, cfg.startupUpgradeTargets, actions);
+  } else if (stage === 'agriculture-startup') {
+    ensureMaterialWave(ns, cfg.agriculture, activeAgricultureCities, cfg.agricultureStartupMaterials, actions);
+    ensureUpgradeTargets(ns, cfg, cfg.startupUpgradeTargets, actions);
+  } else if (stage === 'waiting-round-1-offer') {
+    maintainAgricultureSales(ns, cfg, activeAgricultureCities, actions);
   } else if (stage === 'accept-round-1') {
     safeCall(() => corp.acceptInvestmentOffer(), false);
     actions.push(`Accepted first investment offer ${formatActionMoney(ns, offer?.funds)}.`);
   } else if (stage === 'agriculture-round-1') {
-    ensureUpgradeTargets(ns, cfg.round1UpgradeTargets, actions);
-    ensureOfficeGrowth(ns, cfg.agriculture, cfg.cities, 9, cfg.growthJobs, actions);
-    ensureWarehouseLevels(ns, cfg.agriculture, cfg.cities, 10, actions);
-    ensureMaterialWave(ns, cfg.agriculture, cfg.cities, cfg.agricultureRound1Materials, actions);
+    ensureUpgradeTargets(ns, cfg, cfg.round1UpgradeTargets, actions);
+    ensureOfficeGrowth(ns, cfg.agriculture, activeAgricultureCities, 9, cfg.growthJobs, actions);
+    ensureWarehouseLevels(ns, cfg.agriculture, activeAgricultureCities, 10, actions);
+    ensureMaterialWave(ns, cfg.agriculture, activeAgricultureCities, cfg.agricultureRound1Materials, actions);
   } else if (stage === 'accept-round-2') {
     safeCall(() => corp.acceptInvestmentOffer(), false);
     actions.push(`Accepted second investment offer ${formatActionMoney(ns, offer?.funds)}.`);
+  } else if (stage === 'waiting-round-2-offer') {
+    maintainAgricultureSales(ns, cfg, activeAgricultureCities, actions);
   } else {
-    ensureWarehouseLevels(ns, cfg.agriculture, cfg.cities, 19, actions);
-    ensureMaterialWave(ns, cfg.agriculture, cfg.cities, cfg.agricultureRound2Materials, actions);
+    ensureWarehouseLevels(ns, cfg.agriculture, activeAgricultureCities, 19, actions);
+    ensureMaterialWave(ns, cfg.agriculture, activeAgricultureCities, cfg.agricultureRound2Materials, actions);
     ensureTobacco(ns, cfg, actions);
   }
 
@@ -85,18 +213,19 @@ export function runCorporationCycle(ns, options = {}) {
     investmentOffer: offer,
     materialWave: {
       agricultureStartup: startupStatus,
+      agricultureMainStartup: mainStartupStatus,
       agricultureRound1: round1Status,
       agricultureRound2: getMaterialWaveStatus(
         ns,
         cfg.agriculture,
-        cfg.cities,
+        activeAgricultureCities,
         cfg.agricultureRound2Materials,
       ),
     },
   });
 }
 
-function ensureAgriculture(ns, cfg, actions) {
+function ensureAgricultureCore(ns, cfg, actions) {
   const corp = corpApi(ns);
 
   if (!hasDivision(ns, cfg.agriculture)) {
@@ -107,17 +236,21 @@ function ensureAgriculture(ns, cfg, actions) {
 
   ensureUnlock(ns, 'Smart Supply', actions);
 
-  for (const city of cfg.cities) {
-    ensureCity(ns, cfg.agriculture, city, actions);
-    ensureWarehouse(ns, cfg.agriculture, city, actions);
-    safeCall(() => corp.setSmartSupply(cfg.agriculture, city, true), false);
-    ensureOfficeGrowth(ns, cfg.agriculture, [city], 3, cfg.startupJobs, actions);
-    for (const product of cfg.materialProducts) {
-      safeCall(() => corp.sellMaterial(cfg.agriculture, city, product, 'MAX', 'MP'), false);
-    }
-  }
+  ensureAgricultureCity(ns, cfg, cfg.mainCity, actions);
+  ensureWarehouseLevels(ns, cfg.agriculture, [cfg.mainCity], 3, actions);
+}
 
-  ensureWarehouseLevels(ns, cfg.agriculture, cfg.cities, 3, actions);
+function ensureAgricultureCity(ns, cfg, city, actions) {
+  if (!city) return;
+  const corp = corpApi(ns);
+  ensureCity(ns, cfg.agriculture, city, actions);
+  ensureWarehouse(ns, cfg.agriculture, city, actions);
+  safeCall(() => corp.setSmartSupply(cfg.agriculture, city, true), false);
+  ensureOfficeGrowth(ns, cfg.agriculture, [city], 3, cfg.startupJobs, actions);
+  for (const product of cfg.materialProducts) {
+    safeCall(() => corp.sellMaterial(cfg.agriculture, city, product, 'MAX', 'MP'), false);
+  }
+  ensureWarehouseLevels(ns, cfg.agriculture, [city], 3, actions);
 }
 
 function ensureTobacco(ns, cfg, actions) {
@@ -144,9 +277,185 @@ function ensureTobacco(ns, cfg, actions) {
   }
 
   ensureWarehouseLevels(ns, cfg.tobacco, cfg.cities, 14, actions);
-  ensureUpgradeTargets(ns, cfg.tobaccoUpgradeTargets, actions);
+  ensureUpgradeTargets(ns, cfg, cfg.tobaccoUpgradeTargets, actions);
   ensureAdVerts(ns, cfg.tobacco, cfg.tobaccoAdVerts, actions);
   manageTobaccoProducts(ns, cfg, actions);
+}
+
+function stabilizeAgriculture(ns, cfg, actions) {
+  const corp = corpApi(ns);
+  const materials = [
+    ...cfg.materialProducts,
+    'Robots',
+    'Hardware',
+    'AI Cores',
+    'Real Estate',
+  ];
+
+  for (const city of cfg.cities) {
+    for (const material of materials) {
+      safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, 0), false);
+    }
+
+    for (const product of cfg.materialProducts) {
+      safeCall(() => corp.sellMaterial(cfg.agriculture, city, product, 'MAX', 'MP'), false);
+    }
+  }
+
+  actions.push('Recovery mode: stopped Agriculture buy orders and reset Food/Plants sales.');
+}
+
+function maintainAgricultureSales(ns, cfg, cities, actions, options = {}) {
+  const corp = corpApi(ns);
+
+  for (const city of cities) {
+    safeCall(() => corp.setSmartSupply(cfg.agriculture, city, true), false);
+    fillExistingAgricultureOffice(ns, cfg, city, actions);
+    careForOffice(ns, cfg.agriculture, city, cfg, actions);
+    maintainAgricultureOutputSales(ns, cfg, city, actions);
+    maintainAgricultureInputs(ns, cfg, city, actions, options);
+  }
+
+  actions.push('Maintaining Agriculture production and sales while waiting for investment offer.');
+}
+
+function fillExistingAgricultureOffice(ns, cfg, city, actions) {
+  const office = getOffice(ns, cfg.agriculture, city);
+  const targetSize = Number(office?.size) || 3;
+  const jobs = targetSize >= 9 ? cfg.growthJobs : cfg.startupJobs;
+  ensureOfficeGrowth(ns, cfg.agriculture, [city], targetSize, jobs, actions);
+}
+
+function hasUnhealthyOffice(ns, division, cities, cfg) {
+  const energyFloor = Number(cfg.officeCareEnergyFloor) || 80;
+  const moraleFloor = Number(cfg.officeCareMoraleFloor) || 80;
+
+  for (const city of cities) {
+    const office = getOffice(ns, division, city);
+    if (!office || getEmployeeCount(office) <= 0) continue;
+    if ((Number(office.avgEnergy) || 0) < energyFloor) return true;
+    if ((Number(office.avgMorale) || 0) < moraleFloor) return true;
+  }
+
+  return false;
+}
+
+function careForOffice(ns, division, city, cfg, actions) {
+  const corp = corpApi(ns);
+  const office = getOffice(ns, division, city);
+  if (!office || getEmployeeCount(office) <= 0) return;
+
+  const funds = Number(getCorporation(ns)?.funds) || 0;
+  const reserve = Number(cfg.officeCareReserve) || 0;
+  if (funds <= reserve) {
+    actions.push(`Deferred office care in ${division}/${city}: preserving cash reserve.`);
+    return;
+  }
+
+  const energy = Number(office.avgEnergy) || 0;
+  const morale = Number(office.avgMorale) || 0;
+  const employees = getEmployeeCount(office);
+
+  if (energy < (Number(cfg.officeCareEnergyFloor) || 80)) {
+    if (safeCall(() => corp.buyTea(division, city), false) !== false) {
+      actions.push(`Bought tea for ${division}/${city}: energy ${energy.toFixed(1)}.`);
+    }
+  }
+
+  if (morale < (Number(cfg.officeCareMoraleFloor) || 80)) {
+    const spend = Math.max(0, Math.min(
+      funds - reserve,
+      employees * (Number(cfg.officeCarePartySpendPerEmployee) || 1_000_000),
+    ));
+    if (spend > 0 && safeCall(() => corp.throwParty(division, city, spend / Math.max(1, employees)), false) !== false) {
+      actions.push(`Threw party for ${division}/${city}: morale ${morale.toFixed(1)}.`);
+    }
+  }
+}
+
+function maintainAgricultureOutputSales(ns, cfg, city, actions) {
+  const corp = corpApi(ns);
+  const warehouse = safeCall(() => corp.getWarehouse(cfg.agriculture, city), null);
+  const pressure = getWarehousePressure(warehouse);
+  const price = pressure >= (Number(cfg.pressureSellThreshold) || 0.85) ? 'MP*0.5' : 'MP';
+
+  for (const product of cfg.materialProducts) {
+    safeCall(() => corp.sellMaterial(cfg.agriculture, city, product, 'MAX', price), false);
+  }
+
+  if (pressure >= (Number(cfg.pressureSellThreshold) || 0.85)) {
+    actions.push(`Warehouse pressure ${Math.round(pressure * 100)}% in ${city}; discount-selling Food/Plants.`);
+  }
+}
+
+function maintainAgricultureInputs(ns, cfg, city, actions, options = {}) {
+  const corp = corpApi(ns);
+  const warehouse = safeCall(() => corp.getWarehouse(cfg.agriculture, city), null);
+  const pressure = getWarehousePressure(warehouse);
+  const funds = Number(getCorporation(ns)?.funds) || 0;
+
+  for (const material of ['Hardware', 'AI Cores', 'Real Estate', 'Robots']) {
+    safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, 0), false);
+  }
+
+  if (funds < (Number(cfg.cashRecoveryFloor) || 0)) {
+    clearBoosterOverflow(ns, cfg, city, actions);
+    for (const [material] of cfg.agricultureInputs ?? []) {
+      safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, 0), false);
+    }
+    actions.push(`Cash recovery in ${city}: paused input buying until funds recover.`);
+    return;
+  }
+
+  if (pressure >= (Number(cfg.criticalPressureSellThreshold) || 0.95)) {
+    clearBoosterOverflow(ns, cfg, city, actions);
+    return;
+  }
+
+  stopBoosterSales(ns, cfg, city);
+
+  const inputPlan = options.stabilize ? cfg.agricultureStabilizeInputs : cfg.agricultureInputs;
+  for (const [material, rate] of inputPlan ?? []) {
+    safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, rate), false);
+  }
+
+  actions.push(`${options.stabilize ? 'Lean-feeding' : 'Feeding'} Agriculture inputs in ${city}: Water/Chemicals.`);
+}
+
+function clearBoosterOverflow(ns, cfg, city, actions) {
+  const corp = corpApi(ns);
+  const boosterTargets = new Map(
+    (cfg.agricultureStartupMaterials ?? []).map(([material, , targetQty]) => [material, targetQty]),
+  );
+  let cleared = false;
+
+  for (const material of ['Hardware', 'AI Cores', 'Real Estate', 'Robots']) {
+    const qty = getMaterialQty(getMaterial(ns, cfg.agriculture, city, material));
+    const targetQty = Number(boosterTargets.get(material) ?? 0);
+    if (qty <= targetQty) {
+      safeCall(() => corp.sellMaterial(cfg.agriculture, city, material, '0', '0'), false);
+      continue;
+    }
+
+    safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, 0), false);
+    safeCall(() => corp.sellMaterial(cfg.agriculture, city, material, 'MAX', 'MP*0.5'), false);
+    cleared = true;
+  }
+
+  for (const [material] of cfg.agricultureInputs ?? []) {
+    safeCall(() => corp.buyMaterial(cfg.agriculture, city, material, 0), false);
+  }
+
+  if (cleared) {
+    actions.push(`Warehouse full in ${city}; clearing booster overflow before buying inputs.`);
+  }
+}
+
+function stopBoosterSales(ns, cfg, city) {
+  const corp = corpApi(ns);
+  for (const material of ['Hardware', 'AI Cores', 'Real Estate', 'Robots']) {
+    safeCall(() => corp.sellMaterial(cfg.agriculture, city, material, '0', '0'), false);
+  }
 }
 
 function ensureCity(ns, division, city, actions) {
@@ -182,21 +491,72 @@ function ensureOfficeGrowth(ns, division, cities, targetSize, jobs, actions) {
   const corp = corpApi(ns);
 
   for (const city of cities) {
-    const office = getOffice(ns, division, city);
+    let office = getOffice(ns, division, city);
     if (!office) continue;
     const size = Number(office.size) || 0;
-    const employees = getEmployeeCount(office);
     if (size < targetSize) {
       safeCall(() => corp.upgradeOfficeSize(division, city, targetSize - size), false);
       actions.push(`Upgraded ${division} office in ${city} to ${targetSize}.`);
     }
+
+    office = getOffice(ns, division, city) ?? office;
+    let employees = getEmployeeCount(office);
     for (let i = employees; i < targetSize; i++) {
-      safeCall(() => corp.hireEmployee(division, city, 'Operations'), false);
+      const hireJob = getNextHireJob(jobs, i);
+      const hired = safeCall(() => corp.hireEmployee(division, city, hireJob), false);
+      if (hired === false) break;
+      actions.push(`Hired ${hireJob} employee in ${division}/${city}.`);
     }
-    for (const [job, amount] of jobs) {
-      assignJob(ns, division, city, job, amount);
+
+    office = getOffice(ns, division, city) ?? office;
+    employees = getEmployeeCount(office);
+    if (employees < targetSize) {
+      actions.push(`Could not finish hiring in ${division}/${city}: ${employees}/${targetSize}.`);
+    }
+
+    rebalanceOfficeJobs(ns, division, city, jobs, employees, actions);
+  }
+}
+
+function rebalanceOfficeJobs(ns, division, city, jobs, employees, actions) {
+  const corp = corpApi(ns);
+  const jobNames = ['Operations', 'Engineer', 'Business', 'Management', 'Research & Development', 'Intern'];
+
+  for (const job of jobNames) {
+    safeCall(() => corp.setAutoJobAssignment(division, city, job, 0), false);
+    safeCall(() => corp.setJobAssignment(division, city, job, 0), false);
+  }
+
+  let remaining = employees;
+  let assigned = 0;
+  for (const [job, requested] of jobs) {
+    const amount = Math.max(0, Math.min(Number(requested) || 0, remaining));
+    remaining -= amount;
+    if (amount <= 0) continue;
+
+    if (assignJob(ns, division, city, job, amount)) {
+      assigned += amount;
+    } else {
+      actions.push(`Could not assign ${amount} ${job} in ${division}/${city}.`);
     }
   }
+
+  if (remaining > 0 && assignJob(ns, division, city, 'Operations', remaining)) {
+    assigned += remaining;
+  }
+
+  if (assigned !== employees) {
+    actions.push(`Assigned ${assigned}/${employees} employees in ${division}/${city}.`);
+  }
+}
+
+function getNextHireJob(jobs, hiredSoFar) {
+  let cursor = 0;
+  for (const [job, requested] of jobs) {
+    cursor += Math.max(0, Number(requested) || 0);
+    if (hiredSoFar < cursor) return job;
+  }
+  return 'Operations';
 }
 
 function ensureUnlock(ns, upgrade, actions) {
@@ -208,18 +568,81 @@ function ensureUnlock(ns, upgrade, actions) {
   return false;
 }
 
-function ensureUpgradeTargets(ns, targets, actions) {
+function ensureStrategicUnlocks(ns, cfg, actions) {
+  const offer = getInvestmentOffer(ns);
+  const round = Number(offer?.round) || 1;
+  const stage = String(getDivision(ns, cfg.tobacco) ? 'product' : 'early');
+  const planned = [
+    ...(cfg.earlyUnlocks ?? []),
+    ...(round > 1 ? cfg.postRound1Unlocks ?? [] : []),
+    ...(stage === 'product' ? cfg.productUnlocks ?? [] : []),
+  ];
+  const seen = new Set();
+
+  for (const unlock of planned) {
+    if (!unlock || seen.has(unlock) || hasUnlock(ns, unlock)) continue;
+    seen.add(unlock);
+
+    if (unlock === 'Smart Supply') {
+      ensureUnlock(ns, unlock, actions);
+      continue;
+    }
+
+    const corporation = getCorporation(ns);
+    const funds = Number(corporation?.funds) || 0;
+    const cost = getUnlockCost(ns, unlock);
+    if (!Number.isFinite(cost) || cost <= 0) {
+      actions.push(`Cannot price ${unlock} unlock yet.`);
+      continue;
+    }
+
+    const priority = Array.isArray(cfg.priorityUnlocks) && cfg.priorityUnlocks.includes(unlock);
+    if (!canAffordUnlock(ns, cost, cfg, priority)) {
+      actions.push(
+        `Deferred ${unlock} unlock: cost ${formatActionMoney(ns, cost)} with ${formatActionMoney(ns, funds)} funds.`,
+      );
+      continue;
+    }
+
+    if (!ensureUnlock(ns, unlock, actions)) {
+      actions.push(`Tried ${unlock} unlock but purchase did not complete.`);
+    }
+  }
+}
+
+function canAffordUnlock(ns, cost, cfg, priority = false) {
+  const funds = Number(getCorporation(ns)?.funds) || 0;
+  const price = Number(cost);
+  if (!Number.isFinite(price) || price <= 0) return false;
+  if (funds - price < (Number(cfg.unlockReserve) || 0)) return false;
+  if (priority) return true;
+  return price <= funds * (Number(cfg.unlockMaxSpendFraction) || 1);
+}
+
+function ensureUpgradeTargets(ns, cfg, targets, actions) {
   const corp = corpApi(ns);
 
   for (const [upgrade, targetLevel] of targets) {
     const current = getUpgradeLevel(ns, upgrade);
     const missing = Math.max(0, targetLevel - current);
     for (let i = 0; i < missing; i++) {
+      if (!canAffordCorpPurchase(ns, getUpgradeCost(ns, upgrade), cfg)) {
+        actions.push(`Deferred ${upgrade} upgrade: preserving corporation reserve.`);
+        break;
+      }
       if (safeCall(() => corp.levelUpgrade(upgrade), false) !== false) {
         actions.push(`Leveled ${upgrade} to ${current + i + 1}.`);
       }
     }
   }
+}
+
+function canAffordCorpPurchase(ns, cost, cfg) {
+  const funds = Number(getCorporation(ns)?.funds) || 0;
+  const price = Number(cost);
+  if (!Number.isFinite(price) || price <= 0) return false;
+  if (funds - price < (Number(cfg.unlockReserve) || 0)) return false;
+  return price <= funds * (Number(cfg.unlockMaxSpendFraction) || 1);
 }
 
 function ensureAdVerts(ns, division, targetCount, actions) {
@@ -239,7 +662,7 @@ function ensureMaterialWave(ns, division, cities, materials, actions) {
 
   for (const city of cities) {
     for (const [material, rate, targetQty] of materials) {
-      const qty = Number(getMaterial(ns, division, city, material)?.qty) || 0;
+      const qty = getMaterialQty(getMaterial(ns, division, city, material));
       if (qty >= targetQty) {
         safeCall(() => corp.buyMaterial(division, city, material, 0), false);
         continue;
@@ -288,15 +711,40 @@ function manageTobaccoProducts(ns, cfg, actions) {
   }
 }
 
-function chooseStage(ns, cfg, offer, startupStatus, round1Status) {
+function chooseStage(ns, cfg, offer, mainStartupStatus, startupStatus, round1Status, nextExpansionCity) {
   const round = Number(offer?.round) || 1;
   const funds = Number(offer?.funds) || 0;
+  const corp = getCorporation(ns);
+  const corpFunds = Number(corp?.funds) || 0;
+  const profit = Number(corp?.revenue ?? 0) - Number(corp?.expenses ?? 0);
 
-  if (!startupStatus.complete) return 'agriculture-startup';
+  if (!mainStartupStatus.complete) return 'agriculture-main-startup';
   if (round <= 1 && funds >= cfg.firstOffer) return 'accept-round-1';
+  if (round <= 1) return 'waiting-round-1-offer';
+  if (!startupStatus.complete) return 'agriculture-startup';
   if (round <= 2 && !round1Status.complete) return 'agriculture-round-1';
+  if (
+    round > 1 &&
+    nextExpansionCity &&
+    corpFunds >= cfg.agricultureExpansionFundsFloor &&
+    profit >= cfg.agricultureExpansionProfitFloor
+  ) {
+    return 'agriculture-expand-city';
+  }
   if (round <= 2 && funds >= cfg.secondOffer) return 'accept-round-2';
+  if (round <= 2) return 'waiting-round-2-offer';
   return 'tobacco-growth';
+}
+
+function getAgricultureCities(ns, cfg) {
+  const division = getDivision(ns, cfg.agriculture);
+  const cities = Array.isArray(division?.cities) ? division.cities : [];
+  return cfg.cities.filter((city) => cities.includes(city));
+}
+
+function getNextExpansionCity(ns, cfg) {
+  const active = new Set(getAgricultureCities(ns, cfg));
+  return cfg.expansionCities.find((city) => !active.has(city)) ?? null;
 }
 
 function getMaterialWaveStatus(ns, division, cities, materials) {
@@ -304,7 +752,7 @@ function getMaterialWaveStatus(ns, division, cities, materials) {
 
   for (const city of cities) {
     for (const [material, , targetQty] of materials) {
-      const qty = Number(getMaterial(ns, division, city, material)?.qty) || 0;
+      const qty = getMaterialQty(getMaterial(ns, division, city, material));
       if (qty < targetQty) {
         missing.push({ city, material, qty, targetQty });
       }
@@ -346,7 +794,7 @@ function summarizeDivision(ns, divisionName, cfg) {
 
   return {
     name: division.name,
-    type: division.type,
+    type: division.industry ?? division.type,
     cities: division.cities,
     products: division.products,
     research: division.research,
@@ -413,4 +861,22 @@ function getEmployeeCount(office) {
   if (Number.isFinite(Number(office?.numEmployees))) return Number(office.numEmployees);
   if (Array.isArray(office?.employees)) return office.employees.length;
   return 0;
+}
+
+function getMaterialQty(material) {
+  const value =
+    material?.qty ??
+    material?.stored ??
+    material?.amount ??
+    material?.quantity ??
+    0;
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function getWarehousePressure(warehouse) {
+  const size = Number(warehouse?.size) || 0;
+  const used = Number(warehouse?.sizeUsed) || 0;
+  if (size <= 0) return 0;
+  return used / size;
 }

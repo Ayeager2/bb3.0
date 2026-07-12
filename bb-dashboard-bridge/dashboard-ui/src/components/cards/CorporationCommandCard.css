@@ -4,6 +4,25 @@
     color: var(--text);
 }
 
+.card[data-card-id="corporationCommand"]:not(.card-collapsed) .card-body {
+    min-height: 0;
+    overflow: auto;
+}
+
+.card[data-card-id="corporationCommand"] .card-body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.card[data-card-id="corporationCommand"] .card-body::-webkit-scrollbar-track {
+    background: rgba(2, 6, 23, .7);
+}
+
+.card[data-card-id="corporationCommand"] .card-body::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--cyan), var(--purple));
+}
+
 .corp-command-header,
 .corp-command-main,
 .corp-command-grid,
@@ -180,14 +199,30 @@
 }
 
 .corp-stage-art {
+    position: relative;
     aspect-ratio: 1.34 / 1;
+    overflow: hidden;
     border: 1px solid rgba(0, 229, 255, .12);
     border-radius: 6px;
-    background-repeat: no-repeat;
-    background-size: 600% 100%;
+    background:
+        linear-gradient(180deg, rgba(0, 229, 255, .04), rgba(255, 46, 136, .03)),
+        rgba(2, 6, 23, .24);
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     opacity: .72;
+}
+
+.corp-stage-art-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    pointer-events: none;
+    user-select: none;
 }
 
 .corp-stage.active .corp-stage-art {
@@ -260,6 +295,180 @@
     display: grid;
     gap: 8px;
     padding: 10px;
+}
+
+.corp-side-panel {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    overflow: hidden;
+}
+
+.corp-status-strip {
+    display: grid;
+    gap: 4px;
+    margin: 10px 10px 0;
+    padding: 8px;
+    border: 1px solid rgba(250, 204, 21, .22);
+    border-radius: 6px;
+    background: rgba(250, 204, 21, .05);
+}
+
+.corp-status-strip span {
+    color: var(--yellow);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.corp-status-strip b {
+    overflow: hidden;
+    color: var(--text);
+    font-size: 11px;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.corp-stage-flow {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 10px;
+}
+
+.corp-stage-step {
+    display: grid;
+    grid-template-columns: 13px minmax(0, 1fr);
+    align-items: center;
+    gap: 6px;
+    min-height: 28px;
+    padding: 6px 7px;
+    border: 1px solid rgba(148, 163, 184, .16);
+    border-radius: 6px;
+    color: var(--muted);
+    background: rgba(2, 6, 23, .44);
+}
+
+.corp-stage-step i {
+    width: 9px;
+    height: 9px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.corp-stage-step span,
+.corp-ramp-facts span,
+.corp-wave span,
+.corp-log-title span {
+    overflow: hidden;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.corp-stage-step.complete {
+    color: var(--green);
+    border-color: rgba(0, 255, 156, .25);
+    background: rgba(0, 255, 156, .04);
+}
+
+.corp-stage-step.active {
+    color: var(--cyan);
+    border-color: rgba(0, 229, 255, .48);
+    background: rgba(0, 229, 255, .08);
+    box-shadow: 0 0 14px rgba(0, 229, 255, .16);
+}
+
+.corp-stage-step.active i,
+.corp-stage-step.complete i {
+    background: currentColor;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.corp-ramp-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+    padding: 0 10px;
+}
+
+.corp-ramp-facts div {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid rgba(0, 229, 255, .14);
+    border-radius: 6px;
+    background: rgba(0, 229, 255, .04);
+}
+
+.corp-ramp-facts b,
+.corp-wave b,
+.corp-log-title b {
+    overflow: hidden;
+    color: white;
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.corp-wave-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    padding: 0 10px;
+}
+
+.corp-wave {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    padding: 7px 8px;
+    border: 1px solid rgba(250, 204, 21, .22);
+    border-radius: 6px;
+    color: var(--yellow);
+    background: rgba(250, 204, 21, .05);
+}
+
+.corp-wave.complete {
+    border-color: rgba(0, 255, 156, .22);
+    color: var(--green);
+    background: rgba(0, 255, 156, .04);
+}
+
+.corp-action-log {
+    display: grid;
+    gap: 7px;
+    min-height: 0;
+    max-height: 250px;
+    overflow: auto;
+    padding: 0 10px 10px;
+}
+
+.corp-action-log::-webkit-scrollbar {
+    width: 6px;
+}
+
+.corp-action-log::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--cyan);
+}
+
+.corp-log-title {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    color: var(--cyan);
+    background: rgba(2, 6, 23, .92);
 }
 
 .corp-action-row {
@@ -582,13 +791,86 @@
     }
 }
 
+.card-half[data-card-id="corporationCommand"] .corp-command-header,
+.card-third[data-card-id="corporationCommand"] .corp-command-header,
+.card-quarter[data-card-id="corporationCommand"] .corp-command-header {
+    grid-template-columns: 1fr 1fr;
+}
+
+.card-half[data-card-id="corporationCommand"] .corp-command-main,
+.card-third[data-card-id="corporationCommand"] .corp-command-main,
+.card-quarter[data-card-id="corporationCommand"] .corp-command-main,
+.card-half[data-card-id="corporationCommand"] .corp-command-grid,
+.card-third[data-card-id="corporationCommand"] .corp-command-grid,
+.card-quarter[data-card-id="corporationCommand"] .corp-command-grid {
+    grid-template-columns: 1fr;
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-stage-track,
+.card-quarter[data-card-id="corporationCommand"] .corp-stage-track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-stage-line,
+.card-quarter[data-card-id="corporationCommand"] .corp-stage-line {
+    display: none;
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-quick-actions,
+.card-quarter[data-card-id="corporationCommand"] .corp-quick-actions {
+    grid-template-columns: 1fr;
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-stage-flow,
+.card-quarter[data-card-id="corporationCommand"] .corp-stage-flow,
+.card-third[data-card-id="corporationCommand"] .corp-wave-grid,
+.card-quarter[data-card-id="corporationCommand"] .corp-wave-grid,
+.card-quarter[data-card-id="corporationCommand"] .corp-ramp-facts {
+    grid-template-columns: 1fr;
+}
+
+.card-quarter[data-card-id="corporationCommand"] .corp-action-log {
+    max-height: 320px;
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-brand-name,
+.card-quarter[data-card-id="corporationCommand"] .corp-brand-name {
+    font-size: 18px;
+}
+
+.card-third[data-card-id="corporationCommand"] .corp-top-metric,
+.card-third[data-card-id="corporationCommand"] .corp-investment-metric,
+.card-third[data-card-id="corporationCommand"] .corp-command-clock,
+.card-quarter[data-card-id="corporationCommand"] .corp-top-metric,
+.card-quarter[data-card-id="corporationCommand"] .corp-investment-metric,
+.card-quarter[data-card-id="corporationCommand"] .corp-command-clock {
+    min-height: 64px;
+    padding: 9px 10px;
+}
+
+.card-quarter[data-card-id="corporationCommand"] .corp-command-header {
+    grid-template-columns: 1fr;
+}
+
+.card-quarter[data-card-id="corporationCommand"] .corp-top-metric,
+.card-quarter[data-card-id="corporationCommand"] .corp-investment-metric,
+.card-quarter[data-card-id="corporationCommand"] .corp-command-clock {
+    border-top: 1px solid rgba(0, 229, 255, .14);
+    border-left: none;
+}
+
+.card-quarter[data-card-id="corporationCommand"] .corp-stage-art {
+    aspect-ratio: 1.45 / 1;
+}
+
 @media (max-width: 720px) {
     .corp-stage-track {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .corp-command-header,
-    .corp-quick-actions {
+    .corp-quick-actions,
+    .corp-ramp-facts {
         grid-template-columns: 1fr;
     }
 

@@ -1,16 +1,15 @@
 import { refreshDaemonState } from '/lib/daemon/dev-reset.js';
 
-const BOOTSTRAP_DAEMON = 'bootstrap-daemon.js';
 const FULL_DAEMON = 'daemon.js';
-const BN2_GANG_MANAGER = '/tools/gang-manager-service.js';
-const BN2_CRIME_BOOTSTRAP = '/tools/crime-bootstrap.js';
+const GANG_MANAGER = '/tools/gang-manager-service.js';
 const HACKNET_BUYER = '/economy/hacknet-buyer-service.js';
 const HOME_RAM_BUYER = '/economy/home-ram-buyer-service.js';
 const SERVER_PURCHASER = '/economy/server-purchaser-service.js';
 const FINAL_LEVEL_STUDY = '/tools/final-level-study-service.js';
 const CORP_MANAGER = '/tools/corp-manager-service.js';
-const CORP_BOOTSTRAP = '/tools/corp-bootstrap-service.js';
-const MIN_HOME_RAM_FOR_FULL_DAEMON = 64;
+const DASHBOARD_STATE_WRITER = '/tools/dashboard-state-writer.js';
+const DASHBOARD_COMMAND_RUNNER = '/tools/dashboard-command-runner.js';
+const BN3_MIN_HOME_RAM_FOR_CORP_MANAGER = 512;
 
 /** @param {NS} ns **/
 export async function main(ns) {
@@ -34,20 +33,32 @@ export async function main(ns) {
 
   await ns.sleep(1000);
 
-  startBn2CoreServices(ns);
-  startCorporationManager(ns);
+  if (shouldUseBn3GangRamBootstrap(ns)) {
+    startDashboardServices(ns);
+    startGangManager(ns);
+    startHomeRamBuyer(ns);
+    ns.tprint(
+      `[STARTUP] BN3 corporation deferred until home RAM is above ${formatRam(BN3_MIN_HOME_RAM_FOR_CORP_MANAGER)}.`,
+    );
+    return;
+  }
 
-  if (shouldUseBootstrap(ns)) {
-    if (!ns.scriptRunning(BOOTSTRAP_DAEMON, 'home')) {
-      stopFullDaemonIfRunning(ns);
-      startScript(ns, BOOTSTRAP_DAEMON, [], {
-        label: 'bootstrap-daemon.js',
-        priority: false,
-      });
-    } else {
-      ns.tprint('[STARTUP] bootstrap-daemon.js already running.');
-    }
+  const isBn3CorpMode = getCurrentBitNode(ns) === 3 && hasCorporationStartupAccess(ns);
+  let corporationManagerStarted = false;
 
+  if (isBn3CorpMode) {
+    corporationManagerStarted = startCorporationManager(ns);
+    startDashboardServices(ns);
+    startGangManager(ns);
+  } else {
+    startDashboardServices(ns);
+    startBn2CoreServices(ns);
+    corporationManagerStarted = startCorporationManager(ns);
+    startGangManager(ns);
+  }
+
+  if (isBn3CorpMode && corporationManagerStarted && ns.getServerMaxRam('home') <= 1024) {
+    ns.tprint('[STARTUP] BN3 corp mode: skipping daemon.js until home RAM is above 1.00TB.');
     return;
   }
 
@@ -58,33 +69,30 @@ export async function main(ns) {
     ns.tprint('[STARTUP] daemon.js already running.');
   }
 
-  startBn2GangManager(ns);
-  startCorporationManager(ns);
   startFinalLevelStudy(ns);
 }
 
-function shouldUseBootstrap(ns) {
-  return (
-    ns.getServerMaxRam('home') < MIN_HOME_RAM_FOR_FULL_DAEMON &&
-    ns.fileExists(BOOTSTRAP_DAEMON, 'home')
-  );
+function startDashboardServices(ns) {
+  startScript(ns, DASHBOARD_STATE_WRITER, ['--refresh', 3000], {
+    label: 'dashboard state writer',
+    priority: true,
+  });
+
+  startScript(ns, DASHBOARD_COMMAND_RUNNER, [], {
+    label: 'dashboard command runner',
+    priority: true,
+  });
 }
 
-function stopFullDaemonIfRunning(ns) {
-  try {
-    if (ns.scriptRunning(FULL_DAEMON, 'home')) {
-      ns.kill(FULL_DAEMON, 'home');
-    }
-  } catch {
-    // If kill fails, let bootstrap try to work with remaining RAM.
-  }
+function shouldUseBn3GangRamBootstrap(ns) {
+  return getCurrentBitNode(ns) === 3 && ns.getServerMaxRam('home') <= BN3_MIN_HOME_RAM_FOR_CORP_MANAGER;
 }
 
-function startBn2GangManager(ns) {
-  if (getCurrentBitNode(ns) !== 2) return;
+function startGangManager(ns) {
+  if (!hasGangStartupAccess(ns)) return;
 
-  startScript(ns, BN2_GANG_MANAGER, [], {
-    label: 'BN2 gang manager',
+  startScript(ns, GANG_MANAGER, [], {
+    label: 'gang manager',
     priority: true,
   });
 }
@@ -92,7 +100,7 @@ function startBn2GangManager(ns) {
 function startBn2CoreServices(ns) {
   if (getCurrentBitNode(ns) !== 2) return;
 
-  startBn2GangManager(ns);
+  startGangManager(ns);
   startScript(
     ns,
     HACKNET_BUYER,
@@ -149,24 +157,13 @@ function startBn2CoreServices(ns) {
       priority: true,
     },
   );
-  startScript(
-    ns,
-    BN2_CRIME_BOOTSTRAP,
-    [
-      '--crime',
-      'auto',
-      '--stop-money',
-      10_000_000,
-      '--stop-home-ram',
-      MIN_HOME_RAM_FOR_FULL_DAEMON,
-      '--focus',
-      false,
-    ],
-    {
-      label: 'BN2 auto crime bootstrap',
-      priority: true,
-    },
-  );
+}
+
+function startHomeRamBuyer(ns) {
+  startScript(ns, HOME_RAM_BUYER, ['--refresh', 10000, '--min-money', 1_000_000], {
+    label: 'home RAM buyer',
+    priority: true,
+  });
 }
 
 function startFinalLevelStudy(ns) {
@@ -200,17 +197,16 @@ function hasInstalledRedPill(ns) {
 }
 
 function startCorporationManager(ns) {
-  if (!hasCorporationStartupAccess(ns)) return;
+  if (!hasCorporationStartupAccess(ns)) return false;
 
   if (!canRunScript(ns, CORP_MANAGER)) {
-    startScript(ns, CORP_BOOTSTRAP, [], {
-      label: 'corporation bootstrap',
-      priority: true,
-    });
-    return;
+    ns.tprint(
+      `[STARTUP] corporation manager deferred. Need ${formatRam(getScriptRam(ns, CORP_MANAGER))} home RAM; current home RAM is ${formatRam(ns.getServerMaxRam('home'))}.`,
+    );
+    return false;
   }
 
-  startScript(ns, CORP_MANAGER, ['--refresh', 5000], {
+  return startScript(ns, CORP_MANAGER, ['--refresh', 5000], {
     label: 'corporation manager',
     priority: true,
   });
@@ -220,6 +216,29 @@ function hasCorporationStartupAccess(ns) {
   if (!ns.corporation) return false;
   if (getCurrentBitNode(ns) === 3) return true;
   return getOwnedSourceFileLevel(ns, 3) > 0;
+}
+
+function hasGangStartupAccess(ns) {
+  if (!ns.gang) return false;
+  if (getCurrentBitNode(ns) === 2) return true;
+  if (hasGang(ns)) return true;
+  return getOwnedSourceFileLevel(ns, 2) > 0;
+}
+
+function hasCorporation(ns) {
+  try {
+    return ns.corporation?.hasCorporation?.() === true;
+  } catch {
+    return false;
+  }
+}
+
+function hasGang(ns) {
+  try {
+    return ns.gang?.inGang?.() === true;
+  } catch {
+    return false;
+  }
 }
 
 function getOwnedSourceFileLevel(ns, sourceFileNumber) {
@@ -307,18 +326,26 @@ function normalizeSourceFile(sourceFile) {
 }
 
 function startScript(ns, script, args = [], options = {}) {
-  if (!ns.fileExists(script, 'home')) return false;
+  const label = options.label ?? script;
+
+  if (!ns.fileExists(script, 'home')) {
+    ns.tprint(`[STARTUP] ${label} missing: ${script}`);
+    return false;
+  }
+
   if (isScriptRunning(ns, script)) return true;
 
   const scriptRam = ns.getScriptRam(script, 'home');
-  if (!Number.isFinite(scriptRam) || scriptRam <= 0) return false;
+  if (!Number.isFinite(scriptRam) || scriptRam <= 0) {
+    ns.tprint(`[STARTUP] ${label} has invalid RAM cost: ${formatRam(scriptRam)}.`);
+    return false;
+  }
 
   if (options.priority === true) {
     freeHomeRamFor(ns, scriptRam);
   }
 
   const pid = ns.run(script, 1, ...args);
-  const label = options.label ?? script;
 
   if (pid > 0) {
     ns.tprint(`[STARTUP] ${label} started.`);
@@ -338,7 +365,19 @@ function canRunScript(ns, script) {
 function freeHomeRamFor(ns, neededRam) {
   if (getFreeHomeRam(ns) >= neededRam) return;
 
-  const killOrder = ['/workers/tiny-worker.js', BOOTSTRAP_DAEMON];
+  const killOrder = [
+    '/workers/w1.js',
+    '/workers/g1.js',
+    '/workers/h1.js',
+    '/tools/final-level-study-service.js',
+    '/tools/faction-work-service.js',
+    '/economy/stock-trader.js',
+    FULL_DAEMON,
+    GANG_MANAGER,
+    HOME_RAM_BUYER,
+    DASHBOARD_STATE_WRITER,
+    DASHBOARD_COMMAND_RUNNER,
+  ];
 
   for (const script of killOrder) {
     for (const proc of ns.ps('home')) {
@@ -355,6 +394,20 @@ function freeHomeRamFor(ns, neededRam) {
 
 function getFreeHomeRam(ns) {
   return Math.max(0, ns.getServerMaxRam('home') - ns.getServerUsedRam('home'));
+}
+
+function getScriptRam(ns, script) {
+  try {
+    return ns.getScriptRam(script, 'home');
+  } catch {
+    return 0;
+  }
+}
+
+function formatRam(value) {
+  const n = Number(value) || 0;
+  if (n >= 1024) return `${(n / 1024).toFixed(2)}TB`;
+  return `${n.toFixed(2)}GB`;
 }
 
 function isScriptRunning(ns, script) {

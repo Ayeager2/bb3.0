@@ -18,7 +18,13 @@ export function hasCorporation(ns) {
 }
 
 export function canCreateCorporation(ns, seedMoney) {
-  return safeCall(() => corpApi(ns).canCreateCorporation(seedMoney), false) === true;
+  return isCreateCorporationSuccess(
+    safeCall(() => corpApi(ns).canCreateCorporation(seedMoney), false),
+  );
+}
+
+export function isCreateCorporationSuccess(result) {
+  return result === true || result === "Success" || result?.Success === true;
 }
 
 export function getCorporation(ns) {
@@ -66,12 +72,29 @@ export function getUpgradeLevel(ns, upgrade) {
   return Number(safeCall(() => corpApi(ns).getUpgradeLevel(upgrade), 0)) || 0;
 }
 
+export function getUpgradeCost(ns, upgrade) {
+  return Number(safeCall(() => corpApi(ns).getUpgradeLevelCost(upgrade), Infinity));
+}
+
+export function getUnlockCost(ns, upgrade) {
+  const corp = corpApi(ns);
+  const cost =
+    safeCall(() => corp.getUnlockUpgradeCost(upgrade), null) ??
+    safeCall(() => corp.getUnlockCost(upgrade), null);
+  const n = Number(cost);
+  return Number.isFinite(n) ? n : Infinity;
+}
+
 export function hasUnlock(ns, upgrade) {
   return safeCall(() => corpApi(ns).hasUnlock(upgrade), false) === true;
 }
 
 export function purchaseUnlock(ns, upgrade) {
-  return safeCall(() => corpApi(ns).purchaseUnlock(upgrade), false) === true;
+  const corp = corpApi(ns);
+  const purchased =
+    safeCall(() => corp.purchaseUnlock(upgrade), null) ??
+    safeCall(() => corp.unlockUpgrade(upgrade), null);
+  return purchased === true || hasUnlock(ns, upgrade);
 }
 
 export function writeJson(ns, file, data) {

@@ -2,8 +2,8 @@
   "source": "network-topology",
   "status": "unavailable",
   "message": "Could not read /data/ui/network-topology.txt. Is /tools/network-topology-writer.js running?",
-  "updatedAt": 1783544829604,
-  "bridgeUpdatedAt": 1783544829604,
+  "updatedAt": 1783899529644,
+  "bridgeUpdatedAt": 1783899529644,
   "nodes": [],
   "edges": []
 }

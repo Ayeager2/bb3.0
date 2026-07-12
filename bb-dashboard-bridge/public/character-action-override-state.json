@@ -3,5 +3,5 @@
   "status": "unavailable",
   "message": "Could not read /data/character-action-override-state.txt. Is /tools/character-action-override-service.js running?",
   "enabled": false,
-  "bridgeUpdatedAt": 1783544833783
+  "bridgeUpdatedAt": 1783899530611
 }

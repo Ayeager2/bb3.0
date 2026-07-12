@@ -3,5 +3,5 @@
   "status": "unavailable",
   "message": "Could not read /data/faction-state.txt. Is /tools/faction-observer-service.js running?",
   "profiles": [],
-  "bridgeUpdatedAt": 1783544833780
+  "bridgeUpdatedAt": 1783899530607
 }

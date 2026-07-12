@@ -1180,6 +1180,13 @@ function isValidSourceFile(sourceFile) {
     );
 }
 
+function getOwnedSourceFileLevel(ns, sourceFileNumber) {
+    return getOwnedSourceFiles(ns).reduce((best, sourceFile) => {
+        if (sourceFile.n !== sourceFileNumber) return best;
+        return Math.max(best, sourceFile.lvl);
+    }, 0);
+}
+
 export function hasSingularityAccess() {
     return true;
 }
@@ -1192,8 +1199,22 @@ export function hasCorporationAccess() {
     return false;
 }
 
-export function hasGangAccess() {
-    return false;
+export function hasGangAccess(ns) {
+    if (!ns?.gang) return false;
+
+    try {
+        if (ns.gang.inGang?.() === true) return true;
+    } catch {
+        // Fall through to Source-File / BitNode checks.
+    }
+
+    try {
+        if (ns.getResetInfo?.()?.currentNode === 2) return true;
+    } catch {
+        // Fall through to Source-File checks.
+    }
+
+    return getOwnedSourceFileLevel(ns, 2) > 0;
 }
 
 export function hasBladeburnerAccess() {
