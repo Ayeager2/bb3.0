@@ -1,7 +1,171 @@
 {
-  "source": "augmentation-plan",
-  "status": "unavailable",
-  "message": "Could not read /data/augmentation-plan.txt. Is /tools/augmentation-buyer-service.js running?",
-  "candidates": [],
-  "bridgeUpdatedAt": 1783899530604
+  "updatedAt": 1783909432839,
+  "bitNode": 3,
+  "strategy": {
+    "name": "Balanced",
+    "maxPrice": 1000000000000,
+    "readyBuyOrder": "cheap-first",
+    "statWeights": {
+      "hacking": 70,
+      "hacking_exp": 60,
+      "faction_rep": 65,
+      "money": 55,
+      "company_rep": 35,
+      "charisma": 25,
+      "combat": 30,
+      "crime": 30,
+      "hacknet": 20,
+      "bladeburner": 0
+    }
+  },
+  "money": 307609588403866.8,
+  "reserveMoney": 1000000,
+  "spendable": 307609587403866.8,
+  "maxPrice": 1000000000000,
+  "progressionFrontier": {
+    "stage": "daedalus-or-later",
+    "reason": "Daedalus/Red Pill stage can use global augmentation priority.",
+    "targetFaction": null,
+    "candidateCount": 1
+  },
+  "ready": false,
+  "nextGoal": {
+    "name": "The Red Pill",
+    "faction": "Daedalus",
+    "theme": "endgame",
+    "price": 0,
+    "rep": 7500000,
+    "factionRep": 152822.86570019784,
+    "hasRep": false,
+    "affordable": true,
+    "hasPrereqs": true,
+    "prereqs": [],
+    "stats": {},
+    "statBreakdown": {},
+    "priorityClass": 999,
+    "stagePolicy": {
+      "stage": "red-pill",
+      "priority": 1000,
+      "urgency": "critical",
+      "buyReadiness": "finish-now",
+      "factionWork": "full",
+      "moneyWork": "full",
+      "reason": "The Red Pill is the BN4 win condition unlock."
+    },
+    "tags": [
+      "red-pill",
+      "endgame"
+    ],
+    "score": 9007199254740991
+  },
+  "blockedReason": "Need more rep with Daedalus.",
+  "neuroFluxPolicy": {
+    "enabled": true,
+    "stage": "daedalus-neuroflux",
+    "targetFaction": "Daedalus",
+    "targetAugmentation": "NeuroFlux Governor",
+    "allowDaedalus": true,
+    "favor": 0.18453932437594353,
+    "favorToDonate": 150,
+    "favorRemaining": 50.74213752069353,
+    "donationUnlocked": false,
+    "projectedDonationUnlocked": false,
+    "moneyModePreferred": false,
+    "installRequiredForFavor": true,
+    "favorState": {
+      "faction": "Daedalus",
+      "currentFavor": 0.18453932437594353,
+      "currentRep": 152822.86570019784,
+      "favorToDonate": 150,
+      "targetFavor": 150,
+      "projectedFavorGain": 99.07332315493052,
+      "projectedFavor": 99.25786247930647,
+      "missingProjectedFavor": 50.74213752069353,
+      "requiredRepForFavorTarget": 460711.8543726543,
+      "missingRepForFavorTarget": 307888.9886724565,
+      "favorReady": false,
+      "formulaSource": "formulas.reputation"
+    },
+    "reason": "Daedalus NeuroFlux is prioritized before Red Pill until projected Daedalus favor reaches the donation unlock threshold."
+  },
+  "candidates": [
+    {
+      "name": "Graphene BrachiBlades Upgrade",
+      "faction": "Slum Snakes",
+      "theme": "crime",
+      "price": 7500000000,
+      "rep": 675000,
+      "factionRep": 2023640311.7211943,
+      "hasRep": true,
+      "affordable": true,
+      "hasPrereqs": false,
+      "prereqs": [
+        "BrachiBlades"
+      ],
+      "stats": {
+        "hacking_chance": 1,
+        "hacking_speed": 1,
+        "hacking_money": 1,
+        "hacking_grow": 1,
+        "hacking": 1,
+        "hacking_exp": 1,
+        "strength": 1.4,
+        "strength_exp": 1,
+        "defense": 1.4,
+        "defense_exp": 1,
+        "dexterity": 1,
+        "dexterity_exp": 1,
+        "agility": 1,
+        "agility_exp": 1,
+        "charisma": 1,
+        "charisma_exp": 1,
+        "hacknet_node_money": 1,
+        "hacknet_node_purchase_cost": 1,
+        "hacknet_node_ram_cost": 1,
+        "hacknet_node_core_cost": 1,
+        "hacknet_node_level_cost": 1,
+        "company_rep": 1,
+        "faction_rep": 1,
+        "work_money": 1,
+        "crime_success": 1.1,
+        "crime_money": 1.3,
+        "dnet_money": 1,
+        "bladeburner_max_stamina": 1,
+        "bladeburner_stamina_gain": 1,
+        "bladeburner_analysis": 1,
+        "bladeburner_success_chance": 1
+      },
+      "statBreakdown": {
+        "hacking": 0,
+        "hacking_exp": 0,
+        "faction_rep": 0,
+        "money": 0,
+        "company_rep": 0,
+        "charisma": 0,
+        "combat": 2399.999999999999,
+        "crime": 1200.0000000000005,
+        "hacknet": 0,
+        "bladeburner": 0,
+        "misc": 0
+      },
+      "priorityClass": 0,
+      "stagePolicy": {
+        "stage": "side",
+        "priority": 100,
+        "urgency": "low",
+        "buyReadiness": "opportunistic",
+        "factionWork": "background",
+        "moneyWork": "money-primary",
+        "reason": "This augmentation is not on the primary BN4 hacking faction path."
+      },
+      "repeatable": false,
+      "favorLoop": null,
+      "tags": [
+        "combat",
+        "crime"
+      ],
+      "score": 4433.511598574373
+    }
+  ],
+  "bridgeUpdatedAt": 1783909440449
 }

@@ -1,7 +1,101 @@
 {
-  "schemaVersion": 1,
-  "updatedAt": 1783899529806,
-  "summary": "Could not read daemon reasoning.",
-  "items": [],
-  "bridgeUpdatedAt": 1783899529806
+  "schemaVersion": 2,
+  "updatedAt": 1783909430714,
+  "source": "daemon-reasoning-writer",
+  "summary": "1 warning item(s) need attention.",
+  "fingerprint": "mode:info:Daemon is running in money mode.:faction-work|target:warning:Current target is b-and-a.:Target likely needs prep work before it becomes efficient.|policy:info:Current policy controls what automation is allowed to buy or trigger.:Policy currently blocks: augmentation purchases, reset execution.|readiness:success:BN4 readiness checks are complete.:All readiness checks appear complete.|victory:info:Current victory stage is get-red-pill.:Grind Daedalus reputation and buy The Red Pill.",
+  "items": [
+    {
+      "id": "mode",
+      "title": "Current Mode",
+      "summary": "Daemon is running in money mode.",
+      "detail": "faction-work",
+      "level": "info",
+      "data": {
+        "phase": "get-red-pill",
+        "priority": "income",
+        "posture": "AGGRESSIVE_INCOME"
+      },
+      "ts": 1783909430714
+    },
+    {
+      "id": "target",
+      "title": "Current Target",
+      "summary": "Current target is b-and-a.",
+      "detail": "Target likely needs prep work before it becomes efficient.",
+      "level": "warning",
+      "data": {
+        "moneyPercent": 0.8571688579650509,
+        "securityDiff": 3.006000000000835,
+        "prepNeed": 0.25018828489212175,
+        "weakenTime": 248487.8866699302
+      },
+      "ts": 1783909430714
+    },
+    {
+      "id": "policy",
+      "title": "Spending Policy",
+      "summary": "Current policy controls what automation is allowed to buy or trigger.",
+      "detail": "Policy currently blocks: augmentation purchases, reset execution.",
+      "level": "info",
+      "data": {
+        "reserveMoney": 1000000000,
+        "allowServerPurchases": true,
+        "allowStockTrading": true,
+        "allowHacknet": true,
+        "allowHomeRam": true,
+        "allowExePurchases": true,
+        "allowAugmentPurchases": false,
+        "allowFactionWork": true,
+        "backgroundFactionWork": true,
+        "backgroundFactionReason": "Money mode can work faction reputation; cloud servers are maxed.",
+        "allowReset": false,
+        "allowIntTravel": false
+      },
+      "ts": 1783909430714
+    },
+    {
+      "id": "readiness",
+      "title": "BN4 Readiness",
+      "summary": "BN4 readiness checks are complete.",
+      "detail": "All readiness checks appear complete.",
+      "level": "success",
+      "data": {
+        "targetBitNode": 4,
+        "goal": "Unlock Source-File 4",
+        "ready": true,
+        "readyCount": 4,
+        "totalChecks": 4,
+        "hackingReady": true,
+        "moneyReady": true,
+        "homeRamReady": true,
+        "augReady": true,
+        "hacking": 2601,
+        "hackingTarget": 2500,
+        "money": 307126434681294.7,
+        "moneyTarget": 100000000000,
+        "augmentCount": 75,
+        "augmentTarget": 30
+      },
+      "ts": 1783909430714
+    },
+    {
+      "id": "victory",
+      "title": "Victory Plan",
+      "summary": "Current victory stage is get-red-pill.",
+      "detail": "Grind Daedalus reputation and buy The Red Pill.",
+      "level": "info",
+      "data": {
+        "stage": "get-red-pill",
+        "nextAction": "Grind Daedalus reputation and buy The Red Pill.",
+        "hackingTarget": 9007199254740991,
+        "hasDaedalus": true,
+        "hasRedPill": false,
+        "worldDaemon": "w0r1d_d43m0n",
+        "canUseWorldDaemon": false
+      },
+      "ts": 1783909430714
+    }
+  ],
+  "bridgeUpdatedAt": 1783909435933
 }

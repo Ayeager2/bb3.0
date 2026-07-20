@@ -1,6 +1,39 @@
 {
-  "source": "augmentation-buyer",
-  "status": "unavailable",
-  "message": "Could not read /data/augmentation-buyer-state.txt. Is /tools/augmentation-buyer-service.js running?",
-  "bridgeUpdatedAt": 1783899530605
+  "updatedAt": 1783909432839,
+  "mode": "money",
+  "priority": "income",
+  "allowBuying": false,
+  "forceBuy": false,
+  "policyAllowAugmentPurchases": false,
+  "policyAllowFactionWork": true,
+  "backgroundFactionWork": true,
+  "backgroundFactionReason": "Money mode can work faction reputation; cloud servers are maxed.",
+  "reserveMoney": 1000000,
+  "maxPrice": 1000000000000,
+  "planReady": false,
+  "nextGoal": {
+    "name": "The Red Pill",
+    "faction": "Daedalus",
+    "price": 0,
+    "rep": 7500000,
+    "factionRep": 152822.86570019784,
+    "hasRep": false,
+    "affordable": true,
+    "hasPrereqs": true,
+    "stagePolicy": {
+      "stage": "red-pill",
+      "priority": 1000,
+      "urgency": "critical",
+      "buyReadiness": "finish-now",
+      "factionWork": "full",
+      "moneyWork": "full",
+      "reason": "The Red Pill is the BN4 win condition unlock."
+    },
+    "repeatable": false,
+    "favorLoop": null
+  },
+  "planBlockedReason": "Need more rep with Daedalus.",
+  "status": "blocked",
+  "blockedReason": "Need more rep with Daedalus.",
+  "bridgeUpdatedAt": 1783909440450
 }
