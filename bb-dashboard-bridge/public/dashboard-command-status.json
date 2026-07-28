@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": 1783902706610,
+  "updatedAt": 1784664943044,
   "running": true,
   "status": "ready",
   "message": "Dashboard command runner heartbeat.",
-  "lastHeartbeatAt": 1783909435871,
-  "command": "setCharacterAction",
-  "commandId": "1783907076304-8384561e2fbc5",
-  "startedAt": 1783907077121,
-  "completedAt": 1783907077122,
-  "bridgeUpdatedAt": 1783909442155
+  "lastHeartbeatAt": 1784680112597,
+  "command": "ascendGangMember",
+  "commandId": "1784680110707-19961be42d4af",
+  "startedAt": 1784680111591,
+  "completedAt": 1784680111592,
+  "bridgeUpdatedAt": 1784680124889
 }

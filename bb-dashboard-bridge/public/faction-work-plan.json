@@ -1,41 +1,6 @@
 {
-  "updatedAt": 1783909438541,
-  "active": true,
-  "reason": "Need 7.35m rep with Daedalus for The Red Pill.",
-  "targetFaction": "Daedalus",
-  "targetAugmentation": "The Red Pill",
-  "targetRep": 7500000,
-  "currentRep": 152825.83125771195,
-  "missingRep": 7347174.168742288,
-  "workType": "hacking",
-  "nextGoal": {
-    "name": "The Red Pill",
-    "faction": "Daedalus",
-    "theme": "endgame",
-    "price": 0,
-    "rep": 7500000,
-    "factionRep": 152822.86570019784,
-    "hasRep": false,
-    "affordable": true,
-    "hasPrereqs": true,
-    "prereqs": [],
-    "stats": {},
-    "statBreakdown": {},
-    "priorityClass": 999,
-    "stagePolicy": {
-      "stage": "red-pill",
-      "priority": 1000,
-      "urgency": "critical",
-      "buyReadiness": "finish-now",
-      "factionWork": "full",
-      "moneyWork": "full",
-      "reason": "The Red Pill is the BN4 win condition unlock."
-    },
-    "tags": [
-      "red-pill",
-      "endgame"
-    ],
-    "score": 9007199254740991
-  },
-  "bridgeUpdatedAt": 1783909440451
+  "source": "faction-work-plan",
+  "status": "unavailable",
+  "message": "Could not read /data/faction-work-plan.txt. Is /tools/faction-work-service.js running?",
+  "bridgeUpdatedAt": 1784680124927
 }
